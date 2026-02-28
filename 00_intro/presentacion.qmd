@@ -23,9 +23,9 @@ format:
     logo: images/usm.png
 ---
 
-## Sobre Mi 
+## Sobre Mi
 
-<br> 
+<br>
 
 ::: columns
 ::: {.column width="40%"}
@@ -35,13 +35,12 @@ format:
 ::: {.column width="60%"}
 <br>
 
--   Francisco Alfaro Medina 
+-   Francisco Alfaro Medina
 -   Docente Universitario UTFSM
 -   Lider Anlítica Avanzada UTFSM
 -   Estudiante de Doctorado en Electrónica
 :::
 :::
-
 
 ## Experiencia Laboral
 
@@ -50,29 +49,25 @@ format:
 ::: columns
 ::: {.column width="33%"}
 ::: {style="text-align:center;"}
-<img src="images/work.png" width="200px" height="200px"/><br>
-**Industrial**\
+<img src="images/work.png" width="200px" height="200px"/><br> **Industrial**\
 WALMART, CENCOSUD, ITAU, GRUPO SECURITY, etc.
 :::
 :::
 
 ::: {.column .fragment width="34%"}
 ::: {style="text-align:center;"}
-<img src="images/hat.png" width="200px" height="200px"/><br>
-**Docente**\
+<img src="images/hat.png" width="200px" height="200px"/><br> **Docente**\
 UTFSM, DUOC, TRIPLETEN, CODING DOJO, etc.
 :::
 :::
 
 ::: {.column .fragment width="33%"}
 ::: {style="text-align:center;"}
-<img src="images/talk.svg" width="200px" height="200px"/><br>
-**Charlista**\
+<img src="images/talk.svg" width="200px" height="200px"/><br> **Charlista**\
 CLEI, SOCHEDI, SOCHIEM, AEQUALIS, etc.
 :::
 :::
 :::
-
 
 ## 
 
@@ -109,10 +104,9 @@ CLEI, SOCHEDI, SOCHIEM, AEQUALIS, etc.
 
 🌐 Repositorio: [github.com/fralfaro/MAT281](https://github.com/fralfaro/MAT281){style="font-size: 0.95em; color: gray align: center;"}
 
-
 ------------------------------------------------------------------------
 
-##  
+## 
 
 <br>
 
@@ -124,10 +118,10 @@ CLEI, SOCHEDI, SOCHIEM, AEQUALIS, etc.
 ![](images/mat281/historia3.png){.fragment width="100%" fig-align="center"}
 :::
 
-
 ------------------------------------------------------------------------
 
-##  Herramientas del Curso
+## Herramientas del Curso
+
 <br><br>
 
 ::: columns
@@ -153,7 +147,8 @@ Crea documentos con código
 :::
 :::
 
-##  Herramientas del Curso
+## Herramientas del Curso
+
 <br><br>
 
 ::: columns
@@ -181,24 +176,23 @@ Crer historias con datos
 
 ------------------------------------------------------------------------
 
-##  
+## 
 
 ::: r-stack
-![](https://miro.medium.com/v2/1*nLjcqvMkvZ5TRHF4pZjbHg.gif){.fragment .fade-in-then-out fig-align="left"}
+![](images/colab.gif){.fragment .fade-in-then-out fig-align="left"}
 
-![](https://webflow-prod-assets.s3.amazonaws.com/6525256482c9e9a06c7a9d3c%2F65b01d9cc1b48d7cae121a20_quarto_jupyter-reduced.gif){.fragment .fade-in-then-out fig-align="center"}
+![](images/quarto.gif){.fragment .fade-in-then-out fig-align="center"}
 
-![](https://i.sstatic.net/Rzng6.gif){.fragment .fade-in-then-out fig-align="center"}
+![](images/github.gif){.fragment .fade-in-then-out fig-align="center"}
 
-![](https://3502988919-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FVetOkhFZmAC8QCQK0Pi7%2Fuploads%2FhNGu2Tfv46wNAdy9aB59%2FV2-upload-multiple-files.gif?alt=media&token=06fcf0e7-5e2c-4abe-908e-deda741141e2){.fragment .fade-in-then-out fig-align="center"}
+![](images/latex.gif){.fragment .fade-in-then-out fig-align="center"}
 
-![](https://miro.medium.com/v2/resize:fit:2308/1*s8Jg1oLrQQWz2cWLhEHuYw.gif){.fragment .fade-in-then-out fig-align="center"}
+![](images/chatgpt.gif){.fragment .fade-in-then-out fig-align="center"}
 
-![](https://storage.googleapis.com/gweb-uniblog-publish-prod/original_images/cirles.gif){.fragment fig-align="right"}
+![](images/data.gif){.fragment fig-align="right"}
 :::
 
-
-##  
+## 
 
 ::: {style="display: flex; justify-content: center; align-items: center; height: 60vh; flex-direction: column; text-align: center;"}
 [Innovación Educativa]{style="font-size: 1.5em"}
@@ -206,8 +200,7 @@ Crer historias con datos
 [Sobre la Enseñanza y Evaluaciones]{style="font-size: 2em"}
 :::
 
-
-## P1: Herramientas OpenSource 
+## P1: Herramientas OpenSource
 
 <br>
 
@@ -223,34 +216,28 @@ Experiencia inmersiva en la creación de documentos
 ::: {style="text-align:center;"}
 <img src="images/mat281/p1.png" width="60%"/><br> **Google Colab**\
 Aprendizaje colaborativo sin instalación
-
 :::
 :::
 
 ::: {.column .fragment width="33%"}
-
 ::: {style="text-align:center;"}
 <img src="images/mat281/p22.jpg" width="73%"/><br> **GitHub**\
 Portafolio inicial con control y seguimiento
 :::
 :::
-
 :::
 
 ------------------------------------------------------------------------
 
-##
+## 
 
 <br>
 
-<div style="text-align:center;">
+::: {style="text-align:center;"}
+<iframe src="https://sethnut.com/talks/shiny_2025/presentacion_mat281.html#/hello-quarto-title" width="1200" height="700" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; margin-bottom:5px; max-width:100%;">
 
-<iframe src="https://sethnut.com/talks/shiny_2025/presentacion_mat281.html#/hello-quarto-title"
-  width="1200" height="700" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"
-  style="border:1px solid #CCC; margin-bottom:5px; max-width:100%;">
 </iframe>
-
-</div>
+:::
 
 ------------------------------------------------------------------------
 
@@ -318,21 +305,17 @@ Proyectos y feedback que fortalecen habilidades
 ![](images/mat281/proyectos_02.png){.fragment width="100%" fig-align="center"}
 :::
 
-##
+## 
 
+::: {style="text-align:center;"}
+<iframe src="https://www.slideshare.net/slideshow/embed_code/key/BEuTmw4Irb1Viv?hostedIn=slideshare&amp;page=upload" width="900" height="700" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; margin-bottom:5px; max-width:100%;">
 
-<div style="text-align:center;">
-
-<iframe src="https://www.slideshare.net/slideshow/embed_code/key/BEuTmw4Irb1Viv?hostedIn=slideshare&amp;page=upload"
-  width="900" height="700" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"
-  style="border:1px solid #CCC; margin-bottom:5px; max-width:100%;">
 </iframe>
-
-</div>
+:::
 
 ------------------------------------------------------------------------
 
-##  
+## 
 
 ::: {style="display: flex; justify-content: center; align-items: center; height: 60vh; flex-direction: column; text-align: center;"}
 [Retroalimentación]{style="font-size: 1.5em"}
@@ -342,7 +325,7 @@ Proyectos y feedback que fortalecen habilidades
 
 ------------------------------------------------------------------------
 
-## Comentarios de los Participantes 
+## Comentarios de los Participantes
 
 <br><br>
 
@@ -370,7 +353,7 @@ Proyectos y feedback que fortalecen habilidades
 
 ------------------------------------------------------------------------
 
-## Evaluaciones 
+## Evaluaciones
 
 <br>
 
@@ -386,7 +369,7 @@ Proyectos y feedback que fortalecen habilidades
 
 ------------------------------------------------------------------------
 
-##  
+## 
 
 ::: {style="display: flex; justify-content: center; align-items: center; height: 60vh; flex-direction: column; text-align: center;"}
 [Conclusiones]{style="font-size: 1.5em"}
@@ -396,7 +379,7 @@ Proyectos y feedback que fortalecen habilidades
 
 ------------------------------------------------------------------------
 
-##  
+## 
 
 <br>
 
@@ -420,7 +403,7 @@ y automatizar evaluaciones
 
 ------------------------------------------------------------------------
 
-## 🎉 Agradecimientos 
+## 🎉 Agradecimientos
 
 ::: r-stack
 ![](images/mat281/dmat.jpg){.fragment .fade-in-then-out fig-align="center" width="100%"}
@@ -428,11 +411,9 @@ y automatizar evaluaciones
 ![](images/mat281/proyectos_03.jpg){.fragment width="65%" fig-align="center"}
 :::
 
-
-
 ------------------------------------------------------------------------
 
-## 🎉 ¡Gracias por Participar! 
+## 🎉 ¡Gracias por Participar!
 
 ::: columns
 ::: {.column width="50%"}
