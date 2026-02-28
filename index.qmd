@@ -1,0 +1,92 @@
+---
+title: "Docencia Digital"
+subtitle: "Ecosistema digital para el academico del siglo XXI"
+output: html_document
+---
+
+## Información General
+
+-   **Nombre completo:** Francisco Alfaro + Mario Navarrete
+-   **Formato**: Capacitación de 2 a 6 sesiones (1 hora cada una)
+-   **Repositorio base**: https://github.com/fralfaro/docencia-digital
+
+## Breve Descripción
+
+Esta capacitación presenta un enfoque práctico para modernizar la docencia universitaria mediante el uso de Quarto, Overleaf y GitHub, junto con otras herramientas digitales. En 2 a 6 sesiones se trabajará en la creación, organización y publicación de materiales académicos, incorporando buenas prácticas que permitan mantener contenidos actualizados, reproducibles y bien estructurados.
+
+## Prerrequisitos
+
+No se requieren conocimientos previos en programación o herramientas avanzadas. Solo se necesita entusiasmo por aprender y explorar nuevas formas de trabajar con datos y tecnología.
+
+## Instrucciones
+
+| Paso                         | Acción                                                                                                            |
+|-------------------------------|-----------------------------------------|
+| **1. Cuenta en GitHub**      | Regístrate en [github.com](https://github.com) si aún no tienes una cuenta.                                       |
+| **2. Usar repositorio base** | Ve a [docencia-digital](https://github.com/fralfaro/docencia-digital) y haz clic en **"Use this template"** .     |
+| **3. Subir entregables**     | Guarda tus archivos en la carpeta `entregables/` de tu repositorio.                                               |
+| **4. Apoyar el proyecto**    | Revisa y dale una estrellita ⭐ al repositorio: [docencia-digital](https://github.com/fralfaro/docencia-digital). |
+
+## Sesiones
+
+::: panel-tabset
+## Campus CC
+
+-   [**Introducción**](00_intro/presentacion.html): introduccion general al curso y su metodologia.
+-   [**GitHub**](github/presentacion.html): fundamentos de GitHub, cuenta, repositorios y proyectos.
+-   [**Quarto**](quarto/presentacion.html): creacion de documentos, informes y presentaciones reproducibles.
+-   [**Overleaf**](overleaf/presentacion.html): documentos academicos con formato profesional.
+-   [**Google Colab**](colab/presentacion.html): notebooks en la nube para actividades practicas y colaborativas.
+-   [**Inteligencia Artificial**](ia/presentacion.html): vision general de IA, herramientas y buenas practicas.
+
+## Campus SJ
+
+-   [**Introducción**](00_intro/presentacion.html): introduccion general al curso y su metodologia.
+-   [**GitHub**](github/presentacion.html): fundamentos de GitHub, cuenta, repositorios y proyectos.
+-   [**Quarto**](quarto/presentacion.html): creacion de documentos, informes y presentaciones reproducibles.
+-   [**Overleaf**](overleaf/presentacion.html): documentos academicos con formato profesional.
+-   [**Google Colab**](colab/presentacion.html): notebooks en la nube para actividades practicas y colaborativas.
+-   [**Inteligencia Artificial**](ia/presentacion.html): vision general de IA, herramientas y buenas practicas.
+
+## Campus VT
+
+-   [**Introducción**](00_intro/presentacion.html): introduccion general al curso y su metodologia.
+-   [**GitHub**](github/presentacion.html): fundamentos de GitHub, cuenta, repositorios y proyectos.
+-   [**Quarto**](quarto/presentacion.html): creacion de documentos, informes y presentaciones reproducibles.
+-   [**Overleaf**](overleaf/presentacion.html): documentos academicos con formato profesional.
+-   [**Google Colab**](colab/presentacion.html): notebooks en la nube para actividades practicas y colaborativas.
+-   [**Inteligencia Artificial**](ia/presentacion.html): vision general de IA, herramientas y buenas practicas.
+
+## Sede VM
+
+-   [**Introducción**](00_intro/presentacion.html): introduccion general al curso y su metodologia.
+-   [**GitHub**](github/presentacion.html): fundamentos de GitHub, cuenta, repositorios y proyectos.
+-   [**Quarto**](quarto/presentacion.html): creacion de documentos, informes y presentaciones reproducibles.
+-   [**Overleaf**](overleaf/presentacion.html): documentos academicos con formato profesional.
+-   [**Google Colab**](colab/presentacion.html): notebooks en la nube para actividades practicas y colaborativas.
+-   [**Inteligencia Artificial**](ia/presentacion.html): vision general de IA, herramientas y buenas practicas.
+
+## Sede CC
+
+-   [**Introducción**](00_intro/presentacion.html): introduccion general al curso y su metodologia.
+-   [**GitHub**](github/presentacion.html): fundamentos de GitHub, cuenta, repositorios y proyectos.
+-   [**Quarto**](quarto/presentacion.html): creacion de documentos, informes y presentaciones reproducibles.
+-   [**Overleaf**](overleaf/presentacion.html): documentos academicos con formato profesional.
+-   [**Google Colab**](colab/presentacion.html): notebooks en la nube para actividades practicas y colaborativas.
+-   [**Inteligencia Artificial**](ia/presentacion.html): vision general de IA, herramientas y buenas practicas.
+
+:::
+
+## Certificación
+
+Al finalizar el curso, se otorgará un diploma como este:
+
+::: {style="text-align: center;"}
+<img src="images/diploma-usm.png" style="width: 50%; max-width: 600px;"/>
+:::
+
+> **Importante:**
+>
+> -   La asistencia es obligatoria, salvo inasistencias justificadas y previamente informadas.
+> -   Las encuestas son requeridas para el seguimiento del curso y su mejora continua.
+> -   La certificación se otorga solo al completar todas las actividades del programa.

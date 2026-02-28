@@ -1,0 +1,298 @@
+---
+title: "Docencia Digital"
+subtitle: "Fundamentos de Google Colab para comenzar hoy"
+author:
+  - Francisco Alfaro
+date: 02 mar 2026
+format:
+  revealjs:
+    width: 1366
+    height: 768
+    theme: simple
+    slide-number: true
+    controls: true
+    controls-layout: edges
+    controls-back-arrows: faded
+    transition: slide
+    chalkboard: true
+    callout-appearance: simple
+    code-copy: true
+    highlight-style: arrow
+    title-slide-attributes:
+      data-background-image: images/mat281/background.jpg
+    logo: images/usm.png
+---
+
+## Objetivos
+
+<br>
+
+::: columns
+::: {.column width="40%"}
+::: {style="text-align: center;"}
+<img src="images/goals.png" alt="Objetivos" style="width: 100%; border-radius: 10px;"/>
+:::
+:::
+
+::: {.column .incremental width="60%"}
+<br>
+
+-   Entender que es Google Colab y por que se usa en docencia.
+-   Conocer su origen y ventajas frente a instalar todo local.
+-   Crear y configurar un notebook desde cero.
+-   Ejecutar celdas de texto y codigo Python.
+-   Guardar, compartir y exportar resultados.
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Google Colab en una frase
+
+::: {style="font-size:1.25em; text-align:center; margin-top:2em;"}
+Google Colab es un entorno en la nube para escribir y ejecutar notebooks de Python desde el navegador.
+:::
+
+. . .
+
+::: callout-note
+Piensalo como Jupyter Notebook + Google Drive + colaboracion en tiempo real.
+:::
+
+------------------------------------------------------------------------
+
+## De donde nace Colab
+
+<br>
+
+-   Colab nace como iniciativa de **Google Research**.
+-   Su meta: facilitar aprendizaje y experimentacion en Python/IA sin configuraciones complejas.
+-   Se integra de forma nativa con Google Drive.
+
+. . .
+
+> Ideal para clases, laboratorios y prototipos rapidos.
+
+------------------------------------------------------------------------
+
+## Para que sirve Google Colab
+
+<br>
+
+::: columns
+::: {.column width="33%"}
+::: {style="text-align:center;"}
+<img src="images/mat281/colab.png" width="60%"/><br> **Ejecutar codigo**\
+Python en la nube, sin instalar nada.
+:::
+:::
+
+::: {.column .fragment width="34%"}
+::: {style="text-align:center;"}
+<img src="images/mat281/students.png" width="55%"/><br> **Colaborar**\
+Varias personas editan el mismo notebook.
+:::
+:::
+
+::: {.column .fragment width="33%"}
+::: {style="text-align:center;"}
+<img src="images/mat281/paper2.png" width="55%"/><br> **Documentar**\
+Combina texto, codigo, graficos y conclusiones.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Requisitos minimos
+
+<br>
+
+1.  Cuenta Google activa.
+2.  Navegador web actualizado.
+3.  Conexion a internet.
+4.  (Opcional) Cuenta GitHub para guardar notebooks en repositorios.
+
+------------------------------------------------------------------------
+
+## Crear tu primer notebook
+
+<br>
+
+1.  Entrar a [colab.research.google.com](https://colab.research.google.com/).
+2.  Clic en **New Notebook**.
+3.  Cambiar nombre del archivo (ej: `intro_colab.ipynb`).
+4.  Escribir una celda de texto y una celda de codigo.
+5.  Ejecutar con el boton **Run** o `Shift + Enter`.
+
+------------------------------------------------------------------------
+
+## Estructura de un notebook
+
+<br>
+
+| Tipo de celda       | Uso                                                      |
+|---------------------|----------------------------------------------------------|
+| **Text (Markdown)** | Explicar ideas, instrucciones, conclusiones.             |
+| **Code**            | Ejecutar Python, cargar datos, generar graficos.         |
+| **Output**          | Resultado de la ejecucion (tabla, texto, figura, error). |
+
+------------------------------------------------------------------------
+
+## Primer ejemplo en clase
+
+``` python
+print("Hola, Google Colab")
+
+x = 10
+y = 5
+print("Suma:", x + y)
+```
+
+. . .
+
+``` python
+import matplotlib.pyplot as plt
+
+xs = [1, 2, 3, 4]
+ys = [2, 4, 3, 5]
+plt.plot(xs, ys)
+plt.title("Grafico simple en Colab")
+plt.show()
+```
+
+------------------------------------------------------------------------
+
+## Librerias y entorno
+
+<br>
+
+-   Muchas librerias ya vienen preinstaladas (NumPy, pandas, matplotlib, scikit-learn).
+-   Si falta algo, puedes instalar en una celda:
+
+``` python
+!pip install seaborn
+```
+
+. . .
+
+> Importante: el entorno puede reiniciarse; guarda avances en Drive o GitHub.
+
+------------------------------------------------------------------------
+
+## Subir archivos y usar Drive
+
+<br>
+
+-   Subir archivos manualmente desde el panel lateral.
+-   Montar Google Drive para leer/escribir archivos persistentes.
+
+``` python
+from google.colab import drive
+drive.mount('/content/drive')
+```
+
+------------------------------------------------------------------------
+
+## Compartir y colaborar
+
+<br>
+
+1.  Clic en **Share**.
+2.  Definir permisos: Viewer, Commenter o Editor.
+3.  Compartir enlace con estudiantes o equipo.
+
+. . .
+
+Funciona igual que Docs/Sheets para trabajo colaborativo.
+
+------------------------------------------------------------------------
+
+## Exportar y versionar
+
+<br>
+
+-   Descargar notebook como `.ipynb` o `.py`.
+-   Guardar copia en GitHub.
+-   Buen flujo sugerido:
+    1.  Trabajar en Colab.
+    2.  Guardar en Drive.
+    3.  Versionar en GitHub al cerrar la sesion.
+
+------------------------------------------------------------------------
+
+## Buenas practicas en docencia
+
+<br>
+
+-   Separar notebook en bloques pequenos (objetivo, codigo, resultado, conclusion).
+-   Usar titulos y texto Markdown claro.
+-   Reiniciar y ejecutar todo antes de publicar.
+-   Evitar celdas demasiado largas.
+-   Dejar instrucciones para estudiantes en cada actividad.
+
+------------------------------------------------------------------------
+
+## Actividad guiada (10-15 min)
+
+<br>
+
+1.  Crear notebook `mi_primer_colab.ipynb`.
+2.  Agregar portada en Markdown con nombre y fecha.
+3.  Ejecutar 2 celdas de Python.
+4.  Crear un grafico simple.
+5.  Compartir enlace con el docente o equipo.
+
+------------------------------------------------------------------------
+
+## Recursos recomendados
+
+<br>
+
+-   [Google Colab](https://colab.research.google.com/)
+-   [Guia oficial de Colab](https://colab.google/)
+-   [Python para principiantes](https://www.python.org/about/gettingstarted/)
+-   [Pandas Documentation](https://pandas.pydata.org/docs/)
+
+------------------------------------------------------------------------
+
+## Cierre
+
+::: {style="display: flex; justify-content: center; align-items: center; height: 60vh; flex-direction: column; text-align: center;"}
+[Colab reduce la barrera tecnica para aprender programacion]{style="font-size: 1.3em"}
+
+[Permite enfocarse en ideas, analisis y colaboracion]{style="font-size: 1.6em"}
+:::
+
+------------------------------------------------------------------------
+
+## Gracias por Participar
+
+::: columns
+::: {.column width="50%"}
+<br>
+
+Preguntas?
+
+Responder [encuesta](https://docs.google.com/forms/d/e/1FAIpQLSd2CseqhHUjdmvr46ZDb_Aa2iUYEjLAIE4MwLztled5ytRJvg/viewform?usp=dialog)
+
+A crear tu primer notebook!
+:::
+
+::: {.column width="50%" align="center"}
+![](images/qr.png){width="400"}
+:::
+:::
+
+> Sitio: [sethnut.com/talks](https://sethnut.com/talks/)
+
+```{=html}
+<style>
+.reveal .slides h1 { font-size: 2em; }
+.reveal .slides h2 { font-size: 1.5em; }
+.reveal .slides p  { font-size: 0.9em; }
+.reveal .slides table { font-size: 0.85em; width: 90%; margin: 0 auto; }
+.reveal .slides ul { font-size: 0.9em; }
+.reveal .slide-logo { max-height: 2em !important; }
+</style>
+```
