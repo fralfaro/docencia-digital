@@ -1,82 +1,77 @@
-# A.I. + DataStorytelling
+﻿<img
+  src="images/logo2.png"
+  alt="Universidad Tecnica Federico Santa Maria"
+  style="height: 70px;"
+  align="right">
 
-[![example workflow](https://github.com/Seth-Nut/website/actions/workflows/documentation.yml/badge.svg)](https://github.com/Seth-Nut/CEEMAT_2025/actions)
-[![documentation](https://img.shields.io/badge/🌐-website-blue)](https://seth-nut.github.io/CEEMAT_2025/)
+<br><br>
 
-<img src="images/logo2.png" alt="icon" width="300" align="center">
-
-
-## Información General
-
-- **Nombre completo:** Francisco Alfaro & Valeska Canales  
-- **Área de especialización:** Estadística, Machine Learning, Inteligencia Artificial  
-- **Cantidad de sesiones a realizar:** 4 sesiones de 1 hora  
+# Capacitacion en Docencia Digital
+## Ecosistema digital para el academico del siglo XXI
 
 
-## Breve Descripción 
+## Descripcion de la capacitacion
 
-Este mini curso está diseñado para introducir a los/as estudiantes en el uso de herramientas digitales y técnicas de inteligencia artificial para la comunicación efectiva en un entorno académico y profesional. A través de 4 sesiones prácticas y dinámicas, aprenderán a utilizar herramientas esenciales, desarrollar prompts efectivos para ChatGPT, mejorar sus habilidades de comunicación en el ámbito universitario y explorar los fundamentos del Data Storytelling para transmitir ideas complejas de manera clara y visual.
+Esta capacitacion entrega herramientas practicas para modernizar la docencia universitaria mediante un flujo digital integrado. El foco esta en disenar, producir y publicar materiales academicos de forma clara, reproducible y colaborativa.
 
-## Prerrequisitos 
+Durante las sesiones se trabaja con herramientas que hoy son clave en docencia: **Quarto**, **GitHub**, **Google Colab**, **Overleaf** e **Inteligencia Artificial** aplicada a procesos de ensenanza y aprendizaje.
 
-No se requieren conocimientos previos en programación o herramientas avanzadas. Solo se necesita entusiasmo por aprender y explorar nuevas formas de trabajar con datos y tecnología.
+## Contribucion al perfil docente
+
+Esta capacitacion contribuye al desarrollo de las siguientes capacidades:
+
+- **CD1:** Disenar experiencias de aprendizaje apoyadas en herramientas digitales y buenas practicas de colaboracion.
+- **CD2:** Integrar IA de forma responsable para planificacion, produccion de materiales y retroalimentacion.
+- **CD3:** Publicar recursos academicos reproducibles y sostenibles en el tiempo.
+
+## Resultados de aprendizaje
+
+Al finalizar la capacitacion, el o la participante sera capaz de:
+
+- **RA1:** Crear y publicar materiales academicos con Quarto y GitHub.
+- **RA2:** Utilizar Google Colab para actividades practicas con notebooks en la nube.
+- **RA3:** Elaborar documentos academicos en Overleaf/LaTeX.
+- **RA4:** Aplicar herramientas de IA (ChatGPT, Gemini, Claude, NotebookLM) en tareas docentes.
+- **RA5:** Definir criterios de uso responsable de IA en aula.
+
+## Estructura de sesiones
+
+| Sesion | Tema | Contenidos clave | Material |
+| --- | --- | --- | --- |
+| 0 | Introduccion | Presentacion general del curso y metodologia. | [Slides](00_intro/presentacion.qmd) |
+| 1 | GitHub para docencia | Que es GitHub, historia, creacion de cuenta, repositorios y flujo base para proyectos academicos. | [Slides](github/presentacion.qmd) |
+| 2 | Google Colab | Notebooks en la nube, ejecucion de codigo, colaboracion, uso de Drive, exportacion y buenas practicas. | [Slides](colab/presentacion.qmd) |
+| 3 | Overleaf y LaTeX | Documentos academicos con formato profesional, plantillas, estructura y recursos de apoyo. | [Slides](overleaf/presentacion.qmd) |
+| 4 | Quarto para material academico | Creacion de sitios, informes y presentaciones reproducibles, e integracion con GitHub Pages. | [Slides](quarto/presentacion.qmd) |
+| 5 | Inteligencia Artificial para docencia | Vision general de IA, herramientas docentes, uso de NotebookLM/ChatGPT/Gemini/Claude, prompting, riesgos y uso responsable. | [Slides](ia/presentacion.qmd) |
+
+## Metodologia de ensenanza y aprendizaje
+
+La capacitacion combina exposicion breve, demostraciones en vivo y actividades aplicadas. Cada sesion cierra con productos concretos (repositorio, notebook, documento o recurso pedagogico) para asegurar transferencia inmediata al trabajo docente.
+
+## Evaluacion sugerida
+
+| Estrategia | Resultado | Descripcion | Ponderacion |
+| --- | --- | --- | --- |
+| Producto digital aplicado | RA1-RA3 | Desarrollo y publicacion de un recurso docente en formato digital. | 60% |
+| Diseno de uso de IA en aula | RA4-RA5 | Propuesta breve de integracion de IA con criterios pedagogicos y eticos. | 40% |
+
+## Requisitos de aprobacion sugeridos
+
+- Asistencia minima definida por la unidad academica.
+- Entrega de los productos solicitados en cada modulo.
+- Calificacion minima de aprobacion segun normativa institucional.
+
+## Requisitos tecnicos
+
+- Cuenta en [GitHub](https://github.com)
+- Cuenta Google (Drive y Colab)
+- Cuenta en [Overleaf](https://www.overleaf.com)
+- Navegador actualizado
 
 
+## Equipo docente
 
-## Descripción de las Sesiones
-
-### 1. Toolkit Básico de Google  
-**Objetivo:** Familiarizarse con las principales herramientas de Google (Docs, Sheets, Slides, Colab, y Drive) para optimizar la organización, colaboración y productividad en tareas académicas.  
-
-**Contenidos:**  
-- Introducción a Google Drive como repositorio y herramienta de sincronización.  
-- Uso básico y trucos en Google Docs para redacción efectiva.  
-- Funcionalidades avanzadas de Google Sheets para cálculos y análisis de datos.  
-- Creación de presentaciones dinámicas con Google Slides.  
-- Introducción a Google Colab como entorno de programación colaborativo para ciencia de datos.  
-
-> **Actividad práctica:**  
-Crear un proyecto colaborativo en Google Drive que integre documentos, hojas de cálculo y una presentación.  
-
-
-
-### 2. Prompts Perfectos en ChatGPT  
-**Objetivo:** Aprender a diseñar preguntas y comandos efectivos para obtener respuestas útiles y específicas de herramientas de inteligencia artificial como ChatGPT.  
-
-**Contenidos:**  
-- Qué son los prompts y su importancia en la interacción con IA.  
-- Estructuras de prompts para diferentes objetivos (resúmenes, soluciones a problemas, generación de ideas).  
-- Técnicas para mejorar la precisión de las respuestas.  
-- Ética y limitaciones del uso de IA en el ámbito académico.  
-
-> **Actividad práctica:**  
-Diseñar y probar prompts para resolver desafíos académicos, como resúmenes de textos y generación de ideas para un proyecto.  
-
-
-
-### 3. Leer, Escribir y Hablar en la Universidad  
-**Objetivo:** Mejorar las habilidades de comunicación académica enfocándose en la lectura crítica, la escritura estructurada y la presentación oral.  
-
-**Contenidos:**  
-- Métodos para leer textos académicos y extraer ideas clave.  
-- Cómo estructurar un ensayo o reporte académico (introducción, desarrollo, conclusión).  
-- Estrategias para organizar y practicar presentaciones orales efectivas.  
-- Uso de IA como herramienta para revisar textos y practicar exposiciones.  
-
-> **Actividad práctica:**  
-Redactar una breve introducción y preparar una presentación corta con feedback inmediato.  
-
-
-
-### 4. Data Storytelling  
-**Objetivo:** Explorar cómo contar historias con datos para comunicar resultados de manera clara, visual y persuasiva.  
-
-**Contenidos:**  
-- Conceptos básicos del Data Storytelling: narrativa, visualización y audiencia.  
-- Introducción a herramientas para crear gráficos e infografías (Google Sheets, Flourish, Canva).  
-- Cómo estructurar una historia de datos: desde el análisis hasta la visualización.  
-- Mejores prácticas para combinar texto, gráficos y narrativa.  
-
-> **Actividad práctica:**  
-Crear una visualización interactiva simple para contar una historia basada en datos académicos o personales.  
-
+- Francisco Alfaro
+- Mario Navarrete
+- Valeska Canales
