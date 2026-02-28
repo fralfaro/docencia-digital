@@ -1,122 +1,381 @@
 [
   {
-    "objectID": "quarto/presentacion.html#sobre-mi",
-    "href": "quarto/presentacion.html#sobre-mi",
+    "objectID": "anexos.html",
+    "href": "anexos.html",
+    "title": "📜 Anexos",
+    "section": "",
+    "text": "🎁 Sorteo✍️ Autoría📖 Aprendizaje😊 Agredecimientos\n\n\nPara sortear algunos premios utilizaremos, por supuesto, un código de python. Usaremos la función random.randint(a, b) que retorna un número entero aleatorio \\(N\\) que cumpla la condición \\(a &lt;= N &lt;= b\\).\n\nPlease enable JavaScript to experience the dynamic code cell content on this page.\n\n\nMaterial creado por Francisco Alfaro y Valeska Canales para estudiantes del Departamento de Matemáticas de la USM.\nBuscamos motivar el aprendizaje de programación y matemáticas de forma entretenida y accesible, con ejemplos prácticos y actividades interactivas en Python.\nContacto: francisco.alfaro.496@gmail.com | valeska.canales.p@gmail.com\n\n\n\nRecursos Recomendados\n\nHerramientas de Google\n\nCursos en Línea:\n\nGoogle Workspace Learning Center: Capacitación oficial en herramientas como Docs, Sheets, Slides, Colab y Drive.\n\nDocumentación y Recursos:\n\nCentro de Ayuda de Google Workspace: Guías y trucos para aprovechar al máximo las herramientas de Google.\n\n\nDiseño de Prompts Efectivos en ChatGPT\n\nGuías y Tutoriales:\n\nCómo escribir un Prompt con ChatGPT: Estrategias para diseñar prompts efectivos en ChatGPT.\n\nComunidades y Foros:\n\nReddit: r/ChatGPT: Comunidad para compartir experiencias y obtener consejos sobre el uso de ChatGPT.\n\n\nComunicación Académica: Lectura, Escritura y Oratoria\n\nCursos en Línea:\n\nedX: “Academic and Business Writing” de la Universidad de California, Berkeley.\n\nRecursos y Herramientas:\n\nPurdue OWL: Guías sobre redacción académica y estilo.\n\n\nA.I. y Data Storytelling\n\nCursos y Talleres:\n\nCómo usar ChatGPT para hacer Storytelling: Tutorial sobre cómo utilizar ChatGPT en la creación de narrativas.\n\nHerramientas:\n\nTableau Public: Plataforma gratuita para crear visualizaciones interactivas.\n\n\n\n\n\n\nQueremos agradecer sinceramente a todas y todos los estudiantes que participaron en el curso por su entusiasmo, curiosidad y compromiso con el aprendizaje.\nTambién extendemos nuestro agradecimiento al Centro de Estudiantes ICMAT USM San Joaquín por su constante apoyo y colaboración, y al Departamento de Matemáticas de la USM por hacer posible esta iniciativa educativa."
+  },
+  {
+    "objectID": "00_intro/presentacion.html#sobre-mi",
+    "href": "00_intro/presentacion.html#sobre-mi",
     "title": "Docencia Digital",
     "section": "Sobre Mi",
     "text": "Sobre Mi\n\n\n\n\n\n\n\n\n\n\n\nFrancisco Alfaro Medina\nDocente Universitario UTFSM\nLider Anlítica Avanzada UTFSM\nEstudiante de Doctorado en Electrónica"
   },
   {
-    "objectID": "quarto/presentacion.html#experiencia-laboral",
-    "href": "quarto/presentacion.html#experiencia-laboral",
+    "objectID": "00_intro/presentacion.html#experiencia-laboral",
+    "href": "00_intro/presentacion.html#experiencia-laboral",
     "title": "Docencia Digital",
     "section": "Experiencia Laboral",
     "text": "Experiencia Laboral\n\n\n\n\n Industrial\nWALMART, CENCOSUD, ITAU, GRUPO SECURITY, etc.\n\n\n\n Docente\nUTFSM, DUOC, TRIPLETEN, CODING DOJO, etc.\n\n\n\n Charlista\nCLEI, SOCHEDI, SOCHIEM, AEQUALIS, etc."
   },
   {
-    "objectID": "quarto/presentacion.html#section",
-    "href": "quarto/presentacion.html#section",
+    "objectID": "00_intro/presentacion.html#section",
+    "href": "00_intro/presentacion.html#section",
     "title": "Docencia Digital",
     "section": "",
     "text": "Entonces …\nQué he aprendido estos últimos años"
   },
   {
-    "objectID": "quarto/presentacion.html#mat281---matemáticas-aplicadas",
-    "href": "quarto/presentacion.html#mat281---matemáticas-aplicadas",
+    "objectID": "00_intro/presentacion.html#mat281---matemáticas-aplicadas",
+    "href": "00_intro/presentacion.html#mat281---matemáticas-aplicadas",
     "title": "Docencia Digital",
     "section": "MAT281 - Matemáticas Aplicadas",
-    "text": "MAT281 - Matemáticas Aplicadas\n\n\n\n\n\n\n\n\n\nCarrera: Ingeniería Civil Matemática\nObjetivo: Competencias como DS\nContenidos: Estadística, Visualización, ML\nEvaluaciones: Laboratorios, Tareas, Proyecto\n\n\n\n\n🌐 Repositorio: github.com/fralfaro/MAT281"
+    "text": "MAT281 - Matemáticas Aplicadas\n\n\n\n\n\n\n\n\n\nCarrera: Ingeniería Civil Matemática\nObjetivo: Competencias como DS\nContenidos: Estadística, Visualización, ML\nEvaluaciones: Laboratorios, Tareas, Proyecto\n\n\n\n🌐 Repositorio: github.com/fralfaro/MAT281"
   },
   {
-    "objectID": "quarto/presentacion.html#herramientas-del-curso",
-    "href": "quarto/presentacion.html#herramientas-del-curso",
+    "objectID": "00_intro/presentacion.html#herramientas-del-curso",
+    "href": "00_intro/presentacion.html#herramientas-del-curso",
     "title": "Docencia Digital",
     "section": "Herramientas del Curso",
     "text": "Herramientas del Curso\n\n\n\n\n Google Colab\nEjecutar Python en la nube\n\n\n\n GitHub\nGestiona proyectos de código\n\n\n\n Quarto\nCrea documentos con código"
   },
   {
-    "objectID": "quarto/presentacion.html#herramientas-del-curso-1",
-    "href": "quarto/presentacion.html#herramientas-del-curso-1",
+    "objectID": "00_intro/presentacion.html#herramientas-del-curso-1",
+    "href": "00_intro/presentacion.html#herramientas-del-curso-1",
     "title": "Docencia Digital",
     "section": "Herramientas del Curso",
     "text": "Herramientas del Curso\n\n\n\n\n Overleaf\nEjecutar LaTeX en la nube\n\n\n\n AI\nUso de la IA en el aula\n\n\n\n Data Storytelling\nCrer historias con datos"
   },
   {
-    "objectID": "quarto/presentacion.html#section-3",
-    "href": "quarto/presentacion.html#section-3",
+    "objectID": "00_intro/presentacion.html#section-3",
+    "href": "00_intro/presentacion.html#section-3",
     "title": "Docencia Digital",
     "section": "",
     "text": "Innovación Educativa\nSobre la Enseñanza y Evaluaciones"
   },
   {
-    "objectID": "quarto/presentacion.html#p1-herramientas-opensource",
-    "href": "quarto/presentacion.html#p1-herramientas-opensource",
+    "objectID": "00_intro/presentacion.html#p1-herramientas-opensource",
+    "href": "00_intro/presentacion.html#p1-herramientas-opensource",
     "title": "Docencia Digital",
     "section": "P1: Herramientas OpenSource",
     "text": "P1: Herramientas OpenSource\n\n\n\n\n Quarto\nExperiencia inmersiva en la creación de documentos\n\n\n\n Google Colab\nAprendizaje colaborativo sin instalación\n\n\n\n GitHub\nPortafolio inicial con control y seguimiento"
   },
   {
-    "objectID": "quarto/presentacion.html#section-6",
-    "href": "quarto/presentacion.html#section-6",
+    "objectID": "00_intro/presentacion.html#section-6",
+    "href": "00_intro/presentacion.html#section-6",
     "title": "Docencia Digital",
     "section": "",
     "text": "Repositorio del Curso\n\n\nPortafolio Estudiantes"
   },
   {
-    "objectID": "quarto/presentacion.html#p2-evaluaciones-innovadoras",
-    "href": "quarto/presentacion.html#p2-evaluaciones-innovadoras",
+    "objectID": "00_intro/presentacion.html#p2-evaluaciones-innovadoras",
+    "href": "00_intro/presentacion.html#p2-evaluaciones-innovadoras",
     "title": "Docencia Digital",
     "section": "P2: Evaluaciones Innovadoras",
     "text": "P2: Evaluaciones Innovadoras\n\n\n\n\n Evaluaciones\nEvaluaciones prácticas y colaborativas para el trabajo\n\n\n\n Feedback\nProyectos y feedback que fortalecen habilidades"
   },
   {
-    "objectID": "quarto/presentacion.html#section-9",
-    "href": "quarto/presentacion.html#section-9",
+    "objectID": "00_intro/presentacion.html#section-9",
+    "href": "00_intro/presentacion.html#section-9",
     "title": "Docencia Digital",
     "section": "",
     "text": "Retroalimentación\nPerspectiva de los Estudiantes"
   },
   {
-    "objectID": "quarto/presentacion.html#comentarios-de-los-participantes",
-    "href": "quarto/presentacion.html#comentarios-de-los-participantes",
+    "objectID": "00_intro/presentacion.html#comentarios-de-los-participantes",
+    "href": "00_intro/presentacion.html#comentarios-de-los-participantes",
     "title": "Docencia Digital",
     "section": "Comentarios de los Participantes",
     "text": "Comentarios de los Participantes\n\n\n\n\n\n\n\n\n\n\nNegativos\n\n\n\nPoca respuesta a dudas por correo\n\nFalta de retroalimentación y notas\n\nEvaluaciones poco claras\n\nContenido teórico algo extenso\n\nTiempo insuficiente para preguntas\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nPositivos\n\n\n\nProfesor claro y con buena disposición\n\nExplicaciones ordenadas y confiables\n\nContenido práctico y aplicable\n\nCurso bien estructurado en Data Science\n\nAmbiente positivo de aprendizaje"
   },
   {
-    "objectID": "quarto/presentacion.html#evaluaciones",
-    "href": "quarto/presentacion.html#evaluaciones",
+    "objectID": "00_intro/presentacion.html#evaluaciones",
+    "href": "00_intro/presentacion.html#evaluaciones",
     "title": "Docencia Digital",
     "section": "Evaluaciones",
     "text": "Evaluaciones\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n(C) La evaluó: contenidos, cercanía, y fomarlidades del curso."
   },
   {
-    "objectID": "quarto/presentacion.html#section-10",
-    "href": "quarto/presentacion.html#section-10",
+    "objectID": "00_intro/presentacion.html#section-10",
+    "href": "00_intro/presentacion.html#section-10",
     "title": "Docencia Digital",
     "section": "",
     "text": "Conclusiones\nResultados y Reflexiones del Curso MAT281"
   },
   {
-    "objectID": "quarto/presentacion.html#section-11",
-    "href": "quarto/presentacion.html#section-11",
+    "objectID": "00_intro/presentacion.html#section-11",
+    "href": "00_intro/presentacion.html#section-11",
     "title": "Docencia Digital",
     "section": "",
     "text": "Conclusiones\nHerramientas abiertas motivan, mejora la comprensión práctica\ny ofrece flexibilidad en el aprendizaje\n\n\n\n Trabajos Futuros\nIntegrar Inteligencia Artificial, expandir la metodología, proyectos con la industria\ny automatizar evaluaciones"
   },
   {
-    "objectID": "quarto/presentacion.html#agradecimientos",
-    "href": "quarto/presentacion.html#agradecimientos",
+    "objectID": "00_intro/presentacion.html#agradecimientos",
+    "href": "00_intro/presentacion.html#agradecimientos",
     "title": "Docencia Digital",
     "section": "🎉 Agradecimientos",
     "text": "🎉 Agradecimientos"
   },
   {
-    "objectID": "quarto/presentacion.html#gracias-por-participar",
-    "href": "quarto/presentacion.html#gracias-por-participar",
+    "objectID": "00_intro/presentacion.html#gracias-por-participar",
+    "href": "00_intro/presentacion.html#gracias-por-participar",
     "title": "Docencia Digital",
     "section": "🎉 ¡Gracias por Participar!",
-    "text": "🎉 ¡Gracias por Participar!\n\n\n\n❓¿Preguntas?\n👏 Responder encuesta\n🥳 Disfrutar del Evento!\n\n\n\n\n\n🔗 Nuestro Sitio Web: sethnut.com/talks"
+    "text": "🎉 ¡Gracias por Participar!\n\n\n\n❓¿Preguntas?\n👏 Responder encuesta\n🥳 Disfrutar del Evento!\n\n\n\n\n🔗 Nuestro Sitio Web: sethnut.com/talks"
+  },
+  {
+    "objectID": "ia/presentacion.html#objetivos",
+    "href": "ia/presentacion.html#objetivos",
+    "title": "Docencia Digital",
+    "section": "Objetivos",
+    "text": "Objetivos\n\n\n\n\n\n\n\n\n\nEntender que es IA y por que importa en educacion.\nRevisar una historia breve (hitos clave).\nDistinguir tipos de herramientas de IA.\nExplorar herramientas utiles para docentes.\nDefinir buenas practicas para uso responsable."
+  },
+  {
+    "objectID": "ia/presentacion.html#ia-en-una-frase",
+    "href": "ia/presentacion.html#ia-en-una-frase",
+    "title": "Docencia Digital",
+    "section": "IA en una frase",
+    "text": "IA en una frase\n\nLa IA son sistemas que realizan tareas cognitivas: comprender texto, generar contenido, clasificar, predecir y asistir decisiones.\n\n\n\n\n\n\n\n\nEn docencia, su valor no es reemplazar al profesor: es ampliar su capacidad de diseno, retroalimentacion y personalizacion."
+  },
+  {
+    "objectID": "ia/presentacion.html#historia-breve-de-la-ia",
+    "href": "ia/presentacion.html#historia-breve-de-la-ia",
+    "title": "Docencia Digital",
+    "section": "Historia breve de la IA",
+    "text": "Historia breve de la IA\n\n\n1950: Alan Turing propone la pregunta “pueden pensar las maquinas?”.\n1956: conferencia de Dartmouth, nace el termino “Artificial Intelligence”.\n1980s: auge de sistemas expertos.\n1997: Deep Blue vence a Kasparov.\n2012: salto en deep learning (AlexNet).\n2017: arquitectura Transformer.\n2022-2026: masificacion de IA generativa para texto, imagen, audio y codigo."
+  },
+  {
+    "objectID": "ia/presentacion.html#que-cambio-en-educacion",
+    "href": "ia/presentacion.html#que-cambio-en-educacion",
+    "title": "Docencia Digital",
+    "section": "Que cambio en educacion",
+    "text": "Que cambio en educacion\n\n\n\n\n Preparacion\nPlanificaciones, rubricas, guias, evaluaciones.\n\n\n\n Aprendizaje activo\nTutorias, ejemplos guiados, explicaciones multinivel.\n\n\n\n Feedback\nRetroalimentacion mas rapida y personalizada."
+  },
+  {
+    "objectID": "ia/presentacion.html#tipos-de-herramientas-ia-para-docentes",
+    "href": "ia/presentacion.html#tipos-de-herramientas-ia-para-docentes",
+    "title": "Docencia Digital",
+    "section": "Tipos de herramientas IA para docentes",
+    "text": "Tipos de herramientas IA para docentes\n\n\n\n\n\n\n\n\n\nTipo\nEjemplos\nUso docente\n\n\n\n\nChat generalista\nChatGPT, Gemini, Claude\nPlanificacion, ideas de actividades, materiales.\n\n\nAsistente sobre fuentes\nNotebookLM\nResumen, FAQ, guia de estudio desde tus documentos.\n\n\nPresentaciones y diseno\nCanva Magic, Gamma\nDiapositivas y visuales para clase.\n\n\nVideo y voz\nElevenLabs, CapCut AI\nMicrocapsulas, narraciones, recursos multimedia.\n\n\nCodigo y datos\nGitHub Copilot, Colab AI\nApoyo en notebooks, ejemplos y explicaciones de codigo."
+  },
+  {
+    "objectID": "ia/presentacion.html#chatgpt-gemini-y-claude-vista-rapida",
+    "href": "ia/presentacion.html#chatgpt-gemini-y-claude-vista-rapida",
+    "title": "Docencia Digital",
+    "section": "ChatGPT, Gemini y Claude (vista rapida)",
+    "text": "ChatGPT, Gemini y Claude (vista rapida)\n\n\n\nChatGPT\n\nMuy versatil para docencia general.\nBueno en estructura didactica y actividades.\nUtil para crear variantes de ejercicios.\n\n\nGemini\n\nIntegracion natural con ecosistema Google.\nFlujo util con Docs, Drive y Classroom.\nFuerte para equipos que ya usan Google Workspace.\n\n\nClaude\n\nBuen desempeno en analisis de texto largo.\nMuy util para revision de documentos extensos.\nEcosistema interesante con MCP en flujos avanzados."
+  },
+  {
+    "objectID": "ia/presentacion.html#notebooklm-para-docentes",
+    "href": "ia/presentacion.html#notebooklm-para-docentes",
+    "title": "Docencia Digital",
+    "section": "NotebookLM para docentes",
+    "text": "NotebookLM para docentes\n\n\nCargas tus propias fuentes: PDF, apuntes, guias, enlaces.\nGenera resumenes, preguntas frecuentes y lineas de tiempo.\nPermite crear guias de estudio basadas en material oficial del curso.\nReduce alucinaciones al trabajar sobre fuentes definidas.\n\n\n\n\n\n\n\n\nCaso de uso: subir programa + clases + evaluaciones antiguas y pedir una guia de repaso por unidad."
+  },
+  {
+    "objectID": "ia/presentacion.html#claude-mcp-idea-general",
+    "href": "ia/presentacion.html#claude-mcp-idea-general",
+    "title": "Docencia Digital",
+    "section": "Claude + MCP (idea general)",
+    "text": "Claude + MCP (idea general)\n\n\nMCP = protocolo para conectar el asistente con herramientas externas.\nPermite que el chat consulte fuentes, repositorios o sistemas especificos.\nEn docencia, puede servir para:\n\nbuscar contenidos institucionales,\nconsultar repositorios de curso,\nautomatizar flujos de apoyo academico.\n\n\n\n\nRecomendacion: partir simple (chat + documentos) y escalar a MCP solo cuando el flujo ya este claro."
+  },
+  {
+    "objectID": "ia/presentacion.html#otras-herramientas-utiles-para-docentes",
+    "href": "ia/presentacion.html#otras-herramientas-utiles-para-docentes",
+    "title": "Docencia Digital",
+    "section": "Otras herramientas utiles para docentes",
+    "text": "Otras herramientas utiles para docentes\n\n\nPerplexity: investigacion rapida con citas y contraste de fuentes.\nCanva Magic Studio: material visual para clases y redes academicas.\nGamma: borradores de presentaciones desde prompts.\nElicit: apoyo para revision de literatura.\nWolfram|Alpha: consultas matematicas y cientificas guiadas.\nKhanmigo / tutores IA: apoyo para aprendizaje personalizado (segun contexto institucional)."
+  },
+  {
+    "objectID": "ia/presentacion.html#prompting-docente-plantilla-util",
+    "href": "ia/presentacion.html#prompting-docente-plantilla-util",
+    "title": "Docencia Digital",
+    "section": "Prompting docente: plantilla util",
+    "text": "Prompting docente: plantilla util\nActua como apoyo pedagogico para [asignatura] en [nivel].\nObjetivo de la clase: [objetivo].\nDuracion: [minutos].\nPerfil del estudiantado: [contexto].\nGenera:\n1) apertura (5 min),\n2) actividad central,\n3) evaluacion formativa,\n4) cierre,\n5) rubrica breve.\nIncluye adaptaciones para estudiantes con distintos ritmos."
+  },
+  {
+    "objectID": "ia/presentacion.html#ejemplos-de-prompts-para-clase",
+    "href": "ia/presentacion.html#ejemplos-de-prompts-para-clase",
+    "title": "Docencia Digital",
+    "section": "Ejemplos de prompts para clase",
+    "text": "Ejemplos de prompts para clase\n\n\n“Genera 3 actividades activas sobre derivadas, con dificultad creciente y criterios de logro.”\n“Transforma este texto tecnico en una explicacion para primer ano universitario.”\n“Crea una rubrica de 4 niveles para evaluar un informe de laboratorio.”\n“Dame 5 preguntas tipo quiz con retroalimentacion inmediata.”"
+  },
+  {
+    "objectID": "ia/presentacion.html#riesgos-y-limites-hay-que-explicitar",
+    "href": "ia/presentacion.html#riesgos-y-limites-hay-que-explicitar",
+    "title": "Docencia Digital",
+    "section": "Riesgos y limites (hay que explicitar)",
+    "text": "Riesgos y limites (hay que explicitar)\n\n\nPuede inventar datos o referencias (alucinacion).\nPuede tener sesgos en respuestas.\nNo siempre cita fuentes de forma confiable.\nRiesgo de dependencia si no hay diseno pedagogico.\nPrivacidad: no subir datos sensibles o personales."
+  },
+  {
+    "objectID": "ia/presentacion.html#marco-de-uso-responsable-en-aula",
+    "href": "ia/presentacion.html#marco-de-uso-responsable-en-aula",
+    "title": "Docencia Digital",
+    "section": "Marco de uso responsable en aula",
+    "text": "Marco de uso responsable en aula\n\n\nTransparencia: declarar cuando se uso IA.\nVerificacion: contrastar datos con fuentes confiables.\nTrazabilidad: guardar prompts y version final.\nEvaluacion autentica: pedir proceso, no solo producto.\nProteccion de datos: anonimizar informacion de estudiantes."
+  },
+  {
+    "objectID": "ia/presentacion.html#actividad-guiada-15-min",
+    "href": "ia/presentacion.html#actividad-guiada-15-min",
+    "title": "Docencia Digital",
+    "section": "Actividad guiada (15 min)",
+    "text": "Actividad guiada (15 min)\n\n\nElegir una unidad de tu curso.\nProbar 1 chat (ChatGPT/Gemini/Claude) con la plantilla de prompt.\nProbar NotebookLM con 1-2 documentos del curso.\nComparar resultados: calidad, tiempo, utilidad.\nDefinir una regla de uso IA para tus estudiantes."
+  },
+  {
+    "objectID": "ia/presentacion.html#plan-de-adopcion-docente-simple",
+    "href": "ia/presentacion.html#plan-de-adopcion-docente-simple",
+    "title": "Docencia Digital",
+    "section": "Plan de adopcion docente (simple)",
+    "text": "Plan de adopcion docente (simple)\n\n\nSemana 1: usar IA para planificacion de clase.\nSemana 2: usar IA para crear quiz y rubricas.\nSemana 3: usar IA para feedback formativo.\nSemana 4: evaluar impacto (tiempo ahorrado + calidad percibida)."
+  },
+  {
+    "objectID": "ia/presentacion.html#cierre",
+    "href": "ia/presentacion.html#cierre",
+    "title": "Docencia Digital",
+    "section": "Cierre",
+    "text": "Cierre\n\nLa IA ya es parte del ecosistema educativo\nLa diferencia la marca el criterio pedagogico del docente"
+  },
+  {
+    "objectID": "ia/presentacion.html#gracias-por-participar",
+    "href": "ia/presentacion.html#gracias-por-participar",
+    "title": "Docencia Digital",
+    "section": "Gracias por Participar",
+    "text": "Gracias por Participar\n\n\n\nPreguntas?\nResponder encuesta\nA experimentar con IA en tu proxima clase!\n\n\n\n\nSitio: sethnut.com/talks"
+  },
+  {
+    "objectID": "overleaf/presentacion.html#te-ha-pasado-esto",
+    "href": "overleaf/presentacion.html#te-ha-pasado-esto",
+    "title": "Docencia Digital",
+    "section": "¿Te ha pasado esto?",
+    "text": "¿Te ha pasado esto?"
+  },
+  {
+    "objectID": "overleaf/presentacion.html#objetivos",
+    "href": "overleaf/presentacion.html#objetivos",
+    "title": "Docencia Digital",
+    "section": "Objetivos",
+    "text": "Objetivos\n\n\n\n\n\n\n\n\n\nConocer LaTeX: Qué es y por qué usarlo frente a otros editores.\n\nPrimeros pasos: Crear, compilar y estructurar un documento básico.\n\nElementos clave: Texto, secciones, listas, imágenes y fórmulas.\n\nBuenas prácticas: Organización, plantillas y recursos recomendados."
+  },
+  {
+    "objectID": "overleaf/presentacion.html#section",
+    "href": "overleaf/presentacion.html#section",
+    "title": "Docencia Digital",
+    "section": "",
+    "text": "LaTeX\n¿Qué es y por qué usarlo?"
+  },
+  {
+    "objectID": "overleaf/presentacion.html#qué-es-latex",
+    "href": "overleaf/presentacion.html#qué-es-latex",
+    "title": "Docencia Digital",
+    "section": "¿Qué es LaTeX?",
+    "text": "¿Qué es LaTeX?\n\n\n\n\n\n\n\n\n¿Qué es LaTeX?\n\nSistema para crear documentos académicos y científicos con formato profesional.\n\nVentajas:\n\nAutomatiza referencias, citas y ecuaciones.\n\nControl total sobre formato y estructura.\n\nIdeal para documentos extensos y complejos."
+  },
+  {
+    "objectID": "overleaf/presentacion.html#cómo-empezar",
+    "href": "overleaf/presentacion.html#cómo-empezar",
+    "title": "Docencia Digital",
+    "section": "¿Cómo empezar?",
+    "text": "¿Cómo empezar?\n\n\n\n\n\n\n\n\nEditor recomendado:\n\nOverleaf (en línea, sin instalación)\n\nInstalaciones locales:\n\nTeX Live, MiKTeX, MacTeX\n\nEditores útiles:\n\nTeXstudio, VSCode + LaTeX Workshop\n\n\n\n\n\n\n🌿 En este taller nos centraremos en Overleaf, fácil y en línea."
+  },
+  {
+    "objectID": "overleaf/presentacion.html#overleaf-latex-online",
+    "href": "overleaf/presentacion.html#overleaf-latex-online",
+    "title": "Docencia Digital",
+    "section": "Overleaf: LaTeX Online",
+    "text": "Overleaf: LaTeX Online\n\n\n\n\n\n\n\n\n¿Qué es?\n\nPlataforma en línea para escribir y compilar documentos en LaTeX sin instalación.\n\n¿Por qué usarlo?\n\nEdición colaborativa en tiempo real.\n\nIntegración con GitHub y la nube.\n\nCompilación y previsualización instantánea.\n\n\n\n\n\n\n🌿 Para este taller, crea tu cuenta gratuita en Overleaf."
+  },
+  {
+    "objectID": "overleaf/presentacion.html#section-3",
+    "href": "overleaf/presentacion.html#section-3",
+    "title": "Docencia Digital",
+    "section": "",
+    "text": "LaTeX\nManos a la Obra"
+  },
+  {
+    "objectID": "overleaf/presentacion.html#actividad-artículo-en-overleaf",
+    "href": "overleaf/presentacion.html#actividad-artículo-en-overleaf",
+    "title": "Docencia Digital",
+    "section": "Actividad: Artículo en Overleaf",
+    "text": "Actividad: Artículo en Overleaf\n\n\n\n\n\n\n\n\nNuevo proyecto en Overleaf.\nCopia la plantilla.\nEdita: título, texto e imágenes.\nCompila y revisa.\n(Extra) Añade cita y bibliografía.\n\n\n\n\n⏱️ Tiempo de la actividad: 05-10 minutos."
+  },
+  {
+    "objectID": "overleaf/presentacion.html#section-4",
+    "href": "overleaf/presentacion.html#section-4",
+    "title": "Docencia Digital",
+    "section": "",
+    "text": "LaTeX\nExplora y aprende con plantillas"
+  },
+  {
+    "objectID": "overleaf/presentacion.html#overleaf-gallery",
+    "href": "overleaf/presentacion.html#overleaf-gallery",
+    "title": "Docencia Digital",
+    "section": "Overleaf Gallery",
+    "text": "Overleaf Gallery\n\n\n\n\n\n\n\n\nPlantillas listas para usar:\n\nArtículos, tesis, pósters y presentaciones.\n\nAprende explorando:\n\nAbre una plantilla y estudia su código.\n\nPersonaliza y reutiliza:\n\nCambia texto, imágenes y estilo.\n\n\n\n\n\n🌿 Veamos algunos ejemplos en Overleaf Gallery."
+  },
+  {
+    "objectID": "overleaf/presentacion.html#section-6",
+    "href": "overleaf/presentacion.html#section-6",
+    "title": "Docencia Digital",
+    "section": "",
+    "text": "LaTeX\nMás Herramientas"
+  },
+  {
+    "objectID": "overleaf/presentacion.html#herramientas-útiles",
+    "href": "overleaf/presentacion.html#herramientas-útiles",
+    "title": "Docencia Digital",
+    "section": "Herramientas Útiles",
+    "text": "Herramientas Útiles\n\n\n\n\n\n\n\n\n📊 Tables Generator\nCrea y exporta fácilmente tablas en formato LaTeX.\n🔢 LaTeX Equation Editor\nGenera ecuaciones LaTeX en tiempo real.\n🧾 BibTeX Editor\nCrea referencias bibliográficas en formato BibTeX.\n🧠 Detexify\nDibuja un símbolo y encuentra su comando LaTeX."
+  },
+  {
+    "objectID": "overleaf/presentacion.html#latex-inteligencia-artificial",
+    "href": "overleaf/presentacion.html#latex-inteligencia-artificial",
+    "title": "Docencia Digital",
+    "section": "LaTeX + Inteligencia Artificial",
+    "text": "LaTeX + Inteligencia Artificial\n\n\n\n\n\n\n\n\nChatGPT, Gemini, DeepSeek:\n\nGeneran y corrigen código LaTeX.\nCrean ecuaciones, tablas y bibliografía.\nExplican comandos y paquetes.\nMejoran el formato y detectan errores.\n\n\n\n\n\n🤖 Consejo: usa prompts claros, incluye tu código y pide explicaciones paso a paso."
+  },
+  {
+    "objectID": "overleaf/presentacion.html#ejemplos-de-prompts",
+    "href": "overleaf/presentacion.html#ejemplos-de-prompts",
+    "title": "Docencia Digital",
+    "section": "Ejemplos de Prompts",
+    "text": "Ejemplos de Prompts\n\nFórmulasEstructuraciónCorrección\n\n\n\n\n✨ Prompt:\n“Escríbeme la fórmula de la función cuadrática en LaTeX.”\n\n✅ Esperado:\n¡Por supuesto! Aquí tienes la fórmula cuadrática escrita en LaTeX:\nx = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}\n\n\n\n\n\n✨ Prompt:\n“Haz una tabla de derivadas básicas en LaTeX (función vs. derivada).”\n\n✅ Esperado:\n\\begin{tabular}{|c|c|}\n\\hline\n\\textbf{Función} & \\textbf{Derivada} \\\\\n\\hline\n$c$ & $0$ \\\\\n$x$ & $1$ \\\\\n$x^n$ & $nx^{n-1}$ \\\\\n$\\sqrt{x}$ & $\\dfrac{1}{2\\sqrt{x}}$ \\\\\n...\n\\hline\n\\end{tabular}\n\n\n\n\n\n✨ Prompt:\n“Estoy tratando de compilar esta ecuación en LaTeX, pero me da error. ¿Me puedes ayudar?”\n\\begin{equation}\nf(x) = \\int_0^\\infty e^-x^2 dx\n\\end{equation}\n\n✅ Esperado:\n❌ e^-x^2 está mal escrito. Falta agrupar el exponente con llaves.\n❌ Se recomienda escribir \\,dx para buena tipografía."
+  },
+  {
+    "objectID": "overleaf/presentacion.html#section-8",
+    "href": "overleaf/presentacion.html#section-8",
+    "title": "Docencia Digital",
+    "section": "",
+    "text": "LaTeX\nManos a la Obra"
+  },
+  {
+    "objectID": "overleaf/presentacion.html#actividad-beamer-en-overleaf",
+    "href": "overleaf/presentacion.html#actividad-beamer-en-overleaf",
+    "title": "Docencia Digital",
+    "section": "Actividad: Beamer en Overleaf",
+    "text": "Actividad: Beamer en Overleaf\n\n\n\n\n\n\n\n\nNuevo proyecto en Overleaf.\nCopia la plantilla.\nEdita: título, texto e imágenes.\nCompila y revisa.\n(Extra) Añade cita y bibliografía.\n\n\n\n\n⏱️ Tiempo de la actividad: 05-10 minutos."
+  },
+  {
+    "objectID": "overleaf/presentacion.html#section-9",
+    "href": "overleaf/presentacion.html#section-9",
+    "title": "Docencia Digital",
+    "section": "",
+    "text": "LaTeX\nConclusiones"
+  },
+  {
+    "objectID": "overleaf/presentacion.html#conclusiones",
+    "href": "overleaf/presentacion.html#conclusiones",
+    "title": "Docencia Digital",
+    "section": "Conclusiones",
+    "text": "Conclusiones\n \n\n✅ LaTeX permite redactar textos con calidad profesional.  ✅ Ofrece control total en diseño y estructura.  ✅ Existen varias herramientas que simplifican su uso.  ✅ Con IA, trabajar en LaTeX resulta más eficiente.  ✅ Overleaf facilita empezar sin instalar programas."
+  },
+  {
+    "objectID": "overleaf/presentacion.html#gracias-por-participar",
+    "href": "overleaf/presentacion.html#gracias-por-participar",
+    "title": "Docencia Digital",
+    "section": "🎉 ¡Gracias por Participar!",
+    "text": "🎉 ¡Gracias por Participar!\n\n\n\n❓¿Preguntas?\n👏 Responder encuesta\n🥳 Disfrutar del Evento!\n\n\n\n\n🔗 Nuestro Sitio Web: sethnut.com/talks"
   },
   {
     "objectID": "index.html",
@@ -277,133 +536,126 @@
     "href": "github/presentacion.html#gracias-por-participar",
     "title": "Docencia Digital",
     "section": "Gracias por Participar",
-    "text": "Gracias por Participar\n\n\n\nPreguntas?\nResponder encuesta\nA crear tu primer repo!\n\n\n\n\n\nSitio: sethnut.com/talks"
+    "text": "Gracias por Participar\n\n\n\nPreguntas?\nResponder encuesta\nA crear tu primer repo!\n\n\n\n\nSitio: sethnut.com/talks"
   },
   {
-    "objectID": "anexos.html",
-    "href": "anexos.html",
-    "title": "📜 Anexos",
-    "section": "",
-    "text": "🎁 Sorteo✍️ Autoría📖 Aprendizaje😊 Agredecimientos\n\n\nPara sortear algunos premios utilizaremos, por supuesto, un código de python. Usaremos la función random.randint(a, b) que retorna un número entero aleatorio \\(N\\) que cumpla la condición \\(a &lt;= N &lt;= b\\).\n\nPlease enable JavaScript to experience the dynamic code cell content on this page.\n\n\nMaterial creado por Francisco Alfaro y Valeska Canales para estudiantes del Departamento de Matemáticas de la USM.\nBuscamos motivar el aprendizaje de programación y matemáticas de forma entretenida y accesible, con ejemplos prácticos y actividades interactivas en Python.\nContacto: francisco.alfaro.496@gmail.com | valeska.canales.p@gmail.com\n\n\n\nRecursos Recomendados\n\nHerramientas de Google\n\nCursos en Línea:\n\nGoogle Workspace Learning Center: Capacitación oficial en herramientas como Docs, Sheets, Slides, Colab y Drive.\n\nDocumentación y Recursos:\n\nCentro de Ayuda de Google Workspace: Guías y trucos para aprovechar al máximo las herramientas de Google.\n\n\nDiseño de Prompts Efectivos en ChatGPT\n\nGuías y Tutoriales:\n\nCómo escribir un Prompt con ChatGPT: Estrategias para diseñar prompts efectivos en ChatGPT.\n\nComunidades y Foros:\n\nReddit: r/ChatGPT: Comunidad para compartir experiencias y obtener consejos sobre el uso de ChatGPT.\n\n\nComunicación Académica: Lectura, Escritura y Oratoria\n\nCursos en Línea:\n\nedX: “Academic and Business Writing” de la Universidad de California, Berkeley.\n\nRecursos y Herramientas:\n\nPurdue OWL: Guías sobre redacción académica y estilo.\n\n\nA.I. y Data Storytelling\n\nCursos y Talleres:\n\nCómo usar ChatGPT para hacer Storytelling: Tutorial sobre cómo utilizar ChatGPT en la creación de narrativas.\n\nHerramientas:\n\nTableau Public: Plataforma gratuita para crear visualizaciones interactivas.\n\n\n\n\n\n\nQueremos agradecer sinceramente a todas y todos los estudiantes que participaron en el curso por su entusiasmo, curiosidad y compromiso con el aprendizaje.\nTambién extendemos nuestro agradecimiento al Centro de Estudiantes ICMAT USM San Joaquín por su constante apoyo y colaboración, y al Departamento de Matemáticas de la USM por hacer posible esta iniciativa educativa."
-  },
-  {
-    "objectID": "00_intro/presentacion.html#sobre-mi",
-    "href": "00_intro/presentacion.html#sobre-mi",
+    "objectID": "quarto/presentacion.html#sobre-mi",
+    "href": "quarto/presentacion.html#sobre-mi",
     "title": "Docencia Digital",
     "section": "Sobre Mi",
     "text": "Sobre Mi\n\n\n\n\n\n\n\n\n\n\n\nFrancisco Alfaro Medina\nDocente Universitario UTFSM\nLider Anlítica Avanzada UTFSM\nEstudiante de Doctorado en Electrónica"
   },
   {
-    "objectID": "00_intro/presentacion.html#experiencia-laboral",
-    "href": "00_intro/presentacion.html#experiencia-laboral",
+    "objectID": "quarto/presentacion.html#experiencia-laboral",
+    "href": "quarto/presentacion.html#experiencia-laboral",
     "title": "Docencia Digital",
     "section": "Experiencia Laboral",
     "text": "Experiencia Laboral\n\n\n\n\n Industrial\nWALMART, CENCOSUD, ITAU, GRUPO SECURITY, etc.\n\n\n\n Docente\nUTFSM, DUOC, TRIPLETEN, CODING DOJO, etc.\n\n\n\n Charlista\nCLEI, SOCHEDI, SOCHIEM, AEQUALIS, etc."
   },
   {
-    "objectID": "00_intro/presentacion.html#section",
-    "href": "00_intro/presentacion.html#section",
+    "objectID": "quarto/presentacion.html#section",
+    "href": "quarto/presentacion.html#section",
     "title": "Docencia Digital",
     "section": "",
     "text": "Entonces …\nQué he aprendido estos últimos años"
   },
   {
-    "objectID": "00_intro/presentacion.html#mat281---matemáticas-aplicadas",
-    "href": "00_intro/presentacion.html#mat281---matemáticas-aplicadas",
+    "objectID": "quarto/presentacion.html#mat281---matemáticas-aplicadas",
+    "href": "quarto/presentacion.html#mat281---matemáticas-aplicadas",
     "title": "Docencia Digital",
     "section": "MAT281 - Matemáticas Aplicadas",
-    "text": "MAT281 - Matemáticas Aplicadas\n\n\n\n\n\n\n\n\n\nCarrera: Ingeniería Civil Matemática\nObjetivo: Competencias como DS\nContenidos: Estadística, Visualización, ML\nEvaluaciones: Laboratorios, Tareas, Proyecto\n\n\n\n\n🌐 Repositorio: github.com/fralfaro/MAT281"
+    "text": "MAT281 - Matemáticas Aplicadas\n\n\n\n\n\n\n\n\n\nCarrera: Ingeniería Civil Matemática\nObjetivo: Competencias como DS\nContenidos: Estadística, Visualización, ML\nEvaluaciones: Laboratorios, Tareas, Proyecto\n\n\n\n🌐 Repositorio: github.com/fralfaro/MAT281"
   },
   {
-    "objectID": "00_intro/presentacion.html#herramientas-del-curso",
-    "href": "00_intro/presentacion.html#herramientas-del-curso",
+    "objectID": "quarto/presentacion.html#herramientas-del-curso",
+    "href": "quarto/presentacion.html#herramientas-del-curso",
     "title": "Docencia Digital",
     "section": "Herramientas del Curso",
     "text": "Herramientas del Curso\n\n\n\n\n Google Colab\nEjecutar Python en la nube\n\n\n\n GitHub\nGestiona proyectos de código\n\n\n\n Quarto\nCrea documentos con código"
   },
   {
-    "objectID": "00_intro/presentacion.html#herramientas-del-curso-1",
-    "href": "00_intro/presentacion.html#herramientas-del-curso-1",
+    "objectID": "quarto/presentacion.html#herramientas-del-curso-1",
+    "href": "quarto/presentacion.html#herramientas-del-curso-1",
     "title": "Docencia Digital",
     "section": "Herramientas del Curso",
     "text": "Herramientas del Curso\n\n\n\n\n Overleaf\nEjecutar LaTeX en la nube\n\n\n\n AI\nUso de la IA en el aula\n\n\n\n Data Storytelling\nCrer historias con datos"
   },
   {
-    "objectID": "00_intro/presentacion.html#section-3",
-    "href": "00_intro/presentacion.html#section-3",
+    "objectID": "quarto/presentacion.html#section-3",
+    "href": "quarto/presentacion.html#section-3",
     "title": "Docencia Digital",
     "section": "",
     "text": "Innovación Educativa\nSobre la Enseñanza y Evaluaciones"
   },
   {
-    "objectID": "00_intro/presentacion.html#p1-herramientas-opensource",
-    "href": "00_intro/presentacion.html#p1-herramientas-opensource",
+    "objectID": "quarto/presentacion.html#p1-herramientas-opensource",
+    "href": "quarto/presentacion.html#p1-herramientas-opensource",
     "title": "Docencia Digital",
     "section": "P1: Herramientas OpenSource",
     "text": "P1: Herramientas OpenSource\n\n\n\n\n Quarto\nExperiencia inmersiva en la creación de documentos\n\n\n\n Google Colab\nAprendizaje colaborativo sin instalación\n\n\n\n GitHub\nPortafolio inicial con control y seguimiento"
   },
   {
-    "objectID": "00_intro/presentacion.html#section-6",
-    "href": "00_intro/presentacion.html#section-6",
+    "objectID": "quarto/presentacion.html#section-6",
+    "href": "quarto/presentacion.html#section-6",
     "title": "Docencia Digital",
     "section": "",
     "text": "Repositorio del Curso\n\n\nPortafolio Estudiantes"
   },
   {
-    "objectID": "00_intro/presentacion.html#p2-evaluaciones-innovadoras",
-    "href": "00_intro/presentacion.html#p2-evaluaciones-innovadoras",
+    "objectID": "quarto/presentacion.html#p2-evaluaciones-innovadoras",
+    "href": "quarto/presentacion.html#p2-evaluaciones-innovadoras",
     "title": "Docencia Digital",
     "section": "P2: Evaluaciones Innovadoras",
     "text": "P2: Evaluaciones Innovadoras\n\n\n\n\n Evaluaciones\nEvaluaciones prácticas y colaborativas para el trabajo\n\n\n\n Feedback\nProyectos y feedback que fortalecen habilidades"
   },
   {
-    "objectID": "00_intro/presentacion.html#section-9",
-    "href": "00_intro/presentacion.html#section-9",
+    "objectID": "quarto/presentacion.html#section-9",
+    "href": "quarto/presentacion.html#section-9",
     "title": "Docencia Digital",
     "section": "",
     "text": "Retroalimentación\nPerspectiva de los Estudiantes"
   },
   {
-    "objectID": "00_intro/presentacion.html#comentarios-de-los-participantes",
-    "href": "00_intro/presentacion.html#comentarios-de-los-participantes",
+    "objectID": "quarto/presentacion.html#comentarios-de-los-participantes",
+    "href": "quarto/presentacion.html#comentarios-de-los-participantes",
     "title": "Docencia Digital",
     "section": "Comentarios de los Participantes",
     "text": "Comentarios de los Participantes\n\n\n\n\n\n\n\n\n\n\nNegativos\n\n\n\nPoca respuesta a dudas por correo\n\nFalta de retroalimentación y notas\n\nEvaluaciones poco claras\n\nContenido teórico algo extenso\n\nTiempo insuficiente para preguntas\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nPositivos\n\n\n\nProfesor claro y con buena disposición\n\nExplicaciones ordenadas y confiables\n\nContenido práctico y aplicable\n\nCurso bien estructurado en Data Science\n\nAmbiente positivo de aprendizaje"
   },
   {
-    "objectID": "00_intro/presentacion.html#evaluaciones",
-    "href": "00_intro/presentacion.html#evaluaciones",
+    "objectID": "quarto/presentacion.html#evaluaciones",
+    "href": "quarto/presentacion.html#evaluaciones",
     "title": "Docencia Digital",
     "section": "Evaluaciones",
     "text": "Evaluaciones\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n(C) La evaluó: contenidos, cercanía, y fomarlidades del curso."
   },
   {
-    "objectID": "00_intro/presentacion.html#section-10",
-    "href": "00_intro/presentacion.html#section-10",
+    "objectID": "quarto/presentacion.html#section-10",
+    "href": "quarto/presentacion.html#section-10",
     "title": "Docencia Digital",
     "section": "",
     "text": "Conclusiones\nResultados y Reflexiones del Curso MAT281"
   },
   {
-    "objectID": "00_intro/presentacion.html#section-11",
-    "href": "00_intro/presentacion.html#section-11",
+    "objectID": "quarto/presentacion.html#section-11",
+    "href": "quarto/presentacion.html#section-11",
     "title": "Docencia Digital",
     "section": "",
     "text": "Conclusiones\nHerramientas abiertas motivan, mejora la comprensión práctica\ny ofrece flexibilidad en el aprendizaje\n\n\n\n Trabajos Futuros\nIntegrar Inteligencia Artificial, expandir la metodología, proyectos con la industria\ny automatizar evaluaciones"
   },
   {
-    "objectID": "00_intro/presentacion.html#agradecimientos",
-    "href": "00_intro/presentacion.html#agradecimientos",
+    "objectID": "quarto/presentacion.html#agradecimientos",
+    "href": "quarto/presentacion.html#agradecimientos",
     "title": "Docencia Digital",
     "section": "🎉 Agradecimientos",
     "text": "🎉 Agradecimientos"
   },
   {
-    "objectID": "00_intro/presentacion.html#gracias-por-participar",
-    "href": "00_intro/presentacion.html#gracias-por-participar",
+    "objectID": "quarto/presentacion.html#gracias-por-participar",
+    "href": "quarto/presentacion.html#gracias-por-participar",
     "title": "Docencia Digital",
     "section": "🎉 ¡Gracias por Participar!",
-    "text": "🎉 ¡Gracias por Participar!\n\n\n\n❓¿Preguntas?\n👏 Responder encuesta\n🥳 Disfrutar del Evento!\n\n\n\n\n\n🔗 Nuestro Sitio Web: sethnut.com/talks"
+    "text": "🎉 ¡Gracias por Participar!\n\n\n\n❓¿Preguntas?\n👏 Responder encuesta\n🥳 Disfrutar del Evento!\n\n\n\n\n🔗 Nuestro Sitio Web: sethnut.com/talks"
   },
   {
     "objectID": "colab/presentacion.html#objetivos",
@@ -522,258 +774,6 @@
     "href": "colab/presentacion.html#gracias-por-participar",
     "title": "Docencia Digital",
     "section": "Gracias por Participar",
-    "text": "Gracias por Participar\n\n\n\nPreguntas?\nResponder encuesta\nA crear tu primer notebook!\n\n\n\n\n\nSitio: sethnut.com/talks"
-  },
-  {
-    "objectID": "ia/presentacion.html#objetivos",
-    "href": "ia/presentacion.html#objetivos",
-    "title": "Docencia Digital",
-    "section": "Objetivos",
-    "text": "Objetivos\n\n\n\n\n\n\n\n\n\nEntender que es IA y por que importa en educacion.\nRevisar una historia breve (hitos clave).\nDistinguir tipos de herramientas de IA.\nExplorar herramientas utiles para docentes.\nDefinir buenas practicas para uso responsable."
-  },
-  {
-    "objectID": "ia/presentacion.html#ia-en-una-frase",
-    "href": "ia/presentacion.html#ia-en-una-frase",
-    "title": "Docencia Digital",
-    "section": "IA en una frase",
-    "text": "IA en una frase\n\nLa IA son sistemas que realizan tareas cognitivas: comprender texto, generar contenido, clasificar, predecir y asistir decisiones.\n\n\n\n\n\n\n\n\nEn docencia, su valor no es reemplazar al profesor: es ampliar su capacidad de diseno, retroalimentacion y personalizacion."
-  },
-  {
-    "objectID": "ia/presentacion.html#historia-breve-de-la-ia",
-    "href": "ia/presentacion.html#historia-breve-de-la-ia",
-    "title": "Docencia Digital",
-    "section": "Historia breve de la IA",
-    "text": "Historia breve de la IA\n\n\n1950: Alan Turing propone la pregunta “pueden pensar las maquinas?”.\n1956: conferencia de Dartmouth, nace el termino “Artificial Intelligence”.\n1980s: auge de sistemas expertos.\n1997: Deep Blue vence a Kasparov.\n2012: salto en deep learning (AlexNet).\n2017: arquitectura Transformer.\n2022-2026: masificacion de IA generativa para texto, imagen, audio y codigo."
-  },
-  {
-    "objectID": "ia/presentacion.html#que-cambio-en-educacion",
-    "href": "ia/presentacion.html#que-cambio-en-educacion",
-    "title": "Docencia Digital",
-    "section": "Que cambio en educacion",
-    "text": "Que cambio en educacion\n\n\n\n\n Preparacion\nPlanificaciones, rubricas, guias, evaluaciones.\n\n\n\n Aprendizaje activo\nTutorias, ejemplos guiados, explicaciones multinivel.\n\n\n\n Feedback\nRetroalimentacion mas rapida y personalizada."
-  },
-  {
-    "objectID": "ia/presentacion.html#tipos-de-herramientas-ia-para-docentes",
-    "href": "ia/presentacion.html#tipos-de-herramientas-ia-para-docentes",
-    "title": "Docencia Digital",
-    "section": "Tipos de herramientas IA para docentes",
-    "text": "Tipos de herramientas IA para docentes\n\n\n\n\n\n\n\n\n\nTipo\nEjemplos\nUso docente\n\n\n\n\nChat generalista\nChatGPT, Gemini, Claude\nPlanificacion, ideas de actividades, materiales.\n\n\nAsistente sobre fuentes\nNotebookLM\nResumen, FAQ, guia de estudio desde tus documentos.\n\n\nPresentaciones y diseno\nCanva Magic, Gamma\nDiapositivas y visuales para clase.\n\n\nVideo y voz\nElevenLabs, CapCut AI\nMicrocapsulas, narraciones, recursos multimedia.\n\n\nCodigo y datos\nGitHub Copilot, Colab AI\nApoyo en notebooks, ejemplos y explicaciones de codigo."
-  },
-  {
-    "objectID": "ia/presentacion.html#chatgpt-gemini-y-claude-vista-rapida",
-    "href": "ia/presentacion.html#chatgpt-gemini-y-claude-vista-rapida",
-    "title": "Docencia Digital",
-    "section": "ChatGPT, Gemini y Claude (vista rapida)",
-    "text": "ChatGPT, Gemini y Claude (vista rapida)\n\n\n\nChatGPT\n\nMuy versatil para docencia general.\nBueno en estructura didactica y actividades.\nUtil para crear variantes de ejercicios.\n\n\nGemini\n\nIntegracion natural con ecosistema Google.\nFlujo util con Docs, Drive y Classroom.\nFuerte para equipos que ya usan Google Workspace.\n\n\nClaude\n\nBuen desempeno en analisis de texto largo.\nMuy util para revision de documentos extensos.\nEcosistema interesante con MCP en flujos avanzados."
-  },
-  {
-    "objectID": "ia/presentacion.html#notebooklm-para-docentes",
-    "href": "ia/presentacion.html#notebooklm-para-docentes",
-    "title": "Docencia Digital",
-    "section": "NotebookLM para docentes",
-    "text": "NotebookLM para docentes\n\n\nCargas tus propias fuentes: PDF, apuntes, guias, enlaces.\nGenera resumenes, preguntas frecuentes y lineas de tiempo.\nPermite crear guias de estudio basadas en material oficial del curso.\nReduce alucinaciones al trabajar sobre fuentes definidas.\n\n\n\n\n\n\n\n\nCaso de uso: subir programa + clases + evaluaciones antiguas y pedir una guia de repaso por unidad."
-  },
-  {
-    "objectID": "ia/presentacion.html#claude-mcp-idea-general",
-    "href": "ia/presentacion.html#claude-mcp-idea-general",
-    "title": "Docencia Digital",
-    "section": "Claude + MCP (idea general)",
-    "text": "Claude + MCP (idea general)\n\n\nMCP = protocolo para conectar el asistente con herramientas externas.\nPermite que el chat consulte fuentes, repositorios o sistemas especificos.\nEn docencia, puede servir para:\n\nbuscar contenidos institucionales,\nconsultar repositorios de curso,\nautomatizar flujos de apoyo academico.\n\n\n\n\nRecomendacion: partir simple (chat + documentos) y escalar a MCP solo cuando el flujo ya este claro."
-  },
-  {
-    "objectID": "ia/presentacion.html#otras-herramientas-utiles-para-docentes",
-    "href": "ia/presentacion.html#otras-herramientas-utiles-para-docentes",
-    "title": "Docencia Digital",
-    "section": "Otras herramientas utiles para docentes",
-    "text": "Otras herramientas utiles para docentes\n\n\nPerplexity: investigacion rapida con citas y contraste de fuentes.\nCanva Magic Studio: material visual para clases y redes academicas.\nGamma: borradores de presentaciones desde prompts.\nElicit: apoyo para revision de literatura.\nWolfram|Alpha: consultas matematicas y cientificas guiadas.\nKhanmigo / tutores IA: apoyo para aprendizaje personalizado (segun contexto institucional)."
-  },
-  {
-    "objectID": "ia/presentacion.html#prompting-docente-plantilla-util",
-    "href": "ia/presentacion.html#prompting-docente-plantilla-util",
-    "title": "Docencia Digital",
-    "section": "Prompting docente: plantilla util",
-    "text": "Prompting docente: plantilla util\nActua como apoyo pedagogico para [asignatura] en [nivel].\nObjetivo de la clase: [objetivo].\nDuracion: [minutos].\nPerfil del estudiantado: [contexto].\nGenera:\n1) apertura (5 min),\n2) actividad central,\n3) evaluacion formativa,\n4) cierre,\n5) rubrica breve.\nIncluye adaptaciones para estudiantes con distintos ritmos."
-  },
-  {
-    "objectID": "ia/presentacion.html#ejemplos-de-prompts-para-clase",
-    "href": "ia/presentacion.html#ejemplos-de-prompts-para-clase",
-    "title": "Docencia Digital",
-    "section": "Ejemplos de prompts para clase",
-    "text": "Ejemplos de prompts para clase\n\n\n“Genera 3 actividades activas sobre derivadas, con dificultad creciente y criterios de logro.”\n“Transforma este texto tecnico en una explicacion para primer ano universitario.”\n“Crea una rubrica de 4 niveles para evaluar un informe de laboratorio.”\n“Dame 5 preguntas tipo quiz con retroalimentacion inmediata.”"
-  },
-  {
-    "objectID": "ia/presentacion.html#riesgos-y-limites-hay-que-explicitar",
-    "href": "ia/presentacion.html#riesgos-y-limites-hay-que-explicitar",
-    "title": "Docencia Digital",
-    "section": "Riesgos y limites (hay que explicitar)",
-    "text": "Riesgos y limites (hay que explicitar)\n\n\nPuede inventar datos o referencias (alucinacion).\nPuede tener sesgos en respuestas.\nNo siempre cita fuentes de forma confiable.\nRiesgo de dependencia si no hay diseno pedagogico.\nPrivacidad: no subir datos sensibles o personales."
-  },
-  {
-    "objectID": "ia/presentacion.html#marco-de-uso-responsable-en-aula",
-    "href": "ia/presentacion.html#marco-de-uso-responsable-en-aula",
-    "title": "Docencia Digital",
-    "section": "Marco de uso responsable en aula",
-    "text": "Marco de uso responsable en aula\n\n\nTransparencia: declarar cuando se uso IA.\nVerificacion: contrastar datos con fuentes confiables.\nTrazabilidad: guardar prompts y version final.\nEvaluacion autentica: pedir proceso, no solo producto.\nProteccion de datos: anonimizar informacion de estudiantes."
-  },
-  {
-    "objectID": "ia/presentacion.html#actividad-guiada-15-min",
-    "href": "ia/presentacion.html#actividad-guiada-15-min",
-    "title": "Docencia Digital",
-    "section": "Actividad guiada (15 min)",
-    "text": "Actividad guiada (15 min)\n\n\nElegir una unidad de tu curso.\nProbar 1 chat (ChatGPT/Gemini/Claude) con la plantilla de prompt.\nProbar NotebookLM con 1-2 documentos del curso.\nComparar resultados: calidad, tiempo, utilidad.\nDefinir una regla de uso IA para tus estudiantes."
-  },
-  {
-    "objectID": "ia/presentacion.html#plan-de-adopcion-docente-simple",
-    "href": "ia/presentacion.html#plan-de-adopcion-docente-simple",
-    "title": "Docencia Digital",
-    "section": "Plan de adopcion docente (simple)",
-    "text": "Plan de adopcion docente (simple)\n\n\nSemana 1: usar IA para planificacion de clase.\nSemana 2: usar IA para crear quiz y rubricas.\nSemana 3: usar IA para feedback formativo.\nSemana 4: evaluar impacto (tiempo ahorrado + calidad percibida)."
-  },
-  {
-    "objectID": "ia/presentacion.html#cierre",
-    "href": "ia/presentacion.html#cierre",
-    "title": "Docencia Digital",
-    "section": "Cierre",
-    "text": "Cierre\n\nLa IA ya es parte del ecosistema educativo\nLa diferencia la marca el criterio pedagogico del docente"
-  },
-  {
-    "objectID": "ia/presentacion.html#gracias-por-participar",
-    "href": "ia/presentacion.html#gracias-por-participar",
-    "title": "Docencia Digital",
-    "section": "Gracias por Participar",
-    "text": "Gracias por Participar\n\n\n\nPreguntas?\nResponder encuesta\nA experimentar con IA en tu proxima clase!\n\n\n\n\n\nSitio: sethnut.com/talks"
-  },
-  {
-    "objectID": "overleaf/presentacion.html#te-ha-pasado-esto",
-    "href": "overleaf/presentacion.html#te-ha-pasado-esto",
-    "title": "Docencia Digital",
-    "section": "¿Te ha pasado esto?",
-    "text": "¿Te ha pasado esto?"
-  },
-  {
-    "objectID": "overleaf/presentacion.html#objetivos",
-    "href": "overleaf/presentacion.html#objetivos",
-    "title": "Docencia Digital",
-    "section": "Objetivos",
-    "text": "Objetivos\n\n\n\n\n\n\n\n\n\nConocer LaTeX: Qué es y por qué usarlo frente a otros editores.\n\nPrimeros pasos: Crear, compilar y estructurar un documento básico.\n\nElementos clave: Texto, secciones, listas, imágenes y fórmulas.\n\nBuenas prácticas: Organización, plantillas y recursos recomendados."
-  },
-  {
-    "objectID": "overleaf/presentacion.html#section",
-    "href": "overleaf/presentacion.html#section",
-    "title": "Docencia Digital",
-    "section": "",
-    "text": "LaTeX\n¿Qué es y por qué usarlo?"
-  },
-  {
-    "objectID": "overleaf/presentacion.html#qué-es-latex",
-    "href": "overleaf/presentacion.html#qué-es-latex",
-    "title": "Docencia Digital",
-    "section": "¿Qué es LaTeX?",
-    "text": "¿Qué es LaTeX?\n\n\n\n\n\n\n\n\n¿Qué es LaTeX?\n\nSistema para crear documentos académicos y científicos con formato profesional.\n\nVentajas:\n\nAutomatiza referencias, citas y ecuaciones.\n\nControl total sobre formato y estructura.\n\nIdeal para documentos extensos y complejos."
-  },
-  {
-    "objectID": "overleaf/presentacion.html#cómo-empezar",
-    "href": "overleaf/presentacion.html#cómo-empezar",
-    "title": "Docencia Digital",
-    "section": "¿Cómo empezar?",
-    "text": "¿Cómo empezar?\n\n\n\n\n\n\n\n\nEditor recomendado:\n\nOverleaf (en línea, sin instalación)\n\nInstalaciones locales:\n\nTeX Live, MiKTeX, MacTeX\n\nEditores útiles:\n\nTeXstudio, VSCode + LaTeX Workshop\n\n\n\n\n\n\n\n🌿 En este taller nos centraremos en Overleaf, fácil y en línea."
-  },
-  {
-    "objectID": "overleaf/presentacion.html#overleaf-latex-online",
-    "href": "overleaf/presentacion.html#overleaf-latex-online",
-    "title": "Docencia Digital",
-    "section": "Overleaf: LaTeX Online",
-    "text": "Overleaf: LaTeX Online\n\n\n\n\n\n\n\n\n¿Qué es?\n\nPlataforma en línea para escribir y compilar documentos en LaTeX sin instalación.\n\n¿Por qué usarlo?\n\nEdición colaborativa en tiempo real.\n\nIntegración con GitHub y la nube.\n\nCompilación y previsualización instantánea.\n\n\n\n\n\n\n\n🌿 Para este taller, crea tu cuenta gratuita en Overleaf."
-  },
-  {
-    "objectID": "overleaf/presentacion.html#section-3",
-    "href": "overleaf/presentacion.html#section-3",
-    "title": "Docencia Digital",
-    "section": "",
-    "text": "LaTeX\nManos a la Obra"
-  },
-  {
-    "objectID": "overleaf/presentacion.html#actividad-artículo-en-overleaf",
-    "href": "overleaf/presentacion.html#actividad-artículo-en-overleaf",
-    "title": "Docencia Digital",
-    "section": "Actividad: Artículo en Overleaf",
-    "text": "Actividad: Artículo en Overleaf\n\n\n\n\n\n\n\n\nNuevo proyecto en Overleaf.\nCopia la plantilla.\nEdita: título, texto e imágenes.\nCompila y revisa.\n(Extra) Añade cita y bibliografía.\n\n\n\n\n\n⏱️ Tiempo de la actividad: 05-10 minutos."
-  },
-  {
-    "objectID": "overleaf/presentacion.html#section-4",
-    "href": "overleaf/presentacion.html#section-4",
-    "title": "Docencia Digital",
-    "section": "",
-    "text": "LaTeX\nExplora y aprende con plantillas"
-  },
-  {
-    "objectID": "overleaf/presentacion.html#overleaf-gallery",
-    "href": "overleaf/presentacion.html#overleaf-gallery",
-    "title": "Docencia Digital",
-    "section": "Overleaf Gallery",
-    "text": "Overleaf Gallery\n\n\n\n\n\n\n\n\nPlantillas listas para usar:\n\nArtículos, tesis, pósters y presentaciones.\n\nAprende explorando:\n\nAbre una plantilla y estudia su código.\n\nPersonaliza y reutiliza:\n\nCambia texto, imágenes y estilo.\n\n\n\n\n\n\n🌿 Veamos algunos ejemplos en Overleaf Gallery."
-  },
-  {
-    "objectID": "overleaf/presentacion.html#section-6",
-    "href": "overleaf/presentacion.html#section-6",
-    "title": "Docencia Digital",
-    "section": "",
-    "text": "LaTeX\nMás Herramientas"
-  },
-  {
-    "objectID": "overleaf/presentacion.html#herramientas-útiles",
-    "href": "overleaf/presentacion.html#herramientas-útiles",
-    "title": "Docencia Digital",
-    "section": "Herramientas Útiles",
-    "text": "Herramientas Útiles\n\n\n\n\n\n\n\n\n📊 Tables Generator\nCrea y exporta fácilmente tablas en formato LaTeX.\n🔢 LaTeX Equation Editor\nGenera ecuaciones LaTeX en tiempo real.\n🧾 BibTeX Editor\nCrea referencias bibliográficas en formato BibTeX.\n🧠 Detexify\nDibuja un símbolo y encuentra su comando LaTeX."
-  },
-  {
-    "objectID": "overleaf/presentacion.html#latex-inteligencia-artificial",
-    "href": "overleaf/presentacion.html#latex-inteligencia-artificial",
-    "title": "Docencia Digital",
-    "section": "LaTeX + Inteligencia Artificial",
-    "text": "LaTeX + Inteligencia Artificial\n\n\n\n\n\n\n\n\nChatGPT, Gemini, DeepSeek:\n\nGeneran y corrigen código LaTeX.\nCrean ecuaciones, tablas y bibliografía.\nExplican comandos y paquetes.\nMejoran el formato y detectan errores.\n\n\n\n\n\n\n🤖 Consejo: usa prompts claros, incluye tu código y pide explicaciones paso a paso."
-  },
-  {
-    "objectID": "overleaf/presentacion.html#ejemplos-de-prompts",
-    "href": "overleaf/presentacion.html#ejemplos-de-prompts",
-    "title": "Docencia Digital",
-    "section": "Ejemplos de Prompts",
-    "text": "Ejemplos de Prompts\n\nFórmulasEstructuraciónCorrección\n\n\n\n\n✨ Prompt:\n“Escríbeme la fórmula de la función cuadrática en LaTeX.”\n\n✅ Esperado:\n¡Por supuesto! Aquí tienes la fórmula cuadrática escrita en LaTeX:\nx = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}\n\n\n\n\n\n\n✨ Prompt:\n“Haz una tabla de derivadas básicas en LaTeX (función vs. derivada).”\n\n✅ Esperado:\n\\begin{tabular}{|c|c|}\n\\hline\n\\textbf{Función} & \\textbf{Derivada} \\\\\n\\hline\n$c$ & $0$ \\\\\n$x$ & $1$ \\\\\n$x^n$ & $nx^{n-1}$ \\\\\n$\\sqrt{x}$ & $\\dfrac{1}{2\\sqrt{x}}$ \\\\\n...\n\\hline\n\\end{tabular}\n\n\n\n\n\n\n✨ Prompt:\n“Estoy tratando de compilar esta ecuación en LaTeX, pero me da error. ¿Me puedes ayudar?”\n\\begin{equation}\nf(x) = \\int_0^\\infty e^-x^2 dx\n\\end{equation}\n\n✅ Esperado:\n❌ e^-x^2 está mal escrito. Falta agrupar el exponente con llaves.\n❌ Se recomienda escribir \\,dx para buena tipografía."
-  },
-  {
-    "objectID": "overleaf/presentacion.html#section-8",
-    "href": "overleaf/presentacion.html#section-8",
-    "title": "Docencia Digital",
-    "section": "",
-    "text": "LaTeX\nManos a la Obra"
-  },
-  {
-    "objectID": "overleaf/presentacion.html#actividad-beamer-en-overleaf",
-    "href": "overleaf/presentacion.html#actividad-beamer-en-overleaf",
-    "title": "Docencia Digital",
-    "section": "Actividad: Beamer en Overleaf",
-    "text": "Actividad: Beamer en Overleaf\n\n\n\n\n\n\n\n\nNuevo proyecto en Overleaf.\nCopia la plantilla.\nEdita: título, texto e imágenes.\nCompila y revisa.\n(Extra) Añade cita y bibliografía.\n\n\n\n\n\n⏱️ Tiempo de la actividad: 05-10 minutos."
-  },
-  {
-    "objectID": "overleaf/presentacion.html#section-9",
-    "href": "overleaf/presentacion.html#section-9",
-    "title": "Docencia Digital",
-    "section": "",
-    "text": "LaTeX\nConclusiones"
-  },
-  {
-    "objectID": "overleaf/presentacion.html#conclusiones",
-    "href": "overleaf/presentacion.html#conclusiones",
-    "title": "Docencia Digital",
-    "section": "Conclusiones",
-    "text": "Conclusiones\n \n\n✅ LaTeX permite redactar textos con calidad profesional.  ✅ Ofrece control total en diseño y estructura.  ✅ Existen varias herramientas que simplifican su uso.  ✅ Con IA, trabajar en LaTeX resulta más eficiente.  ✅ Overleaf facilita empezar sin instalar programas."
-  },
-  {
-    "objectID": "overleaf/presentacion.html#gracias-por-participar",
-    "href": "overleaf/presentacion.html#gracias-por-participar",
-    "title": "Docencia Digital",
-    "section": "🎉 ¡Gracias por Participar!",
-    "text": "🎉 ¡Gracias por Participar!\n\n\n\n❓¿Preguntas?\n👏 Responder encuesta\n🥳 Disfrutar del Evento!\n\n\n\n\n\n🔗 Nuestro Sitio Web: sethnut.com/talks"
+    "text": "Gracias por Participar\n\n\n\nPreguntas?\nResponder encuesta\nA crear tu primer notebook!\n\n\n\n\nSitio: sethnut.com/talks"
   }
 ]

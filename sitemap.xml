@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://sethnut.com/CEEMAT_2025/quarto/presentacion.html</loc>
-    <lastmod>2026-02-28T13:46:14.728Z</lastmod>
-  </url>
-  <url>
-    <loc>https://sethnut.com/CEEMAT_2025/index.html</loc>
-    <lastmod>2026-02-28T13:46:14.528Z</lastmod>
-  </url>
-  <url>
-    <loc>https://sethnut.com/CEEMAT_2025/github/presentacion.html</loc>
-    <lastmod>2026-02-28T13:46:14.434Z</lastmod>
-  </url>
-  <url>
     <loc>https://sethnut.com/CEEMAT_2025/anexos.html</loc>
-    <lastmod>2026-02-28T13:46:14.259Z</lastmod>
+    <lastmod>2026-02-28T14:20:15.559Z</lastmod>
   </url>
   <url>
     <loc>https://sethnut.com/CEEMAT_2025/00_intro/presentacion.html</loc>
-    <lastmod>2026-02-28T13:46:14.236Z</lastmod>
-  </url>
-  <url>
-    <loc>https://sethnut.com/CEEMAT_2025/colab/presentacion.html</loc>
-    <lastmod>2026-02-28T13:46:14.342Z</lastmod>
+    <lastmod>2026-02-28T14:20:15.556Z</lastmod>
   </url>
   <url>
     <loc>https://sethnut.com/CEEMAT_2025/ia/presentacion.html</loc>
-    <lastmod>2026-02-28T13:46:14.516Z</lastmod>
+    <lastmod>2026-02-28T14:20:15.651Z</lastmod>
   </url>
   <url>
     <loc>https://sethnut.com/CEEMAT_2025/overleaf/presentacion.html</loc>
-    <lastmod>2026-02-28T13:46:14.626Z</lastmod>
+    <lastmod>2026-02-28T14:20:15.697Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sethnut.com/CEEMAT_2025/index.html</loc>
+    <lastmod>2026-02-28T14:20:15.656Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sethnut.com/CEEMAT_2025/github/presentacion.html</loc>
+    <lastmod>2026-02-28T14:20:15.619Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sethnut.com/CEEMAT_2025/quarto/presentacion.html</loc>
+    <lastmod>2026-02-28T14:20:15.728Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sethnut.com/CEEMAT_2025/colab/presentacion.html</loc>
+    <lastmod>2026-02-28T14:20:15.589Z</lastmod>
   </url>
 </urlset>
