@@ -1,0 +1,1206 @@
+---
+title: "Presentaciones con RevealJS"
+subtitle: "Slides académicas con código, ecuaciones y notas del presentador"
+---
+
+RevealJS es el sistema de presentaciones HTML de Quarto. A diferencia de PowerPoint (donde el archivo `.pptx` es el resultado) o Beamer (donde el `.pdf` es el resultado), una presentación RevealJS es un sitio web — se ejecuta en el navegador, puede contener código vivo, animaciones, audio, video, y se puede publicar directamente en GitHub Pages junto con el resto del material del curso.
+
+Para un docente de ingeniería o matemáticas, la ventaja más concreta es esta: el mismo archivo `.qmd` que usas para el apunte de la semana también puede producir las slides de esa semana. Mantienes un solo lugar de verdad.
+
+---
+
+## Crear slides desde un archivo `.qmd`
+
+### El frontmatter mínimo
+
+Una presentación RevealJS es un archivo `.qmd` con `format: revealjs` en el frontmatter:
+
+```yaml
+---
+title: "Regresión Lineal Simple"
+subtitle: "MAT281 · Semana 5"
+author: "Prof. Juan Pérez"
+date: "Abril 2025"
+format: revealjs
+---
+```
+
+Con solo eso, Quarto renderiza el archivo como una presentación HTML completa.
+
+```bash
+# Renderizar la presentación
+quarto render semana05_slides.qmd
+
+# Preview en vivo (se actualiza al guardar)
+quarto preview semana05_slides.qmd
+```
+
+### Estructura completa del frontmatter
+
+```yaml
+---
+title: "Regresión Lineal Simple"
+subtitle: "MAT281 · Semana 5"
+author: "Prof. Juan Pérez"
+institute: "Departamento de Matemáticas · UTFSM"
+date: "Abril 2025"
+lang: es
+
+format:
+  revealjs:
+    # ── Tema visual ────────────────────────────────────────
+    theme: [default, assets/scss/slides.scss]
+    # Temas: default, dark, moon, sky, blood, night,
+    #         league, beige, serif, simple, solarized
+
+    # ── Identidad ─────────────────────────────────────────
+    logo: assets/img/brand/brand__usm.png
+    footer: "MAT281 — 2025-1 · [Volver al sitio](../../index.html)"
+
+    # ── Dimensiones ────────────────────────────────────────
+    width: 1280
+    height: 720
+    margin: 0.1          # margen exterior como fracción del tamaño
+
+    # ── Numeración ─────────────────────────────────────────
+    slide-number: "c/t"  # current/total
+    # Opciones: true | false | "c" | "t" | "c/t" | "h/v" | "h.v"
+
+    # ── Navegación ─────────────────────────────────────────
+    controls: true        # flechas de navegación
+    progress: true        # barra de progreso inferior
+    history: true         # navegación con botón Atrás del browser
+    keyboard: true        # atajos de teclado
+    overview: true        # vista general con Esc
+
+    # ── Transiciones ──────────────────────────────────────
+    transition: slide     # none | fade | slide | convex | concave | zoom
+    transition-speed: default  # default | fast | slow
+    background-transition: fade  # transición del fondo entre slides
+
+    # ── Código ────────────────────────────────────────────
+    highlight-style: github
+    code-line-numbers: true    # número de línea en bloques de código
+    code-copy: true
+
+    # ── Herramientas de presentador ────────────────────────
+    chalkboard: true           # pizarrón virtual (tecla B)
+    pointer: true              # puntero láser virtual (tecla Q)
+
+    # ── Scroll en slides densas ────────────────────────────
+    scrollable: false    # true = scroll en slides que no caben
+
+    # ── Auto-animación (morph) ─────────────────────────────
+    auto-animate: true   # animación automática entre slides con mismo id
+
+execute:
+  echo: true
+  warning: false
+  message: false
+  freeze: auto
+---
+```
+
+---
+
+## Separadores de slide: `##` y `---`
+
+### Cómo funciona la división en slides
+
+Quarto convierte el Markdown en slides usando dos tipos de separadores:
+
+```{mermaid}
+graph TD
+    QMD["Archivo .qmd"]
+    QMD --> H1["# Título de sección\n→ Slide de título de sección\n(fondo completo)"]
+    QMD --> H2["## Título de slide\n→ Nueva slide\n(el separador más común)"]
+    QMD --> HR["---\n→ Nueva slide sin título\n(separador horizontal)"]
+    QMD --> H1N["# sin contenido abajo\n→ Slide de título de sección\ncuando slide-level: 2"]
+```
+
+**Regla general con `slide-level: 2` (el valor por defecto):**
+
+- `#` → Slide de sección (fondo completo, sin contenido adicional)
+- `##` → Slide normal (con título)
+- `---` → Slide sin título (útil para imágenes o contenido de pantalla completa)
+
+```markdown
+---
+title: "Mi presentación"
+format: revealjs
+---
+
+# Parte I: Motivación
+
+## ¿Por qué regresión lineal?
+
+Contenido de esta slide...
+
+## El problema en contexto
+
+Más contenido...
+
+---
+
+![Imagen a pantalla completa](grafico.png)
+
+# Parte II: El modelo
+
+## Definición formal
+
+$Y_i = \beta_0 + \beta_1 X_i + \varepsilon_i$
+```
+
+### Niveles de encabezado y `slide-level`
+
+```yaml
+format:
+  revealjs:
+    slide-level: 2    # default — ## crea slides
+    # slide-level: 3 → ### crea slides, ## crea secciones
+```
+
+Con `slide-level: 3`:
+- `#` → sección de nivel 1
+- `##` → subsección (fondo de sección)
+- `###` → slide normal
+
+Esto permite documentos más largos con `#` para partes del curso, `##` para temas dentro de cada parte, y `###` para cada slide individual.
+
+### Slides con layout vertical (`---` dentro de sección)
+
+RevealJS soporta dos dimensiones de navegación: horizontal (entre temas) y vertical (dentro de un tema):
+
+```markdown
+## Tema principal (navegación horizontal →)
+
+### Subtema A (navegación vertical ↓)
+
+Contenido del subtema A.
+
+### Subtema B
+
+Contenido del subtema B.
+
+### Subtema C
+
+Contenido del subtema C.
+
+## Siguiente tema principal (→)
+```
+
+La tecla `Esc` muestra una vista de pájaro con todos los slides organizados en su grid 2D.
+
+---
+
+## Fragmentos, animaciones e incremental bullets
+
+### Incremental bullets
+
+Para revelar bullets uno a uno:
+
+```yaml
+# Globalmente para toda la presentación
+format:
+  revealjs:
+    incremental: true
+```
+
+```markdown
+# Solo para una lista específica (aunque el global esté en false)
+::: {.incremental}
+- Primer punto que aparece solo
+- Segundo punto que aparece al avanzar
+- Tercer punto al avanzar de nuevo
+:::
+```
+
+```markdown
+# Desactivar incremental para una lista específica (cuando el global es true)
+::: {.nonincremental}
+- Este aparece de golpe
+- Con todos los puntos juntos
+:::
+```
+
+### Fragments: revelar cualquier contenido paso a paso
+
+Los fragmentos funcionan para cualquier elemento — no solo listas:
+
+```markdown
+Este texto está visible desde el principio.
+
+::: {.fragment}
+Este párrafo aparece al avanzar.
+:::
+
+::: {.fragment .fade-in}
+Este aparece con fade-in.
+:::
+
+::: {.fragment .highlight-red}
+Este texto existe desde el principio, pero se resalta al avanzar.
+:::
+
+::: {.fragment .fade-out}
+Este existe desde el principio y desaparece al avanzar.
+:::
+```
+
+**Clases de animación disponibles para fragments:**
+
+| Clase | Efecto |
+|---|---|
+| `.fade-in` | Aparece con desvanecimiento (por defecto) |
+| `.fade-up` | Aparece subiendo desde abajo |
+| `.fade-down` | Aparece bajando desde arriba |
+| `.fade-left` | Aparece desde la derecha |
+| `.fade-right` | Aparece desde la izquierda |
+| `.fade-in-then-out` | Aparece y luego desaparece |
+| `.fade-in-then-semi-out` | Aparece y luego se vuelve transparente |
+| `.highlight-red` | Se resalta en rojo |
+| `.highlight-blue` | Se resalta en azul |
+| `.highlight-green` | Se resalta en verde |
+| `.strike` | Aparece tachado |
+| `.grow` | Crece de tamaño |
+| `.shrink` | Encoge |
+
+### Orden de fragments con `fragment-index`
+
+```markdown
+## Construcción del modelo paso a paso
+
+::: {.fragment fragment-index=1}
+**Paso 1:** Explorar los datos con scatter plot.
+:::
+
+::: {.fragment fragment-index=3}
+**Paso 3:** Verificar supuestos con residuos.
+:::
+
+::: {.fragment fragment-index=2}
+**Paso 2:** Ajustar el modelo por mínimos cuadrados.
+:::
+```
+
+Los fragments aparecen en el orden de su índice, independientemente de su posición en el código.
+
+### Auto-animación entre slides
+
+Con `auto-animate: true` en el frontmatter, RevealJS anima automáticamente elementos que aparecen en ambas slides (matched por contenido o por `data-id`):
+
+```markdown
+## Código sin ejecutar
+
+```python
+X = datos['horas']
+y = datos['nota']
+```
+
+## Código con resultado {auto-animate="true"}
+
+```python
+X = datos['horas']
+y = datos['nota']
+modelo = LinearRegression().fit(X.reshape(-1,1), y)
+print(f"R² = {modelo.score(X.reshape(-1,1), y):.4f}")
+```
+```
+
+El código de la primera slide se anima moviéndose y el código nuevo aparece fluidamente.
+
+### Transiciones por slide individual
+
+```markdown
+## Slide con transición especial {transition="zoom"}
+
+Esta slide usa zoom en lugar de la transición global.
+
+## Slide sin transición {transition="none"}
+
+Esta slide aparece sin animación.
+
+## Slide con fade {transition="fade" transition-speed="slow"}
+
+Esta usa fade lento.
+```
+
+---
+
+## Temas predefinidos y personalización con CSS
+
+### Los temas incluidos
+
+```{mermaid}
+graph LR
+    T["Temas RevealJS"]
+    T --> CL["☀️ Claros\ndefault · beige\nsimple · white\nserif · sky · solarized"]
+    T --> DA["🌙 Oscuros\ndark · blood\nmoon · night\nleague"]
+```
+
+Para elegir un tema:
+
+```yaml
+format:
+  revealjs:
+    theme: moon          # un tema incorporado
+    # o
+    theme: dark
+    # o tema personalizado:
+    theme: [default, mi_estilo.scss]
+```
+
+### Crear un tema personalizado con SCSS
+
+El archivo SCSS sobreescribe las variables del tema base:
+
+```scss
+// assets/scss/slides.scss
+
+/*-- scss:defaults --*/
+
+// ── Colores institucionales UTFSM ─────────────────────────────
+$usm-azul:    #003087;
+$usm-azul-cl: #1a4fa0;
+$usm-rojo:    #D00000;
+$usm-gris:    #4a4a4a;
+$usm-gris-cl: #f5f5f5;
+
+// ── Variables de RevealJS que sobreescribimos ─────────────────
+$backgroundColor:     #ffffff;          // fondo de las slides
+$mainColor:           $usm-gris;        // texto principal
+$headingColor:        $usm-azul;        // color de los títulos
+$linkColor:           $usm-azul-cl;     // color de links
+$selectionBackgroundColor: $usm-rojo;   // selección de texto
+
+// ── Tipografía ────────────────────────────────────────────────
+$mainFont:            'Source Sans Pro', 'Helvetica Neue', sans-serif;
+$headingFont:         'Source Sans Pro', 'Helvetica Neue', sans-serif;
+$codeFont:            'Source Code Pro', 'Fira Code', monospace;
+$mainFontSize:        38px;             // tamaño base del texto
+$headingFontWeight:   600;
+$heading1Size:        1.8em;
+$heading2Size:        1.4em;
+$heading3Size:        1.1em;
+
+/*-- scss:rules --*/
+
+// ── Encabezado de slide ───────────────────────────────────────
+.reveal h2 {
+  border-bottom: 3px solid $usm-rojo;
+  padding-bottom: 0.2em;
+  margin-bottom: 0.6em;
+}
+
+// ── Bloques de código ─────────────────────────────────────────
+.reveal pre {
+  border-left: 4px solid $usm-azul;
+  border-radius: 4px;
+  box-shadow: none;
+}
+
+.reveal code {
+  background: #f4f4f8;
+  border-radius: 3px;
+  padding: 0.1em 0.3em;
+  font-size: 0.85em;
+}
+
+// ── Callouts dentro de slides ─────────────────────────────────
+.reveal .callout {
+  font-size: 0.85em;
+  margin: 0.5em 0;
+}
+
+// ── Footer personalizado ──────────────────────────────────────
+.reveal .slide-footer {
+  color: $usm-gris;
+  font-size: 0.5em;
+  opacity: 0.7;
+}
+
+// ── Slide de título ───────────────────────────────────────────
+.reveal .title-slide {
+  background-color: $usm-azul;
+
+  .title {
+    color: white;
+    font-size: 1.6em;
+    text-shadow: none;
+  }
+
+  .subtitle {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.9em;
+  }
+
+  .author, .date, .institute {
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 0.7em;
+  }
+}
+
+// ── Slide de sección (#) ──────────────────────────────────────
+.reveal .slide-background.section-background {
+  background-color: $usm-azul-cl;
+}
+
+// ── Tablas ────────────────────────────────────────────────────
+.reveal table {
+  font-size: 0.7em;
+  border-collapse: collapse;
+  margin: auto;
+
+  th {
+    background: $usm-azul;
+    color: white;
+    padding: 0.4em 0.8em;
+  }
+
+  td {
+    padding: 0.3em 0.8em;
+    border-bottom: 1px solid #eee;
+  }
+
+  tr:nth-child(even) td {
+    background: $usm-gris-cl;
+  }
+}
+
+// ── Highlight boxes para énfasis ──────────────────────────────
+.highlight-box {
+  background: $usm-gris-cl;
+  border-left: 4px solid $usm-rojo;
+  border-radius: 4px;
+  padding: 0.6em 1em;
+  margin: 0.5em 0;
+}
+
+.definition-box {
+  background: #e8f0fd;
+  border: 1px solid $usm-azul-cl;
+  border-radius: 6px;
+  padding: 0.8em 1.2em;
+}
+```
+
+### Fondo de slides personalizado
+
+```markdown
+## Slide con fondo de color {background-color="#003087"}
+
+Texto en slide con fondo azul UTFSM.
+
+## Slide con imagen de fondo {background-image="assets/img/bg/campus.jpg" background-opacity="0.3"}
+
+El texto va encima de la imagen con opacidad reducida.
+
+## Slide con gradiente {background="linear-gradient(135deg, #003087 0%, #1a4fa0 100%)"}
+
+Fondo con gradiente CSS.
+```
+
+### Clases CSS en slides individuales
+
+```markdown
+## Slide con clase personalizada {.smaller}
+
+El texto de esta slide usa una fuente más pequeña,
+útil para slides con mucho contenido.
+
+## Slide centrada {.center}
+
+Todo el contenido está centrado.
+
+## Slide con columnas {.columns-2}
+```
+
+---
+
+## Layouts de slides: columnas y posicionamiento
+
+### Dos columnas
+
+```markdown
+## Motivación: datos y modelo
+
+:::: {.columns}
+
+::: {.column width="50%"}
+**Los datos:**
+
+```python
+#| echo: false
+#| fig-width: 5
+#| fig-height: 4
+import seaborn as sns
+sns.scatterplot(data=df, x='horas_estudio', y='nota_final')
+```
+:::
+
+::: {.column width="50%"}
+**El modelo:**
+
+$$Y_i = \beta_0 + \beta_1 X_i + \varepsilon_i$$
+
+- $Y_i$: nota final del estudiante $i$
+- $X_i$: horas de estudio semanales
+- $\varepsilon_i$: error aleatorio $\sim \mathcal{N}(0, \sigma^2)$
+:::
+
+::::
+```
+
+### Tres columnas con comparación
+
+```markdown
+## Comparación de modelos
+
+:::: {.columns}
+
+::: {.column width="33%"}
+### Lineal
+$$Y = \beta_0 + \beta_1 X$$
+**R² = 0.71**
+Rápido, interpretable
+:::
+
+::: {.column width="33%"}
+### Random Forest
+Promedio de árboles de decisión
+**R² = 0.79**
+Robusto, no lineal
+:::
+
+::: {.column width="33%"}
+### XGBoost
+Boosting con gradiente
+**R² = 0.84** ✅
+Alta precisión
+:::
+
+::::
+```
+
+### Aside y notas al margen
+
+```markdown
+## Resultados del análisis
+
+El modelo explica el 84% de la varianza.
+
+::: {.aside}
+**Nota técnica:** El $R^2$ ajustado (penaliza el número de variables)
+es 0.83 — muy similar al $R^2$ ordinario, lo que sugiere que
+el modelo no está sobreajustado.
+:::
+```
+
+---
+
+## Código en vivo durante la presentación
+
+### Mostrar código sin ejecutar (para clase)
+
+Para demos en vivo, a veces quieres mostrar el código en la slide y ejecutarlo en tu terminal o en Colab simultáneamente:
+
+````markdown
+## Demo: ajustar el modelo
+
+```python
+#| eval: false      # no ejecutar — lo haremos en vivo
+#| code-line-numbers: "|1-2|4-5|7"
+#                     ^ resaltar líneas progresivamente
+
+from sklearn.linear_model import LinearRegression
+import numpy as np
+
+X = datos[['horas_estudio']]
+y = datos['nota_final']
+
+modelo = LinearRegression().fit(X, y)
+```
+````
+
+El `code-line-numbers: "|1-2|4-5|7"` resalta líneas en secuencia al avanzar:
+- Primero: líneas 1-2 (imports)
+- Luego: líneas 4-5 (datos)
+- Luego: línea 7 (ajuste)
+
+### Resaltar líneas de código
+
+```yaml
+# Resaltado estático (varias líneas a la vez)
+#| code-line-numbers: "3,5,7"        # líneas 3, 5 y 7
+
+# Resaltado progresivo (al avanzar)
+#| code-line-numbers: "|3|5|7"       # vacío → línea 3 → línea 5 → línea 7
+
+# Rangos
+#| code-line-numbers: "1-3|5-8"      # líneas 1-3, luego 5-8
+
+# Todo resaltado al principio, luego solo parte
+#| code-line-numbers: "1-10|3-4"
+```
+
+### Código ejecutable en la presentación (WASM)
+
+RevealJS puede ejecutar código Python directamente en el navegador usando WebAssembly (Pyodide). No requiere servidor:
+
+````markdown
+```{pyodide-python}
+# Este código se ejecuta EN el navegador durante la presentación
+import numpy as np
+
+x = np.array([1, 2, 3, 4, 5])
+y = 2 * x + np.random.normal(0, 0.5, 5)
+print(f"Correlación: {np.corrcoef(x, y)[0,1]:.4f}")
+```
+````
+
+Para activarlo, agrega en el frontmatter:
+
+```yaml
+format:
+  revealjs:
+    # No se necesita configuración extra — Quarto lo detecta automáticamente
+    # Solo usa ```{pyodide-python} en lugar de ```python
+```
+
+::: {.callout-warning}
+## Limitaciones del modo WASM
+El modo pyodide-python carga Pyodide (~20MB) en el navegador. Solo funciona con librerías puras Python — pandas, numpy, scikit-learn funcionan, pero no librerías con código nativo como lightgbm o algunos backends de matplotlib. Úsalo para demos simples e interactivos, no para análisis complejos.
+:::
+
+---
+
+## Speaker notes con `:::notes`
+
+### Agregar notas del presentador
+
+```markdown
+## El teorema de Gauss-Markov
+
+Bajo los supuestos de Gauss-Markov, los estimadores MCO son MELI.
+
+::: {.notes}
+Recordar mencionar aquí:
+- Los supuestos son: linealidad, exogeneidad estricta, no multicolinealidad,
+  homocedasticidad, no autocorrelación
+- La demostración por desigualdad de Cauchy-Schwarz está en el apunte
+- Este resultado es la justificación teórica de por qué usamos MCO
+- Tiempo estimado para este slide: 4 minutos
+
+Pregunta para la clase: ¿qué pasa si la varianza NO es constante?
+→ Mínimos cuadrados generalizados (próxima semana)
+:::
+```
+
+Las notas aparecen solo en el **modo presentador** (tecla `S`), nunca en la proyección principal.
+
+### El modo presentador
+
+Al presionar `S` durante la presentación, se abre una ventana separada con:
+
+```
+┌──────────────────────────────────────────────────────┐
+│                 MODO PRESENTADOR                      │
+├──────────────────┬───────────────────────────────────┤
+│                  │                                   │
+│  Slide actual    │  Slide siguiente                 │
+│  (lo que ven     │  (vista previa de lo que viene)   │
+│  los estudiantes)│                                   │
+│                  │                                   │
+├──────────────────┴───────────────────────────────────┤
+│  ⏱️ 00:12:34 | Slide 8/24                            │
+├──────────────────────────────────────────────────────┤
+│  📝 NOTAS:                                           │
+│  Recordar mencionar aquí:                            │
+│  - Los supuestos son: linealidad, exogeneidad...     │
+│  Tiempo estimado: 4 minutos                          │
+│  Pregunta: ¿qué pasa si la varianza NO es constante? │
+└──────────────────────────────────────────────────────┘
+```
+
+### Atajos de teclado durante la presentación
+
+| Tecla | Acción |
+|---|---|
+| `→` / `Space` | Avanzar al siguiente slide/fragment |
+| `←` | Retroceder |
+| `↓` / `↑` | Navegar verticalmente (slides apiladas) |
+| `F` | Pantalla completa |
+| `S` | Abrir modo presentador |
+| `O` / `Esc` | Vista general (overview) de todos los slides |
+| `B` | Activar pizarrón virtual (si `chalkboard: true`) |
+| `Q` | Activar puntero láser (si `pointer: true`) |
+| `C` | Dibujar en el pizarrón |
+| `Ctrl+Shift+F` | Buscar texto en la presentación |
+| `Alt+↑/↓` | Ir al primer/último slide |
+| `G` | Ir a un número de slide específico |
+| `?` | Ver todos los atajos disponibles |
+
+---
+
+## Exportar a PDF para entregar
+
+### Método 1: desde el navegador (más simple)
+
+1. Abre la presentación en Chrome o Chromium
+2. Agrega `?print-pdf` al final de la URL: `presentacion.html?print-pdf`
+3. La presentación se reformatea para impresión
+4. `Ctrl+P` → Guardar como PDF
+5. Configurar: Sin márgenes, Tamaño A4 o Letter, Fondo gráfico activado
+
+### Método 2: con Quarto y Chrome headless (automatizable)
+
+```bash
+# Quarto usa Chrome headless para el PDF
+quarto render semana05_slides.qmd --to revealjs
+
+# Convertir el HTML a PDF automáticamente
+# (requiere Chrome instalado)
+quarto render semana05_slides.qmd --to pdf
+```
+
+Esto funciona porque Quarto puede usar Chrome en modo headless para capturar el HTML como PDF.
+
+### Método 3: definir ambos formatos en el frontmatter
+
+```yaml
+format:
+  revealjs:
+    theme: [default, assets/scss/slides.scss]
+    slide-number: true
+    # ... resto de opciones ...
+
+  pdf:
+    documentclass: beamer       # usa la clase Beamer de LaTeX
+    aspectratio: 169            # 16:9
+    theme: default
+```
+
+```bash
+quarto render semana05_slides.qmd --to pdf
+```
+
+### Método 4: con `decktape` (máximo control)
+
+```bash
+# Instalar decktape
+npm install -g decktape
+
+# Convertir a PDF (con todas las animaciones capturadas)
+decktape reveal semana05_slides.html semana05_slides.pdf
+
+# Con tamaño personalizado
+decktape reveal --size 1280x720 semana05_slides.html semana05_slides.pdf
+
+# Solo capturar ciertos slides
+decktape reveal --slides 1-10 semana05_slides.html primeros10.pdf
+```
+
+### Ajustar para impresión en PDF
+
+Algunos elementos de HTML no se ven bien en PDF. Usa CSS condicional:
+
+```scss
+// assets/scss/slides.scss
+// Solo en modo print-pdf
+@media print {
+  .reveal .slide-footer {
+    display: none;    // ocultar footer en PDF
+  }
+
+  .reveal pre code {
+    font-size: 0.65em;    // código más pequeño en papel
+  }
+
+  // Asegurar que el fondo se imprime
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
+```
+
+---
+
+## Publicar la presentación en GitHub Pages
+
+Una presentación RevealJS es un archivo HTML — se puede publicar exactamente igual que el sitio del curso:
+
+```yaml
+# En _quarto.yml del proyecto
+project:
+  type: website
+
+website:
+  navbar:
+    left:
+      - href: index.qmd
+        text: Inicio
+      - href: lectures/index.qmd
+        text: Clases
+
+# Las slides de cada semana se publican automáticamente
+```
+
+```bash
+# Publicar el proyecto completo (incluyendo las slides)
+quarto publish gh-pages
+```
+
+Resultado: `tu-username.github.io/mat281/lectures/semana05/slides.html`
+
+Los estudiantes pueden:
+- Ver las slides en el navegador sin instalar nada
+- Navegar con el teclado exactamente como tú en clase
+- Descargar el PDF si lo necesitan
+
+---
+
+## Caso de cierre: clase completa en RevealJS
+
+La siguiente presentación es una clase completa de 50 minutos lista para usar. Integra todas las funcionalidades cubiertas en este capítulo.
+
+```{.qmd filename="lectures/semana05/slides.qmd"}
+---
+title: "Regresión Lineal Simple"
+subtitle: "MAT281 · Semana 5 · Estimación y Diagnóstico"
+author: "Prof. Juan Pérez"
+institute: "Depto. de Matemáticas · UTFSM"
+date: "Abril 2025"
+lang: es
+
+format:
+  revealjs:
+    theme: [default, ../../assets/scss/slides.scss]
+    logo: ../../assets/img/brand/brand__usm.png
+    footer: "MAT281 — 2025-1 · [Volver al curso](../../index.html)"
+    slide-number: "c/t"
+    width: 1280
+    height: 720
+    transition: slide
+    chalkboard: true
+    pointer: true
+    code-line-numbers: true
+    highlight-style: github
+    incremental: false
+
+execute:
+  echo: true
+  warning: false
+  message: false
+  freeze: auto
+---
+
+## Agenda de hoy {.smaller}
+
+::: {.nonincremental}
+1. **Motivación:** ¿cuándo predecir con una recta?
+2. **El modelo:** $Y_i = \beta_0 + \beta_1 X_i + \varepsilon_i$
+3. **Estimación:** mínimos cuadrados ordinarios (MCO)
+4. **Bondad de ajuste:** $R^2$ e interpretación
+5. **Diagnóstico:** gráficos de residuos
+6. **En Python:** demo con scikit-learn
+:::
+
+::: {.notes}
+Bienvenida. Recordar que hoy es la única sesión antes de la tarea 2
+(que cubre exactamente este contenido). Ir despacio en la sección de MCO.
+Tiempo total: 50 min. Dejar 10 min para preguntas al final.
+:::
+
+---
+
+# Parte I: Motivación
+
+## El problema que queremos resolver
+
+:::: {.columns}
+
+::: {.column width="55%"}
+**Contexto:** tenemos datos de estudiantes — horas de estudio y nota final.
+
+**Pregunta:** dado que un estudiante estudia $x$ horas, ¿qué nota esperamos?
+
+::: {.fragment .fade-up}
+**Respuesta (spoiler):** una función lineal $\hat{y} = \hat{\beta}_0 + \hat{\beta}_1 x$
+:::
+:::
+
+::: {.column width="45%"}
+```python
+#| echo: false
+#| fig-width: 5
+#| fig-height: 4
+import numpy as np, matplotlib.pyplot as plt, seaborn as sns
+
+np.random.seed(42)
+n = 50
+X = np.random.uniform(2, 14, n)
+y = 2.5 + 0.28 * X + np.random.normal(0, 0.5, n)
+y = np.clip(y, 1, 7)
+
+fig, ax = plt.subplots(figsize=(5, 4))
+ax.scatter(X, y, alpha=0.7, s=60, color='#2196F3', edgecolors='white')
+ax.set_xlabel('Horas de estudio', fontsize=12)
+ax.set_ylabel('Nota final', fontsize=12)
+ax.spines[['top', 'right']].set_visible(False)
+ax.grid(alpha=0.3)
+plt.tight_layout()
+plt.show()
+```
+:::
+
+::::
+
+::: {.notes}
+Dar 1 minuto para que los estudiantes observen el gráfico antes de continuar.
+Pregunta: ¿observan alguna relación? ¿en qué dirección?
+:::
+
+---
+
+# Parte II: El modelo
+
+## Definición formal
+
+::: {.definition-box}
+**Modelo de regresión lineal simple:**
+
+$$Y_i = \beta_0 + \beta_1 X_i + \varepsilon_i, \qquad i = 1, \ldots, n$$
+
+donde $\varepsilon_i \sim \mathcal{N}(0, \sigma^2)$ i.i.d.
+:::
+
+::: {.fragment}
+**¿Qué significa cada término?**
+:::
+
+::: {.incremental}
+- $Y_i$: variable **respuesta** (nota final del estudiante $i$)
+- $X_i$: variable **predictora** (horas de estudio del estudiante $i$)
+- $\beta_0, \beta_1$: **parámetros** desconocidos — los estimamos con los datos
+- $\varepsilon_i$: **error aleatorio** — todo lo que el modelo no captura
+:::
+
+::: {.notes}
+Enfatizar que $\beta_0$ y $\beta_1$ son FIJOS pero desconocidos.
+Los $\varepsilon_i$ son aleatorios — por eso la nota no es perfectamente predecible.
+:::
+
+## Los supuestos del modelo
+
+::: {.callout-important appearance="simple"}
+Estos supuestos se deben verificar **siempre** — no asumirlos.
+:::
+
+::: {.incremental}
+1. **Linealidad:** $\mathbb{E}[Y_i | X_i] = \beta_0 + \beta_1 X_i$
+2. **Exogeneidad:** $\mathbb{E}[\varepsilon_i | X_i] = 0$
+3. **Homocedasticidad:** $\text{Var}(\varepsilon_i | X_i) = \sigma^2$ constante
+4. **Independencia:** $\varepsilon_i$ y $\varepsilon_j$ son independientes ($i \neq j$)
+5. **Normalidad (opcional):** $\varepsilon_i \sim \mathcal{N}(0, \sigma^2)$
+:::
+
+---
+
+# Parte III: Estimación
+
+## Mínimos cuadrados ordinarios (MCO)
+
+**Objetivo:** encontrar $\hat{\beta}_0$ y $\hat{\beta}_1$ que minimicen la SCR:
+
+$$\text{SCR}(\beta_0, \beta_1) = \sum_{i=1}^{n}(Y_i - \beta_0 - \beta_1 X_i)^2$$
+
+::: {.fragment}
+**Solución:** tomar derivadas e igualar a cero.
+:::
+
+::: {.fragment}
+$$\hat{\beta}_1 = \frac{S_{XY}}{S_{XX}} = \frac{\sum(X_i - \bar{X})(Y_i - \bar{Y})}{\sum(X_i - \bar{X})^2}$$
+:::
+
+::: {.fragment}
+$$\hat{\beta}_0 = \bar{Y} - \hat{\beta}_1 \bar{X}$$
+:::
+
+::: {.notes}
+Mostrar la derivación en la pizarra si hay tiempo (unos 8 minutos).
+Si no hay tiempo, decir que está en el apunte de la semana 5.
+La clave es que es un sistema de 2 ecuaciones con 2 incógnitas.
+:::
+
+## Demo: estimación en Python {auto-animate="true"}
+
+```python
+#| code-line-numbers: "|1-2|4-7|9-12"
+import numpy as np
+
+# Datos
+X = np.array([4, 6, 8, 5, 10, 7, 3, 9])
+y = np.array([4.5, 5.2, 5.8, 4.9, 6.5, 5.5, 3.8, 6.1])
+X_bar, y_bar = X.mean(), y.mean()
+
+# Estimadores MCO
+S_XY  = np.sum((X - X_bar) * (y - y_bar))
+S_XX  = np.sum((X - X_bar)**2)
+beta_1 = S_XY / S_XX
+beta_0 = y_bar - beta_1 * X_bar
+```
+
+## Demo: resultado {auto-animate="true"}
+
+```python
+#| code-line-numbers: "1-12|14-15"
+import numpy as np
+
+X = np.array([4, 6, 8, 5, 10, 7, 3, 9])
+y = np.array([4.5, 5.2, 5.8, 4.9, 6.5, 5.5, 3.8, 6.1])
+X_bar, y_bar = X.mean(), y.mean()
+
+S_XY  = np.sum((X - X_bar) * (y - y_bar))
+S_XX  = np.sum((X - X_bar)**2)
+beta_1 = S_XY / S_XX
+beta_0 = y_bar - beta_1 * X_bar
+
+# Resultado
+print(f"β̂₀ = {beta_0:.4f}")
+print(f"β̂₁ = {beta_1:.4f}")
+print(f"Modelo: Ŷ = {beta_0:.2f} + {beta_1:.2f}·X")
+```
+
+---
+
+# Parte IV: Bondad de ajuste
+
+## El coeficiente $R^2$
+
+$$R^2 = 1 - \frac{\text{SCR}}{\text{SCT}} = 1 - \frac{\sum(Y_i - \hat{Y}_i)^2}{\sum(Y_i - \bar{Y})^2}$$
+
+::: {.incremental}
+- $R^2 \in [0, 1]$ — siempre (para MCO con intercepto)
+- $R^2 = 0$: el modelo no explica nada más que la media
+- $R^2 = 1$: ajuste perfecto, todos los puntos sobre la recta
+- $R^2 = 0.71$: el modelo explica el **71%** de la variabilidad de $Y$
+:::
+
+::: {.callout-warning appearance="simple"}
+$R^2$ alto no garantiza un buen modelo. Siempre verificar los residuos.
+:::
+
+---
+
+# Parte V: Diagnóstico
+
+## Los cuatro gráficos de diagnóstico
+
+:::: {.columns}
+
+::: {.column width="50%"}
+```python
+#| echo: false
+#| fig-width: 5
+#| fig-height: 4.5
+from sklearn.linear_model import LinearRegression
+from scipy import stats
+import matplotlib.pyplot as plt
+
+modelo = LinearRegression()
+modelo.fit(X.reshape(-1,1), y)
+y_pred = modelo.predict(X.reshape(-1,1))
+residuos = y - y_pred
+
+fig, axes = plt.subplots(2, 2, figsize=(5, 4.5))
+
+# (1) Residuos vs ajustados
+axes[0,0].scatter(y_pred, residuos, s=40, alpha=0.8, color='#FF9800')
+axes[0,0].axhline(0, color='red', ls='--')
+axes[0,0].set_title('Residuos vs Ajustados', fontsize=9)
+axes[0,0].set_xlabel('Å¶', fontsize=8)
+
+# (2) Q-Q plot
+stats.probplot(residuos, plot=axes[0,1])
+axes[0,1].set_title('Q-Q Normal', fontsize=9)
+
+# (3) Scale-location
+axes[1,0].scatter(y_pred, np.sqrt(np.abs(residuos)), s=40, alpha=0.8, color='#4CAF50')
+axes[1,0].set_title('Scale-Location', fontsize=9)
+
+# (4) Residuos vs leverage (simplificado)
+axes[1,1].scatter(range(len(residuos)), residuos, s=40, alpha=0.8, color='#9C27B0')
+axes[1,1].axhline(0, color='red', ls='--')
+axes[1,1].set_title('Residuos vs Orden', fontsize=9)
+
+for ax in axes.flat:
+    ax.spines[['top','right']].set_visible(False)
+    ax.grid(alpha=0.3)
+    ax.tick_params(labelsize=7)
+
+plt.tight_layout()
+plt.show()
+```
+:::
+
+::: {.column width="50%"}
+::: {.incremental}
+**¿Qué buscamos?**
+
+- **Residuos vs Ajustados:** nube sin patrón → homocedasticidad ✅
+- **Q-Q Plot:** puntos sobre la línea → normalidad ✅
+- **Scale-Location:** banda horizontal → varianza constante ✅
+- **vs Orden:** sin tendencia → independencia ✅
+:::
+:::
+
+::::
+
+::: {.notes}
+Este es el slide más importante de la clase. Dar 5 minutos aquí.
+Mostrar contraejemplos: ¿cómo se vería un patrón de heterocedasticidad?
+¿Cómo se vería no-linealidad en el primer gráfico?
+:::
+
+---
+
+## Resumen de la clase
+
+::: {.nonincremental}
+| Concepto | Fórmula / Herramienta |
+|---|---|
+| Modelo | $Y_i = \beta_0 + \beta_1 X_i + \varepsilon_i$ |
+| Estimadores MCO | $\hat{\beta}_1 = S_{XY}/S_{XX}$, $\hat{\beta}_0 = \bar{Y} - \hat{\beta}_1\bar{X}$ |
+| Bondad de ajuste | $R^2 = 1 - \text{SCR}/\text{SCT}$ |
+| Diagnóstico | 4 gráficos de residuos |
+| Python | `LinearRegression()` de scikit-learn |
+:::
+
+## Para la próxima semana
+
+::: {.nonincremental}
+- 📚 **Leer:** apunte semana 6 (regresión múltiple)
+- 💻 **Completar:** Lab 3 (entrega el viernes 18/04)
+- ❓ **Preguntas:** antes de las 18:00 del jueves por Teams
+
+**Tarea 2** (25% de la nota): incluye regresión lineal simple.
+Enunciado disponible en el repositorio del curso.
+:::
+
+::: {.notes}
+Recordar que la tarea 2 tiene una parte de interpretación — no solo cálculo.
+Mostrar el enunciado en el sitio del curso si quedan minutos.
+Dejar 10 minutos para preguntas.
+:::
+```
+
+---
+
+## Referencias
+
+- Allaire, J.J. et al. (2022). *Quarto — RevealJS presentations*. [quarto.org/docs/presentations/revealjs](https://quarto.org/docs/presentations/revealjs/)
+- El-Haj, H. (2023). *RevealJS documentation*. [revealjs.com](https://revealjs.com/)
+- Quarto Docs. *Revealjs themes*. [quarto.org/docs/presentations/revealjs/themes.html](https://quarto.org/docs/presentations/revealjs/themes.html)
+- DeckTape. *RevealJS PDF export tool*. [github.com/astefanutti/decktape](https://github.com/astefanutti/decktape)
+- Quarto Docs. *Chalkboard plugin*. [quarto.org/docs/presentations/revealjs/presenting.html#chalkboard](https://quarto.org/docs/presentations/revealjs/presenting.html#chalkboard)

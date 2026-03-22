@@ -1,0 +1,56 @@
+---
+title: "📙 Dashboards Interactivos con Shiny"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+---
+
+# Introducción
+
+Esta semana aprenderemos a construir aplicaciones interactivas utilizando `Shiny`, un paquete de R que permite crear dashboards web de manera sencilla. El objetivo es que puedas transformar tus análisis en herramientas visuales dinámicas que permitan a otros usuarios explorar los datos de forma intuitiva.
+
+
+
+# Objetivos de la semana
+
+- Comprender la estructura básica de una aplicación `Shiny`.
+- Implementar interfaces reactivas con controles (`inputs`) y salidas gráficas (`outputs`).
+- Conectar `Shiny` con tus análisis previos para visualizar resultados de forma interactiva.
+- Desarrollar una aplicación básica que permita filtrar datos y generar gráficos dinámicos.
+
+
+
+# Contenido a revisar
+
+- [Mini App Básica](miniapp-basica.qmd)  
+  Aplicación simple con selección de variables y visualización instantánea.
+
+- [Mini App Avanzada](miniapp-avanzada.qmd)  
+  Aplicación con elementos condicionales y más lógica reactiva.
+
+- [Reflexión sobre Shiny](reflexion-shiny.qmd)  
+  Discusión sobre las ventajas y desafíos de crear aplicaciones interactivas para comunicar datos.
+
+
+
+# Actividad de la semana
+
+Crea una aplicación `Shiny` con las siguientes características mínimas:
+
+- Un `input` que permita filtrar por especie u otra categoría del dataset.
+- Un `output` gráfico (`plotOutput`) que reaccione a la selección.
+- Opcional: incluir texto o resumen estadístico dinámico (`renderText` o `renderTable`).
+
+Entrega tu aplicación como archivo `.R` o proyecto `.Rproj`, junto con un breve archivo README que explique cómo ejecutarla.
+
+
+
+# Recursos
+
+- Documentación oficial de Shiny: [https://shiny.posit.co](https://shiny.posit.co)
+- Libro _Mastering Shiny_ de Hadley Wickham: [https://mastering-shiny.org](https://mastering-shiny.org)
+- Cheatsheet de Shiny: [https://posit.co/resources/cheatsheets/](https://posit.co/resources/cheatsheets/)
+
+
+

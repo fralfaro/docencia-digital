@@ -1,0 +1,730 @@
+---
+title: "Diseño pedagógico con IA"
+subtitle: "Integrar la inteligencia artificial sin perder el rol del docente"
+---
+
+Hay una diferencia entre usar IA para hacer más rápido lo que ya hacías, y usarla para hacer cosas que antes no podías hacer. El prompting del capítulo anterior es del primer tipo — acelera tareas existentes. Este capítulo es del segundo tipo: cómo la IA cambia lo que es posible en el diseño y la práctica pedagógica.
+
+Personalizar el nivel de dificultad para cada estudiante, dar retroalimentación inmediata a 35 entregas simultáneamente, tener un tutor disponible a las 11pm la noche antes del examen — ninguna de estas cosas era prácticamente posible antes de los modelos de lenguaje. Ahora lo es. La pregunta es cuándo y cómo hacerlo sin dejar de ser el docente que tus estudiantes necesitan.
+
+---
+
+## Uso de IA en planificación de unidades y secuencias didácticas
+
+### El problema del diseño curricular solitario
+
+El diseño de una unidad didáctica bien articulada — con objetivos de aprendizaje progresivos, actividades alineadas, evaluaciones coherentes y material diferenciado — puede tomar días de trabajo. La mayoría de los docentes no tiene esos días disponibles. El resultado típico: unidades que repiten el esquema del semestre pasado con mínimas modificaciones.
+
+La IA no reemplaza tu criterio pedagógico — sí puede ser el interlocutor que te permite pensar en voz alta, recibir sugerencias rápidas y generar borradores que luego ajustas.
+
+### Diseño backward: del objetivo a la secuencia
+
+El diseño backward (Wiggins & McTighe) parte de los resultados esperados y trabaja hacia atrás. La IA es especialmente útil aquí porque puede generar la cadena completa:
+
+```
+Prompt completo de diseño backward:
+
+"Actúa como diseñador instruccional para educación superior en STEM.
+
+Quiero diseñar una unidad de 3 semanas sobre regresión logística para
+el curso MAT281 (tercer año de Ingeniería Civil, UTFSM).
+
+Resultado final esperado: al terminar la unidad, el estudiante será capaz
+de construir, evaluar e interpretar un modelo de clasificación binaria
+aplicado a datos de ingeniería, con Python y scikit-learn.
+
+Aplica el diseño backward en 3 etapas:
+
+ETAPA 1 — Evidencias de comprensión:
+¿Cómo sabremos que el estudiante logró el resultado? Define:
+- 2 evaluaciones sumativas (una formativa, una sumativa) con descripción
+  breve de qué se evalúa en cada una
+- 3 indicadores observables que distinguen al estudiante que logró el
+  resultado del que no
+
+ETAPA 2 — Experiencias de aprendizaje:
+¿Qué necesita el estudiante experimentar para lograr esas evidencias?
+Para cada semana (6 sesiones: 3 teoría + 3 lab), diseña:
+- Objetivo específico de la sesión (un verbo Bloom nivel 3-4)
+- Actividad central (máximo 3 oraciones)
+- Conexión explícita con la semana anterior y siguiente
+
+ETAPA 3 — Contenido mínimo necesario:
+¿Qué conceptos son imprescindibles vs cuáles son opcionales dados el tiempo?
+Clasifica los contenidos estándar de regresión logística en:
+- Core (sin esto el estudiante no puede lograr el resultado)
+- Complementario (enriquece pero no bloquea)
+- Fuera del alcance de esta unidad
+
+El estudiante ya conoce: regresión lineal, Python básico, probabilidad básica."
+```
+
+### Identificar prerequisitos implícitos
+
+```
+Prompt:
+
+"Tengo una unidad de 3 semanas sobre clustering (K-means, DBSCAN, evaluación
+con silueta). Revisando el contenido, ¿qué prerequisitos matemáticos y
+computacionales necesita el estudiante que podrían no estar explícitos
+en el syllabus?
+
+Para cada prerequisito que identifiques:
+- ¿Es probable que los estudiantes de tercer año de ingeniería ya lo tengan?
+- Si es un gap probable, ¿cómo lo cubro en 15-20 minutos antes de entrar al tema?
+
+No incluyas prerequisitos que sean obvios (saber usar Python, instalar librerías).
+Enfócate en los conceptos matemáticos y estadísticos que podrían faltar."
+```
+
+### Secuencia didáctica con errores comunes mapeados
+
+```
+Prompt:
+
+"Diseña una secuencia didáctica de 4 sesiones para enseñar validación
+cruzada y métricas de clasificación.
+
+Para cada sesión (90 minutos), incluye:
+- Objetivo (verbo Bloom nivel 3+)
+- Contenido central (10-15 min de teoría)
+- Actividad práctica (45-50 min)
+- Cierre y verificación (15-20 min)
+
+ADEMÁS, por cada sesión indica:
+- El error conceptual más frecuente que los estudiantes cometen en ese punto
+- Una pregunta diagnóstica de 2-3 minutos para detectarlo a tiempo
+- La corrección mínima que necesita el docente hacer si el error aparece
+
+Base el diseño en una progresión lógica donde cada sesión habilita la siguiente."
+```
+
+### Adaptar secuencias existentes
+
+Una vez que tienes una secuencia de un semestre anterior:
+
+```
+Prompt:
+
+"Aquí está la secuencia didáctica que usé el semestre pasado para
+regresión logística:
+[pegar la secuencia existente]
+
+El problema que identifiqué: los estudiantes llegaban a la sesión 4
+(interpretación de coeficientes) sin entender bien la función sigmoide,
+lo que hacía que la interpretación de odds ratio no tuviera sentido.
+
+Sugiere cómo reorganizar o ampliar la secuencia para resolver ese gap,
+sin agregar más de 30 minutos adicionales al total de la unidad."
+```
+
+---
+
+## Generación de actividades y ejercicios diferenciados
+
+### El desafío de la heterogeneidad
+
+En un curso de tercer año de ingeniería típico tienes estudiantes con background muy distinto: algunos llevan un año de trabajo part-time en datos, otros apenas usan Excel. Diseñar actividades que sean desafiantes para unos sin ser inaccesibles para otros es una de las tareas más difíciles de la docencia.
+
+La IA puede generar el mismo ejercicio en múltiples niveles de dificultad en minutos.
+
+### Ejercicios en tres niveles de Bloom
+
+```
+Prompt:
+
+"Genera el mismo ejercicio sobre interpretación de R² en 3 versiones
+de dificultad creciente:
+
+Contexto común para los tres: un modelo de regresión que predice el
+consumo de energía eléctrica (kWh/mes) en función de la temperatura
+promedio mensual. R² = 0.73.
+
+Versión A (Nivel básico — Bloom 2: Comprender):
+El estudiante puede responder con solo leer la definición de R².
+
+Versión B (Nivel intermedio — Bloom 3: Aplicar):
+El estudiante debe calcular algo con los datos dados.
+
+Versión C (Nivel avanzado — Bloom 4-5: Analizar/Evaluar):
+El estudiante debe razonar sobre limitaciones y alternativas.
+
+Para cada versión: enunciado completo + respuesta esperada + criterio
+de evaluación de 2 líneas."
+```
+
+### Actividades con diferenciación por rol
+
+```
+Prompt:
+
+"Diseña una actividad de laboratorio sobre regresión logística donde
+el mismo grupo de 4 estudiantes trabaja con roles diferenciados:
+
+- Rol A: Data analyst — limpia los datos y hace EDA
+- Rol B: Model builder — ajusta el modelo con scikit-learn
+- Rol C: Evaluator — calcula y reporta las métricas
+- Rol D: Communicator — redacta las conclusiones para público no técnico
+
+El dataset es [DESCRIPCIÓN DEL DATASET].
+La tarea final del grupo es un notebook integrado donde cada rol
+contribuye su sección.
+
+Para cada rol: descripción de la tarea (150 palabras), inputs que
+recibe del rol anterior, outputs que entrega al siguiente, y criterio
+de evaluación individual (30%) más grupal (70%)."
+```
+
+### Ejercicios con andamiaje progresivo
+
+El andamiaje (*scaffolding*) es dar apoyo que se va retirando gradualmente:
+
+```
+Prompt:
+
+"Diseña un ejercicio de regresión logística con andamiaje progresivo
+en 3 etapas, para que el estudiante avance de guiado a autónomo:
+
+Etapa 1 (Guiado — 1ª semana):
+- El código esqueleto está dado con comentarios detallados indicando
+  qué línea debe completar el estudiante
+- Los datos ya están limpios y cargados
+- Hay un ejemplo resuelto análogo visible
+
+Etapa 2 (Semicompleto — 2ª semana):
+- Solo la estructura general del notebook está dada
+- Los datos requieren una limpieza menor
+- No hay ejemplo, pero sí preguntas-guía
+
+Etapa 3 (Autónomo — 3ª semana):
+- Solo el enunciado y el dataset crudo
+- Sin preguntas-guía, el estudiante decide el enfoque
+
+Usa el mismo problema (clasificación de crédito bancario) en las
+3 etapas para que el estudiante vea su progreso."
+```
+
+### Banco de ejercicios diferenciados para una unidad completa
+
+```
+Prompt:
+
+"Para la unidad de clustering de 3 semanas, genera un banco de ejercicios
+diferenciados organizado así:
+
+Nivel 1 (Mecánico): ejercicios que verifican que el estudiante puede
+ejecutar el código y leer el output.
+- 3 ejercicios con dataset dado, código casi completo
+
+Nivel 2 (Conceptual): ejercicios que verifican comprensión de qué hace
+el algoritmo y por qué.
+- 3 ejercicios con preguntas de interpretación y comparación
+
+Nivel 3 (Diseño): ejercicios que requieren tomar decisiones de modelamiento.
+- 2 ejercicios donde el estudiante elige el algoritmo, justifica y evalúa
+
+Cada ejercicio: enunciado, respuesta modelo, criterio de evaluación (3 líneas).
+Total: 8 ejercicios diferenciados listos para usar."
+```
+
+---
+
+## Retroalimentación formativa asistida por IA
+
+### La brecha de la retroalimentación
+
+La retroalimentación formativa — aquella que ocurre *durante* el proceso de aprendizaje, no solo al final — es la intervención pedagógica con mayor evidencia de impacto en el aprendizaje (Hattie, 2009). El problema: en cursos de 30-60 estudiantes, dar retroalimentación significativa a cada entrega de forma oportuna es humanamente imposible sin ayuda.
+
+La IA no reemplaza la retroalimentación del docente, pero sí permite escalarla y acelerarla.
+
+```{mermaid}
+graph LR
+    subgraph "Sin IA"
+        E1["📝 Entrega\n30 estudiantes"]
+        D1["👨‍🏫 Docente"]
+        F1["💬 Feedback\n3-5 días después"]
+        E1 --> D1 --> F1
+    end
+
+    subgraph "Con IA"
+        E2["📝 Entrega\n30 estudiantes"]
+        IA["🤖 IA genera\nborradores (minutos)"]
+        D2["👨‍🏫 Docente\nrevisa y ajusta"]
+        F2["💬 Feedback\nmismo día o siguiente"]
+        E2 --> IA --> D2 --> F2
+    end
+```
+
+### Flujo de retroalimentación asistida
+
+**Paso 1 — Preparar el contexto para la IA:**
+
+```
+Sistema de contexto (una vez por evaluación):
+
+"Eres el asistente del curso MAT281. Tu función es generar borradores
+de retroalimentación para el Laboratorio 3 (regresión lineal simple).
+
+La rúbrica es:
+Criterio 1 — Ajuste del modelo (25%):
+  Destacado: modelo ajustado correctamente, dimensiones X/y correctas,
+  parámetros accesibles con .coef_ e .intercept_
+  Competente: modelo ajustado, algunos problemas menores de estilo
+  Básico: modelo presente pero con errores no críticos
+  Insuficiente: modelo ausente o con error de ejecución
+
+[continuar con los 4 criterios restantes...]
+
+Tono de la retroalimentación: directo, entre pares, máximo 200 palabras.
+Estructura: (1) qué está bien — específico, (2) 2 mejoras prioritarias
+con pista, (3) pregunta reflexiva."
+```
+
+**Paso 2 — Generar feedback por entrega:**
+
+```
+"Aquí está la entrega del estudiante:
+[pegar el código del notebook]
+
+Genera el borrador de retroalimentación según las instrucciones y
+la rúbrica del sistema."
+```
+
+**Paso 3 — El docente revisa y personaliza:**
+
+El borrador de la IA es el punto de partida, no el resultado final. El docente:
+- Verifica que los errores identificados sean reales.
+- Agrega contexto que la IA no tiene (el estudiante faltó a clase ese día, hubo un problema con el dataset, etc.).
+- Ajusta el tono si la situación lo requiere.
+- Firma la retroalimentación — es tuya.
+
+### Script de Python para procesar múltiples entregas
+
+```python
+# scripts/generar_feedback_batch.py
+# Procesa múltiples notebooks y genera borradores de feedback
+
+import anthropic
+import pathlib
+import json
+
+# Cargar la rúbrica y el contexto del sistema
+SISTEMA = """
+Eres el asistente del curso MAT281. Tu función es generar borradores
+de retroalimentación para el Laboratorio 3...
+[rúbrica completa aquí]
+"""
+
+def generar_feedback(codigo_estudiante: str, nombre: str) -> str:
+    """Genera borrador de feedback para una entrega."""
+    client = anthropic.Anthropic()
+
+    message = client.messages.create(
+        model="claude-sonnet-4-20250514",
+        max_tokens=800,
+        system=SISTEMA,
+        messages=[{
+            "role": "user",
+            "content": f"Entrega de {nombre}:\n\n{codigo_estudiante}"
+        }]
+    )
+    return message.content[0].text
+
+def procesar_entregas(carpeta_entregas: str) -> None:
+    """Procesa todas las entregas en una carpeta."""
+    carpeta = pathlib.Path(carpeta_entregas)
+    resultados = {}
+
+    for notebook in sorted(carpeta.glob("*.ipynb")):
+        nombre = notebook.stem
+        print(f"Procesando: {nombre}...")
+
+        # Leer el notebook como texto (el código de las celdas)
+        with open(notebook) as f:
+            nb = json.load(f)
+
+        # Extraer solo las celdas de código
+        codigo = "\n\n".join(
+            "".join(cell["source"])
+            for cell in nb["cells"]
+            if cell["cell_type"] == "code"
+        )
+
+        feedback = generar_feedback(codigo, nombre)
+        resultados[nombre] = feedback
+
+        # Guardar borrador inmediatamente
+        output = carpeta / f"feedback_{nombre}.md"
+        output.write_text(f"# Feedback Lab 3 — {nombre}\n\n{feedback}")
+        print(f"  → Guardado en {output}")
+
+    print(f"\n✅ Procesadas {len(resultados)} entregas.")
+    print("Recuerda revisar y personalizar cada borrador antes de enviar.")
+
+if __name__ == "__main__":
+    procesar_entregas("labs/lab03/entregas")
+```
+
+::: {.callout-important}
+## El docente es responsable del feedback final
+Este script genera borradores. Cada borrador debe ser revisado por el docente o el ayudante antes de enviarlo al estudiante. La IA puede cometer errores de diagnóstico (especialmente con código no convencional) y no tiene el contexto del historial del estudiante. La firma del feedback es tuya — la responsabilidad también.
+:::
+
+### Retroalimentación en tiempo real durante el laboratorio
+
+Durante la sesión de laboratorio, los estudiantes pueden hacer preguntas a un asistente configurado con las instrucciones del laboratorio específico. El asistente guía sin dar la solución:
+
+```
+Configuración del asistente para sesión de lab:
+
+"Eres el tutor del Laboratorio 3 de MAT281. El lab cubre regresión lineal
+simple con Python.
+
+Reglas:
+1. NUNCA des el código completo que resuelve una pregunta del lab
+2. Cuando el estudiante tenga un error, pregunta qué cree que hace
+   esa línea antes de orientarlo
+3. Si el estudiante dice 'no entiendo nada', pídele que explique
+   qué sí entiende para encontrar el punto de partida
+4. Para errores de Python: describe qué tipo de error es y en qué
+   parte del código buscar, no la línea exacta
+
+Objetivo: el estudiante debe ser capaz de explicar su propio código
+al finalizar el lab."
+```
+
+---
+
+## IA como tutor de estudiantes: ventajas y riesgos
+
+### Las ventajas reales
+
+**Disponibilidad 24/7.** Un estudiante que estudia a las 11pm la noche antes del examen necesita apoyo. La IA puede ser ese apoyo cuando el docente y el ayudante no están disponibles.
+
+**Sin juicio social.** Muchos estudiantes no hacen preguntas en clase por vergüenza a parecer "tontos". Con un chatbot no hay ese costo social — pueden preguntar lo más básico sin temor.
+
+**Paciencia infinita.** La IA puede explicar el mismo concepto de 5 formas distintas sin frustrarse. Algunos estudiantes necesitan exactamente eso.
+
+**Personalización.** Un buen prompt de tutor socrático se adapta a las respuestas del estudiante — si el estudiante demuestra que ya entiende algo, no lo re-explica.
+
+### Los riesgos concretos
+
+```{mermaid}
+graph TD
+    R["⚠️ Riesgos del tutor IA"]
+
+    R --> R1["🧠 Dependencia cognitiva\nEl estudiante delega el\npensamiento, no lo desarrolla"]
+    R --> R2["📚 Alucinaciones técnicas\nLa IA puede dar una\nexplicación plausible pero\nincorrecta en matemáticas"]
+    R --> R3["📏 Sin contexto del curso\nA menos que esté\nconfigurado, el tutor IA\nresponde con conocimiento\ngeneral, no del syllabus"]
+    R --> R4["🔒 Sin trazabilidad\nNo sabes si el estudiante\nentendió o solo copió la\nrespuesta del chatbot"]
+    R --> R5["⚖️ Inequidad de acceso\nEstudiantes con ChatGPT Plus\nvs Plan gratuito con límites"]
+```
+
+### El tutor socrático: el diseño correcto
+
+La diferencia entre un tutor IA que fomenta el aprendizaje y uno que lo sustituye está en cómo está configurado. El tutor socrático nunca da la respuesta — hace preguntas que llevan al estudiante a descubrirla:
+
+```
+Configuración de tutor socrático para MAT281:
+
+"Eres un tutor socrático del curso MAT281 de la UTFSM.
+
+Tu misión: ayudar al estudiante a entender los conceptos del curso
+mediante preguntas que guíen su razonamiento. NUNCA des respuestas
+directas a preguntas de evaluaciones.
+
+Protocolo cuando el estudiante tiene una dificultad:
+1. Pregunta: '¿Qué entiendes tú de lo que pide el enunciado?'
+2. Identifica el punto exacto del bloqueo con preguntas de sí/no
+3. Haz una pregunta que lleve al estudiante un paso más allá
+4. Si está completamente bloqueado: da una pista muy pequeña,
+   no la solución
+5. Después de cada pista, pregunta: '¿Puedes continuar desde aquí?'
+
+Cuando el estudiante llega a la respuesta:
+- Pídele que explique con sus palabras por qué es correcta
+- Propón un caso borde para verificar que entendió el principio
+
+Conocimiento del curso: solo lo que está en [fuentes del notebook]"
+```
+
+### Indicadores de uso adecuado vs problemático
+
+Cómo saber si los estudiantes están usando la IA como andamio o como sustituto:
+
+```
+Señales de uso adecuado:
+✅ El estudiante pregunta al tutor IA y luego pregunta en clase
+   para confirmar su entendimiento
+✅ El código del estudiante tiene su estilo (variables con sus nombres,
+   comentarios propios) aunque haya usado IA para orientarse
+✅ El estudiante puede explicar verbalmente lo que hizo
+✅ Comete errores "humanos" (no los típicos de código 100% generado)
+
+Señales de uso problemático:
+⚠️ El código es idiomáticamente perfecto pero el estudiante no puede
+   explicar ninguna línea
+⚠️ El informe tiene términos técnicos que no se han visto en clase
+⚠️ Múltiples entregas del mismo grupo tienen párrafos idénticos
+⚠️ El estudiante tiene excelentes notas en tareas pero falla en
+   preguntas orales sobre los mismos conceptos
+```
+
+---
+
+## Transparencia con estudiantes sobre el uso de IA
+
+### Por qué la transparencia importa
+
+Si tú usas IA para generar material docente y no lo declaras, estás enviando un mensaje implícito: el uso de IA es algo que se oculta. Ese es exactamente el comportamiento que no quieres que repliquen tus estudiantes.
+
+La transparencia sobre tu propio uso de IA:
+- Modela el comportamiento ético que esperas de ellos.
+- Abre la conversación sobre cuándo y cómo usarla apropiadamente.
+- Demuestra que la IA es una herramienta, no un sustituto del pensamiento.
+
+### Declarar el uso en el material
+
+```markdown
+<!-- En el frontmatter de un apunte asistido por IA -->
+
+::: {.callout-note appearance="simple"}
+**Sobre este material:** la estructura inicial de este apunte fue
+generada con asistencia de Claude (Anthropic). El contenido fue
+revisado, corregido y validado por el docente. Las ecuaciones y
+ejemplos numéricos fueron verificados manualmente.
+:::
+```
+
+O en la última sección del apunte:
+
+```markdown
+---
+
+*Este material fue preparado con asistencia de herramientas de IA.
+Desarrollado por Juan Pérez, Departamento de Matemáticas, UTFSM, 2025.*
+```
+
+### La conversación del primer día de clases
+
+```markdown
+Guion sugerido para la primera clase — sección "IA en el curso":
+
+"Este semestre voy a ser explícito sobre algo que probablemente ya
+están usando o pensando en usar: inteligencia artificial para las
+actividades del curso.
+
+Mi posición:
+- La IA es una herramienta real del mundo laboral de la ingeniería.
+  Prohibirla sería prepararte para un mundo que ya no existe.
+- El objetivo del curso no es que entregues respuestas correctas —
+  es que desarrolles la capacidad de razonar sobre datos. Si la IA
+  razona por ti, no logras ese objetivo.
+
+Lo que voy a hacer yo:
+- Voy a usar IA para preparar parte del material del curso.
+- Lo voy a declarar cuando lo haga.
+- Mis evaluaciones están diseñadas para que la IA no pueda resolverlas
+  por ti de forma útil — o si puede, voy a pedirte que justifiques
+  el output de la IA además de presentarlo.
+
+Lo que espero de ustedes:
+[presentar la política de IA del curso]
+
+¿Preguntas sobre esto antes de continuar?"
+```
+
+### Política de IA gradual por tipo de actividad
+
+Una política que escala según la importancia de la evaluación y el objetivo pedagógico:
+
+```markdown
+# Política de uso de IA — MAT281 2025-1
+
+## Actividades donde el uso de IA es parte del aprendizaje
+
+**Laboratorios (30% de la nota):**
+Puedes usar IA para: entender mensajes de error, explorar la
+documentación de librerías, obtener sugerencias sobre por qué
+tu código no funciona.
+
+Debes declarar: cualquier bloque de código que haya sido generado
+por IA (incluyendo el prompt que usaste).
+
+No puedes: pedir a la IA que resuelva la pregunta del lab directamente.
+
+**Tareas (30% de la nota):**
+Puedes usar IA como herramienta de edición (mejorar claridad,
+corregir gramática) y para explorar enfoques alternativos al que
+ya desarrollaste.
+
+Debes declarar: cualquier sección donde la IA contribuyó
+sustantivamente al contenido.
+
+No puedes: generar la interpretación de resultados con IA y presentarla
+como propia sin revisión crítica.
+
+## Actividades donde el uso de IA no está permitido
+
+**Pruebas presenciales (40% de la nota):**
+Evaluación sin acceso a IA ni internet. El objetivo es medir
+tu comprensión individual del material.
+
+## En caso de duda
+
+Si tienes duda sobre si un uso específico de IA está permitido,
+pregunta antes de hacerlo. La pregunta no tiene costo; hacerlo
+sin preguntar y que sea inadecuado, sí.
+```
+
+---
+
+## Criterios pedagógicos para integrar IA sin perder el rol docente
+
+### El marco SAMR aplicado a la IA docente
+
+El modelo SAMR (Puentedura) describe 4 niveles de integración tecnológica. Para la IA en docencia:
+
+```{mermaid}
+graph TD
+    S["🔄 Sustitución\nIA hace lo mismo\nque hacía el docente\n(ej: generar preguntas\nigual de genéricas)"]
+    A["⬆️ Aumentación\nIA hace lo mismo pero\nmejor o más rápido\n(ej: generar 50 preguntas\ncalibradas en lugar de 10)"]
+    M["🔀 Modificación\nIA permite tareas\ncualitativamente mejores\n(ej: feedback inmediato\na 35 entregas)"]
+    T["🚀 Transformación\nIA permite tareas\nantes imposibles\n(ej: tutor personalizado\n24/7 con el material del curso)"]
+
+    S --> A --> M --> T
+
+    style S fill:#ffcdd2
+    style A fill:#fff9c4
+    style M fill:#c8e6c9
+    style T fill:#bbdefb
+```
+
+La mayoría de los docentes que "prueban la IA" operan en nivel S. El valor real está en M y T.
+
+### Los cinco criterios de integración responsable
+
+Antes de incorporar IA en cualquier práctica docente, evalúa con estos cinco criterios:
+
+**Criterio 1: Alineación con el objetivo de aprendizaje**
+
+```
+Pregunta: ¿La IA me ayuda a que los estudiantes logren el objetivo,
+o simplemente hace el objetivo por ellos?
+
+Ejemplo positivo: uso IA para generar 10 variantes del mismo ejercicio
+→ el estudiante practica más y aprende más rápido.
+
+Ejemplo problemático: el estudiante usa IA para resolver el ejercicio
+→ el objetivo (que el estudiante desarrolle la habilidad) no se logra.
+```
+
+**Criterio 2: Verificabilidad del output**
+
+```
+Pregunta: ¿Puedo (o puede el estudiante) verificar que lo que
+produce la IA es correcto en este contexto?
+
+Para contenido matemático: siempre verificar las fórmulas.
+Para retroalimentación de código: revisar que los errores identificados
+sean reales.
+Para preguntas de examen: verificar que tienen una sola respuesta
+correcta y que está dentro del syllabus.
+```
+
+**Criterio 3: Privacidad y datos**
+
+```
+Pregunta: ¿Qué datos estoy subiendo a la plataforma de IA?
+
+Nunca subir: nombres de estudiantes, RUTs, correos, notas individuales.
+Siempre anonimizar antes de compartir con IA cualquier trabajo estudiantil.
+Revisar los términos de servicio de la plataforma sobre retención de datos.
+```
+
+**Criterio 4: Equidad de acceso**
+
+```
+Pregunta: ¿El uso que estoy habilitando (o requiriendo) crea una
+ventaja inequitativa para estudiantes con acceso a herramientas premium?
+
+Si la actividad se beneficia sustancialmente de GPT-4o vs GPT-4o mini,
+considera: ¿todos los estudiantes tienen acceso equivalente?
+
+Opciones para garantizar equidad:
+- Usar solo herramientas con plan gratuito suficiente para la actividad
+- Proveer acceso institucional (si existe)
+- Diseñar la actividad de modo que el nivel de la herramienta
+  no sea determinante del resultado
+```
+
+**Criterio 5: El docente permanece como diseñador**
+
+```
+Pregunta: ¿Sigo siendo yo quien toma las decisiones pedagógicas
+importantes, o las estoy delegando a la IA?
+
+Lo que el docente decide (no la IA):
+✅ Qué vale la pena aprender en este curso
+✅ La secuencia de aprendizaje
+✅ El nivel de exigencia apropiado para estos estudiantes
+✅ La nota final de cada estudiante
+✅ Cómo responder ante una situación particular de un estudiante
+
+Lo que la IA puede hacer:
+✅ Generar opciones para que el docente elija
+✅ Producir borradores para que el docente revise
+✅ Escalar tareas repetitivas que el docente ya sabe cómo hacer bien
+✅ Dar soporte de primera línea a preguntas de los estudiantes
+```
+
+### El docente como diseñador de experiencias
+
+El rol docente en la era de la IA no desaparece — se recentra. La IA es buena en: recuperar, sintetizar, generar variantes, escalar. El docente es insustituible en: diseñar el contexto de aprendizaje, conocer a los estudiantes como individuos, juzgar la calidad del proceso (no solo del producto), motivar, modelar el pensamiento crítico en vivo.
+
+```
+El docente que usa IA bien no es el que produce más material —
+es el que diseña mejores experiencias de aprendizaje.
+
+La IA libera tiempo para lo que la IA no puede hacer:
+- La conversación con el estudiante que está a punto de abandonar
+- La pregunta imprevista que llevas a un nivel de profundidad inesperado
+- El ejemplo tomado de la experiencia real que hace que todo encaje
+- El momento en que alguien entiende algo por primera vez
+  y tú lo ves en su cara
+```
+
+### Hoja de ruta de integración progresiva
+
+```
+Semestre 0 — Exploración (antes del próximo semestre):
+Elige UNA tarea docente que te consuma tiempo y prueba usar IA para
+hacerla más rápido. No cambies el resultado todavía, solo el proceso.
+
+Semestre 1 — Integración básica:
+- Usa IA para generar borradores de material (siempre revisando)
+- Define y comunica la política de uso de IA a los estudiantes
+- Implementa UNA actividad donde los estudiantes usen IA explícitamente
+
+Semestre 2 — Integración sistemática:
+- Configura un asistente del curso con NotebookLM
+- Implementa retroalimentación asistida en al menos un laboratorio
+- Rediseña UNA evaluación para que sea compatible con el uso de IA
+
+Semestre 3+ — Innovación:
+- Experimenta con actividades donde la IA es parte del proceso evaluado
+- Contribuye a la discusión institucional sobre políticas de IA
+- Comparte lo que aprendiste con colegas del departamento
+```
+
+---
+
+## Referencias
+
+- Hattie, J. (2009). *Visible Learning: A Synthesis of Over 800 Meta-Analyses Relating to Achievement*. Routledge.
+- Wiggins, G. & McTighe, J. (2005). *Understanding by Design* (2ª ed.). ASCD.
+- Puentedura, R. (2006). *Transformation, Technology, and Education*. [hippasus.com](http://hippasus.com/resources/tte/)
+- Mollick, E. & Mollick, L. (2023). *Assigning AI: Seven Approaches for Students, with Prompts*. SSRN. [ssrn.com/abstract=4475995](https://ssrn.com/abstract=4475995)
+- Kasneci, E. et al. (2023). *ChatGPT for Good? On Opportunities and Challenges of Large Language Models for Education*. Learning and Individual Differences. [doi.org/10.1016/j.lindif.2023.102274](https://doi.org/10.1016/j.lindif.2023.102274)
+- UNESCO. (2023). *Guidance for Generative AI in Education and Research*. UNESCO Publishing. [unesco.org/en/digital-education/articles/generative-ai-education](https://www.unesco.org/en/digital-education/articles/generative-ai-education)
+- Bloom, B. S. (Ed.). (1956). *Taxonomy of Educational Objectives, Handbook I: The Cognitive Domain*. David McKay.

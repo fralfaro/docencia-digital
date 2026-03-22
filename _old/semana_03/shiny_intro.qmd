@@ -1,0 +1,120 @@
+---
+title: "Introducción a Shiny"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+---
+
+# ¿Qué es Shiny?
+
+**Shiny** es un paquete de R que permite construir aplicaciones web interactivas de forma sencilla, combinando R, HTML y JavaScript sin necesidad de conocimientos avanzados en desarrollo web.
+
+Fue creado por la empresa **Posit (ex RStudio)** y es ampliamente utilizado en ciencia de datos para crear dashboards, simulaciones, visualizadores de modelos, reportes interactivos y más.
+
+
+
+# ¿Por qué usar Shiny?
+
+- Transforma análisis estáticos en experiencias interactivas.
+- Permite que usuarios no técnicos exploren datos y resultados dinámicamente.
+- Ideal para prototipos, dashboards internos o presentaciones de resultados.
+
+
+
+# Estructura básica de una app Shiny
+
+Una aplicación Shiny mínima tiene dos componentes: `ui` y `server`.
+
+```r
+library(shiny)
+
+ui <- fluidPage(
+  titlePanel("Mi primera app Shiny"),
+  sidebarLayout(
+    sidebarPanel(
+      sliderInput("num", "Selecciona un número", 1, 100, 50)
+    ),
+    mainPanel(
+      textOutput("resultado")
+    )
+  )
+)
+
+server <- function(input, output) {
+  output$resultado <- renderText({
+    paste("El número seleccionado es:", input$num)
+  })
+}
+
+shinyApp(ui = ui, server = server)
+````
+
+
+
+# Elementos fundamentales
+
+| Elemento      | Descripción                                                               |
+| ------------- | ------------------------------------------------------------------------- |
+| `fluidPage()` | Crea el layout principal de la app                                        |
+| `input`       | Componentes de entrada (`sliderInput`, `selectInput`, etc.)               |
+| `output`      | Componentes de salida (`plotOutput`, `textOutput`, etc.)                  |
+| `render*`     | Funciones reactivas que generan salidas: `renderPlot`, `renderText`, etc. |
+| `reactive()`  | Crea objetos reactivos para cálculos reutilizables                        |
+
+
+
+# Ejemplo simple con gráfico
+
+```r
+library(shiny)
+library(ggplot2)
+
+ui <- fluidPage(
+  titlePanel("Histograma interactivo"),
+  sidebarLayout(
+    sidebarPanel(
+      sliderInput("bins", "Número de bins", min = 5, max = 50, value = 30)
+    ),
+    mainPanel(
+      plotOutput("hist")
+    )
+  )
+)
+
+server <- function(input, output) {
+  output$hist <- renderPlot({
+    ggplot(faithful, aes(x = waiting)) +
+      geom_histogram(bins = input$bins, fill = "steelblue", color = "white")
+  })
+}
+
+shinyApp(ui = ui, server = server)
+```
+
+
+
+# Recomendaciones
+
+* Empieza simple: una app, un input, un output.
+* Usa `reactive()` para evitar código repetido en apps más complejas.
+* Separa código en archivos: `app.R`, `ui.R`, `server.R` si tu proyecto crece.
+* Usa `quarto` si deseas incrustar una app dentro de un documento o sitio web.
+
+
+# Recursos recomendados
+
+* Sitio oficial: [https://shiny.posit.co](https://shiny.posit.co)
+* Libro gratuito: [https://mastering-shiny.org](https://mastering-shiny.org)
+* Cheatsheet Shiny: [https://posit.co/resources/cheatsheets/](https://posit.co/resources/cheatsheets/)
+
+
+
+# Actividad sugerida
+
+Crea una aplicación que permita:
+
+* Filtrar datos por una categoría (por ejemplo, especie de pingüinos)
+* Mostrar un gráfico asociado a la selección
+* Incluir una tabla con estadísticas básicas
+

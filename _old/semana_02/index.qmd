@@ -1,0 +1,58 @@
+---
+title: "📗 Creación de Reportes Reproducibles con Quarto"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+---
+
+# Introducción
+
+Esta sección está dedicada al uso de **Quarto** como herramienta para documentar y comunicar análisis de datos de forma clara, reproducible y profesional. Aprenderás a construir informes dinámicos que integran código, visualizaciones y texto explicativo en un solo documento.
+
+El enfoque estará en el desarrollo de reportes en formato `.qmd`, que pueden ser renderizados a HTML, PDF o presentaciones, facilitando la entrega y presentación de tus resultados de manera estructurada y efectiva.
+
+
+
+# Objetivos de la sección
+
+- Comprender la estructura y sintaxis de un documento Quarto (`.qmd`).
+- Integrar código R, visualizaciones y texto en un mismo archivo reproducible.
+- Agregar elementos visuales como títulos, tablas, gráficos y ecuaciones.
+- Exportar el informe en distintos formatos (HTML, PDF, presentación).
+- Aplicar buenas prácticas de comunicación de resultados en ciencia de datos.
+
+
+
+# Contenido a revisar
+
+- [Informe Exploratorio en Quarto](informe-exploratorio.qmd)  
+  Plantilla base para crear un informe completo con texto, código, gráficos y análisis.
+
+- [Guía de Comunicación de Resultados](guia-comunicacion.qmd)  
+  Consejos para mejorar la estructura, claridad y estilo visual de tus informes.
+
+
+
+# Actividad práctica
+
+Crea un documento `.qmd` que contenga:
+
+- Título, autor y fecha del análisis.
+- Introducción breve al dataset y objetivo del análisis.
+- Al menos dos gráficos generados con `ggplot2`.
+- Interpretaciones claras escritas junto a los resultados.
+- Elementos opcionales como tablas, ecuaciones o bibliografía.
+
+Rinde tu documento como HTML o PDF utilizando `quarto render` o el botón de renderizado en RStudio.
+
+
+
+# Recursos
+
+- Sitio oficial de Quarto: [https://quarto.org](https://quarto.org)
+- Introducción a Quarto: [https://quarto.org/docs/get-started/](https://quarto.org/docs/get-started/)
+- Guía para documentos: [https://quarto.org/docs/output-formats/html-document.html](https://quarto.org/docs/output-formats/html-document.html)
+- Ejemplos de Quarto + `ggplot2`: [https://quarto.org/docs/interactive/ggplot2.html](https://quarto.org/docs/interactive/ggplot2.html)
+
+

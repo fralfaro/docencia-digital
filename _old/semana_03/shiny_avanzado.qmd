@@ -1,0 +1,193 @@
+---
+title: "Shiny Avanzado"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+---
+
+# Introducción
+
+En esta sección exploraremos características avanzadas de `Shiny` para construir aplicaciones más robustas, modulares e interactivas. Aprenderemos a usar componentes reactivos complejos, separar la lógica en archivos, incorporar gráficos interactivos, y mejorar la experiencia de usuario.
+
+
+
+# 1. Separación en archivos: `app.R`, `ui.R`, `server.R`
+
+Para aplicaciones grandes, es recomendable separar el código:
+
+**Archivo `ui.R`**:
+
+```r
+library(shiny)
+
+fluidPage(
+  titlePanel("App modular"),
+  sidebarLayout(
+    sidebarPanel(
+      selectInput("col", "Columna:", choices = names(mtcars))
+    ),
+    mainPanel(
+      plotOutput("hist")
+    )
+  )
+)
+````
+
+**Archivo `server.R`**:
+
+```r
+function(input, output) {
+  output$hist <- renderPlot({
+    hist(mtcars[[input$col]])
+  })
+}
+```
+
+**Archivo `app.R`**:
+
+```r
+ui <- source("ui.R")$value
+server <- source("server.R")$value
+
+shinyApp(ui = ui, server = server)
+```
+
+
+
+# 2. Uso de `reactive()`
+
+```r
+server <- function(input, output) {
+  datos_filtrados <- reactive({
+    mtcars[mtcars$cyl == input$cyl, ]
+  })
+
+  output$tabla <- renderTable({
+    datos_filtrados()
+  })
+}
+```
+
+El objeto `datos_filtrados()` solo se recalcula cuando `input$cyl` cambia.
+
+
+
+# 3. `observeEvent()` y `eventReactive()`
+
+* `observeEvent()`: ejecuta efectos secundarios (como imprimir, guardar, actualizar)
+* `eventReactive()`: solo recalcula cuando un evento específico ocurre
+
+```r
+# Usar botón para actualizar
+output$plot <- renderPlot({
+  input$boton_actualizar
+  isolate({
+    hist(rnorm(100))
+  })
+})
+```
+
+
+
+# 4. Descarga de archivos: `downloadHandler`
+
+```r
+output$descarga <- downloadHandler(
+  filename = function() {
+    paste0("datos-", Sys.Date(), ".csv")
+  },
+  content = function(file) {
+    write.csv(mtcars, file)
+  }
+)
+```
+
+
+
+# 5. Gráficos interactivos con `plotly`
+
+```r
+library(plotly)
+
+output$plotly_plot <- renderPlotly({
+  plot_ly(data = iris, x = ~Sepal.Length, y = ~Petal.Length, color = ~Species)
+})
+```
+
+
+
+# 6. Módulos en Shiny
+
+Permiten reusar lógica y UI como funciones:
+
+**Módulo UI:**
+
+```r
+mod_plot_ui <- function(id) {
+  ns <- NS(id)
+  plotOutput(ns("plot"))
+}
+```
+
+**Módulo Server:**
+
+```r
+mod_plot_server <- function(id, data) {
+  moduleServer(id, function(input, output, session) {
+    output$plot <- renderPlot({
+      hist(data())
+    })
+  })
+}
+```
+
+**Uso en app:**
+
+```r
+mod_plot_ui("grafico")
+mod_plot_server("grafico", reactive({ mtcars$mpg }))
+```
+
+
+
+# 7. Mejora visual con `shinythemes` o `bslib`
+
+```r
+library(shinythemes)
+
+ui <- fluidPage(
+  theme = shinytheme("flatly"),
+  titlePanel("App con tema")
+)
+```
+
+O bien:
+
+```r
+library(bslib)
+
+ui <- fluidPage(
+  theme = bs_theme(bootswatch = "minty", base_font = font_google("Roboto"))
+)
+```
+
+
+
+# Recursos adicionales
+
+* Libro: [https://mastering-shiny.org](https://mastering-shiny.org)
+* Documentación: [https://shiny.posit.co](https://shiny.posit.co)
+* Galería de ejemplos: [https://shiny.posit.co/gallery/](https://shiny.posit.co/gallery/)
+* Tutorial sobre módulos: [https://shiny.rstudio.com/articles/modules.html](https://shiny.rstudio.com/articles/modules.html)
+
+
+
+# Actividad sugerida
+
+Construye una aplicación que incluya:
+
+* Filtros por múltiples variables
+* Visualización interactiva (`plotly`)
+* Descarga de resultados (`downloadHandler`)
+* Al menos un módulo reutilizable (`moduleServer`)

@@ -1,0 +1,1230 @@
+---
+title: "Manipulación de datos con pandas"
+subtitle: "Del dato crudo al análisis en Google Colab"
+---
+
+pandas es la librería central del ecosistema de ciencia de datos en Python. Si NumPy es la calculadora, pandas es la hoja de cálculo programable: permite cargar, explorar, limpiar, transformar y exportar datos tabulares con una sintaxis expresiva y eficiente.
+
+Este capítulo cubre pandas desde la perspectiva docente: cómo cargar datos de distintas fuentes (incluyendo Google Drive y URLs), inspeccionar un dataset desconocido, aplicar las transformaciones más frecuentes, y producir un análisis reproducible completo. Cada sección incluye código listo para usar en Colab.
+
+---
+
+## Cargar datos: CSV, Excel, URL, Google Drive
+
+### El DataFrame: la estructura central de pandas
+
+Un **DataFrame** es una tabla bidimensional con filas y columnas etiquetadas. Cada columna es una **Serie** — un arreglo unidimensional con un índice. Esta estructura mapea directamente a lo que un docente o investigador tiene en una hoja de cálculo.
+
+```{mermaid}
+graph TD
+    DF["📊 DataFrame\ndf"]
+    DF --> C1["📋 Serie: nombre\n['Ana','Luis','María']"]
+    DF --> C2["📋 Serie: nota\n[6.2, 5.8, 6.9]"]
+    DF --> C3["📋 Serie: carrera\n['Civil','Industrial','Civil']"]
+    DF --> I["🔢 Índice\n[0, 1, 2, ...]"]
+```
+
+### Importar pandas y verificar versión
+
+```python
+import pandas as pd
+import numpy as np
+
+print(f"pandas: {pd.__version__}")
+print(f"numpy:  {np.__version__}")
+```
+
+### Cargar desde CSV
+
+El formato CSV es el más común para compartir datos tabulares.
+
+```python
+# CSV local (en el runtime de Colab o Drive montado)
+df = pd.read_csv('datos.csv')
+
+# Opciones frecuentes
+df = pd.read_csv(
+    'datos.csv',
+    sep=';',                    # separador (punto y coma en archivos latinoamericanos)
+    encoding='utf-8-sig',       # encoding para caracteres en español (ñ, tildes)
+    decimal=',',                # coma decimal (Chile, España)
+    thousands='.',              # separador de miles
+    na_values=['N/A', '-', ''],  # valores que se interpretan como NaN
+    parse_dates=['fecha'],       # columnas que se convierten a datetime
+    index_col='id',             # columna que actúa como índice
+    usecols=['nombre', 'nota', 'carrera'],  # solo cargar ciertas columnas
+    nrows=1000                  # cargar solo las primeras N filas (útil para explorar datasets grandes)
+)
+```
+
+::: {.callout-tip}
+## CSV con punto y coma: el caso latinoamericano
+Excel en sistemas configurados en español guarda los CSV con punto y coma como separador (porque la coma se usa como decimal). Si recibes un CSV y `pd.read_csv('archivo.csv')` muestra todo en una sola columna, prueba `sep=';'`. También puedes usar `pd.read_csv('archivo.csv', sep=None, engine='python')` para que pandas detecte el separador automáticamente.
+:::
+
+### Cargar desde Excel
+
+```python
+# Hoja por defecto (primera hoja)
+df = pd.read_excel('datos.xlsx')
+
+# Opciones importantes
+df = pd.read_excel(
+    'datos.xlsx',
+    sheet_name='Notas 2025-1',   # nombre de la hoja (o índice: 0, 1, 2...)
+    header=2,                     # la fila 2 (índice 0-based) contiene los encabezados
+    skiprows=[0, 1],              # filas a omitir al inicio (logos, títulos, etc.)
+    usecols='A:F',                # rango de columnas estilo Excel
+    dtype={'RUT': str}            # forzar tipo de dato de columnas específicas
+)
+
+# Cargar todas las hojas como un diccionario de DataFrames
+hojas = pd.read_excel('informe.xlsx', sheet_name=None)
+# hojas['Semestre 1'], hojas['Semestre 2'], etc.
+```
+
+### Cargar desde URL
+
+```python
+# CSV desde una URL directa
+url = 'https://raw.githubusercontent.com/mwaskom/seaborn-data/master/penguins.csv'
+df_pinguinos = pd.read_csv(url)
+
+# Dataset de ejemplo: gapminder
+url_gapminder = 'https://raw.githubusercontent.com/jennybc/gapminder/main/inst/extdata/gapminder.tsv'
+df_gapminder = pd.read_csv(url_gapminder, sep='\t')
+
+# JSON desde API
+df_api = pd.read_json('https://api.ejemplo.cl/datos.json')
+
+# Excel desde URL (menos común pero funciona)
+df_excel_web = pd.read_excel('https://ejemplo.com/datos.xlsx')
+```
+
+::: {.callout-note}
+## Datasets de ejemplo útiles para docencia
+Estos datasets están disponibles directamente en Python, sin descargar nada:
+
+```python
+# seaborn: datasets clásicos de estadística
+import seaborn as sns
+df_tips     = sns.load_dataset('tips')        # propinas en restaurant
+df_penguins = sns.load_dataset('penguins')    # pingüinos de Palmer
+df_titanic  = sns.load_dataset('titanic')     # sobrevivientes del Titanic
+df_iris     = sns.load_dataset('iris')        # flores iris (clasificación clásica)
+df_flights  = sns.load_dataset('flights')     # pasajeros aéreos (series de tiempo)
+
+# sklearn: datasets para ML
+from sklearn.datasets import load_iris, load_diabetes, fetch_california_housing
+X, y = load_diabetes(return_X_y=True, as_frame=True)
+
+# statsmodels: datasets económicos y sociales
+import statsmodels.api as sm
+df_longley  = sm.datasets.longley.load_pandas().data    # econometría clásica
+df_sunspots = sm.datasets.sunspots.load_pandas().data   # manchas solares (series de tiempo)
+```
+:::
+
+### Cargar desde Google Drive
+
+```python
+from google.colab import drive
+drive.mount('/content/drive')
+
+# Después de montar Drive
+import pathlib
+
+CURSO = pathlib.Path('/content/drive/MyDrive/mat281-2025-1')
+
+# CSV desde Drive
+df = pd.read_csv(CURSO / 'datasets' / 'notas_semestre.csv')
+
+# Excel desde Drive
+df = pd.read_excel(CURSO / 'datasets' / 'reporte_institucional.xlsx',
+                   sheet_name='Resultados')
+```
+
+### Crear un DataFrame desde cero
+
+Para ejemplos didácticos, a veces conviene crear el dataset directamente en el notebook:
+
+```python
+# Desde diccionario (forma más común)
+df_ejemplo = pd.DataFrame({
+    'estudiante': ['Ana López', 'Luis Pérez', 'María García', 'Carlos Ruiz'],
+    'carrera':    ['Ingeniería Civil', 'Ingeniería Industrial', 'Ingeniería Civil', 'Matemáticas'],
+    'nota_lab1':  [6.2, 5.8, 6.9, 4.5],
+    'nota_lab2':  [5.5, 6.1, 7.0, 5.9],
+    'asistencia': [0.95, 0.80, 1.00, 0.75]
+})
+
+# Desde listas
+df_desde_listas = pd.DataFrame(
+    [['Ana', 6.2, True], ['Luis', 5.8, False], ['María', 6.9, True]],
+    columns=['nombre', 'nota', 'aprobado']
+)
+
+# Datos sintéticos para ejemplos reproducibles
+rng = np.random.default_rng(seed=42)   # semilla para reproducibilidad
+n = 200
+df_sintetico = pd.DataFrame({
+    'nota_entrada': rng.normal(loc=50, scale=10, size=n).clip(0, 100),
+    'horas_estudio': rng.exponential(scale=5, size=n).round(1),
+    'aprobado': rng.choice([True, False], size=n, p=[0.7, 0.3]),
+    'carrera': rng.choice(['Civil', 'Industrial', 'Eléctrica', 'Informática'],
+                          size=n)
+})
+```
+
+---
+
+## Inspección inicial: `head()`, `info()`, `describe()`
+
+El primer paso al recibir un dataset es siempre el mismo: entender qué tienes. Estas tres funciones son el ritual de inspección inicial.
+
+### Vista preliminar: `head()` y `tail()`
+
+```python
+# Ver las primeras 5 filas (por defecto)
+df.head()
+
+# Ver las primeras N filas
+df.head(10)
+
+# Ver las últimas filas
+df.tail()
+
+# Ver una muestra aleatoria (más representativo que head para datasets grandes)
+df.sample(5, random_state=42)
+```
+
+### Dimensiones y tipos: `shape`, `dtypes`, `info()`
+
+```python
+# Dimensiones: (filas, columnas)
+print(f"Filas: {df.shape[0]:,}")
+print(f"Columnas: {df.shape[1]}")
+
+# Nombres de columnas
+print(df.columns.tolist())
+
+# Tipos de dato por columna
+print(df.dtypes)
+
+# Resumen completo: tipos + valores no nulos + memoria
+df.info()
+# <class 'pandas.core.frame.DataFrame'>
+# RangeIndex: 1200 entries, 0 to 1199
+# Data columns (total 6 columns):
+#  #   Column       Non-Null Count  Dtype
+# ---  ------       --------------  -----
+#  0   nombre       1200 non-null   object
+#  1   carrera      1185 non-null   object    ← 15 nulos
+#  2   nota_final   1198 non-null   float64   ← 2 nulos
+#  3   aprobado     1200 non-null   bool
+#  4   año_ingreso  1200 non-null   int64
+#  5   fecha        1200 non-null   datetime64[ns]
+# dtypes: bool(1), datetime64[ns](1), float64(1), int64(1), object(2)
+# memory usage: 54.5+ KB
+
+# Memoria usada
+print(f"Memoria: {df.memory_usage(deep=True).sum() / 1024:.1f} KB")
+```
+
+### Estadísticas básicas: `describe()`
+
+```python
+# Estadísticas de columnas numéricas
+df.describe()
+#        nota_final  año_ingreso
+# count  1198.000     1200.000
+# mean      5.234     2021.450
+# std       1.123        1.234
+# min       1.000     2018.000
+# 25%       4.500     2021.000
+# 50%       5.500     2022.000
+# 75%       6.200     2023.000
+# max       7.000     2024.000
+
+# Incluir columnas categóricas (object)
+df.describe(include='all')
+
+# Solo columnas de texto
+df.describe(include='object')
+
+# Percentiles personalizados
+df.describe(percentiles=[0.10, 0.25, 0.50, 0.75, 0.90])
+```
+
+### Resumen de valores únicos y nulos
+
+```python
+# Conteo de valores únicos por columna
+df.nunique()
+
+# Valores únicos de una columna categórica
+df['carrera'].unique()
+df['carrera'].value_counts()
+df['carrera'].value_counts(normalize=True).round(3)  # proporciones
+
+# Valores nulos: conteo total por columna
+df.isnull().sum()
+
+# Porcentaje de nulos
+(df.isnull().sum() / len(df) * 100).round(2)
+
+# Visualizar nulos con missingno (requiere instalación)
+!pip install -q missingno
+import missingno as msno
+
+msno.matrix(df, figsize=(12, 5))  # mapa de nulos
+msno.bar(df)                       # barras de completitud
+msno.heatmap(df)                   # correlación entre nulos
+```
+
+### Función de inspección rápida para clase
+
+Esta función combina todo lo anterior en un solo output formateado — útil como primera celda de análisis en notebooks de laboratorio:
+
+```python
+def inspeccionar(df, nombre="DataFrame"):
+    """Inspección rápida estandarizada para notebooks de clase."""
+    print(f"{'='*60}")
+    print(f"  {nombre}")
+    print(f"{'='*60}")
+    print(f"\n📐 Dimensiones: {df.shape[0]:,} filas × {df.shape[1]} columnas")
+    print(f"💾 Memoria: {df.memory_usage(deep=True).sum() / 1024:.1f} KB\n")
+
+    print("📋 Columnas y tipos:")
+    for col in df.columns:
+        nulos = df[col].isnull().sum()
+        pct   = nulos / len(df) * 100
+        unicos = df[col].nunique()
+        print(f"   {col:<25} {str(df[col].dtype):<15} "
+              f"nulos: {nulos:4d} ({pct:5.1f}%)   únicos: {unicos}")
+
+    print("\n📊 Estadísticas numéricas:")
+    print(df.describe().round(3).to_string())
+    print(f"\n{'='*60}\n")
+
+# Uso
+inspeccionar(df, nombre="Dataset notas MAT281 2025-1")
+```
+
+---
+
+## Filtros, selección de columnas y condiciones
+
+### Selección de columnas
+
+```python
+# Una columna → Serie
+notas = df['nota_final']
+
+# Múltiples columnas → DataFrame
+df_subset = df[['nombre', 'carrera', 'nota_final']]
+
+# Selección por posición: iloc[filas, columnas]
+df.iloc[0]              # primera fila
+df.iloc[0:5]            # filas 0 a 4
+df.iloc[:, 0:3]         # todas las filas, columnas 0 a 2
+df.iloc[0:5, 1:4]       # filas 0-4, columnas 1-3
+
+# Selección por etiqueta: loc[filas, columnas]
+df.loc[0]               # fila con índice 0
+df.loc[:, 'nota_final'] # todas las filas, columna 'nota_final'
+df.loc[0:5, ['nombre', 'nota_final']]  # filas 0-5, columnas seleccionadas
+```
+
+### Filtros con condiciones booleanas
+
+```python
+# Condición simple
+aprobados = df[df['nota_final'] >= 4.0]
+ingenieria_civil = df[df['carrera'] == 'Ingeniería Civil']
+
+# Múltiples condiciones: & (AND), | (OR), ~ (NOT)
+# ⚠️ Usa paréntesis alrededor de cada condición
+aprobados_civil = df[
+    (df['nota_final'] >= 4.0) &
+    (df['carrera'] == 'Ingeniería Civil')
+]
+
+buena_nota_o_civil = df[
+    (df['nota_final'] >= 6.0) |
+    (df['carrera'] == 'Ingeniería Civil')
+]
+
+# Excluir una categoría
+no_civil = df[df['carrera'] != 'Ingeniería Civil']
+
+# Negar condición compleja
+reprobados_no_civil = df[
+    ~((df['nota_final'] >= 4.0) | (df['carrera'] == 'Ingeniería Civil'))
+]
+```
+
+### Filtros con métodos de string
+
+```python
+# Columnas de texto: .str accessor
+df[df['nombre'].str.contains('García')]            # contiene substring
+df[df['nombre'].str.startswith('María')]            # empieza con
+df[df['carrera'].str.lower().str.contains('ing')]   # case insensitive
+
+# Regex en filtros de string
+df[df['email'].str.match(r'^[\w.-]+@usm\.cl$')]     # solo emails @usm.cl
+```
+
+### Filtros con listas: `isin()`
+
+```python
+# Filtrar por múltiples valores (mucho más limpio que OR encadenados)
+carreras_ingenieria = ['Ingeniería Civil', 'Ingeniería Industrial',
+                        'Ingeniería Eléctrica', 'Ingeniería Informática']
+
+df_ingenieria = df[df['carrera'].isin(carreras_ingenieria)]
+
+# Excluir valores de una lista
+df_sin_reprobados_extremos = df[~df['nota_final'].isin([1.0, 1.1, 1.2])]
+```
+
+### Filtros con rangos: `between()`
+
+```python
+# Nota entre 4.0 y 5.5 (inclusive en ambos extremos)
+df[df['nota_final'].between(4.0, 5.5)]
+
+# Año de ingreso entre 2020 y 2022
+df[df['año_ingreso'].between(2020, 2022)]
+```
+
+### `query()`: sintaxis alternativa más legible
+
+```python
+# Equivalente a df[(df['nota_final'] >= 4.0) & (df['carrera'] == 'Ingeniería Civil')]
+df.query("nota_final >= 4.0 and carrera == 'Ingeniería Civil'")
+
+# Con variables Python en el query (prefijo @)
+nota_minima = 4.0
+carrera_objetivo = 'Ingeniería Civil'
+df.query("nota_final >= @nota_minima and carrera == @carrera_objetivo")
+
+# Muy útil para filtros complejos con múltiples condiciones
+df.query("nota_final >= 4.0 and asistencia > 0.75 and año_ingreso >= 2021")
+```
+
+### Selección y asignación: `loc` vs `iloc` para modificar
+
+```python
+# Modificar valores con loc (siempre usa loc/iloc para modificar, nunca encadenes)
+df.loc[df['nota_final'] < 1.0, 'nota_final'] = 1.0      # piso de nota en 1.0
+df.loc[df['nota_final'] > 7.0, 'nota_final'] = 7.0      # techo de nota en 7.0
+
+# Crear columna nueva basada en condición
+df['estado'] = 'Reprobado'
+df.loc[df['nota_final'] >= 4.0, 'estado'] = 'Aprobado'
+
+# Con np.where (más conciso para condición binaria)
+df['aprobado'] = np.where(df['nota_final'] >= 4.0, True, False)
+
+# Con pd.cut para categorías por rangos
+df['categoria_nota'] = pd.cut(
+    df['nota_final'],
+    bins=[0, 3.9, 4.9, 5.9, 7.0],
+    labels=['Reprobado', 'Suficiente', 'Bueno', 'Excelente'],
+    right=True
+)
+```
+
+---
+
+## Agrupaciones con `groupby()` y funciones de agregación
+
+### La lógica de `groupby`: Split-Apply-Combine
+
+```{mermaid}
+graph LR
+    D["📊 DataFrame\ncompleto"]
+    S1["🏗️ Grupo: Civil\n[fila 0, 2, 5...]"]
+    S2["🏗️ Grupo: Industrial\n[fila 1, 3, 7...]"]
+    S3["🏗️ Grupo: Eléctrica\n[fila 4, 6, 9...]"]
+    A1["📐 Media: 5.8"]
+    A2["📐 Media: 5.2"]
+    A3["📐 Media: 6.1"]
+    R["📋 Resultado\nCarrera | Media\nCivil   | 5.8\nIndustrial | 5.2\nEléctrica  | 6.1"]
+
+    D -- "Split\n(groupby carrera)" --> S1
+    D --> S2
+    D --> S3
+    S1 -- "Apply\n(mean)" --> A1
+    S2 --> A2
+    S3 --> A3
+    A1 -- "Combine" --> R
+    A2 --> R
+    A3 --> R
+```
+
+### Agregaciones básicas
+
+```python
+# Media de nota_final por carrera
+df.groupby('carrera')['nota_final'].mean()
+
+# Múltiples agregaciones en una columna
+df.groupby('carrera')['nota_final'].agg(['mean', 'median', 'std', 'count'])
+
+# Múltiples columnas y múltiples funciones
+resumen = df.groupby('carrera').agg(
+    nota_media    = ('nota_final', 'mean'),
+    nota_mediana  = ('nota_final', 'median'),
+    nota_min      = ('nota_final', 'min'),
+    nota_max      = ('nota_final', 'max'),
+    total_alumnos = ('nota_final', 'count'),
+    tasa_aprobacion = ('aprobado', 'mean')   # mean de bool = proporción de True
+).round(3)
+
+print(resumen)
+```
+
+### `reset_index()` para convertir el resultado en DataFrame limpio
+
+```python
+# groupby devuelve el grupo como índice — reset_index() lo convierte en columna
+resumen = (
+    df.groupby('carrera')['nota_final']
+    .mean()
+    .reset_index()
+    .rename(columns={'nota_final': 'nota_promedio'})
+    .sort_values('nota_promedio', ascending=False)
+)
+```
+
+### Agrupación por múltiples variables
+
+```python
+# Promedio por carrera Y año de ingreso
+df.groupby(['carrera', 'año_ingreso'])['nota_final'].mean().reset_index()
+
+# Tasa de aprobación por carrera y género
+df.groupby(['carrera', 'genero'])['aprobado'].mean().unstack()
+# unstack() convierte el segundo nivel del índice en columnas
+```
+
+### Funciones de agregación personalizadas
+
+```python
+# Función propia con lambda
+df.groupby('carrera')['nota_final'].agg(
+    lambda x: (x >= 4.0).sum()    # contar aprobados por carrera
+)
+
+# Función nombrada
+def rango_notas(serie):
+    return serie.max() - serie.min()
+
+df.groupby('carrera')['nota_final'].agg(rango_notas)
+
+# Múltiples funciones propias
+df.groupby('carrera')['nota_final'].agg(
+    aprobados=lambda x: (x >= 4.0).sum(),
+    reprobados=lambda x: (x < 4.0).sum(),
+    rango=lambda x: x.max() - x.min(),
+    p90=lambda x: x.quantile(0.9)
+)
+```
+
+### `transform()`: agregar el resultado al DataFrame original
+
+A diferencia de `agg()` que reduce las filas, `transform()` devuelve una Serie del mismo tamaño que el DataFrame original — útil para agregar una columna con el promedio del grupo de cada fila:
+
+```python
+# Agregar la media del grupo como nueva columna
+df['nota_media_carrera'] = df.groupby('carrera')['nota_final'].transform('mean')
+
+# Calcular cuánto se desvía cada estudiante del promedio de su carrera
+df['desviacion_del_grupo'] = df['nota_final'] - df['nota_media_carrera']
+
+# Rank dentro del grupo
+df['rank_en_carrera'] = df.groupby('carrera')['nota_final'].rank(
+    ascending=False, method='min'
+)
+```
+
+### `filter()`: filtrar grupos completos
+
+```python
+# Conservar solo carreras con más de 50 estudiantes
+df_carreras_grandes = df.groupby('carrera').filter(
+    lambda grupo: len(grupo) >= 50
+)
+
+# Conservar solo carreras con tasa de aprobación > 70%
+df_carreras_aprobacion = df.groupby('carrera').filter(
+    lambda grupo: (grupo['nota_final'] >= 4.0).mean() > 0.70
+)
+```
+
+---
+
+## Merge entre tablas y pivot tables
+
+### Tipos de merge (joins)
+
+```{mermaid}
+graph TB
+    subgraph "INNER JOIN"
+        I["Solo filas con match\nen ambas tablas"]
+    end
+    subgraph "LEFT JOIN"
+        L["Todas las filas de la\ntabla izquierda +\nmatch de la derecha"]
+    end
+    subgraph "RIGHT JOIN"
+        R["Todas las filas de la\ntabla derecha +\nmatch de la izquierda"]
+    end
+    subgraph "OUTER JOIN"
+        O["Todas las filas\nde ambas tablas"]
+    end
+```
+
+```python
+# DataFrames de ejemplo
+df_estudiantes = pd.DataFrame({
+    'id_estudiante': [1, 2, 3, 4, 5],
+    'nombre': ['Ana', 'Luis', 'María', 'Carlos', 'Sofía'],
+    'id_carrera': [101, 102, 101, 103, 102]
+})
+
+df_carreras = pd.DataFrame({
+    'id_carrera': [101, 102, 103, 104],
+    'nombre_carrera': ['Ingeniería Civil', 'Industrial', 'Eléctrica', 'Informática'],
+    'departamento': ['ICM', 'DEI', 'ELO', 'INF']
+})
+
+# INNER JOIN (por defecto): solo filas con match en ambas tablas
+df_inner = pd.merge(df_estudiantes, df_carreras,
+                    on='id_carrera',
+                    how='inner')
+
+# LEFT JOIN: todos los estudiantes, con o sin carrera
+df_left = pd.merge(df_estudiantes, df_carreras,
+                   on='id_carrera',
+                   how='left')
+
+# Merge con columnas de distinto nombre
+df_merge_cols = pd.merge(
+    df_estudiantes,
+    df_carreras,
+    left_on='id_carrera',
+    right_on='id_carrera',
+    how='left',
+    suffixes=('_est', '_carr')   # sufijos para columnas con mismo nombre
+)
+```
+
+### Concatenar DataFrames
+
+```python
+# Apilar verticalmente (mismo esquema, datos de distintos períodos)
+df_2024_1 = pd.read_csv('notas_2024_1.csv')
+df_2024_2 = pd.read_csv('notas_2024_2.csv')
+df_2025_1 = pd.read_csv('notas_2025_1.csv')
+
+df_historico = pd.concat(
+    [df_2024_1, df_2024_2, df_2025_1],
+    ignore_index=True,           # reinicia el índice
+    keys=['2024-1', '2024-2', '2025-1']  # agrega un nivel de índice identificador
+)
+
+# Concatenar horizontalmente (agregar columnas)
+df_ampliado = pd.concat([df_base, df_columnas_nuevas], axis=1)
+```
+
+### Pivot tables
+
+Las pivot tables reorganizan datos para facilitar la comparación entre categorías:
+
+```python
+# Tabla pivot: carrera en filas, año en columnas, nota como valor
+pivot_notas = df.pivot_table(
+    index='carrera',
+    columns='año_ingreso',
+    values='nota_final',
+    aggfunc='mean',           # función de agregación
+    fill_value=0,             # rellenar celdas vacías
+    margins=True,             # agregar fila/columna de totales
+    margins_name='Total'
+).round(2)
+
+print(pivot_notas)
+# año_ingreso    2020   2021   2022   2023   Total
+# carrera
+# Civil          5.20   5.35   5.12   5.41   5.27
+# Eléctrica      4.98   5.10   5.23   5.30   5.15
+# Industrial     5.45   5.60   5.38   5.55   5.49
+# Total          5.21   5.35   5.24   5.42   5.30
+
+# Pivot con múltiples funciones
+pivot_multi = df.pivot_table(
+    index='carrera',
+    columns='año_ingreso',
+    values='nota_final',
+    aggfunc=['mean', 'count']
+)
+```
+
+### `melt()`: transformar de ancho a largo
+
+El inverso del pivot — útil para preparar datos para visualización con seaborn:
+
+```python
+# DataFrame en formato ancho (una columna por evaluación)
+df_ancho = pd.DataFrame({
+    'estudiante': ['Ana', 'Luis', 'María'],
+    'lab1': [6.2, 5.8, 6.9],
+    'lab2': [5.5, 6.1, 7.0],
+    'lab3': [6.0, 5.5, 6.5]
+})
+
+# Transformar a formato largo (una fila por evaluación)
+df_largo = df_ancho.melt(
+    id_vars='estudiante',         # columnas que se mantienen
+    value_vars=['lab1', 'lab2', 'lab3'],  # columnas que se transforman
+    var_name='laboratorio',       # nombre de la columna de variables
+    value_name='nota'             # nombre de la columna de valores
+)
+print(df_largo)
+# estudiante laboratorio  nota
+# Ana        lab1         6.2
+# Ana        lab2         5.5
+# Ana        lab3         6.0
+# Luis       lab1         5.8
+# ...
+```
+
+---
+
+## Limpieza: valores nulos, duplicados, tipos de dato
+
+### Valores nulos (NaN)
+
+```python
+# Diagnóstico completo de nulos
+def diagnostico_nulos(df):
+    """Resumen de valores nulos por columna."""
+    nulos = df.isnull().sum()
+    pct   = (nulos / len(df) * 100).round(2)
+    tipos = df.dtypes
+
+    resumen = pd.DataFrame({
+        'nulos': nulos,
+        'porcentaje': pct,
+        'tipo': tipos
+    }).query('nulos > 0').sort_values('porcentaje', ascending=False)
+
+    if len(resumen) == 0:
+        print("✅ Sin valores nulos")
+    else:
+        print(f"⚠️  {len(resumen)} columnas con nulos:\n")
+        print(resumen.to_string())
+    return resumen
+
+diagnostico_nulos(df)
+```
+
+**Estrategias para tratar nulos:**
+
+```python
+# 1. Eliminar filas con nulos
+df_sin_nulos = df.dropna()                          # elimina si hay nulo en CUALQUIER columna
+df_sin_nulos = df.dropna(subset=['nota_final'])      # elimina solo si hay nulo en 'nota_final'
+df_sin_nulos = df.dropna(thresh=5)                   # elimina filas con menos de 5 valores no-nulos
+
+# 2. Eliminar columnas con muchos nulos
+df_sin_cols = df.dropna(axis=1, thresh=int(len(df)*0.5))  # elimina columnas con >50% nulos
+
+# 3. Rellenar nulos
+df['nota_final'].fillna(df['nota_final'].median())    # con mediana (preferido para notas)
+df['carrera'].fillna('Sin información')                # con valor literal
+df['nota_final'].fillna(method='ffill')                # con el valor anterior (series de tiempo)
+df['nota_final'].fillna(method='bfill')                # con el valor siguiente
+
+# 4. Rellenar con la media del grupo (imputación por grupo)
+df['nota_final'] = df.groupby('carrera')['nota_final'].transform(
+    lambda x: x.fillna(x.median())
+)
+
+# 5. Interpolación (para series de tiempo o datos con orden)
+df['temperatura'].interpolate(method='linear')
+df['temperatura'].interpolate(method='time')   # requiere índice datetime
+```
+
+### Duplicados
+
+```python
+# Verificar duplicados
+print(f"Filas duplicadas: {df.duplicated().sum()}")
+
+# Ver las filas duplicadas
+df[df.duplicated(keep=False)]  # muestra todas las copias
+
+# Duplicados por columnas específicas (ej: mismo RUT)
+df[df.duplicated(subset=['rut'], keep=False)]
+
+# Eliminar duplicados
+df_limpio = df.drop_duplicates()                      # elimina duplicados exactos
+df_limpio = df.drop_duplicates(subset=['rut'])         # elimina por RUT duplicado
+df_limpio = df.drop_duplicates(subset=['rut'],
+                               keep='last')            # conserva el último registro
+```
+
+### Tipos de dato
+
+Una de las fuentes de error más comunes: una columna numérica que se lee como texto, o una fecha que llega como string.
+
+```python
+# Ver tipos actuales
+df.dtypes
+
+# Convertir tipos
+df['nota_final']   = df['nota_final'].astype(float)
+df['año_ingreso']  = df['año_ingreso'].astype(int)
+df['carrera']      = df['carrera'].astype('category')   # más eficiente en memoria
+df['aprobado']     = df['aprobado'].astype(bool)
+
+# Convertir strings a números (con manejo de errores)
+df['nota_str'] = pd.to_numeric(df['nota_str'],
+                               errors='coerce')    # valores inválidos → NaN
+
+# Convertir a datetime
+df['fecha'] = pd.to_datetime(df['fecha'])
+df['fecha'] = pd.to_datetime(df['fecha_str'],
+                             format='%d/%m/%Y',    # formato de fecha en el CSV
+                             errors='coerce')      # fechas inválidas → NaT
+
+# Extraer partes de fecha
+df['año']  = df['fecha'].dt.year
+df['mes']  = df['fecha'].dt.month
+df['dia']  = df['fecha'].dt.day
+df['semana'] = df['fecha'].dt.isocalendar().week
+```
+
+### Limpieza de strings
+
+```python
+# Problemas típicos en datos de texto
+df['nombre'] = (
+    df['nombre']
+    .str.strip()                    # eliminar espacios al inicio y final
+    .str.upper()                    # normalizar a mayúsculas
+    .str.replace(r'\s+', ' ', regex=True)  # múltiples espacios → uno
+)
+
+df['carrera'] = (
+    df['carrera']
+    .str.strip()
+    .str.title()                    # Primera Letra En Mayúscula
+    .str.replace('Ing.', 'Ingeniería', regex=False)  # estandarizar abreviaciones
+)
+
+# Normalizar RUT
+df['rut'] = (
+    df['rut']
+    .str.replace('[.\-]', '', regex=True)  # eliminar puntos y guiones
+    .str.upper()                            # normalizar K mayúscula
+    .str.strip()
+)
+```
+
+### Pipeline de limpieza completo
+
+```python
+def limpiar_dataset_notas(df_raw):
+    """
+    Pipeline de limpieza para dataset de notas institucional.
+    Retorna DataFrame limpio con log de cambios.
+    """
+    df = df_raw.copy()
+    log = []
+
+    # 1. Eliminar duplicados exactos
+    n_antes = len(df)
+    df = df.drop_duplicates()
+    log.append(f"Duplicados eliminados: {n_antes - len(df)}")
+
+    # 2. Normalizar tipos
+    df['nota_final'] = pd.to_numeric(df['nota_final'], errors='coerce')
+    df['fecha']      = pd.to_datetime(df['fecha'], errors='coerce')
+    df['carrera']    = df['carrera'].str.strip().str.title()
+    log.append("Tipos normalizados")
+
+    # 3. Aplicar límites de notas (escala chilena: 1.0-7.0)
+    notas_invalidas = ((df['nota_final'] < 1.0) | (df['nota_final'] > 7.0)).sum()
+    df['nota_final'] = df['nota_final'].clip(1.0, 7.0)
+    log.append(f"Notas fuera de rango corregidas: {notas_invalidas}")
+
+    # 4. Tratar nulos en columna crítica
+    nulos_nota = df['nota_final'].isnull().sum()
+    df['nota_final'] = df.groupby('carrera')['nota_final'].transform(
+        lambda x: x.fillna(x.median())
+    )
+    log.append(f"Nulos en nota_final imputados con mediana por carrera: {nulos_nota}")
+
+    # 5. Agregar columna derivada
+    df['aprobado'] = df['nota_final'] >= 4.0
+    df['categoria_nota'] = pd.cut(
+        df['nota_final'],
+        bins=[0, 3.9, 4.9, 5.9, 7.01],
+        labels=['Reprobado', 'Suficiente', 'Bueno', 'Excelente']
+    )
+
+    # Log de cambios
+    print("✅ Limpieza completada:")
+    for item in log:
+        print(f"   • {item}")
+    print(f"   • Filas finales: {len(df):,}")
+
+    return df
+
+df_limpio = limpiar_dataset_notas(df_raw)
+```
+
+---
+
+## Exportar resultados a CSV o Excel
+
+### Exportar a CSV
+
+```python
+# CSV básico
+df_resultados.to_csv('resultados.csv', index=False)
+
+# CSV con opciones para compatibilidad con Excel en español
+df_resultados.to_csv(
+    '/content/drive/MyDrive/mat281-2025-1/resultados/analisis_2025.csv',
+    index=False,
+    encoding='utf-8-sig',    # BOM para que Excel lo abra correctamente
+    sep=';',                 # punto y coma para Excel en español
+    decimal=',',             # coma decimal
+    float_format='%.3f',     # 3 decimales para flotantes
+    date_format='%d/%m/%Y'   # formato de fecha
+)
+```
+
+### Exportar a Excel
+
+```python
+# Un DataFrame, una hoja
+df_resultados.to_excel('resultados.xlsx', index=False, sheet_name='Resultados')
+
+# Múltiples DataFrames en múltiples hojas
+with pd.ExcelWriter(
+    '/content/drive/MyDrive/mat281-2025-1/resultados/informe_completo.xlsx',
+    engine='openpyxl'
+) as writer:
+
+    # Cada DataFrame en su hoja
+    df_resumen.to_excel(writer, sheet_name='Resumen', index=False)
+    df_por_carrera.to_excel(writer, sheet_name='Por Carrera', index=True)
+    df_historico.to_excel(writer, sheet_name='Histórico', index=False)
+    df_reprobados.to_excel(writer, sheet_name='Reprobados', index=False)
+
+    print("✅ Excel exportado con 4 hojas")
+```
+
+### Exportar con formato usando openpyxl
+
+Para informes más elaborados:
+
+```python
+from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
+from openpyxl.utils import get_column_letter
+
+def exportar_informe_formateado(df, ruta, titulo="Informe de Notas"):
+    """Exporta DataFrame a Excel con formato básico profesional."""
+    with pd.ExcelWriter(ruta, engine='openpyxl') as writer:
+        df.to_excel(writer, sheet_name='Datos', index=False, startrow=1)
+
+        ws = writer.sheets['Datos']
+
+        # Título en fila 1
+        ws.cell(1, 1, titulo).font = Font(bold=True, size=14)
+
+        # Encabezados en negrita con fondo gris
+        for col_idx, col_name in enumerate(df.columns, 1):
+            cell = ws.cell(2, col_idx)
+            cell.font = Font(bold=True)
+            cell.fill = PatternFill("solid", fgColor="CCCCCC")
+            cell.alignment = Alignment(horizontal='center')
+
+        # Ajustar ancho de columnas automáticamente
+        for col_idx, col in enumerate(df.columns, 1):
+            max_len = max(
+                len(str(col)),
+                df[col].astype(str).str.len().max()
+            )
+            ws.column_dimensions[get_column_letter(col_idx)].width = min(max_len + 2, 40)
+
+    print(f"✅ Exportado: {ruta}")
+
+exportar_informe_formateado(
+    df_resumen,
+    '/content/drive/MyDrive/mat281-2025-1/resultados/informe_formateado.xlsx',
+    titulo="Resultados MAT281 — Semestre 2025-1"
+)
+```
+
+### Exportar otros formatos
+
+```python
+# JSON (para APIs o visualizaciones web)
+df.to_json('datos.json', orient='records', force_ascii=False)
+
+# Parquet (formato eficiente para datasets grandes)
+df.to_parquet('datos.parquet', index=False)
+
+# Markdown (para incluir en README o documentación)
+print(df_resumen.to_markdown(index=False))
+
+# LaTeX (para insertar en documentos Overleaf/LaTeX)
+print(df_resumen.to_latex(index=False, float_format='%.3f'))
+
+# HTML (para emails o páginas web)
+df_resumen.to_html('tabla.html', index=False)
+```
+
+---
+
+## Caso de cierre: análisis con dataset real institucional
+
+### El escenario
+
+Trabajaremos con un dataset simulado de notas institucionales — representativo del tipo de datos que existe en cualquier universidad: resultados de evaluaciones de múltiples cursos, carreras, semestres y docentes.
+
+El objetivo es producir un análisis completo reproducible: desde la carga de datos hasta las conclusiones, con código que cualquier docente pueda adaptar para sus propios datos.
+
+### Cargar y explorar el dataset
+
+```python
+# ══════════════════════════════════════════════════════════════
+# CASO DE CIERRE: Análisis de rendimiento académico institucional
+# MAT281 — Laboratorio 1
+# ══════════════════════════════════════════════════════════════
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from pathlib import Path
+
+# Generar dataset sintético institucional (reproducible)
+rng = np.random.default_rng(seed=2025)
+n = 1500
+
+carreras = ['Ing. Civil', 'Ing. Industrial', 'Ing. Eléctrica',
+            'Ing. Informática', 'Matemáticas']
+semestres = ['2023-1', '2023-2', '2024-1', '2024-2', '2025-1']
+
+df_raw = pd.DataFrame({
+    'id_estudiante': range(1001, 1001 + n),
+    'carrera': rng.choice(carreras, size=n, p=[0.30, 0.25, 0.20, 0.15, 0.10]),
+    'semestre': rng.choice(semestres, size=n),
+    'nota_lab1': rng.normal(5.2, 1.1, n).clip(1, 7).round(1),
+    'nota_lab2': rng.normal(5.0, 1.2, n).clip(1, 7).round(1),
+    'nota_tarea': rng.normal(5.4, 0.9, n).clip(1, 7).round(1),
+    'nota_examen': rng.normal(4.8, 1.3, n).clip(1, 7).round(1),
+    'asistencia': rng.beta(8, 2, n).round(2),
+    'fecha_ingreso': pd.date_range('2020-03-01', periods=n, freq='3h')
+})
+
+# Inyectar nulos y valores problemáticos para ejercicio de limpieza
+idx_nulos = rng.choice(n, size=40, replace=False)
+df_raw.loc[idx_nulos[:20], 'nota_examen'] = np.nan
+df_raw.loc[idx_nulos[20:], 'carrera'] = np.nan
+df_raw.loc[rng.choice(n, 10), 'nota_lab1'] = rng.choice([8.5, 0.5, -1], 10)
+
+print("Dataset cargado exitosamente")
+inspeccionar(df_raw, "Dataset Rendimiento Académico 2023-2025")
+```
+
+### Limpieza y transformación
+
+```python
+# ── Limpieza ──────────────────────────────────────────────────
+df = df_raw.copy()
+
+# 1. Eliminar duplicados
+df = df.drop_duplicates()
+
+# 2. Corregir notas fuera de rango
+for col in ['nota_lab1', 'nota_lab2', 'nota_tarea', 'nota_examen']:
+    df[col] = pd.to_numeric(df[col], errors='coerce').clip(1.0, 7.0)
+
+# 3. Imputar nulos por mediana de carrera
+df['nota_examen'] = df.groupby('carrera')['nota_examen'].transform(
+    lambda x: x.fillna(x.median())
+)
+df['carrera'] = df['carrera'].fillna(df['carrera'].mode()[0])
+
+# ── Ingeniería de variables ───────────────────────────────────
+# Nota final ponderada
+df['nota_final'] = (
+    df['nota_lab1'] * 0.15 +
+    df['nota_lab2'] * 0.15 +
+    df['nota_tarea'] * 0.30 +
+    df['nota_examen'] * 0.40
+).round(2)
+
+# Columnas derivadas
+df['aprobado'] = df['nota_final'] >= 4.0
+df['categoria'] = pd.cut(
+    df['nota_final'],
+    bins=[0, 3.9, 4.9, 5.9, 7.01],
+    labels=['Reprobado', 'Suficiente', 'Bueno', 'Excelente']
+)
+
+print(f"✅ Limpieza completada. Registros: {len(df):,}")
+```
+
+### Análisis por carrera y semestre
+
+```python
+# ── Análisis por carrera ──────────────────────────────────────
+resumen_carrera = df.groupby('carrera').agg(
+    estudiantes    = ('id_estudiante', 'count'),
+    nota_promedio  = ('nota_final', 'mean'),
+    nota_mediana   = ('nota_final', 'median'),
+    desv_estandar  = ('nota_final', 'std'),
+    tasa_aprobacion= ('aprobado', 'mean'),
+    asistencia_prom= ('asistencia', 'mean')
+).round(3).reset_index()
+
+resumen_carrera['tasa_aprobacion_pct'] = (
+    resumen_carrera['tasa_aprobacion'] * 100
+).round(1)
+
+resumen_carrera = resumen_carrera.sort_values('tasa_aprobacion', ascending=False)
+print("\n📊 Rendimiento por carrera:\n")
+print(resumen_carrera.to_string(index=False))
+
+# ── Evolución temporal ────────────────────────────────────────
+evolucion = df.groupby('semestre').agg(
+    nota_promedio   = ('nota_final', 'mean'),
+    tasa_aprobacion = ('aprobado', 'mean')
+).round(3).reset_index()
+
+print("\n📈 Evolución por semestre:\n")
+print(evolucion.to_string(index=False))
+
+# ── Pivot: carrera × semestre ─────────────────────────────────
+pivot_tasa = df.pivot_table(
+    index='carrera',
+    columns='semestre',
+    values='aprobado',
+    aggfunc='mean'
+).round(3) * 100
+
+print("\n📋 Tasa de aprobación (%) — Carrera × Semestre:\n")
+print(pivot_tasa.to_string())
+```
+
+### Visualización del análisis
+
+```python
+fig, axes = plt.subplots(2, 2, figsize=(14, 10))
+fig.suptitle('Análisis de Rendimiento Académico — MAT281 2023-2025',
+             fontsize=14, fontweight='bold', y=1.02)
+
+# 1. Distribución de notas por carrera
+sns.boxplot(data=df, x='nota_final', y='carrera',
+            palette='husl', ax=axes[0, 0])
+axes[0, 0].axvline(x=4.0, color='red', linestyle='--',
+                   linewidth=1.5, label='Nota mínima (4.0)')
+axes[0, 0].set_title('Distribución de nota final por carrera')
+axes[0, 0].set_xlabel('Nota final')
+axes[0, 0].set_ylabel('')
+axes[0, 0].legend(fontsize=9)
+
+# 2. Evolución temporal
+color_map = {c: sns.color_palette('husl', len(carreras))[i]
+             for i, c in enumerate(carreras)}
+
+evolucion_carrera = df.groupby(['semestre', 'carrera'])['aprobado'].mean().reset_index()
+for carrera, grupo in evolucion_carrera.groupby('carrera'):
+    axes[0, 1].plot(grupo['semestre'], grupo['aprobado'] * 100,
+                    marker='o', label=carrera,
+                    color=color_map[carrera])
+
+axes[0, 1].set_title('Tasa de aprobación por semestre y carrera')
+axes[0, 1].set_xlabel('Semestre')
+axes[0, 1].set_ylabel('Tasa de aprobación (%)')
+axes[0, 1].tick_params(axis='x', rotation=30)
+axes[0, 1].legend(fontsize=8, loc='lower left')
+axes[0, 1].axhline(y=70, color='gray', linestyle=':', alpha=0.7)
+
+# 3. Categorías de nota
+conteo_categoria = df.groupby(['carrera', 'categoria']).size().unstack(fill_value=0)
+conteo_categoria_pct = conteo_categoria.div(conteo_categoria.sum(axis=1), axis=0) * 100
+conteo_categoria_pct.plot(
+    kind='bar', stacked=True,
+    colormap='RdYlGn', ax=axes[1, 0]
+)
+axes[1, 0].set_title('Distribución de categorías de nota por carrera')
+axes[1, 0].set_xlabel('')
+axes[1, 0].set_ylabel('Porcentaje (%)')
+axes[1, 0].tick_params(axis='x', rotation=30)
+axes[1, 0].legend(title='Categoría', bbox_to_anchor=(1, 1), fontsize=8)
+
+# 4. Relación asistencia vs nota final
+scatter = axes[1, 1].scatter(
+    df['asistencia'], df['nota_final'],
+    c=df['aprobado'].astype(int),
+    cmap='RdYlGn', alpha=0.4, s=20
+)
+axes[1, 1].axhline(y=4.0, color='red', linestyle='--',
+                   linewidth=1.5, alpha=0.7, label='Nota mínima')
+axes[1, 1].set_title('Asistencia vs Nota final')
+axes[1, 1].set_xlabel('Asistencia (%)')
+axes[1, 1].set_ylabel('Nota final')
+axes[1, 1].legend(fontsize=9)
+plt.colorbar(scatter, ax=axes[1, 1], label='Aprobado')
+
+plt.tight_layout()
+plt.savefig('/content/drive/MyDrive/mat281-2025-1/graficos/analisis_rendimiento.png',
+            dpi=150, bbox_inches='tight')
+plt.show()
+print("✅ Gráfico guardado en Drive")
+```
+
+### Exportar el informe final
+
+```python
+# ── Exportar a Excel con múltiples hojas ─────────────────────
+ruta_informe = '/content/drive/MyDrive/mat281-2025-1/resultados/informe_rendimiento.xlsx'
+
+with pd.ExcelWriter(ruta_informe, engine='openpyxl') as writer:
+    # Hoja 1: resumen por carrera
+    resumen_carrera.to_excel(writer, sheet_name='Por carrera', index=False)
+
+    # Hoja 2: evolución temporal
+    evolucion.to_excel(writer, sheet_name='Evolución temporal', index=False)
+
+    # Hoja 3: pivot tasa aprobación
+    pivot_tasa.to_excel(writer, sheet_name='Pivot aprobación')
+
+    # Hoja 4: datos limpios completos
+    df.to_excel(writer, sheet_name='Datos limpios', index=False)
+
+print(f"✅ Informe exportado: {ruta_informe}")
+print(f"   Hojas: Por carrera, Evolución temporal, Pivot aprobación, Datos limpios")
+print(f"   Registros en datos limpios: {len(df):,}")
+```
+
+---
+
+## Referencias
+
+- McKinney, W. (2022). *Python for Data Analysis* (3ª ed.). O'Reilly. [wesmckinney.com/book](https://wesmckinney.com/book)
+- Pandas Development Team. *pandas documentation*. [pandas.pydata.org/docs](https://pandas.pydata.org/docs/)
+- Vanderplas, J. (2023). *Python Data Science Handbook*. [jakevdp.github.io/PythonDataScienceHandbook](https://jakevdp.github.io/PythonDataScienceHandbook/)
+- Waskom, M. (2021). *seaborn: statistical data visualization*. [seaborn.pydata.org](https://seaborn.pydata.org)
+- Real Python. *pandas GroupBy: Your Guide to Grouping Data in Python*. [realpython.com/pandas-groupby](https://realpython.com/pandas-groupby/)

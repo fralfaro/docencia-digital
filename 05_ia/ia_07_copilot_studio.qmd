@@ -1,0 +1,636 @@
+---
+title: "Copilot Studio y plataformas institucionales"
+subtitle: "Agentes IA sin código para la docencia y la gestión universitaria"
+---
+
+Los capítulos anteriores construyeron agentes con Python. Este capítulo cubre el otro extremo del espectro: herramientas que permiten crear agentes de IA sin escribir código, diseñadas específicamente para entornos institucionales que ya usan el ecosistema Microsoft.
+
+Para un docente o gestor de la UTFSM que trabaja con Teams, SharePoint y Office 365 todos los días, Copilot Studio ofrece algo valioso: crear un asistente que vive donde ya vive el trabajo — sin infraestructura adicional, sin cuentas nuevas, y con los controles de privacidad y gobernanza institucional que las soluciones de código abierto no garantizan por sí solas.
+
+---
+
+## Microsoft Copilot Studio: qué es y para qué sirve
+
+### Posición en el ecosistema Microsoft
+
+```{mermaid}
+graph TD
+    M365["☁️ Microsoft 365\n(ecosistema base)"]
+
+    M365 --> COP["🤖 Copilot Studio\n(crear agentes IA)"]
+    M365 --> TEAMS["💬 Teams\n(canal de despliegue)"]
+    M365 --> SP["📁 SharePoint\n(base de conocimiento)"]
+    M365 --> OAI["⚡ Azure OpenAI\n(motor de IA)"]
+    M365 --> AF["🏗️ Azure AI Foundry\n(plataforma avanzada)"]
+
+    COP --> |"usa"| OAI
+    COP --> |"conecta con"| SP
+    COP --> |"publica en"| TEAMS
+    AF --> |"extiende"| COP
+```
+
+**Copilot Studio** (antes llamado Power Virtual Agents) es la plataforma no-code de Microsoft para crear agentes conversacionales. Desde 2023 incorporó modelos de lenguaje de OpenAI vía Azure, transformándose de un sistema de reglas a un agente generativo real.
+
+**Lo que puede hacer Copilot Studio que no pueden los agentes de código:**
+
+- **Integración nativa con Microsoft 365:** accede a SharePoint, Teams, Outlook, OneDrive sin configuración adicional.
+- **Autenticación institucional:** usa el login de la universidad — los estudiantes y profesores acceden con su cuenta @usm.cl, sin cuentas adicionales.
+- **Gobernanza de datos:** los datos de conversación se quedan en el tenant de Microsoft de la institución, no en servidores de terceros.
+- **Sin mantenimiento de infraestructura:** Microsoft gestiona los servidores, la escalabilidad y las actualizaciones.
+- **Interfaz visual de construcción:** flujos, nodos, conectores — todo visual sin código.
+
+### Cuándo Copilot Studio es la elección correcta
+
+```
+Usa Copilot Studio cuando:
+✅ La institución ya tiene licencia Microsoft 365 Education
+✅ El agente debe integrarse con SharePoint o Teams institucionales
+✅ Los usuarios tienen cuenta @usm.cl y no quieren una cuenta adicional
+✅ El equipo no tiene capacidad técnica para mantener código en producción
+✅ La gobernanza de datos y privacidad institucional son críticas
+✅ Necesitas aprobación del área de TI para desplegar herramientas
+
+Usa código (LangChain, API directa) cuando:
+→ Necesitas control total sobre el modelo y los parámetros
+→ Trabajas con datos fuera del ecosistema Microsoft
+→ El costo de las licencias Microsoft es una limitación
+→ El agente necesita lógica muy compleja o herramientas personalizadas
+→ Quieres experimentar rápido sin aprobaciones institucionales
+```
+
+### Licencias necesarias
+
+| Escenario | Licencia mínima |
+|---|---|
+| Crear y probar agentes | Microsoft Copilot Studio (prueba gratuita 30 días) |
+| Publicar en Teams institucional | Microsoft 365 + Copilot Studio Plan 1 |
+| Con SharePoint como base de conocimiento | Microsoft 365 E3 o Education A3+ |
+| Capacidades avanzadas (plugins, conectores) | Copilot Studio Plan 2 |
+
+Verificar con TI de la UTFSM qué licencias están disponibles en el contrato institucional — muchas veces el acceso ya está incluido.
+
+---
+
+## Construir un agente sin código desde cero
+
+### Paso 1: Acceder a Copilot Studio
+
+1. Ir a [copilotstudio.microsoft.com](https://copilotstudio.microsoft.com)
+2. Iniciar sesión con la cuenta institucional @usm.cl
+3. Seleccionar el **entorno** correcto (el de la UTFSM, no el por defecto personal)
+
+::: {.callout-warning}
+## El entorno importa
+Copilot Studio funciona con "entornos" de Power Platform. Si creas un agente en el entorno personal, no podrá acceder a los datos institucionales (SharePoint de la UTFSM, Teams de la universidad). Confirmar con TI cuál es el entorno institucional correcto antes de empezar.
+:::
+
+### Paso 2: Crear el agente
+
+1. **Create** → **New agent**
+2. En lugar de usar el wizard de IA, elegir **Skip to configure** para control total
+3. Configurar:
+   - **Name:** "Asistente MAT281 2025-1"
+   - **Description:** "Responde preguntas sobre el programa, evaluaciones y contenido del curso MAT281"
+   - **Instructions:** el prompt del sistema (ver abajo)
+
+### El prompt de instrucciones: el corazón del agente
+
+```
+Instructions del agente:
+
+Eres el asistente oficial del curso MAT281 (Aplicaciones de la Matemática
+en Ingeniería) de la Universidad Técnica Federico Santa María, semestre 2025-1.
+
+TU ROL:
+Ayudar a los estudiantes a encontrar información del curso y orientarles
+en sus dudas académicas usando el material oficial disponible.
+
+COMPORTAMIENTO:
+1. Para preguntas sobre el curso (fechas, evaluaciones, contenido):
+   Busca en las fuentes disponibles y responde con la información específica.
+   Siempre indica de dónde proviene la información.
+
+2. Para dudas conceptuales sobre el contenido:
+   Explica usando los apuntes del curso. Si la duda es compleja,
+   orienta al estudiante a consultar en la ayudantía o con el profesor.
+
+3. Para solicitudes de soluciones a evaluaciones:
+   Declina amablemente. Puedes orientar sobre el enfoque correcto
+   sin dar la solución.
+
+TONO: cordial, directo, académico. Tutear al estudiante.
+
+IDIOMA: español siempre, salvo que el estudiante escriba en otro idioma.
+
+LÍMITES:
+- No inventes información que no esté en las fuentes del curso
+- Si no tienes la información, di: "Esta información no está disponible
+  en el material del curso. Consulta directamente con el profesor en
+  juan.perez@usm.cl o en Teams del curso."
+- No des notas, no evalúes entregas, no medies en conflictos académicos
+```
+
+### Paso 3: Agregar la base de conocimiento
+
+La base de conocimiento es donde vive el material del curso que el agente usará para responder. En Copilot Studio se llaman **Knowledge sources**.
+
+1. Panel izquierdo → **Knowledge**
+2. **+ Add knowledge**
+3. Opciones disponibles:
+
+**SharePoint (recomendado para material del curso):**
+- Seleccionar el sitio de SharePoint del curso
+- El agente accede automáticamente a los documentos en ese sitio
+- Cuando subes un documento nuevo a SharePoint, el agente lo ve automáticamente
+
+**Archivos subidos directamente:**
+- Hasta 3GB de archivos
+- Formatos: PDF, Word, PowerPoint, texto, Markdown
+- Se procesan y vectorizan automáticamente
+
+**URL de sitio web:**
+- El agente puede indexar páginas web externas
+- Útil para agregar la documentación de librerías (sklearn, pandas)
+
+### Paso 4: Configurar tópicos (Topics)
+
+Los **Topics** son disparadores y flujos para situaciones específicas. Aunque el agente generativo maneja la mayoría de las preguntas por sí solo, los Topics son útiles para:
+
+- **Preguntas frecuentes previsibles:** donde quieres una respuesta exacta, no generada.
+- **Flujos de escalación:** qué pasa cuando el estudiante pregunta algo que el agente no puede responder.
+- **Acciones específicas:** como enviar un email o registrar una consulta.
+
+**Topic: Saludo inicial**
+
+```
+Trigger phrases:
+- hola
+- buenos días
+- buenas tardes
+- como funciona este asistente
+
+Mensaje de respuesta:
+¡Hola! Soy el asistente del curso MAT281 (2025-1).
+
+Puedo ayudarte con:
+📅 Fechas y calendario del curso
+📊 Información sobre evaluaciones y rúbricas
+📚 Dudas sobre el contenido de las semanas
+🔗 Links a material del curso
+
+¿En qué puedo ayudarte hoy?
+```
+
+**Topic: Escalación a profesor**
+
+```
+Trigger phrases:
+- hablar con el profesor
+- necesito hablar con juan
+- consulta urgente
+- problema con mi nota
+
+Mensaje de respuesta:
+Para consultas directas con el profesor Juan Pérez:
+
+📧 Email: juan.perez@usm.cl
+💬 Teams: mensaje directo en el canal del curso
+⏰ Horario de consultas: jueves 15:00-17:00
+
+Si tu consulta puede esperar hasta la próxima ayudantía:
+📅 Martes 14:00-16:00, Sala D-101
+
+¿Hay algo que pueda resolver yo antes?
+```
+
+**Topic: Fallback (cuando el agente no sabe)**
+
+```
+Trigger: Activación automática cuando la confianza es < 50%
+
+Mensaje:
+No encontré información específica sobre eso en el material del curso.
+
+Opciones:
+1. Reformula tu pregunta de otra manera
+2. Consulta directamente con el profesor: juan.perez@usm.cl
+3. Revisa el programa del curso completo: [link al PDF]
+```
+
+### Paso 5: Agregar Actions (Acciones)
+
+Las acciones permiten que el agente haga cosas — no solo responder texto:
+
+**Acción: Enviar notificación por Teams**
+
+```
+Conector: Microsoft Teams
+Acción: Send a message to a chat or channel
+Parámetros:
+- Channel: General del curso MAT281
+- Message: "[Consulta recibida] {student_name}: {query}"
+```
+
+**Acción: Registrar consulta en lista de SharePoint**
+
+```
+Conector: SharePoint
+Acción: Create item in list
+Lista: "Consultas_Estudiantes_2025-1"
+Campos:
+- Estudiante: {user_name}
+- Consulta: {user_message}
+- Fecha: {current_datetime}
+- Respondida: No
+```
+
+Esto crea un registro auditable de todas las consultas — útil para identificar los temas más frecuentes y mejorar el material del curso.
+
+---
+
+## Conectores: SharePoint, Teams, bases de conocimiento
+
+### SharePoint como base de conocimiento
+
+SharePoint es el repositorio central de documentos en el ecosistema Microsoft. Para el curso, la estructura recomendada:
+
+```
+Sitio SharePoint: MAT281-2025-1
+├── 📁 Material del curso
+│   ├── Programa y Calendario 2025-1.pdf
+│   ├── Política de IA en el aula.pdf
+│   └── FAQ estudiantes.docx
+├── 📁 Apuntes por semana
+│   ├── Semana 01 - Introducción.pdf
+│   ├── Semana 02 - Estadística descriptiva.pdf
+│   └── ...
+├── 📁 Laboratorios
+│   ├── Lab 01 - Enunciado.pdf
+│   ├── Lab 01 - Rúbrica.pdf
+│   └── ...
+└── 📁 Tareas
+    ├── Tarea 01 - Enunciado.pdf
+    └── Tarea 01 - Rúbrica.pdf
+```
+
+Cuando el agente responde una pregunta sobre el Lab 3, accede automáticamente a `Lab 03 - Enunciado.pdf` y `Lab 03 - Rúbrica.pdf` en SharePoint.
+
+**Ventaja clave:** cuando actualizas un documento en SharePoint, el agente tiene la versión actualizada automáticamente — sin re-indexar, sin subir nada de nuevo.
+
+### Integración con Teams
+
+Teams es donde los estudiantes ya están. El agente en Teams significa cero fricción de acceso: el estudiante pregunta en el mismo canal donde recibe anuncios del curso.
+
+**Configurar el agente en un canal de Teams:**
+
+1. En Teams → canal del curso → **+** (agregar pestaña) → **Power Virtual Agents** o **Copilot**
+2. Seleccionar el agente creado en Copilot Studio
+3. El agente aparece como una pestaña o como bot en el canal
+
+**Configurar como bot en mensajes directos:**
+
+1. Copilot Studio → **Publish** → **Channels** → **Teams**
+2. **Submit for admin approval** (requiere que TI apruebe)
+3. Una vez aprobado, los estudiantes pueden escribirle al bot directamente en Teams
+
+### El conector de búsqueda de Microsoft (Bing + SharePoint)
+
+Copilot Studio puede habilitar búsqueda tanto en los documentos del curso (SharePoint) como en internet (Bing):
+
+```
+Configuración recomendada para un asistente de curso:
+
+✅ SharePoint del curso: SÍ (respuestas basadas en material oficial)
+✅ Documentación de librerías (sklearn.org, pandas.org): SÍ (acceso via URL)
+❌ Internet general (Bing): DESACTIVAR
+   → Evita que el agente mezcle información del curso con información externa
+   → Si el estudiante necesita búsqueda web, lo indica explícitamente
+```
+
+---
+
+## Publicar el agente en Teams o en un sitio web
+
+### Publicación en Teams (proceso completo)
+
+```{mermaid}
+sequenceDiagram
+    participant D as 👨‍🏫 Docente
+    participant CS as ⚙️ Copilot Studio
+    participant TI as 🏢 TI UTFSM
+    participant T as 💬 Teams
+
+    D->>CS: Desarrollar y probar el agente
+    D->>CS: Publish → Channels → Teams
+    CS->>TI: Solicitud de aprobación automática
+    TI->>TI: Revisar seguridad y política
+    TI->>CS: Aprobar el bot
+    CS->>T: Bot disponible en Teams
+    D->>T: Agregar bot al canal del curso
+    Note over T: Estudiantes interactúan con el agente
+```
+
+**El proceso de aprobación de TI** puede tardar días a semanas. Es importante iniciar este proceso con anticipación, antes del inicio del semestre.
+
+**Qué necesita TI para aprobar:**
+- Nombre y propósito del agente
+- Qué datos accede (SharePoint del curso, no datos personales)
+- Quién es responsable (el docente)
+- Que el agente no extrae ni almacena información fuera del tenant institucional
+
+### Publicación como sitio web (sin aprobación de TI)
+
+Para desplegar más rápido o como prueba:
+
+1. Copilot Studio → **Publish** → **Demo website**
+2. Copilot Studio genera una URL como: `https://web.powerva.microsoft.com/environments/.../bots/.../webchat`
+3. Esta URL se puede compartir con cualquier persona
+
+**Incrustar en el sitio Quarto del curso:**
+
+```html
+<!-- En una página .qmd, bloque {=html} -->
+<div style="height: 600px; border: 1px solid #ddd; border-radius: 8px; overflow: hidden;">
+  <iframe
+    src="TU_URL_DE_COPILOT_STUDIO"
+    style="width: 100%; height: 100%; border: none;"
+    title="Asistente MAT281">
+  </iframe>
+</div>
+```
+
+::: {.callout-note}
+## El demo website tiene limitaciones
+La URL de demo website de Copilot Studio no requiere autenticación — cualquier persona con el link puede acceder. Para un asistente con información sensible o que requiere autenticación institucional, usar el canal de Teams (autenticado con @usm.cl).
+:::
+
+### Publicación en SharePoint (portal institucional)
+
+Para integrar el agente en el portal de la UTFSM:
+
+```html
+<!-- Web part de SharePoint con código HTML personalizado -->
+<script src="https://web.powerva.microsoft.com/.../webchat/plugin.js"></script>
+<div id="webchat-copilot"></div>
+<script>
+  WebChat.renderWebChat({
+    botId: 'TU_BOT_ID',
+    tenantId: 'TU_TENANT_ID',
+    clientId: 'TU_CLIENT_ID'
+  }, document.getElementById('webchat-copilot'));
+</script>
+```
+
+---
+
+## Azure AI Foundry: visión general del ecosistema
+
+### Qué es Azure AI Foundry
+
+Azure AI Foundry (antes Azure AI Studio) es la plataforma de Microsoft para construir, evaluar y desplegar aplicaciones de IA en producción. Es el nivel siguiente a Copilot Studio — para cuando necesitas más control técnico, gestionar múltiples modelos, o construir sistemas IA a escala institucional.
+
+```{mermaid}
+graph TD
+    FAI["🏗️ Azure AI Foundry\n(plataforma unificada)"]
+
+    FAI --> M["🧠 Model catalog\nGPT-4o, Claude,\nLlama, Mistral y más"]
+    FAI --> P["🔬 Prompt Flow\nOrquestar flujos de IA\nvisualmente (como LangChain\npero en Azure)"]
+    FAI --> E["📊 Evaluaciones\nTestear y comparar\nmodelos con tus datos"]
+    FAI --> D["🚀 Deployment\nDesplegar como API REST\nen infraestructura Azure"]
+    FAI --> S["🔒 Safety & Responsible AI\nFiltros de contenido,\ndetección de jailbreak"]
+```
+
+### Cuándo usar Azure AI Foundry vs Copilot Studio
+
+| Caso de uso | Copilot Studio | Azure AI Foundry |
+|---|---|---|
+| Asistente del curso (FAQ) | ✅ | ❌ Sobredimensionado |
+| Chatbot de admisiones (escala) | ✅ (para empezar) | ✅ (producción) |
+| API de IA para sistema académico | ❌ | ✅ |
+| Comparar modelos (GPT vs Claude) | ❌ | ✅ |
+| Fine-tuning con datos propios | ❌ | ✅ |
+| Flujos con múltiples modelos | ❌ | ✅ |
+| Sin equipo técnico | ✅ | ❌ |
+
+### Prompt Flow en Azure AI Foundry
+
+Prompt Flow es el orquestador visual de Azure — equivalente a LangChain pero con interfaz gráfica y despliegue integrado en Azure:
+
+```
+Ejemplo de flujo RAG en Prompt Flow:
+
+Entrada (pregunta del usuario)
+    ↓
+Nodo: Embed query (Azure OpenAI Embeddings)
+    ↓
+Nodo: Vector search (Azure AI Search)
+    → Recupera fragmentos relevantes de SharePoint
+    ↓
+Nodo: LLM (GPT-4o vía Azure OpenAI)
+    → Genera respuesta con contexto
+    ↓
+Nodo: Output formatter
+    → Formatea con citas de fuente
+    ↓
+Salida (respuesta al usuario)
+```
+
+### Arquitectura de referencia para proyectos institucionales
+
+Para proyectos de mayor escala en la UTFSM (asistente de admisiones, chatbot de bienestar, asistente de la DTD):
+
+```{mermaid}
+graph LR
+    USER["👤 Usuario\n(estudiante, funcionario)"]
+    FRONT["🌐 Frontend\n(Teams, web, app)"]
+    APIM["🔀 API Management\n(autenticación, throttling)"]
+    CS["⚙️ Copilot Studio\no Azure Bot Service"]
+    PFLOW["🔬 Prompt Flow\n(lógica del agente)"]
+    AOAI["🧠 Azure OpenAI\n(GPT-4o)"]
+    AIS["🔍 Azure AI Search\n(índice vectorial)"]
+    SP["📁 SharePoint\n(documentos)"]
+    SQL["🗄️ Azure SQL\n(datos estructurados)"]
+    MON["📊 Azure Monitor\n(logs, métricas)"]
+
+    USER --> FRONT --> APIM --> CS --> PFLOW
+    PFLOW --> AOAI
+    PFLOW --> AIS
+    AIS --> SP
+    PFLOW --> SQL
+    CS --> MON
+```
+
+---
+
+## Casos institucionales: chatbot de admisiones y asistente de DTD
+
+### Caso 1: Chatbot de admisiones UTFSM
+
+**Contexto:** La UTFSM recibe miles de consultas al año sobre admisión, carreras, aranceles y becas. Muchas son repetitivas y pueden responderse con información pública.
+
+**Propuesta de valor:** reducir la carga del equipo de admisiones para consultas básicas, mejorar el tiempo de respuesta para postulantes.
+
+**Arquitectura:**
+
+```
+Base de conocimiento:
+├── Información de carreras (PDFs por departamento)
+├── Requisitos de admisión (PSU/PAES, NEM, ranking)
+├── Aranceles y becas vigentes
+├── Calendario académico
+├── FAQ de admisiones (documento Word actualizado por el equipo)
+└── Reglamento estudiantil (secciones relevantes)
+
+Canal de despliegue:
+├── Sitio web de admisiones (iframe del bot)
+├── Canal de WhatsApp (via conector de Copilot Studio)
+└── Teams interno para el equipo de admisiones
+```
+
+**Configuración del agente:**
+
+```
+Instructions:
+
+Eres el asistente de admisiones de la Universidad Técnica Federico Santa María.
+Ayudas a postulantes, estudiantes y apoderados a encontrar información sobre
+el proceso de admisión, carreras y requisitos de la UTFSM.
+
+Responde solo con información del material oficial proporcionado.
+Para información actualizada sobre notas de corte, confirma que el
+postulante revise el sitio oficial: demre.cl y usm.cl/admision.
+
+Para consultas que requieren atención personalizada:
+→ Teléfono admisiones: (32) 2654321
+→ Email: admision@usm.cl
+→ Presencial: Casa Central, Valparaíso, Av. España 1680
+
+NO proporciones información sobre notas de postulantes individuales.
+NO prometas resultados de admisión.
+```
+
+**Métricas de éxito:**
+- % de consultas resueltas sin escalación al equipo humano (objetivo: >60%)
+- Tiempo promedio de respuesta (objetivo: <30 segundos)
+- Satisfacción del postulante (encuesta post-conversación)
+- Reducción de emails/llamadas repetitivas al equipo
+
+### Caso 2: Asistente de la DTD (Dirección de Transformación Digital)
+
+**Contexto:** La DTD de la UTFSM gestiona proyectos de transformación digital, apoya a otras unidades académicas y administrativas, y tiene múltiples servicios activos (SAT-E, Curricular Studio, cursos de capacitación).
+
+**Propuesta de valor:** asistente interno para el equipo DTD que responde consultas sobre proyectos, documentación técnica y procesos internos; y asistente externo para académicos que quieren usar los servicios de la DTD.
+
+**Versión interna (equipo DTD):**
+
+```
+Base de conocimiento:
+├── Documentación técnica de SAT-E (arquitectura, API, guías)
+├── Documentación del Curricular Studio Copilot (CSC)
+├── Proceso de onboarding de nuevos proyectos DTD
+├── Guías de GitHub, Quarto y herramientas del equipo
+├── Repositorio de decisiones técnicas (ADRs)
+└── Actas de reuniones de coordinación
+
+Instrucciones:
+Eres el asistente interno del equipo DTD de la UTFSM.
+Tienes acceso a la documentación técnica de los proyectos.
+Ayudas al equipo a encontrar información, entender la arquitectura
+de los sistemas y seguir los procesos establecidos.
+
+Para consultas sobre código: cita el repositorio y el archivo relevante.
+Para decisiones técnicas: consulta el ADR correspondiente.
+```
+
+**Versión externa (académicos):**
+
+```
+Base de conocimiento:
+├── Catálogo de servicios de la DTD
+├── Guías de uso de herramientas docentes (GitHub, Colab, Quarto)
+├── FAQs de los cursos de capacitación
+└── Formulario de solicitud de nuevos proyectos
+
+Instrucciones:
+Eres el asistente de la Dirección de Transformación Digital de la UTFSM.
+Ayudas a académicos a conocer y usar los servicios digitales disponibles.
+
+Si el académico tiene un problema técnico que no puedes resolver:
+→ Contacto DTD: [email de contacto]
+→ Canal de soporte en Teams: [canal interno]
+```
+
+### Caso 3: Asistente de la unidad académica para MAT281
+
+Este es el caso más directo para el contexto de este curso — un asistente para el departamento de matemáticas que responde consultas de todos los cursos del departamento, no solo MAT281:
+
+```
+Estructura de la base de conocimiento (Departamento de Matemáticas):
+
+📁 Cursos del semestre 2025-1
+├── MAT151 Cálculo I — Programa, FAQ, Material
+├── MAT271 Álgebra Lineal — Programa, FAQ, Material
+├── MAT281 Aplicaciones Matemáticas — Programa, FAQ, Material
+└── ...
+
+📁 Información departamental
+├── Horarios de consulta de docentes
+├── Salas de ayudantía y horarios
+├── Reglamento de evaluaciones del departamento
+└── Contacto de secretaría
+
+Instrucciones:
+Eres el asistente del Departamento de Matemáticas de la UTFSM.
+Ayudas a estudiantes a encontrar información sobre los cursos del semestre.
+
+Para cada consulta, identifica de qué curso se trata antes de responder.
+Si el material del curso no está disponible, indica el horario de consulta
+del docente correspondiente.
+```
+
+### Consideraciones para proyectos institucionales
+
+```{mermaid}
+graph TD
+    PROC["🏛️ Proceso de aprobación\ninstitucional"]
+
+    PROC --> TI["🔧 TI / Ciberseguridad\nSeguridad de datos,\nconformidad con políticas,\naprobación del tenant"]
+    PROC --> PRIV["🔒 Protección de datos\n¿Qué datos se procesan?\n¿Dónde se almacenan?\nLeyes aplicables (LGPD, Ley 19.628)"]
+    PROC --> GOB["📋 Gobernanza\n¿Quién es responsable?\n¿Cómo se actualiza?\n¿Cómo se desactiva?"]
+    PROC --> CAL["📊 Evaluación de calidad\nCómo verificamos que\nel agente responde correctamente"]
+    PROC --> CAP["🎓 Capacitación\nLos usuarios saben\ncómo usar el agente\ny sus limitaciones"]
+```
+
+**Lista de verificación antes de desplegar un agente institucional:**
+
+```
+Técnico:
+☐ Agente probado con al menos 50 preguntas representativas
+☐ Tópico de fallback configurado correctamente
+☐ Tópico de escalación a humano configurado
+☐ Monitoreo activo (logs de conversaciones revisados)
+☐ Proceso de actualización de la base de conocimiento definido
+
+Institucional:
+☐ Aprobación de TI obtenida
+☐ Responsable designado (quién actualiza, quién responde por el agente)
+☐ Política de retención de datos de conversaciones definida
+☐ Comunicación a los usuarios sobre qué es el agente y sus límites
+☐ Canal de feedback para reportar respuestas incorrectas
+
+Legal / ética:
+☐ Sin datos personales de estudiantes en la base de conocimiento
+☐ Agente identificado claramente como IA (no como persona)
+☐ Información de escalación a humano siempre disponible
+```
+
+---
+
+## Referencias
+
+- Microsoft. *Copilot Studio documentation*. [learn.microsoft.com/en-us/microsoft-copilot-studio](https://learn.microsoft.com/en-us/microsoft-copilot-studio/)
+- Microsoft. *Azure AI Foundry overview*. [learn.microsoft.com/en-us/azure/ai-studio](https://learn.microsoft.com/en-us/azure/ai-studio/)
+- Microsoft. *Prompt Flow documentation*. [learn.microsoft.com/en-us/azure/machine-learning/prompt-flow](https://learn.microsoft.com/en-us/azure/machine-learning/prompt-flow/)
+- Microsoft. *Teams bot integration guide*. [learn.microsoft.com/en-us/microsoftteams/platform/bots](https://learn.microsoft.com/en-us/microsoftteams/platform/bots/)
+- Microsoft Education. *Copilot for Microsoft 365 in Education*. [microsoft.com/en-us/education/products/microsoft-365-copilot](https://www.microsoft.com/en-us/education/products/microsoft-365-copilot)
+- Power Platform. *Copilot Studio quickstart*. [learn.microsoft.com/en-us/microsoft-copilot-studio/quickstart-get-started](https://learn.microsoft.com/en-us/microsoft-copilot-studio/quickstart-get-started)

@@ -1,0 +1,620 @@
+---
+title: "📗 GitHub"
+subtitle: "Gestión de cursos, materiales y portafolio académico"
+---
+
+GitHub es hoy mucho más que una plataforma para programadores. Para un docente universitario, es una herramienta de gestión de conocimiento, colaboración y publicación que puede transformar la forma en que organizas tus cursos, compartes materiales y construyes tu presencia académica digital.
+
+Este capítulo cubre todo lo que necesitas para empezar desde cero y llegar a un uso profesional de GitHub en el contexto docente.
+
+---
+
+## Creación de cuenta
+
+### Elección de username
+
+Tu username en GitHub es parte de tu identidad académica digital. Aparecerá en URLs, commits y colaboraciones. Algunas convenciones recomendadas:
+
+- Usa tu nombre real o una variante reconocible: `jperez`, `juan-perez`, `jperezusm`
+- Evita números aleatorios, apodos o usernames que no puedas defender en un CV
+- Considera que el formato `nombre.apellido` no está disponible en GitHub (no acepta puntos) — usa guiones: `nombre-apellido`
+- Si ya tienes presencia en otras plataformas académicas (ResearchGate, ORCID, LinkedIn), intenta mantener consistencia
+
+### Configuración inicial
+
+Al crear tu cuenta, configura estos elementos antes de hacer cualquier otra cosa:
+
+1. **Email verificado** — usa tu correo institucional como email principal.
+2. **Foto de perfil** — una foto profesional aumenta la confianza en colaboraciones.
+3. **Bio** — una línea corta: cargo, institución, áreas de interés.
+4. **2FA (autenticación de dos factores)** — obligatorio para cualquier uso serio. Ve a *Settings → Password and authentication → Enable two-factor authentication*. Recomendado: app autenticadora (Google Authenticator, Authy) en lugar de SMS.
+
+### Plan recomendado: GitHub Education
+
+GitHub ofrece **GitHub Pro gratuito** para docentes verificados a través del programa GitHub Education. Esto incluye:
+
+- Repositorios privados ilimitados
+- GitHub Copilot gratuito
+- GitHub Pages avanzado
+- GitHub Actions con más minutos
+- Acceso a GitHub Classroom
+
+Para solicitarlo:
+
+1. Ve a [education.github.com/teachers](https://education.github.com/teachers)
+2. Haz clic en *Join GitHub Education*
+3. Selecciona *Teacher*
+4. Verifica tu afiliación institucional con tu email universitario o documento
+
+El proceso tarda entre 1 y 5 días hábiles.
+
+::: {.callout-tip}
+## Consejo
+Si tu institución tiene dominio `.edu` o `.cl` reconocido (como `usm.cl`), la verificación es casi inmediata. Si no, prepara una foto de tu credencial o nombramiento institucional.
+:::
+
+---
+
+## GitHub Profile README
+
+### ¿Qué es y por qué importa?
+
+Cuando alguien visita `github.com/tu-username`, lo primero que ve es tu perfil. Si creas un repositorio especial con el mismo nombre que tu username y un archivo `README.md`, ese contenido se muestra como portada de tu perfil.
+
+Para un docente, esto equivale a una **carta de presentación académica digital** — visible para estudiantes, colaboradores, comités de evaluación y potenciales coautores.
+
+### Estructura recomendada
+
+Un buen perfil docente incluye:
+
+- Presentación breve (cargo, institución, áreas)
+- Cursos activos con links
+- Proyectos de investigación o desarrollo
+- Tecnologías que usas
+- Datos de contacto y redes académicas
+- Badges con estadísticas o indicadores
+
+### Ejemplo completo
+
+Crea el repositorio `tu-username/tu-username` (mismo nombre que tu usuario) y agrega este `README.md` como punto de partida:
+
+```markdown
+# Hola, soy Juan Pérez 👋
+
+Profesor del Departamento de Matemáticas en la [Universidad Técnica Federico Santa María](https://usm.cl).  
+Trabajo en estadística aplicada, ciencia de datos y docencia digital.
+
+---
+
+## 📚 Cursos activos
+
+| Curso | Semestre | Materiales |
+|-------|----------|------------|
+| MAT281 – Aplicaciones de la Matemática en Ingeniería | 2025-1 | [Ver repositorio](https://github.com/tu-username/mat281) |
+| MAT260 – Probabilidades y Estadística | 2025-1 | [Ver repositorio](https://github.com/tu-username/mat260) |
+
+---
+
+## 🔬 Proyectos de investigación
+
+- **SAT-E** — Sistema de alerta temprana estudiantil usando XGBoost y Kedro.
+- **Curricular Studio Copilot** — Plataforma multi-agente para diseño curricular con IA.
+
+---
+
+## 🛠 Tecnologías
+
+![Python](https://img.shields.io/badge/Python-3776AB?style=flat&logo=python&logoColor=white)
+![R](https://img.shields.io/badge/R-276DC3?style=flat&logo=r&logoColor=white)
+![Quarto](https://img.shields.io/badge/Quarto-75AADB?style=flat&logo=quarto&logoColor=white)
+![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat&logo=github&logoColor=white)
+![LaTeX](https://img.shields.io/badge/LaTeX-008080?style=flat&logo=latex&logoColor=white)
+
+---
+
+## 📊 Estadísticas
+
+![GitHub Stats](https://github-readme-stats.vercel.app/api?username=tu-username&show_icons=true&theme=default&hide_border=true)
+
+---
+
+## 📬 Contacto
+
+- 📧 juan.perez@usm.cl
+- 🔗 [LinkedIn](https://linkedin.com/in/tu-perfil)
+- 🌐 [Sitio web](https://tu-username.github.io)
+```
+
+::: {.callout-note}
+## Herramientas útiles para el perfil
+
+- **[shields.io](https://shields.io)** — genera badges personalizados para tecnologías, estado de proyectos, licencias, etc.
+- **[github-readme-stats](https://github.com/anuraghazra/github-readme-stats)** — tarjetas de estadísticas de GitHub que se actualizan automáticamente.
+- **[readme.so](https://readme.so)** — editor visual para construir READMEs sin escribir Markdown desde cero.
+:::
+
+---
+
+## Configuración profesional de Git
+
+Antes de crear repositorios, configura Git correctamente en tu máquina local.
+
+### Configuración básica
+
+```bash
+git config --global user.name "Juan Pérez"
+git config --global user.email "juan.perez@usm.cl"
+git config --global core.editor "code --wait"   # VS Code como editor por defecto
+git config --global init.defaultBranch main
+```
+
+### Aliases útiles para docentes
+
+```bash
+git config --global alias.st status
+git config --global alias.co checkout
+git config --global alias.br branch
+git config --global alias.lg "log --oneline --graph --decorate --all"
+git config --global alias.undo "reset --soft HEAD~1"
+```
+
+### Archivo `.gitconfig` recomendado
+
+Tu archivo `~/.gitconfig` debería verse así:
+
+```ini
+[user]
+    name = Juan Pérez
+    email = juan.perez@usm.cl
+
+[core]
+    editor = code --wait
+    autocrlf = input        # En Windows: true | En Mac/Linux: input
+
+[init]
+    defaultBranch = main
+
+[alias]
+    st = status
+    co = checkout
+    br = branch
+    lg = log --oneline --graph --decorate --all
+    undo = reset --soft HEAD~1
+    save = !git add -A && git commit -m 'chore: save progress'
+
+[pull]
+    rebase = false
+
+[push]
+    autoSetupRemote = true
+```
+
+### SSH vs HTTPS
+
+| | SSH | HTTPS |
+|---|---|---|
+| **Autenticación** | Clave pública/privada | Token personal (PAT) |
+| **Comodidad** | Sin contraseña después de configurar | Requiere token en cada push |
+| **Recomendado para** | Uso frecuente desde una máquina fija | Acceso puntual o desde máquinas compartidas |
+
+Para configurar SSH:
+
+```bash
+# Generar clave SSH
+ssh-keygen -t ed25519 -C "juan.perez@usm.cl"
+
+# Copiar clave pública
+cat ~/.ssh/id_ed25519.pub
+
+# Agregar en GitHub: Settings → SSH and GPG keys → New SSH key
+```
+
+Para verificar que funciona:
+
+```bash
+ssh -T git@github.com
+# Hi tu-username! You've successfully authenticated...
+```
+
+::: {.callout-tip}
+## ¿Cuál usar?
+Si trabajas desde tu computador personal todos los días, configura SSH una vez y olvídate de contraseñas. Si necesitas clonar un repositorio desde un servidor o laboratorio, HTTPS con token es más rápido de configurar.
+:::
+
+---
+
+## Repositorios: estructura recomendada para cursos
+
+### Template de curso universitario
+
+Una estructura consistente entre cursos facilita que los estudiantes naveguen el material, que los ayudantes contribuyan, y que tú reutilices recursos entre semestres.
+
+Estructura recomendada:
+
+```
+mat281-2025-1/
+├── README.md
+├── LICENSE
+├── .gitignore
+├── CONTRIBUTING.md
+├── CHANGELOG.md
+├── _quarto.yml
+├── lectures/
+│   ├── 01_intro/
+│   ├── 02_estadistica/
+│   └── ...
+├── labs/
+│   ├── lab01/
+│   └── lab02/
+├── assignments/
+│   ├── tarea01/
+│   └── tarea02/
+├── datasets/
+│   ├── raw/
+│   └── processed/
+└── docs/
+    ├── programa.pdf
+    └── calendario.pdf
+```
+
+### README del curso
+
+```markdown
+# MAT281 – Aplicaciones de la Matemática en Ingeniería
+
+**Semestre:** 2025-1  
+**Institución:** Universidad Técnica Federico Santa María  
+**Docente:** Juan Pérez (juan.perez@usm.cl)
+
+## Descripción
+
+Curso de ciencia de datos aplicada con Python para estudiantes de ingeniería.
+
+## Estructura del repositorio
+
+| Carpeta | Contenido |
+|---------|-----------|
+| `lectures/` | Material de clases (notebooks, slides) |
+| `labs/` | Guías de laboratorio |
+| `assignments/` | Enunciados de tareas |
+| `datasets/` | Datos utilizados en el curso |
+| `docs/` | Programa, calendario y documentos administrativos |
+
+## Cómo usar este repositorio
+
+```bash
+git clone https://github.com/tu-username/mat281-2025-1
+cd mat281-2025-1
+```
+
+## Licencia
+
+[MIT License](LICENSE) — puedes reutilizar el material citando la fuente.
+```
+
+### `.gitignore` para cursos con Python/R
+
+```gitignore
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.env
+.venv/
+*.egg-info/
+.ipynb_checkpoints/
+
+# R
+.Rhistory
+.RData
+.Rproj.user/
+
+# Quarto
+_site/
+_freeze/
+/.quarto/
+
+# Datos sensibles
+datasets/raw/*.csv
+datasets/raw/*.xlsx
+!datasets/raw/.gitkeep
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+```
+
+### Crear un template de repositorio
+
+Para no crear la estructura desde cero cada semestre:
+
+1. Crea un repositorio con la estructura base (ej: `template-curso`)
+2. Ve a *Settings → General → Template repository* → actívalo
+3. Al crear un nuevo repositorio, selecciona *Repository template* y elige el tuyo
+
+::: {.callout-tip}
+## Versionado por semestre
+Usa el nombre del repositorio para identificar el semestre: `mat281-2025-1`. Cuando termine el semestre, archiva el repositorio (*Settings → Archive this repository*) y crea uno nuevo para el siguiente. Así mantienes el histórico limpio.
+:::
+
+---
+
+## GitHub Organizations y Classroom
+
+### Crear una organización
+
+Las organizaciones permiten agrupar repositorios bajo un nombre institucional y gestionar accesos de forma centralizada. Útil para:
+
+- Un departamento que comparte material entre docentes
+- Un curso con múltiples secciones y ayudantes
+- Un grupo de investigación
+
+Para crear una organización: *github.com → + → New organization*
+
+Nombre sugerido: `dmat-usm`, `mat281-usm`, `dtd-usm`
+
+### GitHub Classroom
+
+GitHub Classroom automatiza la distribución y recolección de tareas:
+
+1. Ve a [classroom.github.com](https://classroom.github.com)
+2. Vincula tu organización
+3. Crea una *assignment* con un repositorio template (el enunciado)
+4. Comparte el link con los estudiantes — cada uno obtiene su propio repositorio privado con el enunciado
+5. Puedes ver el progreso de todos desde el panel de Classroom
+
+### Manejo de equipos y permisos
+
+```
+Organización mat281-usm
+├── Team: docentes         → rol: admin
+├── Team: ayudantes        → rol: write
+└── Team: estudiantes-2025 → rol: read
+```
+
+Los estudiantes solo ven sus propios repositorios de tareas, no los del resto.
+
+::: {.callout-warning}
+## Nunca subas datos de estudiantes a repositorios públicos
+Notas, RUT, correos o cualquier dato personal de estudiantes no debe estar en ningún repositorio de GitHub, ni público ni privado. Revisa la normativa de tu institución sobre protección de datos antes de usar GitHub Classroom.
+:::
+
+---
+
+## GitHub Pages para material docente
+
+GitHub Pages convierte el contenido de un repositorio en un sitio web público, sin costo y con dominio automático `tu-username.github.io/nombre-repo`.
+
+### Flujo recomendado con Quarto
+
+```bash
+# 1. Configura _quarto.yml para output en docs/
+```
+
+```yaml
+# _quarto.yml
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "MAT281 – 2025-1"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Inicio
+      - href: lectures/index.qmd
+        text: Clases
+      - href: labs/index.qmd
+        text: Laboratorios
+```
+
+```bash
+# 2. Renderiza el sitio localmente
+quarto render
+
+# 3. Sube a GitHub
+git add .
+git commit -m "docs: actualizar material semana 3"
+git push
+
+# 4. Activa GitHub Pages
+# Settings → Pages → Source: Deploy from branch → main → /docs
+```
+
+El sitio queda disponible en `https://tu-username.github.io/mat281-2025-1`
+
+::: {.callout-note}
+## Dominio personalizado
+Si tu institución te provee un subdominio (ej: `cursos.usm.cl`), puedes configurarlo en *Settings → Pages → Custom domain*. Requiere acceso al DNS institucional.
+:::
+
+---
+
+## GitHub Actions para automatización
+
+GitHub Actions permite ejecutar scripts automáticamente en respuesta a eventos (push, pull request, horario). Para docentes, los casos de uso más útiles son:
+
+### Auto-render de Quarto al hacer push
+
+```yaml
+# .github/workflows/render-quarto.yml
+name: Render and Deploy Quarto
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Render Quarto
+        uses: quarto-dev/quarto-actions/render@v2
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./_site
+```
+
+### Validación automática de notebooks de estudiantes
+
+```yaml
+# .github/workflows/validate-notebook.yml
+name: Validate Notebook
+
+on:
+  push:
+    paths:
+      - '**.ipynb'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install nbval
+        run: pip install nbval pytest
+
+      - name: Run notebook tests
+        run: pytest --nbval-lax notebooks/
+```
+
+::: {.callout-tip}
+## Empezar simple
+No necesitas usar Actions desde el día uno. El flujo manual (render local → push → Pages sirve el resultado) es perfectamente válido. Agrega automatización cuando el proceso manual se vuelva tedioso.
+:::
+
+---
+
+## Buenas prácticas
+
+### Conventional Commits
+
+Un estándar de mensajes de commit que hace el historial legible:
+
+```
+tipo(alcance): descripción corta
+
+feat: nueva funcionalidad
+fix: corrección de error
+docs: cambios en documentación
+chore: tareas de mantenimiento
+refactor: reorganización sin cambio funcional
+```
+
+Ejemplos para un curso:
+
+```bash
+git commit -m "docs: agregar material semana 4 - regresión lineal"
+git commit -m "feat: agregar dataset gapminder a labs/lab03"
+git commit -m "fix: corregir error en notebook de estadística descriptiva"
+git commit -m "chore: actualizar .gitignore para archivos Quarto"
+```
+
+### Estrategia de branching
+
+Para un curso, una estrategia simple es suficiente:
+
+- `main` — versión estable y publicada del semestre en curso
+- `dev` — trabajo en progreso (borradores, material en preparación)
+
+```bash
+# Trabajar en nuevo material
+git checkout -b dev
+# ... editar, guardar ...
+git commit -m "docs: borrador semana 6"
+
+# Cuando está listo para publicar
+git checkout main
+git merge dev
+git push
+```
+
+### Versionado por semestre con tags
+
+```bash
+# Al cerrar el semestre
+git tag -a v2025-1 -m "Cierre semestre 2025-1"
+git push origin v2025-1
+```
+
+Esto permite volver exactamente al estado del curso en cualquier semestre pasado.
+
+### Issues y Projects para planificación
+
+Usa **Issues** para registrar tareas pendientes del curso:
+
+```
+#12 Preparar material semana 8 – series de tiempo
+#13 Actualizar enunciado tarea 2 con nuevo dataset
+#14 Revisar solución lab 4 – hay un error en la celda 7
+```
+
+Usa **Projects** (tablero Kanban) para visualizar el avance:
+
+```
+Por hacer → En progreso → Listo para publicar → Publicado
+```
+
+### Qué NO hacer
+
+::: {.callout-warning}
+## Errores comunes a evitar
+
+- **No subas datos personales de estudiantes** — notas, RUT, correos. Nunca, en ningún repositorio.
+- **No hagas commits gigantes** — un commit de 50 archivos modificados es imposible de revisar. Commitea en unidades lógicas pequeñas.
+- **No uses `git add .` sin revisar** — antes de hacer staging, corre `git status` para ver exactamente qué vas a subir.
+- **No trabajes directamente en `main`** si hay estudiantes clonando el repositorio — un push con errores rompe su experiencia.
+- **No subas credenciales, tokens ni contraseñas** — ni en código, ni en notebooks, ni en archivos de configuración. Usa variables de entorno o `.env` (en `.gitignore`).
+- **No archives repositorios sin documentar** — antes de archivar un repositorio de curso, asegúrate de que el README tenga contexto suficiente para entenderlo un año después.
+:::
+
+---
+
+## Recursos recomendados
+
+**Documentación oficial**
+
+- [docs.github.com](https://docs.github.com) — documentación completa de GitHub
+- [git-scm.com/book](https://git-scm.com/book/es/v2) — Pro Git, el libro de referencia (disponible en español)
+- [quarto.org/docs/publishing/github-pages](https://quarto.org/docs/publishing/github-pages.html) — publicar con Quarto y GitHub Pages
+
+**GitHub Education**
+
+- [education.github.com](https://education.github.com) — programa para docentes y estudiantes
+- [classroom.github.com](https://classroom.github.com) — GitHub Classroom
+- [github.com/github/gitignore](https://github.com/github/gitignore) — colección de `.gitignore` por lenguaje/entorno
+
+**Aprendizaje**
+
+- [learngitbranching.js.org](https://learngitbranching.js.org/?locale=es_ES) — tutorial interactivo de Git (muy recomendado para mostrar a estudiantes)
+- [ohshitgit.com/es](https://ohshitgit.com/es) — soluciones a los errores más comunes de Git, en lenguaje directo
+- [conventionalcommits.org/es](https://www.conventionalcommits.org/es/v1.0.0/) — especificación de Conventional Commits
+
+**Comunidad**
+
+- [github.com/explore](https://github.com/explore) — repositorios destacados por tema
+- [教育 GitHub Community](https://github.com/orgs/community/discussions) — foro oficial de la comunidad GitHub

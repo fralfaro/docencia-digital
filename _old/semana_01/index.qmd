@@ -1,0 +1,57 @@
+---
+title: "📘 Visualización y Estadística Descriptiva"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+---
+
+# Introducción
+
+En esta primera semana del módulo, nos centraremos en los fundamentos del análisis exploratorio de datos (EDA). Trabajaremos con herramientas como `ggplot2`, `skimr` y `GGally` para generar visualizaciones efectivas, y revisaremos las principales medidas estadísticas descriptivas para interpretar distribuciones y variabilidad en los datos.
+
+
+
+# Objetivos de la semana
+
+- Comprender la estructura y sintaxis de `ggplot2`.
+- Generar histogramas, boxplots y gráficos de dispersión.
+- Aplicar medidas estadísticas descriptivas como media, mediana, desviación estándar y rango intercuartílico.
+- Identificar valores atípicos mediante visualización.
+- Usar `skimr` y `GGally` para obtener resúmenes automáticos de los datos.
+
+
+
+# Contenido a revisar
+
+- [Fundamentos de Visualización y Estadística](fundamentos.qmd)  
+  Introducción teórica a los conceptos clave y ejemplos básicos en R.
+
+- [Laboratorio de Exploración de Datos](laboratorio-eda.qmd)  
+  Actividad guiada con el dataset `palmerpenguins` para aplicar lo aprendido.
+
+- [Preguntas Clave para la Reflexión](preguntas-clave.qmd)  
+  Cuestionario para profundizar la comprensión y fomentar la interpretación crítica de los resultados.
+
+
+
+# Actividad de la semana
+
+Realiza un análisis exploratorio completo del dataset `penguins`, incluyendo:
+
+- Gráficos descriptivos con `ggplot2`
+- Estadísticas por grupo (por ejemplo, por especie)
+- Identificación e interpretación de valores atípicos
+- Respuestas a al menos 5 preguntas del documento de reflexión
+
+Entrega tu trabajo como un documento `.qmd` renderizado en HTML o PDF mediante Quarto.
+
+
+
+# Recursos
+
+- [r4ds – Visualización](https://r4ds.hadley.nz/data-visualize.html)
+- [Cheatsheet de `ggplot2`](https://posit.co/resources/cheatsheets/)
+- Dataset: `palmerpenguins::penguins`
+
+

@@ -1,0 +1,643 @@
+---
+title: "NotebookLM en profundidad"
+subtitle: "Análisis documental con IA para docentes universitarios"
+---
+
+NotebookLM resuelve un problema específico que ChatGPT y Claude no resuelven bien: trabajar con *tu* material, no con el conocimiento general del modelo. Cuando le preguntas a ChatGPT sobre un tema, responde con lo que sabe de internet. Cuando le preguntas a NotebookLM sobre ese mismo tema, responde *solo con lo que está en los documentos que tú subiste* — y cita exactamente de dónde sacó cada afirmación.
+
+Para un docente, la diferencia es enorme. Puedes subir el libro de texto del curso, tus apuntes, los papers de referencia y las guías de laboratorio, y luego pedir resúmenes, preguntas de examen o guías de estudio que están ancladas exactamente en el contenido que tú diseñaste — sin que el modelo invente ni mezcle con información externa.
+
+---
+
+## Qué es NotebookLM y cómo funciona internamente
+
+### La propuesta de valor
+
+NotebookLM es una herramienta de Google que combina un sistema de recuperación de información (RAG — Retrieval Augmented Generation) con un modelo de lenguaje potente (Gemini). La diferencia con los chatbots convencionales:
+
+```{mermaid}
+graph TD
+    subgraph "ChatGPT / Claude convencional"
+        P1["Prompt"] --> M1["🧠 Modelo\n(entrenado con internet)"]
+        M1 --> R1["Respuesta basada en\nconocimiento general\n± alucinaciones"]
+    end
+
+    subgraph "NotebookLM (RAG)"
+        P2["Prompt"] --> RET["🔍 Retriever\n(busca en TUS documentos)"]
+        D["📚 Tus documentos\n(PDF, slides, URLs...)"] --> RET
+        RET --> M2["🧠 Modelo Gemini\n(responde SOLO con\nlo que encontró)"]
+        M2 --> R2["Respuesta con citas\nexactas del documento\nCero alucinaciones externas"]
+    end
+```
+
+### Cómo funciona RAG internamente
+
+Cuando subes un documento a NotebookLM:
+
+1. **Indexación:** el sistema divide el documento en fragmentos (*chunks*) de texto.
+2. **Embeddings:** cada fragmento se convierte en un vector numérico que captura su significado.
+3. **Almacenamiento:** los vectores se guardan en una base de datos vectorial del notebook.
+
+Cuando haces una pregunta:
+
+4. **Recuperación:** tu pregunta también se convierte en vector. El sistema busca los fragmentos más similares semánticamente.
+5. **Generación:** el modelo recibe tu pregunta + los fragmentos relevantes y genera la respuesta.
+6. **Citación:** cita el fragmento exacto del que extrajo la información.
+
+```{mermaid}
+sequenceDiagram
+    participant U as 👨‍🏫 Docente
+    participant N as NotebookLM
+    participant D as 📚 Tus documentos
+    participant G as 🧠 Gemini
+
+    U->>N: Sube PDFs del curso
+    N->>D: Indexa y crea embeddings
+    U->>N: "¿Cuáles son los supuestos de la regresión?"
+    N->>D: Busca fragmentos relevantes
+    D->>N: Fragmentos del apunte semana 5
+    N->>G: [Pregunta + fragmentos relevantes]
+    G->>N: Respuesta generada
+    N->>U: Respuesta + cita exacta del documento
+```
+
+### Por qué esto importa para docencia
+
+**Cero alucinaciones sobre tu material.** Si preguntas "¿qué dice el syllabus sobre las evaluaciones?", NotebookLM no inventa — responde exactamente lo que dice el PDF que subiste, con la cita de la página.
+
+**Trazabilidad total.** Cada afirmación tiene una cita. Puedes verificar en un clic que la respuesta proviene de tu documento, no de conocimiento externo del modelo.
+
+**El modelo no "sabe" más de lo que le das.** Si no subiste el paper X, no puede hablar de él. Esto es una feature, no un bug — asegura que el asistente del curso se mantiene dentro del material oficial.
+
+::: {.callout-note}
+## Limitación importante
+NotebookLM no puede acceder a internet ni a información posterior al entrenamiento de Gemini. Si necesitas respuestas sobre eventos recientes o información no contenida en tus documentos, necesitas otros modelos. Para el uso docente típico (trabajar con tu propio material), esto no es un problema.
+:::
+
+---
+
+## Subir fuentes: PDFs, slides, URLs, documentos Google
+
+### Tipos de fuentes aceptadas
+
+NotebookLM acepta una variedad de tipos de fuente — más amplia que la mayoría de los chatbots:
+
+| Tipo de fuente | Formato | Límite | Notas |
+|---|---|---|---|
+| **PDF** | `.pdf` | 500 páginas / 200 MB | La más usada para papers y libros |
+| **Google Docs** | Link de Drive | Sin límite explícito | Sincroniza automáticamente si el doc cambia |
+| **Google Slides** | Link de Drive | Sin límite explícito | Importa el texto de las slides |
+| **URL de sitio web** | HTTPS | 1 URL por fuente | Indexa el contenido visible de la página |
+| **Video de YouTube** | URL | Solo con transcripción | Usa la transcripción automática de YouTube |
+| **Texto pegado** | Texto plano | 500.000 caracteres | Para pegar contenido que no está en archivo |
+| **Archivo de audio** | `.mp3`, `.wav` | 25 MB | Transcribe automáticamente |
+
+### Límites del notebook
+
+- **Máximo 50 fuentes** por notebook.
+- **Máximo 25 millones de palabras** en total por notebook.
+- Para un curso con 6 semanas de apuntes (20 páginas c/u) + 10 papers (15 páginas c/u) + el libro de texto (300 páginas): estás dentro del límite con holgura.
+
+### Proceso de subida
+
+1. Ve a [notebooklm.google.com](https://notebooklm.google.com).
+2. Clic en **+ Nuevo notebook** → dale un nombre descriptivo: `MAT281 — Semestre 2025-1`.
+3. En la sección de fuentes (panel izquierdo): **+ Agregar fuente**.
+4. Elige el tipo: archivo, URL, Google Drive, texto, YouTube o audio.
+5. NotebookLM procesa el documento (segundos a minutos según el tamaño).
+6. El documento aparece en la lista con un resumen automático.
+
+### Qué subir para un curso universitario
+
+**Estructura de fuentes recomendada:**
+
+```
+Notebook: MAT281 — 2025-1
+├── 📄 programa_curso.pdf          ← syllabus, fechas, evaluaciones
+├── 📊 slides_semana01.pdf         ← convertir PPT/Quarto a PDF antes
+├── 📊 slides_semana02.pdf
+├── 📊 slides_semana03.pdf
+├── 📄 apunte_semana01.pdf         ← versión PDF del .qmd
+├── 📄 apunte_semana02.pdf
+├── 📄 guia_lab01.pdf
+├── 📄 guia_lab02.pdf
+├── 📄 guia_lab03.pdf
+├── 📄 paper_regresion_logistica.pdf
+├── 📄 paper_random_forest.pdf
+├── 🌐 sklearn_docs_regresion.url  ← documentación oficial
+└── 🎥 video_clase_grabada.youtube
+```
+
+### Convertir documentos Quarto a PDF para subir
+
+```bash
+# Renderizar el apunte a PDF para subirlo a NotebookLM
+quarto render lectures/semana03/index.qmd --to pdf
+
+# O convertir el sitio completo a PDFs
+for qmd in lectures/*/index.qmd; do
+  quarto render "$qmd" --to pdf
+done
+```
+
+### Sincronización de Google Docs
+
+Si tus apuntes están en Google Docs, NotebookLM puede acceder directamente al link de Drive. Cada vez que actualices el documento, puedes hacer clic en "Actualizar fuente" en NotebookLM para sincronizar. Esto es más conveniente que exportar y volver a subir PDFs cada semana.
+
+---
+
+## Generación de resúmenes automáticos
+
+### El panel de notas
+
+Cuando subes una fuente, NotebookLM genera automáticamente un **resumen** del documento que aparece en el panel de notas. Este resumen:
+
+- Identifica los temas principales del documento.
+- Extrae los puntos clave y conclusiones.
+- Puede usarse como punto de partida para generar más material.
+
+### Tipos de resúmenes que puedes pedir
+
+**Resumen ejecutivo (para el docente):**
+
+```
+Prompt: "Genera un resumen ejecutivo de los capítulos 5 y 6 del libro
+de texto, enfocándote en los conceptos que mis estudiantes de tercer año
+de ingeniería encontrarán más difíciles y por qué."
+```
+
+**Resumen de estudio (para estudiantes):**
+
+```
+Prompt: "Crea un resumen de estudio de máximo 500 palabras de los
+apuntes de la semana 5 (regresión lineal simple). El resumen debe:
+- Listar los 5 conceptos clave con definición de una oración
+- Incluir las fórmulas principales en lenguaje simple (no LaTeX)
+- Terminar con 3 preguntas que el estudiante debería poder responder
+  después de leer el apunte"
+```
+
+**Resumen comparativo entre fuentes:**
+
+```
+Prompt: "Compara cómo los tres papers que subí abordan el problema de
+selección de variables en regresión. ¿En qué están de acuerdo?
+¿Dónde difieren? ¿Cuál es más relevante para un curso de ingeniería
+de tercer año?"
+```
+
+**Mapa conceptual en texto:**
+
+```
+Prompt: "Genera un mapa conceptual en formato de lista anidada con los
+conceptos principales de la unidad de regresión tal como están en mis
+apuntes. Máximo 3 niveles de profundidad."
+```
+
+### Resumen automático de múltiples fuentes combinadas
+
+```
+Prompt: "Tengo subidos los apuntes de las semanas 3, 4 y 5 que cubren
+regresión lineal simple, múltiple y logística. Genera un resumen
+integrado de toda la unidad de regresión que muestre la progresión
+lógica entre los tres temas y las conexiones conceptuales."
+```
+
+::: {.callout-tip}
+## Truco: pedir el resumen en formato exportable
+Para usar el resumen directamente en el sitio del curso o en una guía de estudio, pide que lo genere en Markdown:
+
+```
+"Genera el resumen anterior en formato Markdown con headers ##,
+listas con guiones y ecuaciones en formato $...$ para MathJax.
+Listo para pegar en un archivo .qmd de Quarto."
+```
+:::
+
+---
+
+## Q&A sobre el material propio
+
+### Las preguntas que cambian el flujo de trabajo
+
+La función de Q&A es donde NotebookLM demuestra su valor más claro. En lugar de buscar en tus documentos manualmente, haces la pregunta en lenguaje natural y recibes la respuesta con cita exacta.
+
+**Para preparar clases:**
+
+```
+"¿En qué parte de mis apuntes o slides explico la diferencia
+entre R² y R² ajustado? ¿Es suficientemente clara esa explicación?"
+
+"¿Hay alguna inconsistencia entre lo que dice el libro de texto
+sobre homocedasticidad y lo que explico en mis apuntes de la semana 5?"
+
+"Basándome en mi syllabus, ¿qué temas debería haber cubierto
+antes de la Prueba 1?"
+```
+
+**Para anticipar dudas de estudiantes:**
+
+```
+"Revisando todos los apuntes y guías de laboratorio, ¿qué conceptos
+crees que generarán más dudas en los estudiantes antes del examen?
+Basa tu respuesta solo en el material que subí, no en conocimiento
+general sobre estadística."
+
+"¿Hay términos técnicos que uso en los apuntes sin haberlos definido
+previamente en el material?"
+```
+
+**Para verificar coherencia del material:**
+
+```
+"¿La rúbrica del laboratorio 3 es coherente con los contenidos
+de los apuntes de la semana 4? ¿El estudiante tiene todo el
+conocimiento necesario para completar el lab con el material disponible?"
+
+"¿Los objetivos de aprendizaje del syllabus están cubiertos en
+los apuntes? ¿Algún objetivo no aparece reflejado en ninguna semana?"
+```
+
+**Para preparar respuestas a consultas frecuentes:**
+
+```
+"Un estudiante me pregunta: '¿Es lo mismo el R² que el coeficiente
+de correlación de Pearson?' ¿Qué respuesta coherente con mis apuntes
+debería darle?"
+```
+
+### Usar NotebookLM como asistente de estudiantes
+
+Puedes configurar un notebook y compartirlo (en modo lectura) con los estudiantes para que tengan un asistente del curso 24/7:
+
+1. Crear el notebook con todo el material del curso.
+2. **Compartir** → copiar el link de solo lectura.
+3. Publicar el link en el LMS o en el README del repositorio.
+
+Los estudiantes pueden hacer preguntas sobre el material del curso sin necesitar una cuenta de pago y sin que el modelo "invente" respuestas fuera del syllabus.
+
+::: {.callout-warning}
+## NotebookLM compartido: consideraciones
+El notebook compartido muestra todo el material que subiste, incluyendo las fuentes. Si subiste soluciones o pautas de examen, no uses ese notebook para compartir con estudiantes — crea uno separado solo con el material público.
+:::
+
+---
+
+## Audio Overview: podcast automático desde fuentes
+
+### Qué es el Audio Overview
+
+Audio Overview es una de las funcionalidades más sorprendentes de NotebookLM: convierte tus documentos en un podcast conversacional de 10-20 minutos donde dos voces sintéticas discuten el contenido de forma natural.
+
+El resultado suena a una conversación real entre dos personas que conocen el material — no una lectura robótica. Incluye:
+- Preguntas y respuestas entre los dos presentadores.
+- Conexiones entre conceptos de distintas partes del material.
+- Ejemplos concretos tomados de tus documentos.
+- Resumen de los puntos más importantes.
+
+### Cómo generarlo
+
+1. En el notebook, clic en la pestaña **Audio Overview** (ícono de auriculares).
+2. Clic en **Generate** — NotebookLM procesa todos los documentos.
+3. En 2-5 minutos, el audio está listo para reproducir o descargar.
+4. Descarga como archivo `.mp3`.
+
+### Casos de uso docentes
+
+**Para estudiantes en tránsito:**
+Los estudiantes que viajan 30-40 minutos en metro o micro pueden escuchar el resumen del material de la semana sin leer. Especialmente útil antes de exámenes.
+
+**Antes de la clase:**
+Subir los apuntes de la semana + el capítulo del libro de texto y generar el Audio Overview. Enviarlo a los estudiantes como "pre-lectura" para que lleguen a clase con contexto básico.
+
+**Para repasar después de la clase:**
+El Audio Overview integra múltiples fuentes de forma coherente — puede ayudar a los estudiantes a ver las conexiones que no captaron durante la sesión.
+
+**Para el docente:**
+Generar un Audio Overview de varios papers para "escuchar" la literatura relevante de una unidad mientras haces otras cosas.
+
+### Personalizar el Audio Overview
+
+Desde la versión 2024-Q4, NotebookLM permite darle instrucciones al Audio Overview antes de generarlo:
+
+```
+Instrucciones para el Audio Overview:
+"Enfócate en las aplicaciones prácticas de la regresión logística
+en ingeniería industrial. Asegúrate de cubrir la interpretación
+de los coeficientes en términos de odds ratio. El nivel de la
+audiencia es tercer año de ingeniería — puedes asumir que
+entienden regresión lineal."
+```
+
+### Limitaciones del Audio Overview
+
+- El audio está en el idioma del material (español si las fuentes son en español).
+- No permite editar el guion generado.
+- Las voces son sintéticas — reconociblemente IA, no confundibles con personas reales.
+- No incluye fórmulas matemáticas de forma útil (las lee como texto plano).
+- Funcionalidad de descarga disponible en el plan gratuito.
+
+::: {.callout-note}
+## Audio Overview y material matemático
+Para cursos con muchas ecuaciones, el Audio Overview es útil para la parte conceptual y narrativa, pero no reemplaza el estudio de las fórmulas. Lo ideal es usarlo para que los estudiantes entiendan *para qué* sirve cada técnica antes de trabajar con las fórmulas en el apunte.
+:::
+
+---
+
+## Guías de estudio para estudiantes generadas por IA
+
+### Tipos de guías de estudio
+
+NotebookLM puede generar distintos tipos de material de estudio según lo que necesiten tus estudiantes:
+
+**Guía de conceptos clave:**
+
+```
+Prompt: "Genera una guía de los 15 conceptos más importantes para
+el examen de la unidad de regresión (semanas 3-5 de mis apuntes).
+
+Para cada concepto:
+- Nombre del concepto
+- Definición en 1-2 oraciones
+- Por qué importa en la práctica de la ingeniería
+- Un ejemplo numérico simple (si aplica)
+- Confusión frecuente a evitar
+
+Formato Markdown, listo para publicar en el sitio del curso."
+```
+
+**Preguntas de autoevaluación:**
+
+```
+Prompt: "Genera 20 preguntas de autoevaluación basadas exclusivamente
+en mis apuntes de las semanas 3, 4 y 5.
+
+Las preguntas deben:
+- Ser de respuesta corta (2-5 oraciones)
+- Cubrir todos los temas del syllabus para esta unidad
+- Ordenarse de menor a mayor dificultad
+- Incluir la respuesta sugerida al final (separada por una línea)
+
+El estudiante debería poder responderlas después de leer los apuntes,
+sin necesidad de material adicional."
+```
+
+**Comparativa de técnicas:**
+
+```
+Prompt: "Genera una tabla comparativa de los métodos de regresión
+vistos en el curso (lineal simple, múltiple, logística) con las
+columnas: Tipo de variable respuesta, Supuestos clave, Métrica de
+ajuste, Cuándo usarlo, Limitación principal.
+
+Basa la comparativa solo en los apuntes que subí."
+```
+
+**Glosario de términos:**
+
+```
+Prompt: "Extrae todos los términos técnicos que aparecen en negrita
+o cursiva en mis apuntes de las semanas 3-5. Para cada término:
+- Definición según cómo aparece en el apunte
+- La página/sección donde se define por primera vez
+- Términos relacionados que aparecen junto a él
+
+Formato: lista ordenada alfabéticamente."
+```
+
+**Resumen de fórmulas:**
+
+```
+Prompt: "Genera una hoja de referencia ('cheat sheet') de todas las
+fórmulas matemáticas que aparecen en mis apuntes de regresión.
+
+Para cada fórmula:
+- Nombre de la fórmula
+- La fórmula en notación clara (en formato LaTeX si es posible)
+- Variables involucradas con su significado
+- En qué contexto se usa
+
+Organizar por sección del apunte."
+```
+
+### Flujo de trabajo para producir material de estudio
+
+```
+Semana típica con NotebookLM:
+
+Lunes: Finalizar el apunte de la semana → exportar a PDF → subir a NotebookLM
+       → generar resumen automático para verificar que está completo
+
+Martes: Clase → After-class: preguntar a NotebookLM cuáles conceptos
+        del apunte pueden generar más dudas
+
+Miércoles: Ayudantía → Antes: pedir a NotebookLM las 10 preguntas más
+           probables que tendrán los estudiantes
+
+Jueves: Generar Audio Overview del apunte + capítulo relevante del libro
+        → publicar en el sitio del curso como material opcional
+
+Viernes: Entregar Lab → Antes del siguiente: verificar coherencia entre
+         el lab y el apunte con una pregunta a NotebookLM
+```
+
+---
+
+## Caso de cierre: syllabus interactivo con NotebookLM
+
+### El objetivo
+
+Construir un sistema donde los estudiantes pueden "conversar" con el syllabus del curso: hacer preguntas sobre fechas de evaluaciones, requisitos de aprobación, políticas del curso, contenido por semana — y recibir respuestas precisas basadas en el documento oficial, no en suposiciones.
+
+### Paso 1: preparar el material fuente
+
+El syllabus interactivo funciona mejor con fuentes bien estructuradas. Prepara:
+
+```
+Fuentes del notebook "Asistente MAT281":
+├── programa_oficial.pdf      ← el syllabus completo con todas las políticas
+├── faq_estudiantes.pdf       ← preguntas frecuentes de semestres anteriores
+├── rubrica_labs.pdf          ← rúbricas de todos los laboratorios
+├── rubrica_tareas.pdf        ← rúbricas de todas las tareas
+├── calendario_academico.pdf  ← calendario UTFSM con feriados
+└── politica_ia.pdf           ← política de uso de IA del curso
+```
+
+Un truco útil: crea un documento `faq_estudiantes.pdf` con las preguntas que los estudiantes te hacen semestre tras semestre:
+
+```markdown
+# Preguntas frecuentes — MAT281
+
+## ¿Puedo recuperar un laboratorio atrasado?
+Los laboratorios tienen descuento de 1.0 punto por cada 24 horas de atraso.
+No se aceptan entregas después de 48 horas del plazo original.
+
+## ¿Cuántas inasistencias puedo tener?
+El requisito es asistencia mínima del 75%. Con 14 semanas × 3 sesiones = 42 sesiones,
+puedes faltar a un máximo de 10 sesiones sin perder el requisito.
+
+## ¿La Prueba 1 y Prueba 2 son acumulativas?
+La Prueba 1 cubre semanas 1-7. La Prueba 2 cubre semanas 8-14. No son acumulativas
+en cuanto al contenido preguntado, pero los conceptos se encadenan.
+
+[...más preguntas...]
+```
+
+### Paso 2: crear el notebook y configurarlo
+
+```
+1. Crear notebook: "Asistente del curso MAT281 — 2025-1"
+2. Subir todas las fuentes preparadas
+3. Verificar que NotebookLM generó resúmenes correctos de cada fuente
+4. Probar con preguntas de control:
+   - "¿Cuál es la nota mínima de aprobación?"
+   - "¿Cuánto vale la Prueba 1?"
+   - "¿Puedo usar IA en las tareas?"
+   - "¿Cuándo es el laboratorio 4?"
+```
+
+### Paso 3: personalizar con instrucciones de sistema
+
+NotebookLM permite agregar instrucciones en la descripción del notebook que orientan las respuestas:
+
+```
+Descripción / instrucciones del notebook:
+
+Eres el asistente oficial del curso MAT281 (Aplicaciones de la Matemática
+en Ingeniería) de la UTFSM, semestre 2025-1.
+
+Tu función:
+- Responder preguntas sobre el programa, evaluaciones, fechas y políticas
+  del curso basándote SOLO en los documentos oficiales subidos
+- Orientar a los estudiantes sobre recursos disponibles
+- Remitir al profesor para cualquier situación no cubierta en el material
+
+Importante:
+- NUNCA inventes información que no esté en los documentos
+- Si la respuesta no está en las fuentes, di explícitamente:
+  "Esta información no está en el material disponible. Consulta directamente
+  al profesor en juan.perez@usm.cl"
+- Tono: cordial, directo, académico
+- Idioma: español
+```
+
+### Paso 4: probar el sistema con escenarios reales
+
+Antes de publicar el link a los estudiantes, prueba estos escenarios:
+
+```python
+# Lista de preguntas de prueba para validar el notebook
+
+preguntas_de_prueba = [
+    # Sobre evaluaciones
+    "¿Cuánto vale la Prueba 1 en la nota final?",
+    "Si saco 3.5 en todos los labs, ¿puedo aprobar el curso?",
+    "¿Cuál es la política de recuperación para pruebas?",
+
+    # Sobre contenido
+    "¿Qué tema se cubre en la semana 7?",
+    "¿El examen incluye series de tiempo?",
+    "¿Qué conocimientos previos se asumen para el curso?",
+
+    # Sobre logística
+    "¿Cuándo se entregan los labs?",
+    "¿Puedo entregar en PDF en vez de notebook?",
+    "¿Dónde son las ayudantías?",
+
+    # Sobre IA
+    "¿Puedo usar ChatGPT en la tarea?",
+    "¿Está permitido usar Copilot para escribir código?",
+
+    # Fuera del alcance (debe redirigir al profesor)
+    "¿Me puedes dar la solución del Lab 2?",
+    "¿Qué nota tengo hasta ahora?",
+    "¿El profesor puede darme un plazo extra?",
+]
+```
+
+### Paso 5: publicar y comunicar a los estudiantes
+
+```markdown
+# Anuncio en LMS del curso
+
+## 🤖 Asistente virtual del curso disponible
+
+He configurado un asistente de NotebookLM con todo el material oficial
+del curso: programa, rúbricas, políticas y FAQ.
+
+**¿Para qué sirve?**
+- Preguntas sobre evaluaciones, fechas y políticas del curso
+- Aclarar dudas sobre el contenido de cada semana
+- Revisar criterios de evaluación de labs y tareas
+
+**¿Qué NO puede hacer?**
+- Darte respuestas de evaluaciones
+- Saber tu nota personal
+- Reemplazar la consulta directa al profesor para situaciones especiales
+
+👉 **Acceder al asistente:** [link de NotebookLM compartido]
+
+Para preguntas que el asistente no pueda responder, usa el canal de
+Teams del curso o escríbeme a juan.perez@usm.cl.
+```
+
+### Paso 6: mantener el notebook actualizado
+
+```
+Protocolo de actualización:
+- Al inicio de cada semana: subir el apunte nuevo y las slides
+- Cuando cambie una fecha: actualizar el programa y hacer clic en
+  "Actualizar fuente" en NotebookLM
+- Al publicar una rúbrica nueva: agregarla como fuente
+- Al responder una pregunta frecuente por email: agregarla al FAQ
+  y actualizar la fuente
+
+Frecuencia mínima: una revisión del notebook por semana (5 minutos)
+```
+
+### Resultado: el asistente en acción
+
+Una conversación típica con el notebook configurado:
+
+```
+Estudiante: "¿Cuánto pesa el Lab 3 en la nota final?"
+
+Asistente: "Según el programa oficial del curso, los laboratorios
+en conjunto tienen una ponderación del 30% de la nota final. Con
+6 laboratorios en total, cada uno tiene un peso aproximado del 5%.
+[Fuente: programa_oficial.pdf, sección 'Evaluaciones']
+
+Si tienes dudas sobre la política de atrasos para el Lab 3,
+puedes encontrar los detalles en la rúbrica específica que también
+está disponible como fuente."
+
+---
+
+Estudiante: "¿Puedo usar scikit-learn en el Lab 4?"
+
+Asistente: "En la guía del Lab 4 se indica explícitamente que deben
+usar la librería scikit-learn para el ajuste del modelo. De hecho,
+uno de los criterios de evaluación es 'uso correcto de la API de
+LinearRegression de sklearn'.
+[Fuente: guia_lab04.pdf, sección 'Herramientas requeridas']"
+
+---
+
+Estudiante: "¿Me puedes dar la solución del ejercicio 3?"
+
+Asistente: "Eso está fuera de lo que puedo ayudarte. El asistente
+está configurado para orientarte sobre el curso, no para
+proporcionar soluciones de evaluaciones. Para este tipo de consulta,
+te recomiendo asistir a la ayudantía (martes 14:00-16:00) o escribir
+al profesor en juan.perez@usm.cl."
+```
+
+---
+
+## Referencias
+
+- Google. *NotebookLM — documentación y guía*. [notebooklm.google.com](https://notebooklm.google.com)
+- Lewis, P. et al. (2020). *Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks*. NeurIPS 2020. [arxiv.org/abs/2005.11401](https://arxiv.org/abs/2005.11401)
+- Google Research. *Gemini: A Family of Highly Capable Multimodal Models*. [arxiv.org/abs/2312.11805](https://arxiv.org/abs/2312.11805)
+- Mollick, E. (2024). *Co-Intelligence: Living and Working with AI*. Portfolio/Penguin.
+- Google. *NotebookLM Audio Overview*. [blog.google/technology/ai/notebooklm-audio-overviews](https://blog.google/technology/ai/notebooklm-audio-overviews/)

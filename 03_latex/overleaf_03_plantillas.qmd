@@ -1,0 +1,1285 @@
+---
+title: "Plantillas y producción de documentos"
+subtitle: "Beamer, tikz, IA para LaTeX y la decisión LaTeX vs Quarto"
+---
+
+Los dos capítulos anteriores cubrieron LaTeX desde los fundamentos hasta la escritura científica. Este capítulo cubre la capa de producción: cómo usar plantillas institucionales y de revistas para no partir de cero, cómo hacer presentaciones académicas con Beamer, qué paquetes resuelven los casos más frecuentes, cómo usar IA para generar código LaTeX sin memorizarlo todo, y — la pregunta más práctica — cuándo usar LaTeX y cuándo usar Quarto.
+
+---
+
+## Plantillas institucionales (UTFSM, IEEE, APA)
+
+### Por qué usar plantillas
+
+Una plantilla LaTeX es un archivo `.tex` preconfigurado con el formato correcto: márgenes, tipografía, estilos de sección, encabezados, pie de página, portada institucional. En lugar de configurar todo desde cero (y cometer errores de formato), partes del resultado final y solo escribes el contenido.
+
+Para docentes, las plantillas más relevantes son:
+
+| Tipo | Para qué | Fuente |
+|---|---|---|
+| Institucional UTFSM | Informes, memorias, guías de curso | DTD / Biblioteca UTFSM |
+| IEEE | Papers para conferencias y revistas de ingeniería | [overleaf.com/gallery/tagged/ieee](https://www.overleaf.com/gallery/tagged/ieee) |
+| APA 7ª ed. | Trabajos en ciencias sociales y educación | Paquete `apa7` |
+| ACM | Computación y sistemas | [overleaf.com/gallery/tagged/acm](https://www.overleaf.com/gallery/tagged/acm) |
+| LNCS | Springer Lecture Notes in Computer Science | [overleaf.com/gallery/tagged/springer](https://www.overleaf.com/gallery/tagged/springer) |
+
+### Plantilla de informe técnico UTFSM
+
+Esta plantilla produce un informe con portada institucional, índice, secciones numeradas y bibliografía — lista para guías de ejercicios, informes de laboratorio y reportes técnicos:
+
+```latex
+% ══════════════════════════════════════════════════════════════
+% PLANTILLA INFORME TÉCNICO — UTFSM
+% Adaptable para guías, informes de laboratorio, reportes
+% ══════════════════════════════════════════════════════════════
+\documentclass[12pt, letterpaper]{article}
+
+% ── Paquetes ───────────────────────────────────────────────────
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish, es-nodecimaldot]{babel}
+\usepackage[top=2.5cm, bottom=2.5cm, left=3cm, right=2.5cm]{geometry}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage{parskip}
+\usepackage{setspace}        % interlineado
+\usepackage{fancyhdr}        % encabezados y pies
+\usepackage{titlesec}        % personalizar títulos de sección
+\usepackage{tcolorbox}       % cajas coloreadas para notas y definiciones
+\usepackage[colorlinks=true, linkcolor=NavyBlue,
+            citecolor=NavyBlue, urlcolor=NavyBlue]{hyperref}
+\usepackage[dvipsnames]{xcolor}
+
+% ── Configuración de página ────────────────────────────────────
+\setstretch{1.15}            % interlineado 1.15
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\small\textcolor{gray}{\textsc{Universidad Técnica Federico Santa María}}}
+\rhead{\small\textcolor{gray}{\textsc{\@shorttitle}}}
+\cfoot{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% ── Estilo de secciones ────────────────────────────────────────
+\titleformat{\section}
+  {\large\bfseries\color{NavyBlue}}
+  {\thesection.}{0.8em}{}[\vspace{-0.3em}\rule{\linewidth}{0.4pt}]
+
+\titleformat{\subsection}
+  {\normalsize\bfseries}
+  {\thesubsection}{0.7em}{}
+
+% ── Comando para título corto en encabezado ────────────────────
+\newcommand{\shorttitle}[1]{\def\@shorttitle{#1}}
+\newcommand{\@shorttitle}{}
+
+% ── Entornos especiales ────────────────────────────────────────
+\tcbuselibrary{most}
+
+\newtcolorbox{definicion}[1]{
+  colback=blue!5!white, colframe=NavyBlue,
+  fonttitle=\bfseries, title=Definición: #1,
+  before skip=10pt, after skip=10pt
+}
+
+\newtcolorbox{nota}[0]{
+  colback=yellow!10!white, colframe=orange!70!black,
+  fonttitle=\bfseries, title=Nota,
+  before skip=10pt, after skip=10pt
+}
+
+\newtcolorbox{ejemplo}[1]{
+  colback=green!5!white, colframe=teal,
+  fonttitle=\bfseries, title=Ejemplo: #1,
+  before skip=10pt, after skip=10pt
+}
+
+% ── Metadata del documento ─────────────────────────────────────
+\newcommand{\curso}[1]{\def\@curso{#1}}
+\newcommand{\tipo}[1]{\def\@tipo{#1}}
+\newcommand{\semestre}[1]{\def\@semestre{#1}}
+
+\title{Análisis Estadístico de Rendimiento Académico}
+\author{Juan Pérez \and María González}
+\date{Junio 2025}
+\curso{MAT281 — Aplicaciones de la Matemática en Ingeniería}
+\tipo{Informe Técnico}
+\semestre{Primer Semestre 2025}
+\shorttitle{Rendimiento Académico MAT281}
+
+% ══════════════════════════════════════════════════════════════
+\begin{document}
+% ══════════════════════════════════════════════════════════════
+
+% ── Portada ────────────────────────────────────────────────────
+\begin{titlepage}
+  \centering
+  \vspace*{1cm}
+
+  % Logo institucional
+  \includegraphics[width=0.35\textwidth]{assets/logo_usm.png}
+
+  \vspace{1.5cm}
+  {\Large\textbf{Universidad Técnica Federico Santa María}\\[0.3em]
+   \large Departamento de Matemáticas}
+
+  \vspace{2cm}
+  {\Huge\bfseries\@title}
+
+  \vspace{0.8cm}
+  {\large\@tipo}
+
+  \vspace{0.5cm}
+  \rule{0.6\linewidth}{0.4pt}
+
+  \vspace{0.8cm}
+  {\large\@curso\\[0.3em]
+   \@semestre}
+
+  \vfill
+
+  {\large\@author}\\[0.5em]
+  {\@date}
+
+\end{titlepage}
+
+\newpage
+\tableofcontents
+\newpage
+
+% ── Resumen ejecutivo ──────────────────────────────────────────
+\begin{abstract}
+  Este informe presenta un análisis estadístico del rendimiento académico
+  en el curso MAT281 durante el primer semestre 2025...
+\end{abstract}
+
+\newpage
+
+% ── Contenido ──────────────────────────────────────────────────
+\section{Introducción}
+\label{sec:intro}
+
+\begin{definicion}{Rendimiento académico}
+  El rendimiento académico se define como el nivel de logro alcanzado
+  por un estudiante en relación a los objetivos de aprendizaje del curso,
+  medido a través de evaluaciones formativas y sumativas.
+\end{definicion}
+
+Texto de la introducción con cita \cite{ejemplo2025}...
+
+\section{Metodología}
+\label{sec:metodologia}
+
+\begin{nota}
+  Los datos utilizados en este análisis son de carácter institucional
+  y han sido anonimizados para proteger la identidad de los estudiantes.
+\end{nota}
+
+\section{Resultados}
+\label{sec:resultados}
+
+\begin{ejemplo}{Distribución de notas}
+  La distribución de la nota final sigue aproximadamente una distribución
+  normal con media $\mu = 5.2$ y desviación estándar $\sigma = 1.1$.
+\end{ejemplo}
+
+% ── Bibliografía ───────────────────────────────────────────────
+\newpage
+\bibliographystyle{apalike}
+\bibliography{referencias}
+
+\end{document}
+```
+
+### Plantilla IEEE para papers de ingeniería
+
+IEEE es el formato estándar para publicar en conferencias como CLEI, IEEE Access y revistas de ingeniería eléctrica, computación y sistemas:
+
+```latex
+\documentclass[conference]{IEEEtran}
+% Para journal: \documentclass[journal]{IEEEtran}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{cite}            % manejo de citas estilo IEEE
+\usepackage{url}
+\usepackage[colorlinks=false]{hyperref}
+
+\begin{document}
+
+\title{Early Warning System for Student Dropout Prediction\\
+       Using XGBoost in Chilean Higher Education}
+
+\author{
+  \IEEEauthorblockN{Juan Pérez\IEEEauthorrefmark{1} and
+                     Mario Navarrete\IEEEauthorrefmark{1}}
+  \IEEEauthorblockA{\IEEEauthorrefmark{1}
+    Dirección de Transformación Digital\\
+    Universidad Técnica Federico Santa María\\
+    Valparaíso, Chile\\
+    Email: \{juan.perez, mario.navarrete\}@usm.cl}
+}
+
+\maketitle
+
+\begin{abstract}
+Student dropout is a critical challenge in Chilean higher education...
+\end{abstract}
+
+\begin{IEEEkeywords}
+machine learning, dropout prediction, XGBoost, higher education
+\end{IEEEkeywords}
+
+\section{Introduction}
+
+Early detection of at-risk students~\cite{chen2016} enables...
+
+% Columnas dobles automáticas (estilo IEEE)
+\section{Methodology}
+
+\begin{equation}
+  \hat{y} = \sum_{k=1}^{K} f_k(\mathbf{x}), \quad f_k \in \mathcal{F}
+  \label{eq:xgboost}
+\end{equation}
+
+\begin{table}[htbp]
+  \caption{Model Performance Comparison}
+  \label{tab:results}
+  \begin{center}
+    \begin{tabular}{lrrr}
+      \toprule
+      Model & AUC & Precision & Recall \\
+      \midrule
+      Logistic Reg. & 0.71 & 0.68 & 0.73 \\
+      Random Forest & 0.79 & 0.75 & 0.81 \\
+      \textbf{XGBoost} & \textbf{0.84} & \textbf{0.80} & \textbf{0.87} \\
+      \bottomrule
+    \end{tabular}
+  \end{center}
+\end{table}
+
+\section{Conclusion}
+
+\bibliographystyle{IEEEtran}
+\bibliography{referencias}
+
+\end{document}
+```
+
+### Plantilla APA 7ª edición
+
+```latex
+\documentclass[man, spanish, 12pt]{apa7}
+% man = manuscript (APA), jou = journal, stu = student
+
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage[style=apa, backend=biber, language=spanish]{biblatex}
+\addbibresource{referencias.bib}
+
+\title{Integración de Inteligencia Artificial en la Docencia Universitaria:\\
+       Una Revisión Sistemática}
+\shorttitle{IA en docencia universitaria}
+
+\authorsnames{Juan Pérez, María González, Carlos Ruiz}
+\authorsaffiliations{Universidad Técnica Federico Santa María}
+
+\abstract{
+  Esta revisión sistemática examina las estrategias de integración
+  de herramientas de IA generativa en docencia universitaria...
+}
+
+\keywords{inteligencia artificial, docencia universitaria, LLM, ChatGPT}
+
+\begin{document}
+\maketitle
+
+\section{Introducción}
+
+Según \textcite{mollick2023}, el uso de modelos de lenguaje...
+
+\printbibliography
+
+\end{document}
+```
+
+---
+
+## Estructura de informes técnicos y tesis
+
+### Estructura canónica de una memoria/tesis UTFSM
+
+```latex
+\documentclass[12pt, letterpaper, twoside]{book}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish, es-nodecimaldot]{babel}
+\usepackage[top=2.5cm, bottom=2.5cm, left=3.5cm, right=2.5cm]{geometry}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{graphicx, float, subcaption}
+\usepackage{booktabs, longtable, multirow}
+\usepackage{listings, xcolor}
+\usepackage[linesnumbered, ruled, vlined]{algorithm2e}  % algoritmos
+\usepackage{microtype, parskip, setspace}
+\usepackage{fancyhdr, emptypage}      % emptypage: páginas en blanco sin encabezado
+\usepackage{appendix}
+\usepackage[colorlinks=true, linkcolor=NavyBlue,
+            citecolor=NavyBlue]{hyperref}
+\usepackage[dvipsnames]{xcolor}
+
+% ── Configuración de chapter style ────────────────────────────
+\usepackage[Bjornstrup]{fncychap}     % estilo visual para capítulos
+% Alternativas: Sonny, Lenny, Glenn, Conny, Rejne, Bjarne, Bjornstrup
+
+% ── Entornos matemáticos ───────────────────────────────────────
+\newtheorem{teorema}{Teorema}[chapter]
+\newtheorem{lema}[teorema]{Lema}
+\newtheorem{corolario}[teorema]{Corolario}
+\newtheorem{proposicion}[teorema]{Proposición}
+\theoremstyle{definition}
+\newtheorem{definicion}[teorema]{Definición}
+\newtheorem{ejemplo}[teorema]{Ejemplo}
+\theoremstyle{remark}
+\newtheorem{observacion}[teorema]{Observación}
+
+% ── Metadata ───────────────────────────────────────────────────
+\title{Sistema de Alerta Temprana Estudiantil:\\
+       Predicción de Deserción Usando XGBoost y Kedro}
+\author{Juan Pérez Martínez}
+\date{Junio 2025}
+
+\begin{document}
+
+% ── Páginas preliminares (numeración romana) ───────────────────
+\frontmatter
+\pagestyle{empty}
+
+  \include{capitulos/portada}          % portada institucional
+  \include{capitulos/dedicatoria}      % opcional
+  \include{capitulos/agradecimientos}  % opcional
+  \include{capitulos/resumen}          % resumen en español
+  \include{capitulos/abstract}         % resumen en inglés
+
+  \pagestyle{plain}
+  \tableofcontents                     % índice general
+  \listoffigures                       % lista de figuras
+  \listoftables                        % lista de tablas
+  % \listofalgorithms                  % lista de algoritmos (si aplica)
+
+% ── Cuerpo principal (numeración arábiga) ─────────────────────
+\mainmatter
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE,RO]{\small\thepage}
+\fancyhead[RE]{\small\textit{\leftmark}}     % nombre del capítulo
+\fancyhead[LO]{\small\textit{\rightmark}}    % nombre de la sección
+\renewcommand{\headrulewidth}{0.4pt}
+
+  \include{capitulos/01_introduccion}
+  \include{capitulos/02_marco_teorico}
+  \include{capitulos/03_metodologia}
+  \include{capitulos/04_resultados}
+  \include{capitulos/05_discusion}
+  \include{capitulos/06_conclusion}
+
+% ── Apéndices ─────────────────────────────────────────────────
+\appendix
+\appendixpage
+  \include{apendices/A_datos}
+  \include{apendices/B_codigo}
+
+% ── Bibliografía ──────────────────────────────────────────────
+\backmatter
+\bibliographystyle{apalike}
+\bibliography{referencias}
+
+\end{document}
+```
+
+### Archivo `capitulos/portada.tex`
+
+```latex
+\begin{titlepage}
+  \centering
+
+  \includegraphics[width=0.4\textwidth]{assets/logo_usm.png}
+
+  \vspace{1cm}
+  {\Large\textbf{Universidad Técnica Federico Santa María}\\[0.4em]
+   \large Departamento de Electrónica e Ingeniería Informática}
+
+  \vspace{2.5cm}
+  {\Huge\bfseries Sistema de Alerta Temprana Estudiantil}\\[0.5em]
+  {\Large Predicción de Deserción usando XGBoost y Kedro}
+
+  \vspace{2cm}
+  {\large Memoria para optar al Título de\\[0.3em]
+   \textbf{Ingeniero Civil en Informática}}
+
+  \vfill
+
+  {\large\textbf{Juan Pérez Martínez}}\\[1em]
+  {\large Profesor Guía: Dr. Mario Navarrete}\\[0.5em]
+  {\large Valparaíso, junio 2025}
+
+\end{titlepage}
+\clearpage
+```
+
+### Capítulo de introducción tipo
+
+```latex
+% capitulos/01_introduccion.tex
+\chapter{Introducción}
+\label{chap:introduccion}
+
+\section{Contexto y motivación}
+\label{sec:contexto}
+
+La deserción universitaria en Chile alcanza tasas preocupantes...
+\cite{mineduc2023}. En la Universidad Técnica Federico Santa María,
+el porcentaje de...
+
+\section{Problema de investigación}
+\label{sec:problema}
+
+\begin{definicion}
+  El \textbf{riesgo de deserción} de un estudiante $s$ en el período $t$
+  se define como la probabilidad:
+  \begin{equation}
+    P(\text{deserción}_s | \mathbf{X}_s^{(t)})
+    \label{eq:riesgo_desercion}
+  \end{equation}
+  donde $\mathbf{X}_s^{(t)}$ es el vector de características observadas
+  del estudiante $s$ hasta el período $t$.
+\end{definicion}
+
+\section{Objetivos}
+\label{sec:objetivos}
+
+\subsection{Objetivo general}
+
+Desarrollar un sistema de alerta temprana capaz de predecir la deserción
+estudiantil con al menos 80\% de AUC-ROC.
+
+\subsection{Objetivos específicos}
+
+\begin{enumerate}[noitemsep]
+  \item Construir un pipeline de datos reproducible usando Kedro.
+  \item Entrenar y evaluar un modelo XGBoost con validación temporal.
+  \item Implementar un backtest con cohortes 2023--2025.
+  \item Desarrollar un dashboard de visualización para jefes de carrera.
+\end{enumerate}
+
+\section{Estructura del documento}
+\label{sec:estructura}
+
+El resto de este documento se organiza de la siguiente manera:
+el Capítulo~\ref{chap:marco} presenta el marco teórico...
+```
+
+---
+
+## Beamer: presentaciones académicas en LaTeX
+
+### Por qué Beamer para docencia universitaria
+
+Beamer produce presentaciones PDF con tipografía y ecuaciones de la misma calidad que el resto de tus documentos LaTeX. La ventaja principal para docentes de matemáticas e ingeniería: las ecuaciones se renderizan perfectamente, con el mismo estilo que en los apuntes y las guías.
+
+```{mermaid}
+graph LR
+    PP["📊 PowerPoint / Keynote"]
+    BE["⚙️ Beamer (LaTeX)"]
+    QU["📄 Quarto RevealJS"]
+
+    PP --> P1["✅ WYSIWYG\n✅ Fácil para no-técnicos\n❌ Ecuaciones limitadas\n❌ No version-control friendly"]
+    BE --> P2["✅ Ecuaciones perfectas\n✅ Consistencia con docs\n✅ Plantillas de revistas\n❌ Menos flexible visualmente"]
+    QU --> P3["✅ Web-first interactivo\n✅ Código ejecutable\n✅ Fácil para técnicos\n❌ Ecuaciones menos precisas"]
+```
+
+### Estructura básica de una presentación Beamer
+
+```latex
+\documentclass[aspectratio=169]{beamer}
+%               ↑ 169 = 16:9 (moderno), 43 = 4:3 (clásico)
+
+% ── Tema visual ────────────────────────────────────────────────
+\usetheme{Madrid}        % tema base
+\usecolortheme{seahorse} % esquema de colores
+% Temas populares: Madrid, Copenhagen, Berlin, Singapore, Warsaw,
+%                  AnnArbor, CambridgeUS, Boadilla, Rochester
+
+% ── Colores institucionales ────────────────────────────────────
+\definecolor{USMazul}{RGB}{0, 48, 135}
+\definecolor{USMrojo}{RGB}{208, 0, 0}
+\setbeamercolor{structure}{fg=USMazul}
+\setbeamercolor{title}{fg=white, bg=USMazul}
+\setbeamercolor{frametitle}{fg=white, bg=USMazul}
+\setbeamercolor{block title}{bg=USMazul!20, fg=USMazul}
+
+% ── Logo en cada slide ─────────────────────────────────────────
+\logo{\includegraphics[height=0.8cm]{assets/logo_usm.png}}
+
+% ── Paquetes ───────────────────────────────────────────────────
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath, amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{listings}
+
+% ── Metadata ───────────────────────────────────────────────────
+\title[Regresión Lineal]{Regresión Lineal Simple}
+\subtitle{MAT281 — Semana 5}
+\author[Pérez]{Prof. Juan Pérez}
+\institute[UTFSM]{
+  Departamento de Matemáticas\\
+  Universidad Técnica Federico Santa María
+}
+\date{Abril 2025}
+
+\begin{document}
+
+% ── Portada ────────────────────────────────────────────────────
+\begin{frame}
+  \titlepage
+\end{frame}
+
+% ── Índice ─────────────────────────────────────────────────────
+\begin{frame}{Contenidos}
+  \tableofcontents
+\end{frame}
+
+% ── Sección 1 ──────────────────────────────────────────────────
+\section{Motivación}
+
+\begin{frame}{¿Por qué regresión lineal?}
+  \begin{columns}
+    \begin{column}{0.5\textwidth}
+      \textbf{Problema:} queremos predecir la nota final de un estudiante
+      a partir de sus horas de estudio.
+
+      \vspace{1em}
+      \textbf{Pregunta:} ¿existe una relación lineal entre ambas variables?
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \includegraphics[width=\textwidth]{figuras/scatter_horas_nota.png}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ── Slide con bloques ──────────────────────────────────────────
+\section{El modelo}
+
+\begin{frame}{Modelo de regresión lineal simple}
+
+  \begin{block}{Definición}
+    La regresión lineal simple modela:
+    \begin{equation}
+      Y_i = \beta_0 + \beta_1 X_i + \varepsilon_i
+    \end{equation}
+    donde $\varepsilon_i \sim \mathcal{N}(0, \sigma^2)$ i.i.d.
+  \end{block}
+
+  \begin{alertblock}{Supuestos críticos}
+    \begin{itemize}
+      \item Linealidad: $\mathbb{E}[Y|X] = \beta_0 + \beta_1 X$
+      \item Homocedasticidad: $\text{Var}(\varepsilon_i) = \sigma^2$ constante
+      \item Independencia: $\varepsilon_i$ independientes entre sí
+    \end{itemize}
+  \end{alertblock}
+
+  \begin{exampleblock}{En la práctica}
+    Estos supuestos se verifican con gráficos de residuos.
+  \end{exampleblock}
+
+\end{frame}
+```
+
+### Bloques de Beamer
+
+```latex
+% Tres tipos de bloque con colores automáticos del tema
+\begin{block}{Teorema}         % azul / color del tema
+  Contenido del bloque.
+\end{block}
+
+\begin{alertblock}{Advertencia} % rojo
+  Algo importante a tener en cuenta.
+\end{alertblock}
+
+\begin{exampleblock}{Ejemplo}   % verde
+  Un caso concreto.
+\end{exampleblock}
+```
+
+### Animaciones e incrementales
+
+```latex
+% Revelar items uno a uno
+\begin{frame}{Pasos del análisis}
+  \begin{enumerate}
+    \item<1-> Explorar los datos con histogramas y scatter
+    \item<2-> Verificar supuestos de linealidad
+    \item<3-> Estimar parámetros por mínimos cuadrados
+    \item<4-> Evaluar el ajuste con $R^2$ y gráfico de residuos
+    \item<5-> Interpretar los coeficientes en contexto
+  \end{enumerate}
+\end{frame}
+
+% Pausas entre bloques
+\begin{frame}{Estimadores MCO}
+  Los estimadores son:
+  \begin{align}
+    \hat{\beta}_1 &= \frac{S_{XY}}{S_{XX}}
+  \end{align}
+
+  \pause
+
+  Y pueden interpretarse como:
+  \begin{itemize}
+    \item $\hat{\beta}_1$: cambio esperado en $Y$ por una unidad adicional de $X$
+    \pause
+    \item $\hat{\beta}_0$: valor esperado de $Y$ cuando $X = 0$
+  \end{itemize}
+\end{frame}
+
+% Solo muestra en algunas slides
+\begin{frame}{Comparación de modelos}
+  \begin{columns}
+    \begin{column}{0.5\textwidth}
+      \only<1>{\includegraphics[width=\textwidth]{modelo_sin_ajuste.png}}
+      \only<2->{\includegraphics[width=\textwidth]{modelo_con_ajuste.png}}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \begin{itemize}
+        \item<1-> Sin ajuste: solo los datos
+        \item<2-> Con ajuste: recta de regresión superpuesta
+        \item<3-> Los residuos se ven claramente
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+```
+
+### Columnas y layouts
+
+```latex
+% Dos columnas (50/50)
+\begin{frame}{Título del slide}
+  \begin{columns}[T]  % T = alinear al tope
+    \begin{column}{0.5\textwidth}
+      Columna izquierda: texto, ecuaciones, listas.
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \includegraphics[width=\textwidth]{figura.png}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% Tres columnas (33/33/33)
+\begin{frame}{Comparación de modelos}
+  \begin{columns}
+    \begin{column}{0.33\textwidth}
+      \centering\textbf{Regresión Lineal}\\
+      Rápido, interpretable
+    \end{column}
+    \begin{column}{0.33\textwidth}
+      \centering\textbf{Random Forest}\\
+      No lineal, robusto
+    \end{column}
+    \begin{column}{0.33\textwidth}
+      \centering\textbf{XGBoost}\\
+      Alto rendimiento
+    \end{column}
+  \end{columns}
+\end{frame}
+```
+
+### Notas del presentador
+
+```latex
+\begin{frame}{Slide con notas}
+  Contenido visible en la pantalla...
+  \note{
+    Esto solo lo ve el presentador en modo presentación.
+    Recordar: mencionar el paper de Chen (2016) aquí.
+    Tiempo estimado para este slide: 3 minutos.
+  }
+\end{frame}
+
+% Para activar las notas en modo presentación:
+% \setbeameroption{show notes on second screen=right}
+% Requiere: \usepackage{pgfpages}
+```
+
+### Exportar Beamer a PDF con notas
+
+```bash
+# Compilar normalmente (sin notas)
+pdflatex presentacion.tex
+
+# Con notas en segunda pantalla (para usar con dos monitores)
+# Agregar al preámbulo:
+# \usepackage{pgfpages}
+# \setbeameroption{show notes on second screen=right}
+```
+
+---
+
+## Paquetes útiles: tikz, listings, algorithm, hyperref
+
+### tikz: diagramas y figuras vectoriales
+
+`tikz` es el paquete más potente de LaTeX para diagramas, gráficos y figuras vectoriales. La curva de aprendizaje es alta, pero los resultados son de calidad tipográfica perfecta.
+
+```latex
+\usepackage{tikz}
+\usetikzlibrary{shapes, arrows.meta, positioning, fit,
+                 decorations.pathreplacing, calc}
+```
+
+**Diagrama de flujo:**
+
+```latex
+\begin{figure}[htbp]
+  \centering
+  \begin{tikzpicture}[
+    node distance = 1.5cm,
+    box/.style = {rectangle, rounded corners, draw=NavyBlue,
+                  fill=NavyBlue!10, minimum width=3cm,
+                  minimum height=0.8cm, text centered,
+                  font=\small},
+    decision/.style = {diamond, draw=red!70!black,
+                        fill=red!10, minimum width=2cm,
+                        font=\small, text centered},
+    arrow/.style = {-{Stealth}, thick}
+  ]
+
+    \node[box]      (input)   {Datos brutos};
+    \node[box]      (clean)   [below=of input]  {Limpieza};
+    \node[box]      (feat)    [below=of clean]  {Ingeniería de variables};
+    \node[decision] (split)   [below=of feat]   {¿Suficientes datos?};
+    \node[box]      (train)   [below left=of split, xshift=-1cm]  {Entrenamiento};
+    \node[box]      (more)    [below right=of split, xshift=1cm]  {Recolectar más};
+    \node[box]      (eval)    [below=of train]  {Evaluación};
+
+    \draw[arrow] (input) -- (clean);
+    \draw[arrow] (clean) -- (feat);
+    \draw[arrow] (feat)  -- (split);
+    \draw[arrow] (split) -- node[left]{\small Sí}  (train);
+    \draw[arrow] (split) -- node[right]{\small No} (more);
+    \draw[arrow] (train) -- (eval);
+    \draw[arrow] (more)  |- (input);  % flecha que vuelve al inicio
+
+  \end{tikzpicture}
+  \caption{Pipeline de modelamiento predictivo.}
+  \label{fig:pipeline}
+\end{figure}
+```
+
+**Gráfico de barras con tikz/pgfplots:**
+
+```latex
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+\begin{figure}[htbp]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+      ybar,
+      bar width=0.6cm,
+      symbolic x coords={Civil, Industrial, Eléctrica, Matemáticas},
+      xtick=data,
+      ylabel={Nota promedio},
+      ymin=4, ymax=7,
+      ymajorgrids=true,
+      grid style=dashed,
+      width=0.8\textwidth,
+      height=6cm,
+      nodes near coords,
+      nodes near coords align={vertical},
+      every node near coord/.append style={font=\small},
+    ]
+      \addplot coordinates {
+        (Civil, 5.21) (Industrial, 5.08)
+        (Eléctrica, 4.95) (Matemáticas, 5.67)
+      };
+    \end{axis}
+  \end{tikzpicture}
+  \caption{Nota promedio por carrera, semestre 2025-1.}
+  \label{fig:notas_pgfplots}
+\end{figure}
+```
+
+### listings: bloques de código fuente
+
+```latex
+\usepackage{listings}
+\usepackage{xcolor}
+
+% Estilo para Python
+\lstdefinestyle{python}{
+  language=Python,
+  basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\color{blue}\bfseries,
+  stringstyle=\color{orange},
+  commentstyle=\color{gray}\itshape,
+  numberstyle=\tiny\color{gray},
+  numbers=left,
+  numbersep=8pt,
+  showstringspaces=false,
+  breaklines=true,
+  frame=single,
+  frameround=tttt,
+  backgroundcolor=\color{gray!5},
+  captionpos=b,
+  tabsize=4,
+  xleftmargin=15pt,
+  xrightmargin=5pt,
+}
+
+% Estilo para bash/terminal
+\lstdefinestyle{bash}{
+  language=bash,
+  basicstyle=\ttfamily\footnotesize\color{white},
+  backgroundcolor=\color{black!85},
+  keywordstyle=\color{cyan},
+  commentstyle=\color{gray},
+  frame=single,
+  frameround=tttt,
+  numbers=none,
+  breaklines=true,
+}
+
+% Uso en el documento
+\begin{lstlisting}[style=python, caption={Estimación de regresión lineal con scikit-learn.}, label={lst:regresion}]
+from sklearn.linear_model import LinearRegression
+import numpy as np
+
+# Datos de entrenamiento
+X_train = np.array([[4], [6], [8], [5], [10]])
+y_train = np.array([4.5, 5.2, 5.8, 4.9, 6.5])
+
+# Entrenar modelo
+modelo = LinearRegression()
+modelo.fit(X_train, y_train)
+
+print(f"beta_0 = {modelo.intercept_:.4f}")
+print(f"beta_1 = {modelo.coef_[0]:.4f}")
+print(f"R^2    = {modelo.score(X_train, y_train):.4f}")
+\end{lstlisting}
+
+% Referencia al listado: el Listado~\ref{lst:regresion} muestra...
+
+% Incluir archivo externo directamente
+\lstinputlisting[style=python, caption={Script completo.}]{scripts/regresion.py}
+```
+
+### algorithm2e: pseudocódigo y algoritmos
+
+```latex
+\usepackage[linesnumbered, ruled, vlined, spanish]{algorithm2e}
+
+\begin{algorithm}[H]
+  \caption{Algoritmo de Descenso de Gradiente}
+  \label{alg:gradient_descent}
+
+  \KwIn{$f(\theta)$: función de costo, $\alpha$: tasa de aprendizaje,
+        $\varepsilon$: tolerancia, $\theta_0$: parámetros iniciales}
+  \KwOut{$\theta^*$: parámetros óptimos}
+
+  \BlankLine
+  $\theta \leftarrow \theta_0$\;
+  $t \leftarrow 0$\;
+
+  \While{$\|\nabla f(\theta)\| > \varepsilon$}{
+    $g \leftarrow \nabla_\theta f(\theta)$
+      \tcp*[r]{calcular gradiente}
+    $\theta \leftarrow \theta - \alpha \cdot g$
+      \tcp*[r]{actualizar parámetros}
+    $t \leftarrow t + 1$\;
+
+    \If{$t > T_{\max}$}{
+      \textbf{break} \tcp*[r]{máximo de iteraciones}
+    }
+  }
+
+  \Return{$\theta$}
+\end{algorithm}
+```
+
+### hyperref: hipervínculos y metadata del PDF
+
+```latex
+\usepackage[
+  pdftitle={Análisis Estadístico MAT281},
+  pdfauthor={Juan Pérez},
+  pdfsubject={Rendimiento académico},
+  pdfkeywords={estadística, regresión, universidad},
+  colorlinks=true,
+  linkcolor=NavyBlue,     % links internos (figuras, secciones)
+  citecolor=NavyBlue,     % citas bibliográficas
+  urlcolor=teal,          % URLs externas
+  filecolor=teal,         % links a archivos
+  pdfborder={0 0 0}       % sin borde visible alrededor de links
+]{hyperref}
+
+% Uso
+\href{https://overleaf.com}{Abrir en Overleaf}
+\url{https://github.com/fralfaro/mat281}
+
+% Links a páginas específicas del PDF
+\hyperlink{fig:histograma}{Ver histograma}
+\hypertarget{fig:histograma}{}   % destino del link
+```
+
+---
+
+## Uso de IA para generar código LaTeX
+
+### Por qué la IA es especialmente útil para LaTeX
+
+LaTeX tiene una sintaxis extensa y a veces críptica. Nadie memoriza todos los parámetros de `pgfplots` o las opciones de `tcolorbox`. La IA (Claude, ChatGPT) puede generar código LaTeX correcto en segundos — lo que antes requería consultar la documentación durante minutos.
+
+La combinación más efectiva: **tú describes lo que necesitas, la IA genera el código, tú lo pegas en Overleaf y verificas que compila.**
+
+### Prompts efectivos para generar LaTeX
+
+**Para tablas:**
+
+```
+Genera el código LaTeX de una tabla con el paquete booktabs que muestre
+la comparación de tres modelos de clasificación (Logistic Regression,
+Random Forest, XGBoost) con las métricas AUC, Precision, Recall y F1.
+El mejor valor de cada columna debe estar en negrita.
+Incluye \caption y \label.
+```
+
+**Para ecuaciones complejas:**
+
+```
+Escribe en LaTeX el sistema de ecuaciones de la regresión lineal múltiple
+en forma matricial: Y = Xβ + ε, mostrando explícitamente las matrices
+completas con sus dimensiones anotadas debajo de cada símbolo.
+Usa el entorno bmatrix y el paquete amsmath.
+```
+
+**Para figuras tikz:**
+
+```
+Genera un diagrama en tikz que muestre el flujo de datos en un pipeline
+de machine learning: Datos crudos → Preprocesamiento → División train/test
+→ Entrenamiento → Evaluación → Despliegue. Usa cajas redondeadas de color
+azul claro y flechas con puntas de flecha. El nodo de Evaluación debe
+tener una flecha de retroalimentación al preprocesamiento.
+```
+
+**Para entornos Beamer:**
+
+```
+Crea una slide de Beamer con el tema Madrid que muestre en dos columnas:
+izquierda con los supuestos de la regresión lineal como lista con alertblock,
+derecha con un placeholder para una imagen. Agrega animación incremental
+para revelar cada supuesto uno a uno con \pause.
+```
+
+**Para corregir errores:**
+
+```
+Este código LaTeX da el error "Undefined control sequence \midrule":
+[pegar el código]
+
+¿Cuál es el problema y cómo lo corrijo?
+```
+
+### Flujo de trabajo IA + Overleaf
+
+```{mermaid}
+sequenceDiagram
+    participant D as 👨‍🏫 Docente
+    participant IA as 🤖 Claude/ChatGPT
+    participant OL as 📄 Overleaf
+
+    D->>IA: "Genera una tabla booktabs con\nlos resultados de mi análisis..."
+    IA->>D: Código LaTeX completo
+    D->>OL: Pega el código
+    OL->>D: Error: falta \usepackage{booktabs}
+    D->>IA: "Da el error X, ¿qué falta?"
+    IA->>D: "Agrega \usepackage{booktabs}\nen el preámbulo"
+    D->>OL: Corrige y recompila
+    OL->>D: ✅ PDF compilado correctamente
+```
+
+### Limitaciones de la IA con LaTeX
+
+::: {.callout-warning}
+## Lo que la IA hace mal en LaTeX
+- **Paquetes incompatibles:** puede sugerir combinaciones de paquetes que generan conflictos. Si algo no compila, pide a la IA que identifique el conflicto.
+- **Rutas de archivos:** no sabe dónde están tus imágenes. Siempre debes ajustar los paths.
+- **Versiones de paquetes:** puede usar sintaxis de una versión diferente a la de Overleaf. Especifica `\pgfplotsset{compat=1.18}` si usas pgfplots.
+- **Tikz complejo:** el código tikz generado por IA suele requerir ajustes de coordenadas y espaciados. Úsalo como punto de partida, no como resultado final.
+- **Caracteres especiales en español:** puede olvidar `\usepackage[spanish]{babel}` o usar comillas incorrectas.
+:::
+
+### Mathpix: de imagen a LaTeX
+
+```
+Herramienta: mathpix.com (o la app Mathpix Snip)
+Qué hace: convierte una foto de una ecuación escrita a mano
+          o en un PDF escaneado en código LaTeX
+
+Uso:
+1. Toma una foto o captura de pantalla de la ecuación
+2. Mathpix genera el código LaTeX
+3. Pega en tu documento
+
+Muy útil para:
+- Digitalizar ecuaciones de libros de texto
+- Convertir apuntes escritos a mano a LaTeX
+- Reutilizar material de PDFs escaneados
+```
+
+---
+
+## Sincronizar Overleaf con GitHub
+
+### Por qué sincronizar
+
+La sincronización Overleaf ↔ GitHub combina lo mejor de ambos mundos:
+
+- **Overleaf:** edición colaborativa visual, compilación instantánea, sin instalación.
+- **GitHub:** control de versiones completo, CI/CD, integración con el sitio del curso.
+
+```{mermaid}
+graph LR
+    OL["📄 Overleaf\nEdición colaborativa"]
+    GH["🐙 GitHub\nControl de versiones"]
+
+    OL -- "Push a GitHub\n(botón en Overleaf)" --> GH
+    GH -- "Pull desde GitHub\n(botón en Overleaf)" --> OL
+    GH -- "git clone" --> L["💻 Local\n(si necesitas compilar localmente)"]
+```
+
+### Configurar la sincronización
+
+**Requisitos:** cuenta Overleaf Pro (o Education). La versión gratuita no tiene sincronización con GitHub.
+
+**Paso 1 — Desde un proyecto nuevo en Overleaf:**
+
+1. **Menu (☰)** → **GitHub**
+2. **Create a GitHub repository**
+3. Selecciona la organización y nombre del repositorio
+4. Overleaf crea el repositorio y hace el primer push
+
+**Paso 2 — Desde un repositorio GitHub existente:**
+
+1. **Menu (☰)** → **GitHub**
+2. **Link an existing GitHub repository**
+3. Busca y selecciona el repositorio
+
+**Paso 3 — Flujo diario:**
+
+```
+Editas en Overleaf
+    ↓
+Menu → GitHub → "Push Overleaf changes to GitHub"
+    ↓
+El repositorio GitHub se actualiza con los cambios de Overleaf
+
+---
+
+Alguien hace cambios en GitHub (push directo, merge de PR)
+    ↓
+Menu → GitHub → "Pull GitHub changes into Overleaf"
+    ↓
+Overleaf recibe los cambios del repositorio
+```
+
+### Estructura recomendada del repositorio con LaTeX + Overleaf
+
+```
+mat281-material/
+├── .github/
+│   └── workflows/
+│       └── compile-latex.yml    # CI: compila y verifica el PDF
+├── guias/
+│   ├── guia01/
+│   │   ├── main.tex
+│   │   ├── referencias.bib
+│   │   └── imagenes/
+│   └── guia02/
+│       ├── main.tex
+│       └── ...
+├── examen/
+│   ├── main.tex                 % en branch privado o repositorio separado
+│   └── ...
+├── apuntes/
+│   └── main.tex
+└── assets/
+    ├── logo_usm.png
+    └── preambulo_comun.tex      % paquetes y macros compartidas
+```
+
+### GitHub Action para compilar LaTeX
+
+```yaml
+# .github/workflows/compile-latex.yml
+name: Compilar LaTeX
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '**.tex'
+      - '**.bib'
+
+jobs:
+  compilar:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Compilar todos los PDFs
+        uses: xu-cheng/latex-action@v3
+        with:
+          root_file: |
+            guias/guia01/main.tex
+            guias/guia02/main.tex
+            apuntes/main.tex
+          latexmk_use_lualatex: true   # o false para pdflatex
+          work_in_root_file_dir: true
+
+      - name: Subir PDFs como artefactos
+        uses: actions/upload-artifact@v4
+        with:
+          name: pdfs-compilados
+          path: |
+            guias/guia01/main.pdf
+            guias/guia02/main.pdf
+            apuntes/main.pdf
+          retention-days: 30
+```
+
+---
+
+## LaTeX vs Quarto: criterios para elegir según el caso
+
+Esta es la pregunta más práctica de este capítulo. Ambas herramientas producen documentos de alta calidad — pero sirven propósitos distintos y tienen perfiles de usuario diferentes.
+
+### La tabla de decisión
+
+| Criterio | LaTeX (Overleaf) | Quarto |
+|---|---|---|
+| **Ecuaciones matemáticas** | Excelente — el estándar | Buena (usa LaTeX internamente) |
+| **Código ejecutable** | No (usa `listings` para mostrar código estático) | Sí — el código corre y genera outputs |
+| **Publicación web** | Limitado (requiere herramientas adicionales) | Nativo — HTML, RevealJS, sitios completos |
+| **Colaboración con no-técnicos** | Difícil (requieren conocer LaTeX) | Más fácil (Markdown es más intuitivo) |
+| **Plantillas de revistas** | Amplísimo catálogo (IEEE, APA, Springer...) | Limitado (algunas extensiones) |
+| **Control tipográfico** | Total — cada milímetro | Parcial — depende del tema |
+| **Figuras TikZ/PGFPlots** | Sí, nativo | No (se incluyen como imágenes) |
+| **Curva de aprendizaje** | Alta | Media |
+| **Reproducibilidad** | Manual (código en `listings`) | Automática (chunks ejecutados) |
+| **Output a Word** | Complicado | Nativo |
+| **Actualizaciones frecuentes** | Requiere recompilar manualmente | `quarto preview` actualiza en vivo |
+
+### El árbol de decisión
+
+```{mermaid}
+graph TD
+    P["¿Qué necesitas producir?"]
+
+    P --> A["Paper para revista\no conferencia académica"]
+    P --> B["Material del curso\n(apuntes, guías, slides)"]
+    P --> C["Documento con código\nejecutado como parte del análisis"]
+    P --> D["Sitio web del curso\no portfolio docente"]
+
+    A --> A1["¿La revista requiere\nuna plantilla específica\n(IEEE, APA, ACM)?"]
+    A1 -->|Sí| A2["✅ LaTeX en Overleaf\nusa la plantilla oficial"]
+    A1 -->|No| A3["Puede ser Quarto\nsi el journal acepta PDF genérico"]
+
+    B --> B1["¿Tiene muchas\necuaciones complejas?"]
+    B1 -->|Sí + tipografía precisa| B2["✅ LaTeX en Overleaf"]
+    B1 -->|No / nivel básico| B3["✅ Quarto (más rápido)"]
+
+    C --> C1["¿El código Python/R\nes parte del resultado?"]
+    C1 -->|Sí — notebook reproducible| C2["✅ Quarto\no Jupyter Notebook"]
+    C1 -->|No — solo lo muestro| C3["LaTeX con listings\no Quarto con echo: false"]
+
+    D --> D1["✅ Quarto\nnativo para la web"]
+```
+
+### Casos concretos y su herramienta ideal
+
+**→ Guía de ejercicios de matemáticas:**
+LaTeX. Ecuaciones numeradas, referencias cruzadas, formato de examen. El estudiante imprime o lee el PDF.
+
+**→ Apuntes de un curso de programación:**
+Quarto. El código corre, los outputs se generan automáticamente, se publica como sitio web.
+
+**→ Paper para CLEI o IEEE Access:**
+LaTeX con plantilla IEEEtran. La revista lo requiere explícitamente.
+
+**→ Reporte de análisis de datos:**
+Quarto. El análisis es el código; el reporte es reproducible; el output puede ser PDF y HTML.
+
+**→ Tesis de pregrado (UTFSM):**
+LaTeX. Las memorias tienen requisitos de formato precisos que LaTeX maneja mejor.
+
+**→ Slides de una clase teórica (con muchas ecuaciones):**
+Beamer. Consistencia con el material escrito, ecuaciones perfectas.
+
+**→ Slides de una clase práctica (con demos de código):**
+Quarto RevealJS. El código se ejecuta en vivo durante la presentación.
+
+**→ Syllabus y material administrativo del curso:**
+Quarto o incluso Markdown puro. No hay ecuaciones, y la publicación en web es prioritaria.
+
+::: {.callout-tip}
+## La respuesta pragmática
+Para la mayoría de los docentes universitarios de ingeniería y matemáticas en 2025, la respuesta es: **usa ambas**.
+
+LaTeX para los documentos que deben verse perfectos en papel y que tienen muchas ecuaciones: guías, pruebas, apuntes de matemáticas, papers.
+
+Quarto para el material que vive en la web o que incluye código ejecutado: sitio del curso, notebooks, reportes de datos, slides interactivas.
+
+No son rivales — son complementarias. Y Quarto usa la sintaxis de LaTeX para ecuaciones, así que aprender LaTeX también mejora tu Quarto.
+:::
+
+### Resumen de la decisión en una línea por criterio
+
+```
+Ecuaciones perfectas y tipografía precisa      → LaTeX
+Código que genera outputs                      → Quarto
+Revista académica con plantilla                → LaTeX
+Sitio web del curso                            → Quarto
+Examen o guía para imprimir                   → LaTeX
+Notebook reproducible                          → Quarto
+Diagrama TikZ complejo                         → LaTeX
+Slide con demo de código en vivo               → Quarto RevealJS
+Colaboración con persona que no sabe LaTeX     → Quarto (o Google Docs)
+```
+
+---
+
+## Referencias
+
+- Lamport, L. (1994). *LaTeX: A Document Preparation System* (2ª ed.). Addison-Wesley.
+- Tantau, T. (2023). *The beamer class — User Guide*. [ctan.org/pkg/beamer](https://ctan.org/pkg/beamer)
+- Tantau, T. (2023). *TikZ and PGF Manual*. [ctan.org/pkg/pgf](https://ctan.org/pkg/pgf)
+- Overleaf. *Gallery — IEEE templates*. [overleaf.com/gallery/tagged/ieee](https://www.overleaf.com/gallery/tagged/ieee)
+- Overleaf. *Overleaf and GitHub integration*. [overleaf.com/learn/how-to/GitHub_Synchronization](https://www.overleaf.com/learn/how-to/GitHub_Synchronization)
+- Allaire, J.J. et al. (2022). *Quarto*. [quarto.org](https://quarto.org)
+- Heinze, G. et al. (2018). *How to use listings in LaTeX*. [CTAN listings documentation](https://ctan.org/pkg/listings)
+- Mathpix. *LaTeX from images and handwriting*. [mathpix.com](https://mathpix.com)
+- Tables Generator. *Online LaTeX table editor*. [tablesgenerator.com](https://www.tablesgenerator.com)

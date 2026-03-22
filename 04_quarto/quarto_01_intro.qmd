@@ -1,0 +1,1152 @@
+---
+title: "Qué es Quarto y por qué usarlo"
+subtitle: "El sistema de publicación científica para el docente moderno"
+---
+
+Quarto es el sistema que hace posible este libro que estás leyendo ahora mismo. Es también el sistema que genera el sitio del curso, las presentaciones de clase y los reportes de análisis — todo desde el mismo tipo de archivo, con el mismo flujo de trabajo.
+
+La promesa de Quarto es concreta: **un archivo `.qmd`, múltiples formatos de salida**. Escribes una vez y renderizas como HTML para el sitio del curso, como PDF para imprimir, como RevealJS para la presentación de clase, como Word para el informe institucional. Sin copiar y pegar, sin inconsistencias entre versiones.
+
+Este capítulo cubre la base conceptual y técnica para entender qué es Quarto, cómo se instala, y cómo funciona el ciclo de trabajo. Los capítulos siguientes entran en cada formato de salida en detalle.
+
+---
+
+## Quarto vs Jupyter Notebooks vs R Markdown
+
+### El problema que todos resuelven
+
+Los tres sistemas — Jupyter, R Markdown y Quarto — nacen de la misma necesidad: mezclar explicación narrativa con código ejecutable y sus resultados en un solo documento. Eso se llama **programación literaria** (*literate programming*), un concepto que Donald Knuth propuso en 1984 y que se volvió práctica cotidiana para científicos de datos y académicos.
+
+```{mermaid}
+graph TD
+    LP["📖 Programación literaria\n(Knuth, 1984)\nCódigo + narrativa en un documento"]
+    LP --> JN["🟠 Jupyter Notebook\n(2011)\nFoco: Python, ciencia de datos,\nexploratorio e interactivo"]
+    LP --> RM["🔵 R Markdown\n(2012)\nFoco: R, estadística,\nreportes reproducibles"]
+    LP --> QU["🔷 Quarto\n(2022)\nFoco: multi-lenguaje, multi-output,\npublicación académica completa"]
+
+    JN --> QU
+    RM --> QU
+```
+
+Quarto no reemplaza a Jupyter ni a R Markdown — los absorbe. Puede ejecutar código Python (como Jupyter), código R (como R Markdown), y además Julia y Observable. Los notebooks de Jupyter (`.ipynb`) son un formato de entrada válido para Quarto.
+
+### Comparativa técnica
+
+| Característica | Jupyter Notebook | R Markdown | Quarto |
+|---|---|---|---|
+| **Lenguajes** | Python (+ kernels) | R, Python, SQL | Python, R, Julia, Observable |
+| **Formatos de salida** | HTML, PDF, slides (limitado) | HTML, PDF, Word, Beamer | HTML, PDF, Word, RevealJS, Beamer, ePub, más |
+| **Sitios web completos** | Jupyter Book (separado) | Blogdown (separado) | Nativo — `project: website` |
+| **Libros** | Jupyter Book | Bookdown | Nativo — `project: book` |
+| **Presentaciones** | RISE (plugin) | Beamer, xaringan | RevealJS nativo |
+| **Editor** | Navegador / JupyterLab / VS Code | RStudio / VS Code | VS Code / RStudio / cualquier editor |
+| **Extensibilidad** | Limitada | Limitada | Extensiones Quarto (filtros Lua) |
+| **Control de versiones** | `.ipynb` es JSON difícil de diff | `.Rmd` es texto plano | `.qmd` es texto plano |
+| **Sin ejecutar código** | No funciona (necesita kernel) | Parcialmente | Sí — `execute: false` |
+| **Velocidad de render** | Lenta si hay mucho cómputo | Con `cache=TRUE` | Con `freeze: auto` |
+
+### Por qué Quarto para docencia universitaria
+
+**1. Un solo sistema para todo el material del curso.** Apuntes, guías, slides, sitio web, reportes — todo en Quarto. No necesitas aprender cuatro herramientas diferentes.
+
+**2. Separación de contenido y formato.** El `.qmd` es texto plano: ecuaciones LaTeX, Markdown, código Python/R. El formato (colores, fuentes, márgenes) va en archivos de configuración separados.
+
+**3. Compatible con Git de forma natural.** A diferencia de los `.ipynb` (que son JSON con outputs embebidos), los `.qmd` son texto plano puro. Los diffs en GitHub son legibles; los conflictos de merge son manejables.
+
+**4. Reproducibilidad rigurosa.** El documento es el análisis. El PDF que entregas al estudiante fue generado ejecutando el mismo código que aparece en el apunte. No puede haber inconsistencias.
+
+**5. Multi-lenguaje sin fricciones.** Si enseñas Python pero necesitas mostrar algo en R (o viceversa), es una sola línea de configuración — no un cambio de herramienta.
+
+::: {.callout-note}
+## Quarto y este libro
+Este libro de capacitación está escrito en Quarto. Cada capítulo es un archivo `.qmd`. El sitio web, el PDF descargable y la versión para impresión se generan desde los mismos archivos fuente. Si hay una corrección en el capítulo de GitHub, se actualiza en todos los formatos simultáneamente con un `quarto render`.
+:::
+
+---
+
+## Instalación y extensión Quarto en VS Code
+
+### Instalar Quarto
+
+Quarto es un binario independiente — no requiere instalar R ni Python para funcionar (aunque los necesitarás si tienes código en esos lenguajes).
+
+**macOS:**
+
+```bash
+# Con Homebrew
+brew install quarto
+
+# O descarga el instalador desde quarto.org/docs/download
+```
+
+**Windows:**
+
+1. Ve a [quarto.org/docs/download](https://quarto.org/docs/download)
+2. Descarga el instalador `.msi` para Windows
+3. Ejecuta el instalador (no requiere permisos de administrador)
+
+**Linux (Ubuntu/Debian):**
+
+```bash
+# Descargar el .deb más reciente
+wget https://github.com/quarto-dev/quarto-cli/releases/download/v1.5.57/quarto-1.5.57-linux-amd64.deb
+
+# Instalar
+sudo dpkg -i quarto-1.5.57-linux-amd64.deb
+
+# Verificar
+quarto --version
+```
+
+**Verificar la instalación:**
+
+```bash
+quarto --version
+# 1.5.57
+
+quarto check
+# Checking versions of quarto binary dependencies...
+# Checking versions of quarto R package dependencies...
+# Checking Jupyter engine...
+# ✓ Jupyter: 4.9.1
+# Checking Knitr engine...
+```
+
+`quarto check` verifica que los motores de ejecución (Jupyter para Python, Knitr para R) están disponibles y correctamente configurados.
+
+### Instalar el motor de Python (Jupyter)
+
+Quarto usa Jupyter para ejecutar código Python:
+
+```bash
+# Con pip
+pip install jupyter
+
+# Con conda/mamba
+conda install jupyter
+
+# Verificar
+jupyter --version
+```
+
+Si tienes un entorno virtual del proyecto:
+
+```bash
+# Crear entorno virtual
+python -m venv .venv
+source .venv/bin/activate   # Mac/Linux
+# .venv\Scripts\activate    # Windows
+
+# Instalar dependencias
+pip install jupyter pandas numpy matplotlib seaborn scikit-learn
+
+# Quarto detecta el entorno automáticamente si está activo
+quarto render archivo.qmd
+```
+
+### Instalar el motor de R (Knitr)
+
+```r
+# En R o RStudio
+install.packages("rmarkdown")   # instala knitr como dependencia
+install.packages("knitr")
+install.packages("tidyverse")   # para los ejemplos del curso
+```
+
+### Extensión Quarto para VS Code
+
+La extensión oficial de Quarto para VS Code proporciona:
+
+- Preview en tiempo real del documento renderizado
+- Syntax highlighting para `.qmd`
+- Autocompletado de opciones YAML
+- Ejecución de chunks de código directamente en el editor
+- Navegación por secciones del documento
+
+**Instalar:**
+
+1. Abre VS Code
+2. `Ctrl+Shift+X` → busca "Quarto"
+3. Instala la extensión de **quarto.quarto**
+
+O desde la terminal:
+
+```bash
+code --install-extension quarto.quarto
+```
+
+**Funcionalidades principales de la extensión:**
+
+```
+Editor de .qmd:
+├── Preview en vivo (Ctrl+Shift+K)
+│     Abre un panel lateral con el HTML renderizado
+│     Se actualiza al guardar (Ctrl+S)
+│
+├── Ejecución de chunks
+│     Click en ▶ al lado del chunk → ejecuta ese chunk
+│     Ctrl+Shift+Enter → ejecuta el chunk actual
+│     Ctrl+Alt+R → ejecuta todos los chunks
+│
+├── Autocompletado YAML
+│     Escribe "format:" y aparecen las opciones
+│     Escribe "fig-" y aparecen fig-width, fig-height, etc.
+│
+├── Outline (esquema del documento)
+│     Panel izquierdo muestra la jerarquía de secciones
+│     Clic navega directamente a la sección
+│
+└── Tabla de atajos de teclado
+      Ctrl+Shift+K   → Preview/render
+      Ctrl+Shift+Enter → Ejecutar chunk actual
+      Ctrl+Alt+I     → Insertar nuevo chunk
+```
+
+### Extensiones complementarias recomendadas
+
+```bash
+# Python (si usas Python en los notebooks)
+code --install-extension ms-python.python
+
+# Markdown completo
+code --install-extension yzhang.markdown-all-in-one
+
+# Git integrado
+code --install-extension eamodio.gitlens
+
+# Corrector ortográfico (inglés y español)
+code --install-extension streetsidesoftware.code-spell-checker
+code --install-extension streetsidesoftware.code-spell-checker-spanish
+
+# Iconos de archivos (reconoce .qmd, .yml, etc.)
+code --install-extension PKief.material-icon-theme
+```
+
+---
+
+## Estructura de un proyecto Quarto
+
+### Proyecto vs archivo suelto
+
+Puedes usar Quarto con un archivo `.qmd` suelto (para un documento individual) o con un **proyecto** (para un sitio web, un libro, o una colección organizada de documentos).
+
+```{mermaid}
+graph TD
+    QM["¿Cómo usas Quarto?"]
+    QM --> S["📄 Archivo suelto\nUn solo .qmd\nSin _quarto.yml\nRender directo"]
+    QM --> P["📁 Proyecto\nCarpeta con _quarto.yml\nMúltiples .qmd\nNavegación y configuración compartida"]
+
+    P --> PW["🌐 Sitio web\nSitio web del curso"]
+    P --> PB["📚 book\nLibro (este documento)"]
+    P --> PM["📊 manuscript\nPaper académico"]
+```
+
+La diferencia clave: un **proyecto** tiene un archivo `_quarto.yml` en la raíz que configura el comportamiento de todos los documentos.
+
+### Crear un proyecto nuevo
+
+```bash
+# Sitio web (para el curso)
+quarto create project website mi-curso
+
+# Libro (para apuntes completos)
+quarto create project book mis-apuntes
+
+# Blog (para portafolio docente)
+quarto create project blog mi-blog
+
+# Presentación única
+quarto create project default mi-presentacion
+```
+
+Cada comando crea una carpeta con la estructura mínima necesaria.
+
+### Estructura de un proyecto website (sitio del curso)
+
+```
+mat281-2025-1/                    ← raíz del proyecto
+│
+├── _quarto.yml                   ← configuración central del proyecto
+├── index.qmd                     ← página de inicio
+│
+├── lectures/                     ← material de clases
+│   ├── index.qmd                 ← lista de clases (página de listado)
+│   ├── semana01/
+│   │   ├── index.qmd             ← notebook de la semana
+│   │   └── slides.qmd            ← diapositivas RevealJS
+│   └── semana02/
+│       └── index.qmd
+│
+├── labs/                         ← guías de laboratorio
+│   ├── index.qmd
+│   └── lab01/
+│       ├── enunciado.qmd
+│       └── datos.csv
+│
+├── assignments/                  ← tareas
+│   ├── index.qmd
+│   └── tarea01.qmd
+│
+├── assets/                       ← recursos estáticos
+│   ├── img/                      ← imágenes del sitio
+│   ├── scss/
+│   │   ├── light.scss            ← tema claro personalizado
+│   │   └── dark.scss             ← tema oscuro personalizado
+│   └── bib/
+│       └── referencias.bib       ← bibliografía compartida
+│
+├── _freeze/                      ← resultados de ejecución cacheados
+│
+└── .github/
+    └── workflows/
+        └── deploy.yml            ← CI/CD para GitHub Pages
+```
+
+### Estructura de un proyecto book (este libro)
+
+```
+docencia-digital/                 ← raíz del proyecto
+│
+├── _quarto.yml                   ← configuración del libro
+├── index.qmd                     ← página de inicio / prefacio
+│
+├── 00_intro/
+│   └── index.qmd
+├── 01_github/
+│   ├── 01_esencial.qmd
+│   ├── 02_colaborativo.qmd
+│   └── 03_automatizacion.qmd
+├── 02_colab/
+│   ├── 01_esencial.qmd
+│   ├── 02_pandas.qmd
+│   └── 03_visualizacion.qmd
+│
+├── assets/
+│   ├── img/
+│   └── scss/
+│
+└── references.bib
+```
+
+### El archivo `_quarto.yml`
+
+Es el corazón del proyecto. Define el tipo, la navegación, el tema visual y las opciones globales de ejecución:
+
+```yaml
+# ── Proyecto ───────────────────────────────────────────────────
+project:
+  type: book                    # book | website | manuscript
+  output-dir: _book             # dónde se generan los archivos
+
+# ── Metadatos del libro ────────────────────────────────────────
+book:
+  title: "Docencia Digital"
+  subtitle: "Ecosistema digital para el académico del siglo XXI"
+  author: "Francisco Alfaro"
+  date: "06/01/2026"
+  favicon: "assets/img/brand/brand__usm.png"
+  repo-url: "https://github.com/fralfaro/docencia-digital"
+  repo-actions: [edit, issue]
+  downloads: [pdf]
+  sharing: [twitter, linkedin]
+
+  sidebar:
+    logo: "assets/img/brand/brand__usm.png"
+    search: true
+    collapse-level: 1
+
+  chapters:
+    - index.qmd
+    - part: "Sesión 1 · GitHub"
+      chapters:
+        - 01_github/01_esencial.qmd
+        - 01_github/02_colaborativo.qmd
+        - 01_github/03_automatizacion.qmd
+
+# ── Formato de salida ──────────────────────────────────────────
+format:
+  html:
+    theme:
+      light: [cosmo, assets/scss/light.scss]
+      dark:  [darkly, assets/scss/dark.scss]
+    toc: true
+    toc-depth: 3
+    code-fold: false
+    code-tools: true
+    code-copy: true
+    highlight-style: github
+    fig-align: center
+
+  pdf:
+    documentclass: scrbook
+    toc: true
+    number-sections: true
+    colorlinks: true
+
+# ── Ejecución global ───────────────────────────────────────────
+execute:
+  freeze: auto           # no re-ejecuta código que no cambió
+  echo: true             # muestra el código por defecto
+  warning: false         # oculta warnings
+  message: false         # oculta mensajes de carga de paquetes
+
+# ── Idioma ─────────────────────────────────────────────────────
+lang: es
+```
+
+---
+
+## Render básico: `quarto render archivo.qmd`
+
+### Los comandos fundamentales
+
+```bash
+# Renderizar un archivo suelto
+quarto render archivo.qmd
+
+# Renderizar en un formato específico
+quarto render archivo.qmd --to html
+quarto render archivo.qmd --to pdf
+quarto render archivo.qmd --to revealjs
+quarto render archivo.qmd --to docx
+
+# Renderizar todo el proyecto (desde la raíz)
+quarto render
+
+# Renderizar con preview en el navegador
+quarto preview archivo.qmd       # abre navegador, actualiza en vivo al guardar
+quarto preview                    # preview del proyecto completo
+
+# Publicar en GitHub Pages
+quarto publish gh-pages
+
+# Ver todos los formatos disponibles
+quarto render --help
+```
+
+### La diferencia entre `render` y `preview`
+
+```
+quarto render:
+  → Genera los archivos de salida (HTML, PDF, etc.)
+  → No abre el navegador
+  → Ideal para CI/CD (GitHub Actions)
+  → Ideal para generar el output final
+
+quarto preview:
+  → Genera los archivos Y abre el navegador
+  → Actualiza automáticamente cuando guardas el .qmd
+  → Ideal para escribir y ver el resultado en tiempo real
+  → Para proyectos grandes, solo renderiza el archivo actual
+```
+
+### El proceso de renderización
+
+Cuando ejecutas `quarto render`, ocurren estos pasos en orden:
+
+```{mermaid}
+graph LR
+    Q[".qmd\narchivo fuente"]
+    K["⚙️ Knitr\n(si hay código R)"]
+    J["⚙️ Jupyter\n(si hay código Python)"]
+    M[".md\nMarkdown puro\n(con outputs embebidos)"]
+    P["🐼 Pandoc\n(conversor universal)"]
+    H["🌐 HTML"]
+    PD["📄 PDF"]
+    W["📝 Word"]
+    R["📊 RevealJS"]
+
+    Q --> K
+    Q --> J
+    K --> M
+    J --> M
+    M --> P
+    P --> H
+    P --> PD
+    P --> W
+    P --> R
+```
+
+1. **Knitr o Jupyter** ejecuta los chunks de código y embebe los outputs en el documento.
+2. **Pandoc** convierte el Markdown resultante al formato de salida solicitado.
+
+Pandoc es el motor de conversión universal — convierte entre más de 40 formatos. Quarto lo usa internamente; no necesitas interactuar con él directamente.
+
+### El cache de ejecución: `freeze`
+
+Para proyectos con código que tarda en ejecutarse, `freeze: auto` en `_quarto.yml` cachea los resultados de ejecución en la carpeta `_freeze/`:
+
+```yaml
+execute:
+  freeze: auto    # solo re-ejecuta si el código del chunk cambió
+```
+
+```bash
+# Ver qué archivos están en el cache
+ls _freeze/
+
+# Forzar re-ejecución de todo (ignorar el cache)
+quarto render --no-cache
+
+# Limpiar el cache completamente
+quarto clean
+```
+
+::: {.callout-tip}
+## Hacer commit de `_freeze/`
+Si usas `freeze: auto` con GitHub Actions para el deploy, haz commit de la carpeta `_freeze/` al repositorio. Así el workflow no necesita re-ejecutar todo el código en cada deploy — solo renderiza el Markdown a HTML, lo que es mucho más rápido.
+
+Agrega a `.gitignore` solo la carpeta de output (`_site/` o `_book/`), no `_freeze/`.
+:::
+
+### Errores comunes y cómo resolverlos
+
+```bash
+# Error: "Python not found" o "Jupyter not found"
+# → Quarto no encuentra el intérprete de Python
+
+# Solución 1: especificar el Python en _quarto.yml
+jupyter: python3
+
+# Solución 2: especificar la ruta completa
+jupyter: /Users/tu-usuario/.venv/bin/python
+
+# Solución 3: activar el entorno virtual antes de render
+source .venv/bin/activate && quarto render
+```
+
+```bash
+# Error: "LaTeX not found" (al renderizar a PDF)
+# → Quarto necesita una instalación de LaTeX para PDF
+
+# Instalar TinyTeX (distribución LaTeX mínima para Quarto)
+quarto install tool tinytex
+
+# Verificar
+quarto check --tool tinytex
+```
+
+```bash
+# Error: chunk de código falla en ejecución
+# → Agregar eval: false al chunk problemático temporalmente
+```
+
+```python
+#| eval: false    # no ejecutar este chunk (pero sí mostrarlo)
+codigo_que_falla()
+```
+
+---
+
+## Formatos de salida: HTML, PDF, Word, RevealJS
+
+### Un `.qmd`, múltiples formatos
+
+La misma fuente puede producir formatos radicalmente distintos:
+
+```yaml
+# En el frontmatter del .qmd
+format:
+  html:
+    toc: true
+    code-fold: true
+  pdf:
+    documentclass: article
+    toc: true
+  docx:
+    reference-doc: plantilla.docx
+  revealjs:
+    theme: default
+    slide-number: true
+```
+
+```bash
+# Renderizar todos los formatos definidos
+quarto render archivo.qmd
+
+# Renderizar solo uno
+quarto render archivo.qmd --to pdf
+```
+
+### HTML: el formato principal para docencia web
+
+HTML es el formato más flexible y el más usado en docencia moderna — permite interactividad, búsqueda, navegación y funciona en cualquier dispositivo sin instalar nada.
+
+```yaml
+format:
+  html:
+    # ── Tabla de contenidos ────────────────────────────────
+    toc: true                   # sidebar con el índice
+    toc-depth: 3                # profundidad: h1, h2, h3
+    toc-title: "Contenidos"     # título del índice
+
+    # ── Código ────────────────────────────────────────────
+    code-fold: false            # true = código colapsado por defecto
+    code-tools: true            # botón para ver/ocultar todos los chunks
+    code-copy: true             # botón para copiar el código
+    highlight-style: github     # estilo de syntax highlighting
+
+    # ── Figuras ───────────────────────────────────────────
+    fig-align: center           # alineación por defecto
+    fig-width: 9                # ancho en pulgadas
+    fig-height: 5               # alto en pulgadas
+
+    # ── Tema visual ────────────────────────────────────────
+    theme:
+      light: cosmo              # tema para modo claro
+      dark: darkly              # tema para modo oscuro
+    # o tema personalizado:
+    # theme: [cosmo, custom.scss]
+
+    # ── Features adicionales ──────────────────────────────
+    number-sections: true       # numerar secciones automáticamente
+    link-external-icon: true    # ícono en links externos
+    link-external-newwindow: true  # links externos en pestaña nueva
+    smooth-scroll: true         # scroll suave al hacer clic en índice
+    search: true                # búsqueda en el sitio (solo en proyectos)
+    citations-hover: true       # preview de citas al hacer hover
+
+    # ── Callouts ──────────────────────────────────────────
+    callout-appearance: simple  # simple | minimal | default
+```
+
+**Temas HTML disponibles:**
+
+```
+Temas claros: default, cerulean, cosmo, flatly, journal, litera,
+              lumen, minty, pulse, sandstone, simplex, sketchy,
+              slate, solar, spacelab, superhero, united, yeti
+
+Temas oscuros: darkly, cyborg, vapor, quartz
+
+Combinación: theme: [cosmo, mi_estilo.scss]
+```
+
+### PDF: para documentos formales e imprimibles
+
+```yaml
+format:
+  pdf:
+    # ── Clase de documento LaTeX ───────────────────────────
+    documentclass: article       # article | report | book | scrartcl
+    classoption: [12pt, letterpaper, spanish]
+
+    # ── Geometría de página ────────────────────────────────
+    geometry:
+      - top=2.5cm
+      - bottom=2.5cm
+      - left=3cm
+      - right=2.5cm
+
+    # ── Tipografía ────────────────────────────────────────
+    mainfont: "Times New Roman"  # o "Latin Modern Roman" (LaTeX clásico)
+    fontsize: 12pt
+
+    # ── Contenido ─────────────────────────────────────────
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    number-depth: 3
+
+    # ── Color de links ────────────────────────────────────
+    colorlinks: true
+    linkcolor: NavyBlue
+    urlcolor: teal
+    citecolor: NavyBlue
+
+    # ── Paquetes LaTeX adicionales ─────────────────────────
+    include-in-header:
+      text: |
+        \usepackage{booktabs}
+        \usepackage{microtype}
+        \usepackage{parskip}
+```
+
+::: {.callout-warning}
+## PDF requiere LaTeX instalado
+Para renderizar a PDF, Quarto necesita una distribución LaTeX. La más sencilla de instalar es TinyTeX:
+
+```bash
+quarto install tool tinytex
+```
+
+Si ya tienes TeX Live o MiKTeX instalado, Quarto los detecta automáticamente.
+:::
+
+### Word (`.docx`): para colaboración institucional
+
+El formato Word es útil cuando necesitas entregar un documento a personas que usan Word, o cuando la institución requiere un formato editable.
+
+```yaml
+format:
+  docx:
+    # Plantilla de referencia (define estilos de Word)
+    reference-doc: plantilla_institucional.docx
+
+    # Tabla de contenidos
+    toc: true
+    toc-depth: 3
+
+    # Numeración
+    number-sections: false
+```
+
+**Crear una plantilla de referencia:**
+
+```bash
+# Generar un .docx plantilla que puedas personalizar
+quarto pandoc -o plantilla.docx --print-default-data-file reference.docx
+```
+
+Abre `plantilla.docx` en Word, modifica los estilos (Heading 1, Heading 2, Body Text, Code Block, etc.) y guarda. Quarto aplicará esos estilos al renderizar.
+
+### RevealJS: presentaciones interactivas
+
+RevealJS es el formato de presentación HTML de Quarto — slides en el navegador con transiciones, código interactivo, modo presentador y exportación a PDF.
+
+```yaml
+format:
+  revealjs:
+    # ── Tema visual ────────────────────────────────────────
+    theme: default       # default | dark | moon | sky | blood
+                         # | night | league | serif | simple | solarized
+                         # o archivo .scss personalizado
+
+    # ── Layout ────────────────────────────────────────────
+    slide-number: true   # número de slide (true | false | c/t | h/v | h.v)
+    logo: assets/img/brand/brand__usm.png
+    footer: "MAT281 — 2025-1"
+    width: 1280          # ancho en píxeles
+    height: 720          # alto (relación 16:9)
+
+    # ── Transiciones ──────────────────────────────────────
+    transition: slide    # none | fade | slide | convex | concave | zoom
+    transition-speed: default  # default | fast | slow
+
+    # ── Código ────────────────────────────────────────────
+    highlight-style: github
+    code-fold: false
+    code-line-numbers: true  # número de línea en código
+
+    # ── Multiplex / speaker view ───────────────────────────
+    chalkboard: true     # pizarrón virtual durante la presentación
+    pointer: true        # puntero láser virtual
+
+    # ── Modo presentador ──────────────────────────────────
+    # Presionar S durante la presentación abre el modo presentador
+    # con notas, vista previa y tiempo transcurrido
+```
+
+**Separadores de slides en RevealJS:**
+
+```markdown
+---
+format: revealjs
+---
+
+# Título de la presentación
+
+## Slide 1: Introducción
+
+Contenido de la primera slide.
+
+## Slide 2: Motivación
+
+Contenido de la segunda slide.
+
+---
+
+Slide sin título (separador `---` crea slide nueva).
+
+## Slide 3 con columnas
+
+::: {.columns}
+::: {.column width="50%"}
+Columna izquierda
+:::
+::: {.column width="50%"}
+Columna derecha
+:::
+:::
+```
+
+### Beamer: presentaciones PDF (LaTeX)
+
+```yaml
+format:
+  beamer:
+    theme: Madrid
+    colortheme: seahorse
+    fonttheme: structurebold
+    aspectratio: 169        # 16:9
+    slide-level: 2          # ## define los slides
+    toc: false
+    number-sections: false
+```
+
+### Comparativa de formatos para docencia
+
+| Caso de uso | Formato recomendado |
+|---|---|
+| Sitio web del curso | `html` (proyecto website) |
+| Apunte para leer en pantalla | `html` |
+| Guía de ejercicios para imprimir | `pdf` |
+| Examen | `pdf` |
+| Slides de clase (con código vivo) | `revealjs` |
+| Slides de clase (muchas ecuaciones) | `beamer` |
+| Informe para entregar a la dirección | `docx` |
+| Libro completo del curso | `html` + `pdf` (proyecto book) |
+| Paper académico | `pdf` (con plantilla de revista) |
+
+---
+
+## YAML frontmatter: título, autor, formato, opciones
+
+### Qué es el YAML frontmatter
+
+El **frontmatter** es el bloque de configuración al inicio de cada `.qmd`, delimitado por tres guiones (`---`). Define el título, autor, fecha, formato de salida y opciones de ejecución para ese documento específico.
+
+```yaml
+---
+title: "Aquí va el título del documento"
+---
+```
+
+Todo lo que está entre los dos `---` es YAML. El resto del archivo es Markdown + chunks de código.
+
+### Frontmatter mínimo
+
+```yaml
+---
+title: "Análisis Exploratorio de Datos"
+---
+```
+
+Quarto infiere el formato de salida del contexto del proyecto o usa HTML por defecto.
+
+### Frontmatter completo para un apunte del curso
+
+```yaml
+---
+# ── Metadata básica ────────────────────────────────────────────
+title: "Semana 3: Regresión Lineal Simple"
+subtitle: "MAT281 — Aplicaciones de la Matemática en Ingeniería"
+author:
+  - name: "Juan Pérez"
+    email: juan.perez@usm.cl
+    affiliation: "Universidad Técnica Federico Santa María"
+    orcid: "0000-0000-0000-0000"   # opcional
+date: "2025-04-15"
+date-modified: last-modified       # fecha de última modificación
+lang: es
+
+# ── Formato de salida ──────────────────────────────────────────
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    toc-title: "En esta página"
+    code-fold: false
+    code-tools: true
+    code-copy: true
+    number-sections: true
+    theme:
+      light: [cosmo, ../../assets/scss/light.scss]
+      dark:  [darkly, ../../assets/scss/dark.scss]
+    fig-align: center
+    fig-width: 9
+    fig-height: 5
+    highlight-style: github
+    link-external-newwindow: true
+
+# ── Ejecución de código ────────────────────────────────────────
+execute:
+  echo: true          # mostrar código
+  eval: true          # ejecutar código
+  warning: false      # ocultar warnings
+  message: false      # ocultar mensajes
+  freeze: auto        # cachear resultados
+
+# ── Bibliografía ───────────────────────────────────────────────
+bibliography: ../../assets/bib/referencias.bib
+csl: ../../assets/bib/apa.csl        # estilo de citas (APA, IEEE, etc.)
+---
+```
+
+### Frontmatter para diapositivas RevealJS
+
+```yaml
+---
+title: "Regresión Lineal Simple"
+subtitle: "MAT281 · Semana 5"
+author: "Prof. Juan Pérez"
+institute: "Departamento de Matemáticas · UTFSM"
+date: "Abril 2025"
+
+format:
+  revealjs:
+    theme: [default, ../../assets/scss/slides.scss]
+    logo: ../../assets/img/brand/brand__usm.png
+    footer: "MAT281 — 2025-1 | [Volver al curso](../../index.html)"
+    slide-number: "c/t"
+    chalkboard: true
+    pointer: true
+    transition: slide
+    code-line-numbers: true
+    highlight-style: github
+
+execute:
+  echo: true
+  warning: false
+---
+```
+
+### Opciones de ejecución por chunk
+
+Las opciones globales en `execute:` se pueden sobreescribir chunk por chunk usando `#|` al inicio del chunk:
+
+````python
+```python
+#| echo: false          # no mostrar este código
+#| eval: true           # pero sí ejecutarlo
+#| fig-cap: "Histograma de nota final"
+#| fig-width: 8
+#| fig-height: 5
+#| label: fig-histograma
+
+import pandas as pd
+import matplotlib.pyplot as plt
+
+df = pd.DataFrame({
+    "nota_final": [3.8, 4.1, 4.5, 4.7, 4.9, 5.1, 5.4, 5.6, 5.8, 6.0, 6.2]
+})
+
+plt.hist(df['nota_final'], bins=20)
+plt.show()
+```
+````
+
+Opciones de chunk más importantes:
+
+| Opción | Valores | Descripción |
+|---|---|---|
+| `echo` | `true` / `false` | Mostrar el código |
+| `eval` | `true` / `false` | Ejecutar el código |
+| `output` | `true` / `false` / `"asis"` | Mostrar el output |
+| `warning` | `true` / `false` | Mostrar warnings |
+| `error` | `true` / `false` | Detener en error o continuar |
+| `include` | `true` / `false` | Incluir chunk y output |
+| `cache` | `true` / `false` | Cachear este chunk |
+| `fig-cap` | `"texto"` | Caption de la figura |
+| `fig-width` | número | Ancho en pulgadas |
+| `fig-height` | número | Alto en pulgadas |
+| `label` | `"id"` | Etiqueta para cross-reference |
+
+### Campos YAML especiales
+
+```yaml
+# ── Abstract (resumen) ────────────────────────────────────────
+abstract: |
+  Este capítulo introduce la regresión lineal simple, cubriendo
+  la estimación de parámetros por mínimos cuadrados y la evaluación
+  del ajuste del modelo.
+
+# ── Palabras clave ────────────────────────────────────────────
+keywords: [regresión lineal, mínimos cuadrados, R-cuadrado]
+
+# ── Tabla de contenidos con float ────────────────────────────
+toc: true
+toc-location: left    # left | right | body
+toc-expand: 2         # expandir hasta el nivel 2 por defecto
+
+# ── Numeración de secciones ──────────────────────────────────
+number-sections: true
+number-depth: 3       # numerar hasta subsección
+
+# ── Referencias cruzadas ─────────────────────────────────────
+crossref:
+  fig-title: "Figura"
+  tbl-title: "Tabla"
+  eq-title: "Ecuación"
+  fig-prefix: "fig."
+  tbl-prefix: "tbl."
+  eq-prefix: "ec."
+
+# ── Licencia del documento ───────────────────────────────────
+license: "CC BY 4.0"
+
+# ── Citas y notas al pie ─────────────────────────────────────
+citation: true                    # metadatos para que otros citen este doc
+citation-location: margin         # margin | document | bottom
+reference-location: margin        # notas al margen (estilo Tufte)
+
+# ── Columnas (solo HTML) ─────────────────────────────────────
+page-layout: full                 # full | article | custom
+grid:
+  sidebar-width: 250px
+  body-width: 900px
+  margin-width: 300px
+```
+
+### El frontmatter del proyecto vs el frontmatter del documento
+
+Las opciones en `_quarto.yml` aplican a **todos** los documentos del proyecto. Las opciones en el frontmatter de un `.qmd` aplican **solo a ese documento** y **sobreescriben** las del proyecto.
+
+```yaml
+# _quarto.yml (proyecto) — opciones globales
+format:
+  html:
+    toc: true
+    code-fold: false
+    theme: cosmo
+
+execute:
+  warning: false
+  freeze: auto
+```
+
+```yaml
+# lectures/semana07/slides.qmd — sobreescribe para este documento
+format:
+  revealjs:             # cambia el formato completamente
+    theme: dark
+    slide-number: true
+
+execute:
+  echo: false           # oculta el código en las slides
+```
+
+---
+
+## Primer documento Quarto: ejemplo completo
+
+El siguiente `.qmd` integra todo lo cubierto en este capítulo: frontmatter completo, código Python ejecutado, figuras con caption, callouts, y referencia cruzada — listo para renderizar.
+
+````markdown
+---
+title: "Análisis Exploratorio: Dataset Palmer Penguins"
+subtitle: "MAT281 · Semana 2 · Estadística Descriptiva"
+author:
+  - name: "Juan Pérez"
+    email: "juan.perez@usm.cl"
+date: "2025-04-01"
+lang: es
+
+format:
+  html:
+    toc: true
+    code-fold: false
+    code-tools: true
+    code-copy: true
+    number-sections: true
+    theme: cosmo
+    fig-align: center
+
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+## Introducción
+
+En este notebook exploramos el dataset `palmerpenguins` [@horst2020],
+que contiene mediciones morfológicas de tres especies de pingüinos
+en la Antártica.
+
+## Cargar datos
+
+```python
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+df = sns.load_dataset('penguins').dropna()
+print(f"Dataset: {len(df)} filas × {len(df.columns)} columnas")
+df.head()
+```
+
+## Estadísticas descriptivas
+
+```python
+df.describe().round(2)
+```
+
+## Distribución por especie
+
+La @fig-conteo muestra la distribución de observaciones por especie.
+
+```python
+#| label: fig-conteo
+#| fig-cap: "Conteo de pingüinos por especie en el dataset."
+#| fig-width: 7
+#| fig-height: 4
+
+sns.countplot(data=df, x='species', palette='husl')
+plt.title('Distribución por especie')
+plt.xlabel('Especie')
+plt.ylabel('Conteo')
+plt.tight_layout()
+plt.show()
+```
+
+::: {.callout-note}
+## Sobre el dataset
+Este dataset fue recopilado por el Dr. Kristen Gorman en la Estación
+Palmer de la Antártica. Es una alternativa al clásico dataset Iris
+para introducir conceptos de estadística y visualización.
+:::
+
+## Relación entre variables morfológicas
+
+```python
+#| label: fig-scatter
+#| fig-cap: "Relación entre largo del pico y profundidad del pico por especie."
+
+sns.scatterplot(
+    data=df,
+    x='bill_length_mm',
+    y='bill_depth_mm',
+    hue='species',
+    palette='husl',
+    alpha=0.7
+)
+plt.xlabel('Largo del pico (mm)')
+plt.ylabel('Profundidad del pico (mm)')
+plt.tight_layout()
+plt.show()
+```
+
+Como se observa en la @fig-scatter, las tres especies forman clusters
+bien diferenciados en el espacio largo-del-pico vs profundidad-del-pico.
+
+## Referencias
+
+::: {#refs}
+:::
+````
+
+Renderizar desde la terminal:
+
+```bash
+# HTML
+quarto render semana02_penguins.qmd
+
+# PDF
+quarto render semana02_penguins.qmd --to pdf
+
+# Preview en vivo
+quarto preview semana02_penguins.qmd
+```
+
+---
+
+## Referencias
+
+- Allaire, J.J. et al. (2022). *Quarto*. [quarto.org](https://quarto.org)
+- Quarto Docs. *Get Started*. [quarto.org/docs/get-started](https://quarto.org/docs/get-started/)
+- Quarto Docs. *Guide*. [quarto.org/docs/guide](https://quarto.org/docs/guide/)
+- Xie, Y., Allaire, J.J., & Grolemund, G. (2019). *R Markdown: The Definitive Guide*. Chapman & Hall. [bookdown.org/yihui/rmarkdown](https://bookdown.org/yihui/rmarkdown/)
+- Wickham, H. & Grolemund, G. (2023). *R for Data Science* (2ª ed.). [r4ds.hadley.nz](https://r4ds.hadley.nz)
+- Pandoc. *Universal Document Converter*. [pandoc.org](https://pandoc.org)
+- MacFarlane, J. (2022). *Pandoc User's Guide*. [pandoc.org/MANUAL.html](https://pandoc.org/MANUAL.html)

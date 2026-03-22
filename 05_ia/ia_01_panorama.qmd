@@ -1,0 +1,538 @@
+---
+title: "Panorama de herramientas IA"
+subtitle: "ChatGPT, Gemini y Claude para el docente universitario"
+---
+
+En 2022, el lanzamiento de ChatGPT marcó un antes y un después. En menos de dos años, los modelos de lenguaje pasaron de ser objetos de investigación a herramientas de uso cotidiano para millones de personas — incluyendo docentes y estudiantes universitarios.
+
+Hoy el problema no es acceder a estas herramientas. Es saber cuál usar, para qué, con qué limitaciones, y qué nunca debería delegarse a ninguna de ellas. Este capítulo cubre exactamente eso.
+
+---
+
+## El ecosistema actual: tres grandes plataformas
+
+Los tres modelos de lenguaje dominantes en uso docente en 2025 son **ChatGPT** (OpenAI), **Claude** (Anthropic) y **Gemini** (Google). Son complementarios, no intercambiables — cada uno tiene fortalezas reales en casos de uso distintos.
+
+```{mermaid}
+graph TD
+    IA["🤖 Modelos de lenguaje\npara docencia 2025"]
+
+    IA --> CH["🟢 ChatGPT\nOpenAI\nGPT-4o / o1"]
+    IA --> CL["🟤 Claude\nAnthropic\nClaude 3.5 / 3.7"]
+    IA --> GE["🔵 Gemini\nGoogle\nGemini 2.0"]
+
+    CH --> CH1["✅ Más conocido\n✅ GPTs personalizados\n✅ DALL-E integrado\n✅ Enorme comunidad"]
+    CL --> CL1["✅ Documentos largos\n✅ Razonamiento preciso\n✅ Claude Projects\n✅ Menos alucinaciones"]
+    GE --> GE1["✅ Google Workspace\n✅ NotebookLM\n✅ Búsqueda en tiempo real\n✅ YouTube / Drive"]
+```
+
+---
+
+## ChatGPT, Gemini y Claude: comparativa práctica
+
+### ChatGPT (OpenAI)
+
+**Modelo base:** GPT-4o (texto, imagen, audio) y o1/o3 (razonamiento avanzado).
+
+**Fortalezas para docencia:**
+
+- **Comunidad y recursos:** es el modelo más usado en el mundo. Cualquier duda sobre cómo hacer algo con ChatGPT tiene respuesta en YouTube, Reddit o Twitter.
+- **GPTs personalizados:** puedes crear un asistente con instrucciones específicas y subirlo a la GPT Store. Caso de uso: un GPT tutor de tu curso que solo responde sobre los temas del syllabus.
+- **Code Interpreter (análisis de datos):** sube un CSV, pide gráficos, análisis estadístico, tablas — todo sin escribir una línea de código. Muy potente para demostraciones en clase.
+- **DALL-E 3 integrado:** generación de imágenes directamente desde el chat.
+- **Memoria entre conversaciones:** ChatGPT recuerda información de sesiones anteriores (configurable).
+
+**Limitaciones:**
+
+- Versión gratuita tiene límites de uso frecuentes — los estudiantes los encuentran rápidamente.
+- El modelo o1 (razonamiento) es lento: puede tardar 30-60 segundos por respuesta.
+- Contexto de 128K tokens — menor que Claude (200K) para documentos muy largos.
+
+**Planes:**
+
+| Plan | Precio | Modelos disponibles | Para docentes |
+|------|--------|---------------------|---------------|
+| Free | Gratis | GPT-4o mini (limitado) | Exploración inicial |
+| Plus | USD 20/mes | GPT-4o, o1, o3-mini | Uso regular |
+| Team | USD 25/usr/mes | Todos + admin | Equipos docentes |
+| Education | Contactar | Todos + privacidad reforzada | Institucional |
+
+---
+
+### Claude (Anthropic)
+
+**Modelo base:** Claude Sonnet 4.6 (uso general) y Claude Opus 4.6 (razonamiento complejo).
+
+**Fortalezas para docencia:**
+
+- **Ventana de contexto de 200K tokens:** puedes subir un libro completo, el historial de un semestre de notas, múltiples papers — todo en una sola conversación. Equivale a aproximadamente 500 páginas de texto.
+- **Razonamiento estructurado:** produce respuestas con jerarquía lógica clara. Especialmente útil para material académico donde la estructura importa.
+- **Claude Projects:** espacio de trabajo persistente donde subes los documentos del curso (syllabus, rúbricas, apuntes) y el asistente los tiene como contexto en todas las conversaciones del proyecto.
+- **Menor tasa de alucinaciones** en benchmarks independientes (aunque no es cero — ningún modelo lo es).
+- **Artifacts:** genera contenido interactivo directamente en la interfaz — código ejecutable, HTML, visualizaciones, formularios.
+- **Buena redacción en español:** produce texto académico en castellano de alta calidad.
+
+**Limitaciones:**
+
+- Sin generación de imágenes nativa (puede analizar imágenes, no crearlas).
+- Sin acceso a internet por defecto (sin búsqueda en tiempo real).
+- La versión gratuita tiene límites de mensajes diarios.
+
+**Planes:**
+
+| Plan | Precio | Contexto | Para docentes |
+|------|--------|----------|---------------|
+| Free | Gratis | 200K (limitado en mensajes) | Exploración |
+| Pro | USD 20/mes | 200K ilimitado + Projects | Uso regular intensivo |
+| Team | USD 25/usr/mes | 200K + admin | Equipos |
+
+---
+
+### Gemini (Google)
+
+**Modelo base:** Gemini 2.0 Flash / Pro, con integración nativa en Google Workspace.
+
+**Fortalezas para docencia:**
+
+- **Integración con Google Workspace:** Gemini vive dentro de Docs, Sheets, Slides, Gmail, Meet y Classroom. Si tu institución usa Google Workspace for Education, el acceso puede ser inmediato.
+- **Búsqueda en tiempo real:** a diferencia de ChatGPT y Claude (con fecha de corte de entrenamiento), Gemini puede buscar en internet — útil para verificar datos actualizados.
+- **NotebookLM:** herramienta de Google específicamente para análisis documental. Sube papers, apuntes, videos de YouTube, y genera resúmenes, preguntas frecuentes y podcasts automáticos basados *exclusivamente* en tu material. Sin alucinaciones sobre contenido externo.
+- **Contexto de 1 millón de tokens** (Gemini 1.5 Pro): el más largo del mercado — permite subir horas de video o libros completos.
+- **Gemini en Google Classroom:** genera retroalimentación automática para entregas estudiantiles.
+
+**Limitaciones:**
+
+- La integración con Workspace requiere licencia Google Workspace for Education Plus.
+- La calidad de respuestas en español es buena pero no siempre al nivel de Claude o ChatGPT-4o.
+- NotebookLM tiene límite de 50 fuentes por notebook.
+
+**Planes:**
+
+| Plan | Precio | Acceso |
+|------|--------|--------|
+| Gemini Free | Gratis | Gemini 1.5 Flash |
+| Google One AI Premium | USD 19.99/mes | Gemini Advanced + Workspace |
+| Workspace for Education Plus | Institucional | Gemini en todas las apps |
+
+---
+
+### Comparativa directa para casos de uso docentes
+
+| Tarea docente | Mejor opción | Por qué |
+|---|---|---|
+| Generar preguntas de examen | Claude o ChatGPT | Ambos producen preguntas bien calibradas |
+| Analizar un CSV con gráficos | ChatGPT (Code Interpreter) | La interfaz es la más amigable para no programadores |
+| Revisar un paper largo (50+ pág) | Claude | 200K tokens, menos alucinaciones en documentos largos |
+| Retroalimentación de código Python | Claude o ChatGPT | Calidad similar; preferir Claude para código complejo |
+| Crear resumen de múltiples papers | NotebookLM | Solo usa TU material, sin mezclar con conocimiento general |
+| Redactar syllabus | Claude | Razonamiento estructurado, español académico de calidad |
+| Generar imagen explicativa | ChatGPT (DALL-E 3) | El único de los tres con generación de imágenes |
+| Buscar información reciente (2025) | Gemini | Acceso a internet en tiempo real |
+| Armar asistente del ramo | Claude Projects o GPT personalizado | Contexto persistente con documentos del curso |
+| Usar en Google Docs | Gemini | Integración nativa, no requiere copiar/pegar |
+
+---
+
+## Casos de uso directos en docencia
+
+### 1. Planificación curricular
+
+```
+Prompt (Claude):
+Tengo que diseñar una unidad de 3 semanas sobre regresión lineal
+para estudiantes de ingeniería de tercer año que ya conocen cálculo
+y álgebra lineal. Cada semana tiene 3h de teoría + 2h de laboratorio.
+
+Dame una secuencia de contenidos semana a semana, con:
+- Objetivos de aprendizaje alineados con Bloom (niveles 3-4)
+- Actividad de laboratorio concreta para cada semana
+- Una pregunta de evaluación formativa para cerrar cada semana
+```
+
+### 2. Generación de material explicativo
+
+```
+Prompt (cualquier modelo):
+Explica el concepto de p-valor para un estudiante de ingeniería
+que entiende probabilidad básica pero nunca ha tomado estadística
+inferencial. Usa una analogía con algo cotidiano. Extensión: 150 palabras.
+```
+
+### 3. Banco de preguntas
+
+```
+Prompt (Claude o ChatGPT):
+Crea 10 preguntas de opción múltiple sobre regresión lineal simple.
+Cada pregunta debe:
+- Tener 4 alternativas (A, B, C, D)
+- Solo una correcta
+- Incluir la respuesta correcta con justificación de 2-3 líneas
+- Cubrir distintos niveles de Bloom: 3 preguntas de aplicación,
+  4 de análisis, 3 de evaluación
+Nivel: tercer año de ingeniería.
+```
+
+### 4. Retroalimentación de código
+
+```
+Prompt (Claude):
+Aquí está el código de un estudiante para el Lab 3.
+La tarea era ajustar un modelo de regresión lineal y calcular el R².
+
+[pegar código del estudiante]
+
+La rúbrica evalúa:
+1. Correctitud del modelo (0-4 pts)
+2. Cálculo correcto del R² (0-3 pts)
+3. Interpretación de resultados (0-3 pts)
+
+Genera retroalimentación constructiva que:
+- Identifique qué hizo bien el estudiante
+- Señale los errores sin dar la solución directa
+- Sugiera cómo mejorar
+- Proponga una nota justificada
+Tono: directo pero respetuoso.
+```
+
+### 5. Preparación de clases con material propio (NotebookLM)
+
+1. Subir el apunte de la semana, el paper base y el enunciado del lab.
+2. Pedir: "Genera 5 preguntas de discusión para la clase basadas en este material."
+3. Pedir: "¿Qué conceptos del apunte son más difíciles para estudiantes de tercer año? ¿Cómo los explicarías con una analogía?"
+4. Pedir: "Genera una guía de estudio de 2 páginas para los estudiantes."
+
+---
+
+## Limitaciones: alucinaciones, sesgos, desactualización
+
+### Alucinaciones
+
+Un modelo de lenguaje genera texto prediciendo la siguiente palabra más probable — no "sabe" si lo que dice es verdad. Cuando no tiene información, inventa una respuesta que *suena* plausible.
+
+```{mermaid}
+graph LR
+    P["Prompt: ¿Cuál es el paper\nmás citado sobre\nregresión logística?"]
+    M["🤖 Modelo de lenguaje"]
+    R1["✅ Respuesta real:\nMcFadden (1974),\nHosmer & Lemeshow (2000)"]
+    R2["❌ Alucinación:\n'García & López (2019)\nJournal of Applied Statistics'\n(paper que no existe)"]
+
+    P --> M
+    M --> R1
+    M --> R2
+```
+
+**En qué situaciones alucinan más:**
+
+- **Citas bibliográficas:** el riesgo más alto. Los modelos inventan autores, años, títulos y revistas con total confianza.
+- **Estadísticas específicas:** porcentajes, tasas, datos numéricos sin fuente.
+- **Eventos recientes:** nada posterior a su fecha de corte de entrenamiento.
+- **Información técnica muy especializada:** detalles de nicho que no estaban bien representados en el corpus.
+- **Información local o regional:** datos de Chile, UTFSM, o cualquier contexto específico poco representado en internet en inglés.
+
+**Cómo detectarlas:**
+
+```
+Señales de alarma:
+✗ Cita con formato perfecto de un autor que no reconoces
+✗ Estadística muy precisa ("el 73.4% de los docentes...")
+✗ Afirmación sobre eventos de los últimos 6-12 meses
+✗ Información muy específica sobre tu institución
+
+Protocolo de verificación:
+1. Para citas: buscar el paper en Google Scholar o Semantic Scholar
+2. Para estadísticas: pedir la fuente y verificarla directamente
+3. Para eventos recientes: usar Gemini (con internet) o buscar manualmente
+```
+
+::: {.callout-warning}
+## Regla de oro: nunca publiques citas sin verificar
+Un apunte con una referencia bibliográfica inventada por IA daña tu credibilidad académica y puede inducir a error a los estudiantes. Usa la IA para generar el *formato* de la cita, pero verifica la existencia del paper antes de publicar.
+:::
+
+### Sesgos
+
+Los modelos fueron entrenados principalmente con texto en inglés de internet. Esto genera sesgos sistemáticos:
+
+| Tipo de sesgo | Manifestación | Impacto en docencia |
+|---|---|---|
+| **Anglocentrismo** | Perspectivas, ejemplos y contextos predominantemente estadounidenses o europeos | Ejemplos que no resuenan con estudiantes chilenos |
+| **Sesgo de género** | Uso por defecto de pronombres masculinos en roles de autoridad | Material que refuerza estereotipos |
+| **Sesgo de clase** | Supone acceso a recursos que no todos tienen | Actividades que asumen computadores propios, internet rápida |
+| **Sesgo temporal** | Sobrerrepresenta el período 2000-2022 | Invisibiliza desarrollo reciente latinoamericano |
+| **Sesgo idiomático** | El español latinoamericano tiene menos representación que el inglés | Calidad algo menor en respuestas en español |
+
+**Cómo mitigarlos:**
+
+```
+En el prompt:
+- "Usa ejemplos del contexto chileno / latinoamericano"
+- "Asume que los estudiantes tienen acceso limitado a recursos premium"
+- "Usa lenguaje inclusivo en género"
+- "Responde en español formal, evitando anglicismos innecesarios"
+```
+
+### Desactualización
+
+| Modelo | Fecha de corte aproximada |
+|--------|--------------------------|
+| GPT-4o | Enero 2024 |
+| Claude 3.5 / 3.7 | Principios 2025 |
+| Gemini 2.0 | Acceso en tiempo real |
+
+Para información técnica que evoluciona rápido (versiones de librerías, nuevas APIs, papers recientes, estadísticas 2024-2025), los modelos sin acceso a internet son poco confiables.
+
+```
+Casos donde la desactualización importa:
+✗ "¿Cuál es la última versión de scikit-learn?"  → verificar en pypi.org
+✗ "¿Cuáles son las estadísticas de deserción universitaria en Chile 2024?"
+✗ "¿Qué papers recientes hay sobre LLMs en educación?"
+
+Casos donde NO importa:
+✓ "Explica qué es el gradiente descendente"  → concepto estable
+✓ "Genera preguntas sobre la ley de grandes números"
+✓ "Reescribe este párrafo con mayor claridad"
+```
+
+---
+
+## Qué tareas no delegar a la IA
+
+### La lista de lo que permanece en manos del docente
+
+La IA es una herramienta de amplificación, no de reemplazo. Estas tareas requieren tu juicio, tu contexto y tu responsabilidad:
+
+::: {.callout-important}
+## Nunca delegues completamente estas decisiones
+
+**1. La nota final de un estudiante**
+La IA puede generar retroalimentación y sugerir una nota, pero la decisión de calificar es tuya. Eres responsable legal y pedagógicamente de esa calificación. Usarla como primer borrador para revisar: bien. Usarla como decisión final sin leer el trabajo: no.
+
+**2. Detectar plagio o uso no declarado de IA**
+Los detectores de IA (GPTZero, Turnitin IA) tienen tasas de falso positivo del 10-20%. Acusar a un estudiante de trampa basándote solo en un detector es una práctica que puede ser discriminatoria e injusta. El juicio pedagógico directo — hablar con el estudiante sobre su trabajo — es irreemplazable.
+
+**3. Diseñar la experiencia de aprendizaje completa**
+La IA puede generar actividades, ejercicios y materiales. Pero decidir qué vale la pena aprender, en qué secuencia, con qué profundidad, adaptado a tus estudiantes específicos — eso requiere tu conocimiento del contexto que ningún modelo tiene.
+
+**4. Datos personales de estudiantes**
+Nunca subas nombres, RUTs, correos, notas individuales ni cualquier dato personal a ninguna plataforma de IA externa. Además de ser una violación de privacidad potencialmente ilegal, viola la confianza del estudiante.
+
+**5. Contenido que defines como autoritativo**
+Si publicas algo bajo tu nombre en un documento oficial del curso, tú eres el responsable de su exactitud. La IA puede ser un borrador; la versión final es tuya.
+:::
+
+### El criterio de delegación
+
+```{mermaid}
+graph TD
+    T["¿Delego esta tarea a la IA?"]
+
+    T --> Q1["¿Requiere conocer\na este estudiante específico?"]
+    Q1 -->|Sí| NO1["❌ No delegar\nSolo tú tienes ese contexto"]
+    Q1 -->|No| Q2["¿El error tendría\nconsecuencias graves?"]
+
+    Q2 -->|Sí| Q3["¿Puedo verificar\nel output antes de usarlo?"]
+    Q2 -->|No| SI1["✅ Delegar con revisión ligera"]
+
+    Q3 -->|Sí| SI2["✅ Delegar con verificación"]
+    Q3 -->|No| NO2["❌ No delegar o hacerlo\ncon extrema cautela"]
+```
+
+---
+
+## Multimodalidad: imagen, voz, PDF, código
+
+Los modelos actuales no solo procesan texto — trabajan con múltiples tipos de entrada y salida. Para docencia, esto cambia lo que es posible:
+
+### Procesamiento de imágenes
+
+**ChatGPT (GPT-4o) y Claude:** pueden analizar imágenes subidas por el usuario.
+
+Casos de uso docentes:
+
+```
+📸 Foto de la pizarra después de clase:
+"Transcribe estas ecuaciones a LaTeX"
+
+📊 Gráfico de un paper:
+"Describe qué muestra este gráfico y qué conclusiones puedo extraer"
+
+📷 Foto de código escrito a mano:
+"Transcribe este pseudocódigo y conviértelo a Python"
+
+📐 Diagrama de flujo en papel:
+"Convierte este diagrama a código Mermaid"
+
+📝 Examen escaneado:
+"Identifica los errores conceptuales en esta respuesta estudiantil"
+```
+
+**ChatGPT (DALL-E 3):** genera imágenes desde texto.
+
+```
+Casos de uso:
+- "Genera un diagrama conceptual de una red neuronal simple"
+- "Crea una ilustración para explicar el teorema de Bayes"
+- "Diseña un ícono simple para representar machine learning"
+```
+
+### Procesamiento de audio y voz
+
+**ChatGPT (modo voz / Whisper):** transcripción y conversación por voz.
+
+```
+Casos de uso:
+- Transcribir una clase grabada en audio a texto
+- Buscar en la transcripción conceptos específicos
+- Generar resumen automático de la clase
+```
+
+**ElevenLabs (externo):** clona tu voz para narrar apuntes automáticamente.
+
+**NotebookLM Audio Overview:** convierte cualquier documento en un podcast sintético de 15-20 minutos donde dos voces discuten el contenido.
+
+### Procesamiento de PDFs
+
+**Claude (con 200K contexto):**
+
+```
+Sube 3 papers de 20 páginas cada uno + el apunte de la semana.
+
+Prompt: "Compara cómo estos tres papers abordan el problema de
+heterocedasticidad en regresión lineal. Resalta las diferencias
+metodológicas y qué perspectiva es más relevante para un curso
+de ingeniería de tercer año."
+```
+
+**NotebookLM:**
+
+```
+Sube el libro de texto del curso (PDF, 400 páginas).
+Pide: "Genera una guía de estudio para los capítulos 5-8"
+Pide: "¿Qué preguntas frecuentes tienen los estudiantes sobre
+estos capítulos según el material?"
+```
+
+### Ejecución de código
+
+**ChatGPT (Code Interpreter / Advanced Data Analysis):**
+
+```
+Sube un CSV de notas del semestre.
+Prompt: "Calcula la distribución de notas por carrera, genera
+un boxplot, e identifica estudiantes en riesgo (nota < 4.0 en
+más de 2 evaluaciones)"
+
+ChatGPT:
+1. Lee el CSV
+2. Ejecuta el análisis en Python interno
+3. Muestra los gráficos
+4. Presenta el análisis en lenguaje natural
+```
+
+Esto ocurre sin que el docente escriba una línea de código.
+
+---
+
+## Planes gratuitos y acceso institucional
+
+### Lo que puedes hacer gratis hoy
+
+| Plataforma | Plan gratuito | Límites principales |
+|---|---|---|
+| **ChatGPT** | GPT-4o mini, GPT-4o (limitado) | Número de mensajes/día con GPT-4o |
+| **Claude** | Claude Sonnet (limitado) | Número de mensajes/día |
+| **Gemini** | Gemini 1.5 Flash | Sin límite estricto pero con throttling |
+| **NotebookLM** | Acceso completo | 50 fuentes / notebook |
+| **Perplexity** | Búsqueda con IA | Límite de Pro searches/día |
+| **Microsoft Copilot** | Acceso básico | Sin límite estricto |
+
+Para uso docente ocasional, los planes gratuitos son suficientes para explorar y hacer pruebas. Para uso regular e intensivo (generar material cada semana, retroalimentar tareas, armar proyectos), los planes de pago amortizan en pocas horas de trabajo ahorradas.
+
+### Acceso institucional
+
+**GitHub Education (recomendado):**
+
+Con la cuenta institucional `@usm.cl` verificada en [education.github.com](https://education.github.com/teachers):
+- GitHub Copilot Pro gratis (asistente de código en VS Code)
+- GitHub Copilot para estudiantes también gratuito
+
+**Google Workspace for Education:**
+
+Si la UTFSM tiene licencia Workspace for Education Plus:
+- Gemini para Workspace incluido en todas las apps de Google
+- NotebookLM sin restricciones adicionales
+
+**Microsoft 365 Education:**
+
+Si la UTFSM tiene acuerdo con Microsoft:
+- Copilot en Word, PowerPoint, Excel, Teams
+- Acceso a modelos de Azure OpenAI en algunos planes
+
+**Cómo verificar:**
+
+```bash
+# Preguntar en TI / DTD de UTFSM:
+# "¿Tenemos acceso institucional a Gemini for Workspace?"
+# "¿Hay licencias de Microsoft Copilot disponibles para docentes?"
+# "¿Podemos activar GitHub Education Organization para el departamento?"
+```
+
+### Calculadora de costo-beneficio
+
+Antes de pagar un plan premium, estima si vale la pena:
+
+```
+Claude Pro — USD 20/mes
+¿Cuánto tiempo me ahorra mensualmente?
+
+Ejemplo:
+- Generar banco de preguntas para 2 evaluaciones: 3h → 30 min = 2.5h ahorradas
+- Retroalimentación inicial de 30 tareas: 5h → 1h = 4h ahorradas
+- Preparar material de 4 semanas: 8h → 3h = 5h ahorradas
+Total: ~11.5 horas/mes ahorradas
+
+Si tu hora vale USD 15+, el plan se paga solo.
+```
+
+::: {.callout-tip}
+## Estrategia para equipos docentes pequeños
+En lugar de que cada docente pague su plan individual, un equipo de 3-4 docentes puede compartir una cuenta Claude Team o ChatGPT Team (a USD 25/usuario/mes con facturación anual), con mayor seguridad de datos y panel de administración.
+
+Alternativamente, uno solo paga el plan individual y comparte sus templates de prompts con el resto del equipo — el conocimiento de cómo usar bien la herramienta vale tanto como el acceso premium.
+:::
+
+---
+
+## Protocolo de elección de herramienta
+
+Antes de abrir cualquier chatbot, responde estas tres preguntas:
+
+```
+1. ¿Qué tipo de input tengo?
+   → Texto simple: cualquier modelo
+   → PDF largo (>30 páginas): Claude o NotebookLM
+   → CSV con datos: ChatGPT Code Interpreter
+   → Imagen/foto: ChatGPT o Claude
+   → Múltiples fuentes combinadas: NotebookLM
+
+2. ¿Necesito información actualizada?
+   → Sí (datos 2024-2025, versiones recientes): Gemini o Perplexity
+   → No (conceptos estables, generación de material): cualquier modelo
+
+3. ¿Qué haré con el output?
+   → Publicar directamente: verificar exhaustivamente antes
+   → Como borrador para revisar: cualquier modelo
+   → Como inspiración para mis propias ideas: cualquier modelo
+```
+
+---
+
+## Referencias
+
+- OpenAI. *ChatGPT for Education*. [openai.com/chatgpt/education](https://openai.com/chatgpt/education)
+- Anthropic. *Claude for education*. [anthropic.com](https://www.anthropic.com)
+- Google. *Gemini for Google Workspace*. [workspace.google.com/intl/es/products/gemini](https://workspace.google.com/intl/es/products/gemini/)
+- Google. *NotebookLM*. [notebooklm.google.com](https://notebooklm.google.com)
+- Mollick, E. & Mollick, L. (2023). *Assigning AI: Seven Approaches for Students*. SSRN. [ssrn.com/abstract=4475995](https://ssrn.com/abstract=4475995)
+- Kasneci, E. et al. (2023). *ChatGPT for Good? On Opportunities and Challenges of Large Language Models for Education*. Learning and Individual Differences, 103. [doi.org/10.1016/j.lindif.2023.102274](https://doi.org/10.1016/j.lindif.2023.102274)
+- Baidoo-Anu, D. & Owusu Ansah, L. (2023). *Education in the Era of Generative Artificial Intelligence (AI)*. SSRN. [ssrn.com/abstract=4337484](https://ssrn.com/abstract=4337484)

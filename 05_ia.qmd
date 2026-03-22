@@ -1,0 +1,979 @@
+---
+title: "📓 Inteligencia Artificial"
+subtitle: "Herramientas, ética y práctica para el docente universitario del siglo XXI"
+---
+
+La inteligencia artificial llegó al aula antes de que la mayoría de las instituciones tuviera una política al respecto. Este capítulo no es una introducción superficial ni un catálogo de herramientas — es una guía de uso real, con criterio técnico y pedagógico, para un docente que ya maneja Python y GitHub y quiere estructurar su relación con la IA de forma consciente y sostenible.
+
+---
+
+## ¿Por qué IA en la docencia universitaria?
+
+### El cambio de paradigma
+
+Durante 2023, la respuesta institucional más común frente a la IA generativa fue la prohibición. "No se permite el uso de ChatGPT en este curso." Dos años después, esa postura es indefendible — no porque la IA sea inofensiva, sino porque ignorarla no la hace desaparecer.
+
+El paradigma que reemplaza a la prohibición no es la permisividad ciega. Es la **integración con criterio**: enseñar *con* IA y enseñar *sobre* IA al mismo tiempo. Un estudiante de ingeniería que se gradúa en 2027 trabajará en entornos donde la IA es una herramienta cotidiana. Privarle de experiencia guiada con esas herramientas durante su formación universitaria es un desservicio.
+
+### Habilidades del siglo XXI que refuerza el uso consciente de IA
+
+Usado bien, trabajar con IA desarrolla capacidades que ningún libro de texto entrena directamente:
+
+- **Pensamiento crítico sobre fuentes** — aprender a verificar lo que la IA produce.
+- **Formulación precisa de problemas** — un prompt mal escrito da un resultado malo. Escribir un buen prompt requiere claridad conceptual.
+- **Metacognición** — el estudiante que usa IA como andamio y luego evalúa el resultado aprende más sobre su propio proceso de pensamiento.
+- **Alfabetización digital avanzada** — entender qué puede y qué no puede hacer un modelo de lenguaje es hoy una competencia profesional básica.
+
+### Riesgos de ignorarla vs. adoptarla sin criterio
+
+| Ignorar la IA | Adoptar sin criterio |
+|---|---|
+| Estudiantes la usan de todas formas, sin guía | Delegación de pensamiento en la herramienta |
+| Evaluaciones que miden lo que la IA hace bien | Pérdida de habilidades de escritura y síntesis |
+| Docentes desfasados del entorno laboral real | Dependencia de servicios externos con datos sensibles |
+| Oportunidad perdida de enseñar uso ético | Reproducción acrítica de sesgos del modelo |
+
+### El rol del docente como diseñador de experiencias
+
+El docente que incorpora IA no delega su rol — lo redefine. Pasa de ser el transmisor de información (tarea que la IA puede hacer razonablemente bien) a ser el **diseñador de las condiciones en que el aprendizaje ocurre**: qué preguntas vale la pena hacerse, qué hace que un argumento sea válido, cómo se evalúa la calidad de una solución.
+
+Eso no lo puede hacer una IA. Todavía no.
+
+---
+
+## Fundamentos conceptuales
+
+### Qué es un LLM y cómo "piensa"
+
+Un Large Language Model (LLM) no entiende el mundo — **predice texto**. Dado un contexto (todo lo que ha leído antes en la conversación), el modelo calcula cuál es la siguiente palabra más probable, y repite ese proceso miles de veces para producir una respuesta.
+
+Una metáfora útil para docentes: imagina un estudiante extraordinariamente bien leído que ha consumido una fracción enorme de internet, millones de libros y papers. Puede sintetizar, parafrasear, imitar estilos y conectar ideas de formas sorprendentes. Pero no tiene experiencias propias, no puede verificar hechos nuevos, y si no sabe algo, tiende a inventar una respuesta que *suena* razonable.
+
+Eso explica tanto sus fortalezas como sus fallas.
+
+### Tipos de IA: generativa, predictiva y simbólica
+
+| Tipo | Qué hace | Ejemplo |
+|---|---|---|
+| **IA Generativa** | Produce contenido nuevo (texto, imagen, código, audio) | ChatGPT, DALL-E, Claude |
+| **IA Predictiva** | Clasifica, detecta patrones, hace predicciones sobre datos | Modelos de deserción estudiantil, recomendadores |
+| **IA Simbólica** | Razona con reglas explícitas definidas por humanos | Sistemas expertos, motores de chess clásicos |
+
+En este capítulo nos enfocamos en IA generativa, que es la que más impacta el aula hoy.
+
+### Prompt, contexto, temperatura y alucinaciones
+
+**Prompt:** la instrucción que le das al modelo. La calidad del prompt determina en gran medida la calidad del output.
+
+**Contexto (context window):** todo lo que el modelo puede "ver" en una conversación. Los modelos modernos tienen ventanas de contexto grandes (Claude 3.5: 200K tokens ≈ 150K palabras), lo que permite subir documentos completos.
+
+**Temperatura:** parámetro que controla la aleatoriedad del output. Temperatura baja (0.1-0.3) = respuestas más deterministas y conservadoras. Temperatura alta (0.8-1.0) = más creatividad, más variación. La mayoría de interfaces fijan esto automáticamente.
+
+**Alucinaciones:** el modelo genera información falsa con el mismo tono de confianza que usa para la información verdadera. No "sabe" que está mintiendo — simplemente predice texto plausible. Es el riesgo más importante a gestionar en uso docente.
+
+::: {.callout-warning}
+## Sobre las alucinaciones
+Los modelos alucinan especialmente en: citas bibliográficas (inventan autores, años, títulos), estadísticas específicas, eventos recientes y detalles técnicos muy especializados. **Nunca uses un output de IA con datos específicos sin verificarlos en la fuente primaria.**
+:::
+
+### Por qué los modelos se equivocan
+
+- **Conocimiento desactualizado:** tienen una fecha de corte de entrenamiento. Claude 3.5 llega hasta principios de 2024; no sabe lo que pasó después.
+- **Falta de razonamiento causal:** pueden describir correlaciones, pero no entienden causalidad en el sentido estadístico riguroso.
+- **Sesgos del corpus de entrenamiento:** si internet está sesgado (y lo está), el modelo aprende esos sesgos.
+- **No tienen acceso a tu contexto particular** salvo lo que tú les des explícitamente en el prompt.
+
+::: {.callout-note}
+## Cómo detectar alucinaciones
+Señales de alerta: citas con formato perfecto pero autor desconocido, estadísticas muy precisas sin fuente, afirmaciones sobre eventos recientes, nombres de personas con detalles biográficos específicos. En todos estos casos, verifica antes de usar.
+:::
+
+---
+
+## Herramientas de IA conversacional para docentes
+
+### ChatGPT (OpenAI)
+
+**Descripción:** el modelo más conocido globalmente. Disponible en versión gratuita (GPT-4o mini) y de pago (GPT-4o, GPT-o1).
+
+**Fortalezas para docencia:**
+- Enorme base de usuarios = muchos tutoriales y recursos disponibles
+- GPTs personalizados: puedes crear un asistente con instrucciones específicas para tu curso
+- Análisis de datos con Code Interpreter: sube un CSV y pide gráficos
+- Generación de imágenes con DALL-E integrado
+
+**Limitaciones:**
+- Versión gratuita tiene límites de uso
+- Memoria entre sesiones limitada en versión gratuita
+- Contexto de 128K tokens (menor que Claude)
+
+**Caso de uso docente:** generar un banco de 30 preguntas de opción múltiple sobre un tema, con 4 alternativas y justificación de la respuesta correcta, en 5 minutos.
+
+**Costo:** gratuito (con límites) / ChatGPT Plus USD 20/mes
+
+---
+
+### Claude (Anthropic)
+
+**Descripción:** desarrollado por Anthropic con énfasis en seguridad y razonamiento estructurado. Especialmente fuerte en documentos largos, escritura técnica y análisis.
+
+**Ventajas específicas para docentes:**
+
+- **Ventana de contexto de 200K tokens** — puedes subir un syllabus completo, múltiples papers, rúbricas y notas de clase en una sola conversación.
+- **Razonamiento estructurado** — produce respuestas bien organizadas con jerarquía lógica, ideal para material académico.
+- **Menor tasa de alucinaciones** en benchmarks comparativos (aunque no es cero).
+- **Claude Projects** — espacio de trabajo persistente donde puedes almacenar el contexto de un curso completo.
+
+**Claude Projects para un curso:**
+
+1. Crea un proyecto en [claude.ai/projects](https://claude.ai/projects)
+2. Sube los documentos del curso: syllabus, rúbricas, guías de laboratorio, papers de referencia
+3. Escribe instrucciones de sistema: *"Eres el asistente del curso MAT281. Conoces el syllabus y las rúbricas. Cuando un estudiante pregunta sobre una tarea, guíalo con preguntas en lugar de dar la respuesta directa."*
+4. Comparte el link del proyecto con estudiantes (modo lectura)
+
+**Artifacts:** Claude puede generar contenido interactivo directamente en la interfaz — código ejecutable, visualizaciones, formularios HTML, documentos formateados — sin salir del chat.
+
+**Uso con archivos:** sube PDFs de papers, presenta la rúbrica de evaluación, pide que genere preguntas alineadas con los criterios. Claude mantiene el contexto de todos los archivos durante la sesión.
+
+**Costo:** gratuito (con límites) / Claude Pro USD 20/mes
+
+---
+
+### Gemini (Google)
+
+**Descripción:** modelo de Google con integración nativa en el ecosistema Google Workspace.
+
+**Integración con Google Workspace:**
+
+- **Google Docs:** *Help me write* → genera borradores, resume documentos, reescribe párrafos
+- **Google Slides:** genera presentaciones desde un prompt o expande un esquema
+- **Google Forms:** sugiere preguntas para encuestas o evaluaciones
+- **Gmail:** redacta, resume hilos largos, sugiere respuestas
+
+**Gemini en Google Classroom:** disponible en instituciones con Google Workspace for Education. Permite generar comentarios de retroalimentación para entregas estudiantiles directamente desde la interfaz de Classroom.
+
+**NotebookLM — análisis profundo de documentos:**
+
+NotebookLM merece atención especial. Es una herramienta de Google diseñada específicamente para análisis documental:
+
+- Sube hasta 50 fuentes (PDFs, URLs, videos de YouTube, Google Docs)
+- Genera resúmenes, preguntas frecuentes, guías de estudio y mapas conceptuales *basados exclusivamente en tus documentos* (no en el conocimiento general del modelo)
+- **Audio Overview:** convierte tus documentos en un podcast de dos voces de 10-20 minutos — útil para que estudiantes escuchen material mientras se desplazan
+- Cita la fuente exacta de cada afirmación — reducción significativa de alucinaciones
+
+::: {.callout-tip}
+## NotebookLM para preparar clases
+Sube todos los papers de una unidad temática a un notebook, pide una guía de estudio con las 10 ideas clave y las conexiones entre ellas. Úsala como base para diseñar la clase, no como el producto final.
+:::
+
+**Costo:** gratuito / Gemini Advanced USD 19.99/mes (incluido en Google One AI Premium)
+
+---
+
+### Microsoft Copilot
+
+**Descripción:** integración de IA de Microsoft en todo el ecosistema Microsoft 365. Relevante especialmente en instituciones que usan Teams y Office.
+
+**Copilot en aplicaciones Office:**
+
+| Aplicación | Qué puede hacer Copilot |
+|---|---|
+| **Word** | Generar borradores, resumir, reescribir, cambiar tono |
+| **PowerPoint** | Crear presentación desde prompt o documento Word |
+| **Excel** | Analizar datos, generar fórmulas, crear gráficos |
+| **Teams** | Resumir reuniones, generar actas, responder preguntas sobre lo discutido |
+| **Outlook** | Resumir hilos, redactar respuestas, priorizar correos |
+
+**Copilot en el aula con Teams Education:**
+
+Teams Education con Copilot permite a docentes:
+- Generar rúbricas desde la descripción de una tarea
+- Resumir conversaciones de canales del curso
+- Crear cuestionarios desde material subido al canal
+
+**Copilot Studio — construir agentes para cursos:**
+
+Copilot Studio es la plataforma no-code de Microsoft para crear agentes conversacionales. Caso de uso docente concreto:
+
+*Asistente de consultas del ramo MAT281:*
+1. Crear agente en [copilotstudio.microsoft.com](https://copilotstudio.microsoft.com)
+2. Conectar con SharePoint donde está el material del curso
+3. Definir tópicos: preguntas sobre evaluaciones, explicación de conceptos, acceso a material
+4. Desplegar en Teams del curso
+5. Estudiantes preguntan en Teams, el agente responde 24/7 con base en el material oficial
+
+::: {.callout-warning}
+## Privacidad en Copilot institucional
+Copilot con licencia Microsoft 365 Copilot (versión empresarial/institucional) no usa los datos de tu organización para entrenar modelos y tiene controles de privacidad más robustos que la versión gratuita. La versión gratuita de Copilot (Bing) **sí puede usar las conversaciones para mejora del modelo**. Verifica qué versión tiene tu institución antes de subir material con datos de estudiantes.
+:::
+
+**Costo:** Microsoft 365 Copilot USD 30/usuario/mes (requiere licencia M365 base) / Copilot gratuito en Bing sin licencia institucional
+
+---
+
+## Usos concretos de IA en la práctica docente
+
+### Diseño y planificación curricular
+
+#### Generar un syllabus desde objetivos de aprendizaje
+
+```
+Prompt:
+Actúa como experto en diseño curricular universitario.
+Tengo un curso de [nombre del curso] para estudiantes de [carrera],
+nivel [semestre/año], duración [N semanas], [N] horas semanales.
+
+Los resultados de aprendizaje son:
+- RA1: [...]
+- RA2: [...]
+- RA3: [...]
+
+Genera un syllabus completo que incluya:
+1. Descripción del curso (3-4 oraciones)
+2. Unidades temáticas con semanas asignadas
+3. Para cada unidad: tema, subtemas, resultado de aprendizaje asociado,
+   metodología sugerida y tipo de evaluación
+4. Distribución de evaluaciones con ponderaciones
+5. Bibliografía básica y complementaria
+
+Usa un tono formal, orientado a ingeniería/ciencias.
+```
+
+#### Alinear contenidos con taxonomía de Bloom
+
+```
+Prompt:
+Tengo este objetivo de aprendizaje para una unidad de regresión lineal:
+"El estudiante comprende la regresión lineal simple."
+
+Reformúlalo en 6 verbos de la taxonomía de Bloom (uno por nivel:
+recordar, comprender, aplicar, analizar, evaluar, crear),
+manteniendo el contexto de regresión lineal.
+Para cada nivel, sugiere también una actividad de aprendizaje concreta
+y un tipo de pregunta de evaluación apropiado.
+```
+
+#### Crear una secuencia didáctica
+
+```
+Prompt:
+Diseña una secuencia didáctica de 90 minutos para enseñar
+[tema concreto] a estudiantes de [carrera], [semestre].
+
+Los estudiantes ya saben: [conocimientos previos].
+El objetivo de la sesión es: [objetivo específico].
+
+Estructura la secuencia en:
+- Activación (15 min): cómo conectar con conocimiento previo
+- Desarrollo (50 min): explicación + actividad práctica
+- Cierre (15 min): síntesis y verificación de aprendizaje
+- Tarea para la siguiente sesión (10 min de descripción)
+
+Incluye preguntas clave que el docente puede hacer en cada etapa.
+```
+
+---
+
+### Generación de material de enseñanza
+
+#### Crear ejemplos para conceptos difíciles
+
+```
+Prompt:
+El concepto de [concepto difícil, ej: "p-value en prueba de hipótesis"]
+es difícil de entender para estudiantes de ingeniería sin formación
+estadística profunda.
+
+Genera:
+1. Una analogía cotidiana que capture la intuición del concepto
+2. Un ejemplo numérico simple paso a paso
+3. Un contraejemplo que muestre qué NO es el concepto
+4. Un error conceptual frecuente y cómo corregirlo
+5. Una pregunta de verificación de comprensión (sin respuesta)
+```
+
+#### Adaptar nivel de dificultad de un texto
+
+```
+Prompt:
+Aquí hay un párrafo de un paper académico:
+[pegar párrafo]
+
+Reescríbelo en tres versiones:
+- Versión básica: para un estudiante de primer año sin conocimientos previos
+- Versión intermedia: para un estudiante de tercer año que conoce los fundamentos
+- Versión avanzada: mantén el rigor técnico del original, solo mejora la claridad
+
+En cada versión, preserva la información técnica esencial.
+```
+
+---
+
+### Evaluación y retroalimentación
+
+#### Generar preguntas de examen
+
+```
+Prompt:
+Crea un banco de evaluación sobre [tema] con:
+
+10 preguntas de opción múltiple:
+- 4 alternativas por pregunta
+- Solo una correcta
+- Dificultad variada (4 fáciles, 4 medias, 2 difíciles)
+- Incluye la respuesta correcta y una explicación de por qué las
+  otras alternativas son incorrectas
+
+5 preguntas de desarrollo:
+- Orientadas a aplicación y análisis (Bloom nivel 3-4)
+- Incluye criterios de evaluación (qué debe contener una respuesta completa)
+
+2 problemas de caso:
+- Contexto aplicado a ingeniería
+- Datos reales o verosímiles
+- Pregunta en varias partes
+
+Nivel: [carrera, año].
+Conocimientos previos: [lista].
+```
+
+#### Crear rúbricas de evaluación
+
+```
+Prompt:
+Crea una rúbrica de evaluación analítica para una [tarea/proyecto/informe]
+de [descripción] en el curso [nombre].
+
+La rúbrica debe:
+- Tener entre 4 y 6 criterios de evaluación
+- Para cada criterio: 4 niveles de desempeño (Insuficiente, Básico,
+  Competente, Destacado)
+- Descripción clara y observable de cada nivel
+- Ponderación sugerida por criterio
+- Escala final de 1.0 a 7.0 (escala chilena)
+
+Criterios que me interesan especialmente: [lista opcional].
+```
+
+#### Dar retroalimentación personalizada
+
+```
+Prompt:
+Actúa como docente que da retroalimentación constructiva.
+Aquí está la rúbrica del trabajo: [pegar rúbrica]
+Aquí está la entrega del estudiante: [pegar texto del estudiante]
+
+Genera una retroalimentación que:
+1. Comience con un punto fuerte específico y genuino
+2. Identifique los 2-3 aspectos más importantes a mejorar
+3. Para cada aspecto: explique por qué es importante y sugiera cómo mejorarlo
+4. Cierre con una pregunta que invite al estudiante a reflexionar
+5. Tono: directo, respetuoso, orientado al aprendizaje (no al juicio)
+
+Extensión: 200-300 palabras.
+```
+
+::: {.callout-important}
+## Por qué NO delegar la corrección completa a la IA
+La IA puede asistir en la retroalimentación, pero la nota final debe ser tuya. Razones prácticas: la IA no tiene contexto del desarrollo del estudiante en el semestre, puede ser inconsistente entre evaluaciones, no detecta el esfuerzo ni el progreso, y en caso de disputa académica, la responsabilidad legal es del docente. Usa la IA para generar un primer borrador de feedback — luego léelo, corrige y personaliza.
+:::
+
+---
+
+### Soporte al estudiante
+
+#### Tutor Socrático con IA
+
+El método socrático aplicado a IA es particularmente efectivo: en lugar de dar respuestas, el asistente hace preguntas que guían al estudiante hacia la comprensión.
+
+```
+Prompt (para configurar un asistente):
+Eres un tutor del curso MAT281. Tu rol es ayudar a los estudiantes
+a entender los conceptos del curso, pero NUNCA debes dar la respuesta
+directa a un ejercicio o tarea.
+
+Cuando un estudiante te presente un problema:
+1. Primero pregunta qué ha intentado ya
+2. Identifica en qué paso específico tiene dificultad
+3. Haz una pregunta que lo lleve a descubrir el siguiente paso
+4. Si está totalmente bloqueado, da una pista muy pequeña, no la solución
+
+El material del curso es: [subir syllabus y guías]
+```
+
+---
+
+### Investigación y productividad académica
+
+#### Herramientas de búsqueda bibliográfica con IA
+
+| Herramienta | Qué hace | URL |
+|---|---|---|
+| **Elicit** | Busca papers, extrae metodología, resultados y limitaciones | elicit.com |
+| **Consensus** | Pregunta en lenguaje natural, responde con evidencia científica | consensus.app |
+| **Semantic Scholar** | Búsqueda semántica, grafo de citas, resúmenes IA | semanticscholar.org |
+| **Research Rabbit** | Mapas de literatura relacionada, seguimiento de autores | researchrabbit.ai |
+| **Perplexity** | Búsqueda web con citas verificables | perplexity.ai |
+
+::: {.callout-warning}
+## IA y redacción de papers
+Usar IA para generar secciones completas de un paper sin declararlo es una violación de integridad académica en la mayoría de las revistas. Sin embargo, usarla para corregir gramática, mejorar claridad, sugerir estructura o detectar inconsistencias lógicas es éticamente aceptable si se declara. Revisa la política específica de cada journal antes de enviar.
+:::
+
+---
+
+## Herramientas de IA para multimedia educativo
+
+### Generación de imágenes
+
+| Herramienta | Fortaleza | Acceso |
+|---|---|---|
+| **DALL-E 3** (en ChatGPT) | Sigue instrucciones textuales con precisión | ChatGPT Plus |
+| **Adobe Firefly** | Imágenes libres de derechos, integración con Adobe | adobe.com/firefly |
+| **Canva IA** | Generación + edición en plantillas educativas | canva.com |
+| **Midjourney** | Calidad artística superior | Discord / web |
+
+**Prompting para imágenes educativas:**
+
+```
+Prompt efectivo para diagrama conceptual:
+"Diagrama esquemático simple y claro de [concepto],
+estilo ilustración técnica, fondo blanco, líneas limpias,
+etiquetas en español, sin texto decorativo,
+adecuado para material académico universitario"
+```
+
+::: {.callout-note}
+## Derechos de autor en imágenes generadas por IA
+La situación legal varía por país. En general: las imágenes generadas por IA no tienen copyright del creador del prompt en la mayoría de jurisdicciones (no hay autor humano reconocible). Algunas herramientas (Adobe Firefly, Canva IA) ofrecen garantías de uso comercial/educativo. Para material publicado oficialmente, verifica los términos de servicio de la herramienta.
+:::
+
+---
+
+### Generación y edición de video
+
+**Para microlecciones sin cámara:**
+
+- **HeyGen / Synthesia** — crea un avatar que lee tu guion con voz sintética. Útil para actualizar videos sin regrabar. Costo: desde USD 29/mes.
+- **Descript** — graba, transcribe y edita el video editando el texto (borra una palabra del texto = borra ese fragmento del video). Elimina silencios automáticamente.
+- **Runway / Pika** — generación de video corto desde texto o imagen. Aún experimental para uso educativo sistemático.
+
+---
+
+### Audio y voz
+
+**ElevenLabs** — clonación de voz y narración sintética. Puedes clonar tu propia voz (con 5 minutos de audio) y narrar apuntes automáticamente. Útil para accesibilidad.
+
+**Whisper (OpenAI)** — transcripción automática de alta calidad, open source. Úsalo para generar transcripciones de tus clases grabadas:
+
+```bash
+# Instalar y usar Whisper
+pip install openai-whisper
+
+whisper clase_semana3.mp4 --language Spanish --output_format srt
+```
+
+**NotebookLM Audio Overview** — sube los apuntes de una unidad, genera un podcast de 15 minutos donde dos voces sintéticas discuten el contenido. Sorprendentemente útil como resumen para estudiantes.
+
+---
+
+### Presentaciones con IA
+
+- **Gamma.app** — genera una presentación completa desde un prompt o documento. Exportable a PDF o PowerPoint. Útil para borradores rápidos.
+- **Beautiful.ai / Tome** — diseño asistido por IA con plantillas inteligentes.
+
+**Integración Quarto + IA para RevealJS:**
+
+```
+Prompt:
+Tengo este esquema de contenidos para una clase de 50 minutos
+sobre [tema]:
+[pegar esquema]
+
+Genera el código Quarto (.qmd) para una presentación RevealJS con:
+- Slide de título
+- Agenda (3-4 puntos)
+- Una slide por subtema con: título, 3-4 bullets concisos, 
+  y una sugerencia de imagen o diagrama
+- Slide de ejemplo/demostración con bloque de código
+- Slide de cierre con puntos clave y tarea
+
+Usa el formato de Quarto RevealJS con YAML frontmatter completo.
+```
+
+---
+
+## Ética del uso de IA en la docencia
+
+### Integridad académica en la era de la IA
+
+#### El problema real
+
+La pregunta correcta ya no es "¿usó el estudiante IA?" sino **"¿aprendió lo que el curso pretendía enseñar?"**
+
+Si un estudiante puede completar una evaluación con IA sin demostrar comprensión, el problema es el diseño de la evaluación — no la existencia de la herramienta. Un examen de cálculo que se resuelve copiando en ChatGPT era un mal examen antes de ChatGPT (cualquier solución manual también se podía copiar).
+
+#### Rediseñar evaluaciones para la era de la IA
+
+Tipos de evaluaciones que resisten o integran la IA:
+
+| Tipo | Por qué funciona | Ejemplo |
+|---|---|---|
+| **Defensa oral** | La IA no puede hablar por el estudiante en tiempo real | Presentar y justificar decisiones de un proyecto |
+| **Proceso documentado** | Evalúa el camino, no solo el resultado | Bitácora de laboratorio con commits en GitHub |
+| **Contexto local e inédito** | La IA no tiene datos específicos de tu institución | Análisis de datos reales de la UTFSM |
+| **Reflexión metacognitiva** | Requiere experiencia propia | "¿Qué fue lo más difícil y cómo lo resolviste?" |
+| **Uso explícito de IA** | Se integra como herramienta, se evalúa el criterio | "Usa IA para generar una solución y luego critica sus limitaciones" |
+
+#### Políticas de uso de IA por curso
+
+Tres niveles posibles, cada uno coherente si está bien comunicado:
+
+**Nivel 1 — Prohibición total (justificada en contextos específicos):**
+```
+"En este curso no está permitido el uso de herramientas de IA generativa
+en ninguna actividad evaluada. El objetivo es desarrollar las habilidades
+de [razonamiento matemático / escritura argumentativa / etc.] sin asistencia
+computacional. Las evaluaciones están diseñadas para ser realizadas
+en condiciones que hacen impráctica la asistencia de IA."
+```
+*Cuando tiene sentido:* cursos de escritura en primer año, exámenes de cálculo manual, laboratorios de experimentación física.
+
+**Nivel 2 — Uso permitido con declaración:**
+```
+"Puedes usar herramientas de IA como asistente en este curso,
+con las siguientes condiciones:
+- Debes declarar explícitamente qué herramienta usaste y para qué.
+- El trabajo final debe ser tuyo: la IA puede ayudarte a estructurar,
+  revisar o generar borradores, pero la síntesis, el análisis y las
+  conclusiones deben ser propias.
+- No puedes subir datos del curso (con nombres de compañeros, etc.)
+  a herramientas externas."
+```
+
+**Nivel 3 — Uso integrado como competencia:**
+```
+"El uso de IA es parte de las competencias que desarrollaremos en este curso.
+Aprenderemos a usarla de forma crítica y a declarar su uso.
+Algunas actividades evaluarán explícitamente tu capacidad de
+usar IA de forma efectiva y con criterio."
+```
+
+#### Por qué los detectores de IA no son confiables
+
+::: {.callout-important}
+## No uses GPTZero ni Turnitin IA para acusar a estudiantes
+Los estudios independientes muestran tasas de falsos positivos de 10-20% en detectores de IA. Esto significa que 1 de cada 5 a 10 textos marcados como "generados por IA" pueden ser escritura humana genuina — especialmente de hablantes no nativos de inglés o con estilos formales.
+
+Acusar a un estudiante de trampa basándose en un detector de IA sin evidencia adicional es una práctica éticamente problemática y potencialmente discriminatoria.
+
+**Qué hacer en cambio:** diseña evaluaciones donde la autoría sea verificable (defensa oral, proceso documentado) y establece conversaciones directas con el estudiante sobre su trabajo.
+:::
+
+---
+
+### Sesgos y equidad
+
+Los LLMs son entrenados mayoritariamente en texto en inglés y reflejan las perspectivas culturales dominantes en ese corpus. Implicaciones prácticas:
+
+- Respuestas sobre historia, política o sociedad pueden estar sesgadas hacia perspectivas anglosajones/norteamericanas.
+- El español latinoamericano a veces recibe respuestas de menor calidad que el inglés equivalente.
+- Representaciones de género en ejemplos y escenarios pueden reproducir estereotipos.
+- Estudiantes con acceso a herramientas premium (Claude Pro, ChatGPT Plus) tienen ventajas sobre quienes solo acceden a versiones gratuitas.
+
+**Para diseñar actividades equitativas:**
+- Usa herramientas gratuitas en actividades evaluadas con IA, o provee acceso institucional.
+- Cuando el output de IA sea insumo de la actividad, parte desde el mismo prompt para todos.
+- Problematiza explícitamente los sesgos como parte del aprendizaje.
+
+---
+
+### Privacidad y datos
+
+::: {.callout-warning}
+## Qué datos NO subir a herramientas IA
+- Listas de estudiantes con notas o información personal
+- Exámenes con nombres visibles
+- Datos institucionales confidenciales
+- Información de salud o situación socioeconómica de estudiantes
+- Cualquier dato cubierto por GDPR, Ley 19.628 (Chile) u otras normativas locales
+:::
+
+**Herramientas con y sin retención de datos:**
+
+| Herramienta | Retención por defecto | Opción sin retención |
+|---|---|---|
+| ChatGPT | Sí (entrena el modelo) | Desactivar en Settings → Data Controls |
+| Claude | No (Anthropic no entrena con conversaciones de usuarios) | N/A |
+| Gemini | Sí (3 a 18 meses) | Workspace Edu con configuración admin |
+| Copilot (Microsoft 365) | No (con licencia empresarial) | Configuración institucional |
+
+---
+
+### Dependencia y pensamiento crítico
+
+El riesgo más sutil de la IA en educación no es el plagio — es la **atrofia cognitiva**: estudiantes (y docentes) que dejan de luchar con problemas difíciles porque hay una herramienta que lo hace por ellos.
+
+**La distinción clave: andamio vs. sustituto**
+
+Un andamio cognitivo es temporal, escalable y eventualmente prescindible. La IA usada como andamio ayuda al estudiante a llegar más lejos de lo que llegaría solo — pero el aprendizaje ocurre en el proceso, no en el output.
+
+La IA como sustituto reemplaza el proceso. El output llega, el aprendizaje no.
+
+**Actividades que desarrollan metacognición frente a la IA:**
+- Pide a estudiantes que usen IA para resolver un problema y luego expliquen paso a paso por qué la solución es correcta (o incorrecta).
+- Haz que detecten y corrijan errores en outputs de IA sobre temas del curso.
+- Compara dos respuestas de IA al mismo prompt y argumenta cuál es mejor y por qué.
+
+---
+
+### Transparencia y declaración de uso
+
+**Nota estándar sugerida para material generado con asistencia de IA:**
+
+```markdown
+> **Nota sobre uso de IA:** Este material fue desarrollado con asistencia
+> de [herramienta] (versión [X], [fecha]). Los contenidos fueron revisados,
+> editados y validados por [nombre del docente]. La responsabilidad
+> sobre la precisión del contenido es del autor.
+```
+
+---
+
+## Model Context Protocol (MCP) y Claude
+
+### Qué es MCP y por qué cambia el paradigma
+
+El Model Context Protocol es un estándar abierto desarrollado por Anthropic que permite a los modelos de lenguaje conectarse con herramientas, sistemas de archivos, APIs y aplicaciones externas de forma estandarizada. En términos simples: transforma a Claude de un chatbot en un **agente que puede interactuar con tu entorno real**.
+
+```{mermaid}
+graph LR
+    H["🖥️ Host\n(Claude Desktop)"] <--> C["⚡ Cliente MCP"]
+    C <--> S1["📁 MCP Server\nFilesystem"]
+    C <--> S2["🐙 MCP Server\nGitHub"]
+    C <--> S3["📄 MCP Server\nGoogle Drive"]
+    C <--> S4["📋 MCP Server\nNotion"]
+```
+
+**Tres componentes:**
+
+- **Host:** la aplicación que corre el modelo (Claude Desktop, VS Code con Copilot, etc.)
+- **Cliente MCP:** componente dentro del host que gestiona las conexiones
+- **Servidor MCP:** proceso independiente que expone herramientas específicas (leer archivos, buscar en GitHub, consultar una base de datos)
+
+### MCP servers útiles para docentes
+
+| Server | Qué permite | Instalación |
+|---|---|---|
+| **Filesystem** | Leer/escribir archivos locales. Dar contexto de toda la carpeta del curso | Incluido en Claude Desktop |
+| **GitHub MCP** | Leer repos, issues, PRs, commits desde Claude | `npx @modelcontextprotocol/server-github` |
+| **Google Drive** | Acceder a documentos, slides, hojas de cálculo | `npx @modelcontextprotocol/server-gdrive` |
+| **Notion** | Leer y escribir páginas y bases de datos de Notion | `npx @notionhq/notion-mcp-server` |
+| **Brave Search** | Búsqueda web en tiempo real | `npx @modelcontextprotocol/server-brave-search` |
+
+### Configurar MCP en Claude Desktop
+
+```bash
+# 1. Instalar Claude Desktop desde claude.ai/download
+# 2. Abrir el archivo de configuración
+```
+
+**macOS:**
+```bash
+code ~/Library/Application\ Support/Claude/claude_desktop_config.json
+```
+
+**Windows:**
+```bash
+code %APPDATA%\Claude\claude_desktop_config.json
+```
+
+**Configuración de ejemplo (filesystem + GitHub):**
+
+```json
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/Users/tu-usuario/cursos/mat281"
+      ]
+    },
+    "github": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-github"
+      ],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "ghp_tu_token_aqui"
+      }
+    }
+  }
+}
+```
+
+### Casos de uso docente con MCP
+
+Con Filesystem MCP activo y apuntando a la carpeta del curso:
+
+```
+"Analiza todos los notebooks en /labs y dime cuáles tienen celdas
+con errores de importación o variables no definidas."
+
+"Lee el syllabus en /docs/programa.pdf y genera una tabla con
+todos los contenidos y sus fechas estimadas."
+
+"Revisa el README de cada carpeta en /assignments y dime cuáles
+no tienen criterios de evaluación definidos."
+```
+
+Con GitHub MCP:
+
+```
+"Dame un resumen de los últimos 10 issues abiertos del repositorio
+mat281-2025-1 y agrúpalos por tipo de problema."
+
+"¿Qué archivos se modificaron más frecuentemente en el último mes?
+¿Coincide con las semanas de mayor actividad del curso?"
+```
+
+::: {.callout-warning}
+## Seguridad con MCP
+Un servidor MCP con acceso a Filesystem puede leer (y potencialmente modificar) cualquier archivo en la carpeta que le autorices. Nunca apuntes MCP a carpetas con datos sensibles de estudiantes. Usa carpetas específicas del curso con contenido no confidencial.
+:::
+
+---
+
+## Agentes de IA para docencia
+
+### Qué es un agente de IA
+
+Un agente de IA es un sistema que puede **percibir su entorno, tomar decisiones y ejecutar acciones** para lograr un objetivo, con cierto nivel de autonomía. A diferencia de un chatbot que responde a cada mensaje de forma independiente, un agente puede:
+
+- Mantener memoria entre interacciones
+- Usar herramientas externas (buscar en la web, leer archivos, ejecutar código)
+- Planificar una secuencia de pasos para completar una tarea compleja
+- Actuar sin requerir instrucciones explícitas en cada paso
+
+```{mermaid}
+graph TD
+    G["🎯 Objetivo"] --> P["🧠 Planificación"]
+    P --> A1["⚡ Acción 1\n(buscar en docs)"]
+    P --> A2["⚡ Acción 2\n(ejecutar código)"]
+    P --> A3["⚡ Acción 3\n(generar respuesta)"]
+    A1 --> M["💾 Memoria"]
+    A2 --> M
+    A3 --> M
+    M --> P
+```
+
+### Casos de uso docente para agentes
+
+**Agente tutor:**
+- Responde preguntas de estudiantes basándose en el material del curso (no en internet general)
+- Detecta si la pregunta es sobre una tarea y cambia a modo socrático
+- Registra las preguntas frecuentes para que el docente las revise
+
+**Agente de corrección:**
+- Recibe una entrega (PDF, notebook, texto)
+- Lee la rúbrica del curso
+- Genera retroalimentación estructurada por criterio
+- Propone una nota con justificación (para revisión final del docente)
+
+**Agente de planificación curricular:**
+- Analiza los resultados de evaluaciones anteriores
+- Identifica los conceptos con mayor tasa de error
+- Sugiere ajustes al syllabus para reforzar esos conceptos
+
+---
+
+### Copilot Studio — agente para un ramo universitario
+
+**Paso a paso:**
+
+1. **Crear el agente:**
+   - Ir a [copilotstudio.microsoft.com](https://copilotstudio.microsoft.com)
+   - *Create* → *New agent* → Describe el propósito en lenguaje natural
+
+2. **Agregar base de conocimiento:**
+   - *Knowledge* → *Add knowledge* → SharePoint
+   - Apunta a la carpeta del curso en SharePoint (syllabus, guías, FAQs)
+
+3. **Definir tópicos:**
+   ```
+   Tópico: "Consulta sobre evaluaciones"
+   Trigger: "nota", "calificación", "evaluación", "tarea", "examen"
+   Respuesta: [Conecta con documento de evaluaciones en SharePoint]
+   ```
+
+4. **Configurar restricciones:**
+   - Responder solo sobre el curso (no sobre temas generales)
+   - Redirigir al docente cuando la pregunta excede el alcance
+
+5. **Desplegar en Teams del curso:**
+   - *Publish* → *Microsoft Teams*
+   - Agrega el bot al canal del curso
+
+---
+
+### Agente con Claude + MCP
+
+Flujo funcional para un agente docente local:
+
+```
+Claude Desktop
+    + MCP Filesystem (carpeta del curso)
+    + MCP GitHub (repositorio del curso)
+    = Agente que conoce todo el contexto del curso en tiempo real
+```
+
+Ejemplo de sesión de trabajo:
+
+```
+Tú: "Prepara el plan de la clase del martes sobre series de tiempo.
+Considera lo que vimos la semana pasada (revisa el notebook de
+la semana 7) y los errores más comunes en el lab 4."
+
+Claude (con MCP): Lee /lectures/semana7/notebook.ipynb
+                  Lee /labs/lab04/errores-frecuentes.md
+                  Genera plan de clase contextualizado
+```
+
+---
+
+### Plataformas no-code para agentes
+
+Para casos de uso más automatizados (sin requerir Claude Desktop):
+
+**n8n con nodos IA:**
+
+```
+Flujo: Formulario Google Forms (entrega)
+    → Webhook n8n
+    → Nodo OpenAI/Claude (evalúa contra rúbrica)
+    → Nodo Gmail (envía feedback al estudiante)
+    → Nodo Google Sheets (registra la evaluación)
+```
+
+**Zapier AI / Make:** similar pero con interfaces más amigables y menos control técnico.
+
+::: {.callout-tip}
+## Empezar simple con agentes
+El camino más accesible para un docente que parte: Claude Projects como primer "agente" (sin código). Sube el material del curso, define las instrucciones del sistema, comparte con estudiantes. Es 80% de la utilidad de un agente complejo con 0% de la complejidad técnica.
+:::
+
+---
+
+## Tendencias emergentes 2025–2026
+
+**IA multimodal en el aula:** los modelos actuales ya procesan texto, imagen, audio y video simultáneamente. Esto permite: analizar un gráfico de laboratorio y explicarlo, transcribir y resumir una clase en tiempo real, generar material en múltiples formatos desde una sola instrucción.
+
+**Tutores IA personalizados a escala:**
+- **Khanmigo** (Khan Academy) — tutor socrático para matemáticas y ciencias, ya disponible en inglés.
+- **Socratic** (Google) — enfocado en educación secundaria pero con capacidades crecientes.
+- El modelo emergente: el LLM como tutor one-on-one disponible 24/7, que adapta el ritmo al estudiante.
+
+**IA en LMS:**
+- **Canvas** integra IA para sugerencias de retroalimentación y análisis de participación.
+- **Moodle** tiene plugins de IA para evaluación formativa automatizada.
+- La dirección: el LMS como orquestador de agentes de IA especializados.
+
+**Evaluación adaptativa con IA:** sistemas que ajustan la dificultad de las preguntas en tiempo real según las respuestas del estudiante, identifican lagunas conceptuales específicas y generan ejercicios de remediación personalizados.
+
+**El docente como prompt engineer pedagógico:** la habilidad de diseñar prompts que produzcan experiencias de aprendizaje de calidad se está convirtiendo en una competencia docente reconocida. No es programación — es diseño instruccional aplicado a sistemas de IA.
+
+---
+
+## Hoja de ruta para un docente que empieza
+
+### Progresión práctica
+
+**Nivel 0 — Exploración (semanas 1–2):**
+- Crea cuenta en Claude y ChatGPT (ambos gratuitos)
+- Usa IA para preparar UNA clase: pide que genere 5 preguntas de discusión sobre el tema que enseñarás la próxima semana
+- Objetivo: romper la inercia. No importa qué tan básico sea el uso.
+
+**Nivel 1 — Integración básica (semanas 3–6):**
+- Genera un banco de preguntas para tu próxima evaluación
+- Usa NotebookLM: sube los papers de una unidad, genera una guía de estudio
+- Prueba dar retroalimentación asistida en una tarea pequeña
+- Objetivo: tener al menos 3 tareas docentes donde la IA te ahorra tiempo real.
+
+**Nivel 2 — Uso sistemático (meses 2–3):**
+- Crea un Claude Project para tu curso principal
+- Define y comunica explícitamente tu política de uso de IA a los estudiantes
+- Rediseña al menos una evaluación para que sea compatible con el uso de IA
+- Objetivo: la IA es parte del flujo de trabajo, no un experimento ocasional.
+
+**Nivel 3 — Integración avanzada (meses 4+):**
+- Explora MCP o Copilot Studio según tu ecosistema institucional
+- Implementa un componente del curso donde los estudiantes usan IA de forma explícita y evaluada
+- Contribuye a la discusión institucional sobre políticas de IA en docencia
+- Objetivo: eres referente en tu departamento para uso de IA en docencia.
+
+### Primera herramienta recomendada
+
+Empieza con **Claude** si: tu trabajo involucra documentos largos, escritura académica o análisis estructurado.
+
+Empieza con **NotebookLM** si: tienes un corpus de material del curso ya generado y quieres sacarle provecho sin aprender a prompting.
+
+Empieza con **ChatGPT** si: quieres la curva de aprendizaje más baja y la mayor cantidad de tutoriales disponibles.
+
+### Cómo presentar el uso de IA a tus estudiantes el primer día
+
+```
+Guion sugerido (adaptar al contexto):
+
+"En este curso vamos a hablar con transparencia sobre IA.
+Mi posición es [nivel 1/2/3 de política].
+
+Esto significa: [explicar qué está permitido, qué requiere declaración,
+qué no está permitido y por qué].
+
+La razón de esta política no es desconfiar de ustedes — es que quiero
+que al terminar el semestre hayan desarrollado [habilidades específicas]
+que son valiosas incluso cuando la IA está disponible.
+
+Si tienen dudas sobre si algo está permitido, pregunten antes de hacerlo.
+Prefiero esa conversación a la otra."
+```
+
+---
+
+## Recursos, comunidades y lectura recomendada
+
+### Newsletters y blogs (actualización continua)
+
+- **The Rundown AI** — [therundown.ai](https://therundown.ai) — resumen diario de novedades en IA
+- **Import AI** (Jack Clark) — análisis técnico semanal de investigación en IA
+- **One Useful Thing** (Ethan Mollick) — el mejor recurso sobre IA en educación superior, con experimentos reales en el aula
+- **AI Snake Oil** (Arvind Narayanan) — perspectiva crítica y rigurosa sobre claims de IA
+
+### Canales YouTube
+
+- **Andrej Karpathy** — explicaciones técnicas de LLMs accesibles para ingenieros
+- **3Blue1Brown** — visualizaciones de conceptos de IA (especialmente la serie sobre redes neuronales)
+- **Ethan Mollick** — demos y reflexiones sobre IA en educación
+
+### Papers académicos clave
+
+- Mollick, E. & Mollick, L. (2023). *Assigning AI: Seven Approaches for Students, with Prompts*. SSRN.
+- Baidoo-Anu, D. & Ansah, L. O. (2023). *Education in the Era of Generative Artificial Intelligence (AI)*. SSRN.
+- Kasneci, E. et al. (2023). *ChatGPT for Good? On Opportunities and Challenges of Large Language Models for Education*. Learning and Individual Differences.
+
+### Comunidades
+
+- **ISTE (International Society for Technology in Education)** — [iste.org](https://iste.org)
+- **AIEd Community** — [aied.info](https://aied.info)
+- **r/ChatGPTeachers** — comunidad Reddit de docentes que usan IA
+- **Comunidad Quarto en GitHub** — [github.com/quarto-dev](https://github.com/quarto-dev)
+
+### Documentación oficial
+
+- [claude.ai/docs](https://docs.anthropic.com) — documentación de Claude y API
+- [openai.com/docs](https://platform.openai.com/docs) — documentación de OpenAI
+- [modelcontextprotocol.io](https://modelcontextprotocol.io) — especificación MCP
+- [notebooklm.google.com](https://notebooklm.google.com) — NotebookLM

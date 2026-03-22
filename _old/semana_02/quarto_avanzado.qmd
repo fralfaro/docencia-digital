@@ -1,0 +1,152 @@
+---
+title: "Temas Avanzados en Quarto"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+---
+
+# Introducción
+
+En esta sección abordaremos funcionalidades avanzadas de **Quarto**, pensadas para quienes desean llevar sus documentos reproducibles al siguiente nivel. Revisaremos el uso de **extensiones, personalización avanzada, interactividad, publicación web y automatización**.
+
+
+
+# 1. Extensiones y Plugins
+
+Quarto permite agregar funcionalidades mediante extensiones (plugins). Estas pueden ser:
+
+- **Temas personalizados**
+- **Shortcodes (bloques especiales de contenido)**
+- **Filtros de Pandoc**
+- **Hooks para código y renderizado**
+
+## Instalación de extensiones
+
+Puedes instalar extensiones con:
+
+```bash
+quarto install extension <usuario>/<repositorio>
+```
+
+Por ejemplo:
+
+```bash
+quarto install extension quarto-ext/fontawesome
+```
+
+## Ejemplos útiles
+
+* `quarto-ext/fontawesome`: íconos en línea
+* `quarto-ext/lightbox`: galería de imágenes
+* `quarto-ext/callouts`: cuadros de aviso, tips, warnings
+* `quarto-ext/revealjs-title-slide`: personaliza tus diapositivas
+
+
+
+# 2. Callouts (avisos destacados)
+
+Los callouts son bloques visuales que ayudan a destacar contenido:
+
+```markdown
+::: {.callout-note}
+### Nota
+Puedes usar callouts para explicar algo importante.
+:::
+```
+
+Tipos disponibles: `note`, `tip`, `caution`, `warning`, `important`.
+
+
+
+# 3. Filtros Pandoc
+
+Los filtros permiten transformar el contenido durante el renderizado (ej. agregar referencias automáticas, convertir emojis, etc.).
+
+## Uso de filtros
+
+Puedes definirlos en `_quarto.yml`:
+
+```yaml
+filters:
+  - quarto
+  - my-custom-filter.lua
+```
+
+Ejemplos avanzados:
+
+* `pandoc-crossref`: referencias cruzadas de figuras, tablas, ecuaciones
+* `pandoc-fignos`: numeración automática de gráficos
+* `pandoc-lua`: scripts personalizados para modificar contenido
+
+
+
+# 4. Elementos interactivos
+
+Puedes agregar:
+
+* **Gráficos interactivos** con `plotly`, `highcharter`, `echarts4r`
+* **Widgets de `htmlwidgets`** como `DT`, `leaflet`, `crosstalk`
+* **Shiny** embebido (en documentos HTML)
+
+```r
+```r
+library(plotly)
+plot_ly(data = iris, x = ~Sepal.Length, y = ~Petal.Length, type = "scatter", mode = "markers")
+```
+
+```
+
+
+
+# 5. Personalización de estilo (CSS)
+
+Puedes modificar colores, tipografía y estilos usando tu propio archivo `.css`:
+
+```yaml
+format:
+  html:
+    css: estilos.css
+```
+
+También puedes usar temas existentes como `cosmo`, `flatly`, `darkly`, o temas Reveal.js si estás haciendo presentaciones.
+
+
+
+# 6. Automatización y publicación
+
+## Publicación en GitHub Pages
+
+Puedes usar `quarto publish`:
+
+```bash
+quarto publish gh-pages
+```
+
+Asegúrate de tener configurado tu repo con una rama `gh-pages`.
+
+## Otros servicios compatibles:
+
+* Netlify
+* Vercel
+* RStudio Connect
+* Posit Cloud
+
+
+
+# 7. Buenas prácticas
+
+* Usa `_quarto.yml` para definir el proyecto completo.
+* Agrupa documentos en carpetas (`reportes/`, `presentaciones/`, `scripts/`).
+* Usa bibliografía con CSL y Zotero para informes académicos.
+* Combina código, visualización y texto con un enfoque narrativo.
+
+
+
+# Recursos recomendados
+
+* [https://quarto.org/docs/extensions/](https://quarto.org/docs/extensions/)
+* [https://quarto.org/docs/presentations/revealjs/](https://quarto.org/docs/presentations/revealjs/)
+* [https://github.com/quarto-ext](https://github.com/quarto-ext)
+* Curso gratuito de Posit: *"Communicating with Quarto"* en [posit.cloud](https://posit.cloud)
+

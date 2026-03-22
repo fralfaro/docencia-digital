@@ -1,0 +1,929 @@
+---
+title: "Publicación con GitHub Pages"
+subtitle: "De archivo local a sitio web público en minutos"
+---
+
+El material de un curso que vive solo en tu computador existe para ti. El material que vive en un sitio web público existe para todos — tus estudiantes de este semestre, los del próximo, colegas de otras universidades que buscan recursos, y tú mismo cuando necesitas el apunte en un dispositivo que no es el tuyo.
+
+GitHub Pages convierte tu repositorio Quarto en un sitio web sin costo, sin configuración de servidor, y con actualizaciones automáticas cada vez que haces push. Este capítulo cubre todas las formas de publicar — desde el comando más rápido hasta el pipeline de CI/CD más robusto — y cierra con el caso de un repositorio de charlas públicas publicado como portafolio.
+
+---
+
+## `quarto publish gh-pages`: publicación directa
+
+### El comando más rápido
+
+Si tienes el repositorio configurado y Quarto instalado, publicar es un solo comando:
+
+```bash
+quarto publish gh-pages
+```
+
+Quarto hace todo automáticamente:
+
+1. Renderiza el proyecto completo.
+2. Crea (o actualiza) el branch `gh-pages` con el HTML generado.
+3. Hace push del branch a GitHub.
+4. GitHub Pages sirve ese branch como sitio web.
+
+El sitio queda disponible en:
+
+```
+https://tu-username.github.io/nombre-repositorio
+```
+
+### Primera publicación paso a paso
+
+```bash
+# 1. Asegúrate de estar en el directorio raíz del proyecto
+cd mat281-2025-1
+
+# 2. Asegúrate de que el repositorio tiene remote configurado
+git remote -v
+# origin  https://github.com/tu-username/mat281-2025-1.git (fetch)
+# origin  https://github.com/tu-username/mat281-2025-1.git (push)
+
+# 3. Publicar
+quarto publish gh-pages
+
+# Quarto pregunta:
+# ? Would you like to create a new site? (Y/n) Y
+# → Crea el branch gh-pages y publica
+
+# En publicaciones siguientes, simplemente:
+quarto publish gh-pages
+```
+
+### Activar GitHub Pages en el repositorio
+
+La primera vez que publicas con `quarto publish gh-pages`, puede ser necesario activar Pages manualmente:
+
+1. Ve al repositorio en GitHub.
+2. **Settings → Pages**.
+3. Source: **Deploy from a branch**.
+4. Branch: `gh-pages` / Folder: `/ (root)`.
+5. Clic **Save**.
+
+En 1-2 minutos el sitio está disponible.
+
+### Variantes del comando
+
+```bash
+# Publicar sin render previo (usa el _site/ ya generado)
+quarto publish gh-pages --no-render
+
+# Publicar sin confirmación interactiva (útil en scripts)
+quarto publish gh-pages --no-prompt
+
+# Publicar a un repositorio diferente (no el del remote "origin")
+quarto publish gh-pages --remote origin
+
+# Verificar qué se publicaría sin hacer nada
+quarto publish gh-pages --dry-run
+
+# Publicar a Quarto Pub (alternativa gratuita a GitHub Pages)
+quarto publish quarto-pub
+
+# Publicar a Netlify
+quarto publish netlify
+
+# Publicar a Posit Connect
+quarto publish connect
+```
+
+### El branch `gh-pages`: qué contiene
+
+```bash
+# Ver el contenido del branch gh-pages sin cambiarte a él
+git show gh-pages:index.html | head -20
+
+# Listar todos los archivos en gh-pages
+git ls-tree --name-only gh-pages
+
+# El branch contiene solo los archivos renderizados:
+# index.html
+# lectures/semana01/index.html
+# lectures/semana01/slides.html
+# assets/css/...
+# assets/js/...
+# ...
+```
+
+El branch `gh-pages` **no debe modificarse manualmente** — `quarto publish` lo reescribe completo en cada publicación. El código fuente (`.qmd`) vive solo en `main`.
+
+::: {.callout-tip}
+## `.nojekyll` es obligatorio
+Quarto agrega automáticamente un archivo `.nojekyll` en el branch `gh-pages`. Este archivo le dice a GitHub que no procese el sitio con Jekyll (el generador de sitios por defecto de GitHub Pages). Sin él, los paths de CSS y JS se rompen porque Jekyll ignora carpetas que empiezan con `_` (como `_site/`).
+
+Si algo falla y reconstruyes el branch manualmente, recuerda incluirlo:
+```bash
+touch .nojekyll
+```
+:::
+
+---
+
+## GitHub Actions para Quarto: workflow automático
+
+### Por qué usar Actions en lugar de `quarto publish`
+
+`quarto publish gh-pages` es perfecto para publicar desde tu máquina. Pero tiene limitaciones:
+
+- Requiere que estés en tu computador para publicar.
+- Si trabajas con ayudantes que hacen push, ellos no pueden publicar.
+- Si el código tarda minutos en ejecutarse, bloquea tu terminal.
+
+GitHub Actions resuelve todo esto: el deploy ocurre en la nube, automáticamente, cada vez que alguien hace push a `main` — sin importar quién ni desde dónde.
+
+```{mermaid}
+sequenceDiagram
+    participant D as 👨‍🏫 Docente
+    participant G as 🐙 GitHub
+    participant A as ⚙️ Actions Runner
+    participant P as 🌐 GitHub Pages
+
+    D->>G: git push origin main
+    G->>A: dispara workflow deploy.yml
+    A->>A: quarto render (ejecuta código)
+    A->>P: publica _site/ en gh-pages
+    P-->>D: sitio actualizado en ~3-5 min
+    Note over D,P: Estudiantes ven el nuevo material
+```
+
+### El workflow completo y comentado
+
+```yaml
+# .github/workflows/deploy.yml
+name: Deploy Quarto a GitHub Pages
+
+on:
+  push:
+    branches: [main]           # dispara en cada push a main
+  workflow_dispatch:           # permite ejecución manual desde la UI
+
+# Permisos necesarios para escribir en GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Evitar deploys concurrentes — si ya hay uno corriendo, espera
+concurrency:
+  group: "pages"
+  cancel-in-progress: false    # no cancela el deploy en curso
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # ── 1. Obtener el código fuente ─────────────────────────
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0       # historial completo (necesario para last-modified)
+
+      # ── 2. Restaurar cache de Quarto (freeze) ───────────────
+      - name: Restaurar cache de Quarto freeze
+        uses: actions/cache@v4
+        with:
+          path: _freeze
+          key: quarto-freeze-${{ hashFiles('**/*.qmd', '**/*.ipynb') }}
+          restore-keys: |
+            quarto-freeze-
+
+      # ── 3. Instalar Quarto ──────────────────────────────────
+      - name: Instalar Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          version: "1.5.57"    # fijar versión para reproducibilidad
+
+      # ── 4. Configurar Python ────────────────────────────────
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"         # cachea ~/.cache/pip entre runs
+
+      # ── 5. Instalar dependencias Python ─────────────────────
+      - name: Instalar dependencias
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # ── 6. (Opcional) Configurar R ──────────────────────────
+      # Solo si el proyecto tiene chunks de R
+      # - name: Configurar R
+      #   uses: r-lib/actions/setup-r@v2
+      #   with:
+      #     r-version: "4.3.0"
+      #
+      # - name: Instalar paquetes R
+      #   uses: r-lib/actions/setup-r-dependencies@v2
+
+      # ── 7. Configurar GitHub Pages ──────────────────────────
+      - name: Configurar GitHub Pages
+        id: pages
+        uses: actions/configure-pages@v4
+
+      # ── 8. Renderizar el proyecto Quarto ────────────────────
+      - name: Renderizar Quarto
+        uses: quarto-dev/quarto-actions/render@v2
+        with:
+          to: html               # formato de salida
+          # path: .              # raíz del proyecto (por defecto)
+
+      # ── 9. Subir el sitio como artefacto para Pages ─────────
+      - name: Subir artefacto
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "_site"          # carpeta generada por quarto render
+
+  deploy:
+    needs: build                 # espera a que build termine exitosamente
+    runs-on: ubuntu-latest
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Desplegar en GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+```
+
+### Activar GitHub Pages con Actions como fuente
+
+```
+Repositorio → Settings → Pages → Source: GitHub Actions
+```
+
+Esto le dice a GitHub que el deploy lo maneja Actions, no el branch `gh-pages`.
+
+### Ajustar `_quarto.yml` para el sitio desplegado
+
+```yaml
+website:
+  site-url: "https://tu-username.github.io/mat281-2025-1"
+
+  # Ruta base si el sitio no está en la raíz del dominio
+  # (necesario cuando el repo no es "tu-username.github.io")
+  base-url: "/mat281-2025-1"
+```
+
+::: {.callout-warning}
+## `site-url` es importante para Open Graph y sitemap
+Sin `site-url`, los metadatos de Open Graph (las tarjetas al compartir en redes sociales) y el `sitemap.xml` generado no tendrán URLs correctas. Siempre configúralo con la URL final del sitio.
+:::
+
+### Cache de dependencias para deploys rápidos
+
+El cache de pip y de `_freeze` son los dos optimizaciones más importantes. Sin ellas, cada deploy re-instala todas las librerías y re-ejecuta todo el código:
+
+```yaml
+# Cache de pip — entre 30s y 3min de ahorro por run
+- uses: actions/setup-python@v5
+  with:
+    python-version: "3.11"
+    cache: "pip"               # cachea ~/.cache/pip
+
+# Cache de Quarto freeze — ahorro de minutos si hay código pesado
+- uses: actions/cache@v4
+  with:
+    path: _freeze
+    key: quarto-freeze-${{ hashFiles('**/*.qmd') }}
+```
+
+Tiempos típicos de deploy con cache activo:
+
+| Tipo de sitio | Sin cache | Con cache |
+|---|---|---|
+| Solo Markdown (sin código) | 2-3 min | 1-2 min |
+| Con código Python (freeze) | 10-20 min | 2-4 min |
+| Con código Python y R | 15-30 min | 3-6 min |
+
+---
+
+## Deploy en cada push al branch principal
+
+### Proteger `main` para que el deploy sea confiable
+
+Si cualquier push a `main` dispara el deploy, un commit con error puede publicar un sitio roto. La solución es requerir que los cambios pasen por un PR y que el CI los valide antes de mergear:
+
+```yaml
+# .github/workflows/check.yml — workflow de validación (en PRs)
+name: Verificar render
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          version: "1.5.57"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+      - run: pip install -r requirements.txt
+
+      - name: Verificar render sin deploy
+        uses: quarto-dev/quarto-actions/render@v2
+        with:
+          to: html
+```
+
+Con esto el flujo es:
+
+```
+Tu editas en un branch → abres PR → CI verifica que renderiza →
+apruebas el PR → merge a main → deploy automático
+```
+
+### Notificaciones de deploy
+
+```yaml
+# Al final del job deploy:
+      - name: Notificar resultado
+        if: always()
+        run: |
+          if [ "${{ steps.deployment.outcome }}" == "success" ]; then
+            echo "✅ Deploy exitoso: ${{ steps.deployment.outputs.page_url }}"
+          else
+            echo "❌ Deploy falló — revisar logs"
+          fi
+```
+
+Para recibir notificaciones por email, GitHub las envía automáticamente cuando un workflow falla en `main`.
+
+### Deploy condicional: solo si cambiaron archivos `.qmd`
+
+```yaml
+on:
+  push:
+    branches: [main]
+    paths:
+      - "**.qmd"           # solo si cambió algún .qmd
+      - "**.ipynb"         # o algún notebook
+      - "_quarto.yml"      # o la configuración
+      - "**.scss"          # o los estilos
+      - "requirements.txt" # o las dependencias
+```
+
+Esto evita deploys innecesarios cuando solo cambia el `README.md` o los datos.
+
+### Múltiples entornos: preview y producción
+
+Para proyectos más grandes, puedes tener un sitio de preview (staging) y uno de producción:
+
+```yaml
+on:
+  push:
+    branches: [main]       # → deploy a producción
+  push:
+    branches: [dev]        # → deploy a preview (rama de desarrollo)
+
+jobs:
+  deploy-prod:
+    if: github.ref == 'refs/heads/main'
+    # ... deploy a github-pages
+
+  deploy-preview:
+    if: github.ref == 'refs/heads/dev'
+    # ... deploy a Netlify u otro servicio
+```
+
+---
+
+## Configurar dominio personalizado
+
+### Opciones de dominio para sitios docentes
+
+| Opción | URL resultante | Costo | Configuración |
+|---|---|---|---|
+| GitHub Pages por defecto | `username.github.io/repo` | Gratis | Automático |
+| Subdominio del dominio institucional | `mat281.usm.cl` | Gratis (lo gestiona TI) | Contactar TI de UTFSM |
+| Dominio propio | `mat281.juanperez.cl` | ~USD 10/año | DNS + CNAME |
+| Subdominio de dominio propio | `cursos.juanperez.cl` | Incluido en el dominio | DNS + CNAME |
+
+### Configurar un dominio personalizado en GitHub Pages
+
+**Paso 1 — Agregar el archivo `CNAME` al repositorio:**
+
+```bash
+# En la raíz del proyecto (branch main)
+echo "mat281.juanperez.cl" > CNAME
+git add CNAME
+git commit -m "chore: agregar dominio personalizado"
+git push
+```
+
+O configúralo en `_quarto.yml` para que Quarto lo incluya automáticamente:
+
+```yaml
+project:
+  resources:
+    - CNAME
+```
+
+Con el contenido del archivo `CNAME`:
+```
+mat281.juanperez.cl
+```
+
+**Paso 2 — Configurar el DNS de tu dominio:**
+
+En el panel de tu registrador de dominio (GoDaddy, Namecheap, Cloudflare, etc.), agrega un registro CNAME:
+
+```
+Tipo:   CNAME
+Nombre: mat281
+Valor:  tu-username.github.io.   ← (con el punto final)
+TTL:    3600
+```
+
+O si quieres usar el dominio raíz (`juanperez.cl` sin subdominio), agrega registros A:
+
+```
+Tipo:   A
+Nombre: @
+Valor:  185.199.108.153
+        185.199.109.153
+        185.199.110.153
+        185.199.111.153
+```
+
+**Paso 3 — Configurar en GitHub:**
+
+1. Repositorio → **Settings → Pages**.
+2. Custom domain: escribe `mat281.juanperez.cl`.
+3. Marca **Enforce HTTPS** (requiere que el DNS esté propagado).
+
+La propagación DNS tarda entre 5 minutos y 48 horas según el registrador.
+
+**Paso 4 — Actualizar `site-url` en `_quarto.yml`:**
+
+```yaml
+website:
+  site-url: "https://mat281.juanperez.cl"
+```
+
+### Dominio institucional de la UTFSM
+
+Para obtener un subdominio bajo `usm.cl` (por ejemplo `mat281.usm.cl`):
+
+1. Contacta a la Dirección de Informática / DTD de la UTFSM.
+2. Solicita un registro CNAME apuntando a `tu-username.github.io`.
+3. Ellos configuran el DNS institucional.
+4. Tú configuras el dominio en GitHub Pages y actualizas `site-url`.
+
+---
+
+## Gestión de versiones y registro de cambios
+
+### Versionar el sitio por semestre con Git tags
+
+```bash
+# Al finalizar el semestre, etiquetar la versión estable
+git tag -a v2025-1 -m "Cierre semestre 2025-1 — material completo"
+git push origin v2025-1
+
+# Ver todos los tags
+git tag -l
+
+# Restaurar el estado del repositorio en ese tag (solo lectura)
+git checkout v2025-1
+
+# Volver al presente
+git checkout main
+```
+
+Los tags funcionan como "puntos de guardado" — puedes volver exactamente a cómo estaba el curso en el semestre 2024-2, por ejemplo.
+
+### El archivo `CHANGELOG.md`
+
+Documenta los cambios entre semestres para ti mismo y para cualquier colega que reutilice el material:
+
+```markdown
+# Registro de cambios — MAT281
+
+Todos los cambios significativos del material del curso.
+Formato basado en [Keep a Changelog](https://keepachangelog.com/).
+
+## [2025-1] — En curso
+
+### Añadido
+- Semana 7: introducción a series de tiempo con statsmodels
+- Lab 6: forecasting con Prophet
+- Sección de recursos: links a datasets institucionales de la UTFSM
+
+### Modificado
+- Semana 3: reemplazado dataset de iris por palmerpenguins
+- Lab 3: actualizado a pandas 2.0 (sintaxis de copy-on-write)
+- Tarea 2: añadido ejercicio de interpretación de coeficientes
+
+### Corregido
+- Error en la fórmula de SCR en el apunte de semana 5
+- Link roto al dataset de gapminder en semana 2
+
+---
+
+## [2024-2] — 2024-07-01 a 2024-11-30
+
+### Añadido
+- Primera versión del sitio en Quarto (migración desde PDF estático)
+- Labs 1-5 reproducibles con código Python ejecutado
+- Integración con Google Colab mediante badges en el README
+
+### Modificado
+- Rediseño completo del programa del curso (de 12 a 14 semanas)
+- Prueba 1 movida a la semana 8 (antes en semana 7)
+
+---
+
+## [2024-1] — 2024-03-01 a 2024-07-15
+
+### Notas
+- Versión inicial del material en PDF (pre-Quarto)
+- Material disponible en repositorio privado bajo etiqueta `v2024-1`
+```
+
+### Archivo `KNOWN_ISSUES.md`
+
+Para documentar problemas conocidos que aún no se han resuelto:
+
+```markdown
+# Problemas conocidos
+
+## Activos
+
+### [ISSUE-001] Lab 4 tarda >5 minutos en Colab gratuito
+**Descripción:** El entrenamiento del modelo de Random Forest en el Lab 4
+tarda más de 5 minutos en Colab gratuito por el tamaño del dataset.
+**Workaround:** Usar `n_estimators=50` en lugar de `n_estimators=200`
+durante el desarrollo. El enunciado ya lo menciona.
+**Prioridad:** Baja — resolver en semestre siguiente con dataset más pequeño.
+
+### [ISSUE-002] Algunas ecuaciones no renderizan en Safari móvil
+**Descripción:** MathJax tiene problemas ocasionales en Safari iOS < 16.
+**Workaround:** Usar Chrome o Firefox en dispositivos móviles.
+**Prioridad:** Media.
+
+## Resueltos
+
+### [ISSUE-000] Links rotos después de migración a Quarto 1.5
+**Resuelto en:** 2025-03-15 · Commit `a3f2c19`
+```
+
+### Rama `semestre-siguiente` para preparar el próximo semestre
+
+```bash
+# Crear rama para preparar el semestre siguiente sin tocar main
+git checkout -b semestre-2025-2
+
+# Hacer cambios para el próximo semestre
+# (actualizar fechas, datasets, ejercicios)
+
+# Cuando el semestre empiece:
+git checkout main
+git merge semestre-2025-2
+git tag -a v2025-2 -m "Inicio semestre 2025-2"
+git push origin main --tags
+```
+
+---
+
+## Caso de cierre: repositorio de charlas y talks publicado
+
+### El contexto
+
+Francisco Alfaro tiene un repositorio de charlas públicas en [github.com/fralfaro/talks](https://github.com/fralfaro/talks) con más de 40 presentaciones de eventos como PyCon Chile, PyCon Colombia, useR!, LatinR, Nerdearla y otros. El objetivo es publicarlo como sitio web navegable — un portafolio académico donde cada charla es una página con su descripción, slides, y links al evento.
+
+Este caso muestra cómo adaptar la infraestructura de Quarto para un repositorio de charlas en lugar de un curso.
+
+### Estructura del repositorio de talks
+
+```
+talks/
+├── _quarto.yml                  ← configuración del sitio
+├── index.qmd                    ← página de inicio con listing
+│
+├── talks/                       ← una carpeta por charla
+│   ├── pycon-chile-2024/
+│   │   ├── index.qmd            ← descripción y slides embebidas
+│   │   ├── slides.qmd           ← presentación RevealJS
+│   │   └── preview.png          ← imagen de portada para listing
+│   │
+│   ├── latinr-2024/
+│   │   ├── index.qmd
+│   │   └── slides.qmd
+│   │
+│   ├── nerdearla-2023/
+│   │   ├── index.qmd
+│   │   └── slides.qmd
+│   │
+│   └── ...
+│
+├── assets/
+│   ├── scss/
+│   │   ├── light.scss
+│   │   └── dark.scss
+│   └── img/
+│       └── foto-perfil.jpg
+│
+└── .github/
+    └── workflows/
+        └── deploy.yml
+```
+
+### `_quarto.yml` para el sitio de talks
+
+```yaml
+project:
+  type: website
+  output-dir: _site
+
+website:
+  title: "Francisco Alfaro — Talks"
+  description: "Charlas, presentaciones y workshops en eventos de ciencia de datos y educación."
+  site-url: "https://fralfaro.github.io/talks"
+  repo-url: "https://github.com/fralfaro/talks"
+  favicon: "assets/img/favicon.ico"
+  open-graph: true
+  twitter-card:
+    creator: "@fralfaro"
+    card-style: summary_large_image
+
+  navbar:
+    background: dark
+    title: "fralfaro / talks"
+    left:
+      - text: "Inicio"
+        href: index.qmd
+      - text: "Charlas"
+        href: talks/index.qmd
+
+    right:
+      - icon: github
+        href: "https://github.com/fralfaro/talks"
+      - icon: linkedin
+        href: "https://linkedin.com/in/fralfaro"
+
+  page-footer:
+    left: "© 2025 Francisco Alfaro"
+    right: "Hecho con [Quarto](https://quarto.org)"
+
+format:
+  html:
+    theme:
+      light: [flatly, assets/scss/light.scss]
+      dark:  [darkly, assets/scss/dark.scss]
+    toc: false
+    code-tools: false
+
+execute:
+  freeze: true      # no re-ejecutar — las slides son Markdown puro
+```
+
+### `index.qmd`: el portafolio
+
+```yaml
+---
+title: "Francisco Alfaro"
+subtitle: "Charlas · Workshops · Keynotes"
+page-layout: full
+toc: false
+
+listing:
+  - id: charlas-2024
+    type: grid
+    contents: "talks/*/index.qmd"
+    sort: "date desc"
+    grid-columns: 3
+    image-height: 200px
+    fields: [date, title, description, categories]
+    categories: true
+    filter-ui: false
+    date-format: "MMMM YYYY"
+    include:
+      year: "2024"
+
+  - id: charlas-2023
+    type: grid
+    contents: "talks/*/index.qmd"
+    sort: "date desc"
+    grid-columns: 3
+    image-height: 200px
+    fields: [date, title, description, categories]
+    include:
+      year: "2023"
+---
+
+::: {.hero-section style="text-align:center; padding: 3rem 0 2rem;"}
+![](assets/img/foto-perfil.jpg){width=120px style="border-radius:50%;"}
+
+**Francisco Alfaro** · Jefe de Análisis y Modelación · UTFSM
+
+[GitHub](https://github.com/fralfaro){.btn .btn-sm .btn-dark}
+[LinkedIn](https://linkedin.com/in/fralfaro){.btn .btn-sm .btn-primary}
+[Correo](mailto:francisco.alfaro@usm.cl){.btn .btn-sm .btn-outline-secondary}
+:::
+
+## 2024
+
+::: {#charlas-2024}
+:::
+
+## 2023
+
+::: {#charlas-2023}
+:::
+```
+
+### Una charla: `talks/pycon-chile-2024/index.qmd`
+
+```yaml
+---
+title: "Quarto para Docencia Digital"
+date: "2024-11-15"
+description: "Cómo usar Quarto para crear sitios de cursos reproducibles y publicarlos en GitHub Pages."
+categories: [quarto, python, educación, herramientas]
+image: "preview.png"
+
+# Metadata del evento
+event: "PyCon Chile 2024"
+event-url: "https://pycon.cl"
+location: "Santiago, Chile"
+---
+
+::: {.event-info}
+| | |
+|---|---|
+| **Evento** | PyCon Chile 2024 |
+| **Lugar** | Santiago, Chile |
+| **Fecha** | 15 de noviembre 2024 |
+| **Formato** | Charla técnica (30 min) |
+:::
+
+## Descripción
+
+En esta charla presento el flujo de trabajo completo para crear material docente reproducible con Quarto — desde los apuntes hasta el sitio web del curso — y cómo publicarlo automáticamente en GitHub Pages.
+
+**Dirigido a:** docentes universitarios, profesores de programación, entusiastas del open education.
+
+## Slides
+
+```{=html}
+<div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden;">
+  <iframe
+    src="slides.html"
+    style="position:absolute; top:0; left:0; width:100%; height:100%; border:none;"
+    allowfullscreen>
+  </iframe>
+</div>
+```
+
+[Ver slides en pantalla completa →](slides.html){.btn .btn-primary .btn-sm}
+[Descargar PDF →](slides.pdf){.btn .btn-outline-secondary .btn-sm}
+[Ver código →](https://github.com/fralfaro/talks/tree/main/talks/pycon-chile-2024){.btn .btn-outline-dark .btn-sm}
+
+## Recursos mencionados
+
+- [Quarto documentation](https://quarto.org)
+- [Repositorio del ejemplo](https://github.com/fralfaro/mat281)
+- [Sitio del curso publicado](https://fralfaro.github.io/mat281)
+```
+
+### GitHub Actions para el repositorio de talks
+
+```yaml
+# .github/workflows/deploy.yml
+name: Deploy talks a GitHub Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "talks/**"
+      - "index.qmd"
+      - "_quarto.yml"
+      - "**.scss"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Instalar Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          version: "1.5.57"
+
+      # Las slides son Markdown puro — no necesitamos Python
+      # Solo Quarto para renderizar
+
+      - uses: actions/configure-pages@v4
+
+      - name: Renderizar
+        uses: quarto-dev/quarto-actions/render@v2
+        with:
+          to: html
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: "_site"
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/deploy-pages@v4
+        id: deployment
+```
+
+Como las slides son Markdown puro (sin código Python ejecutado), el deploy tarda solo 1-2 minutos.
+
+### CLAUDE.md: instrucciones para generación asistida de charlas
+
+Dado que Francisco usa IA para asistir en la generación de material, el repositorio incluye un `CLAUDE.md` que le da contexto a Claude sobre cómo generar charlas nuevas:
+
+```markdown
+# CLAUDE.md — Repositorio de charlas de fralfaro
+
+## Contexto
+Este repositorio contiene charlas técnicas de Francisco Alfaro
+(fralfaro), Jefe de Análisis y Modelación en UTFSM. Las charlas
+cubren ciencia de datos, Python, educación digital y herramientas
+de IA aplicada.
+
+## Estructura de una charla nueva
+Para agregar una charla nueva, crea:
+1. `talks/EVENTO-AÑO/index.qmd` — descripción y metadata
+2. `talks/EVENTO-AÑO/slides.qmd` — presentación RevealJS
+3. `talks/EVENTO-AÑO/preview.png` — imagen de portada (1200×630px)
+
+## Frontmatter requerido para index.qmd
+```yaml
+---
+title: "Título de la charla"
+date: "YYYY-MM-DD"
+description: "Descripción de 1-2 oraciones."
+categories: [tema1, tema2, tema3]
+image: "preview.png"
+event: "Nombre del evento"
+event-url: "https://..."
+location: "Ciudad, País"
+---
+```
+
+## Estilo de las slides
+- Tema: `[default, ../../assets/scss/slides.scss]`
+- Logo: `../../assets/img/brand/fralfaro.png`
+- Footer: `"fralfaro.github.io/talks"`
+- Duración típica: 25-30 slides para charla de 30 min
+- Incluir siempre: slide de agenda, slide de conclusiones,
+  slide de contacto al final
+```
+
+### Resultado final del sitio de talks
+
+El sitio publicado en `fralfaro.github.io/talks` tiene:
+
+- **Página de inicio** con el grid de charlas organizadas por año
+- **Filtro por categorías** (python, quarto, educación, IA, etc.)
+- **Cada charla** con descripción, slides embebidas, links al evento y al código
+- **Búsqueda** que indexa títulos y descripciones
+- **Modo oscuro** sincronizado con el sistema operativo
+- **Deploy automático** en ~1 minuto en cada push
+
+---
+
+## Referencias
+
+- Quarto Docs. *Publishing to GitHub Pages*. [quarto.org/docs/publishing/github-pages.html](https://quarto.org/docs/publishing/github-pages.html)
+- GitHub Docs. *About GitHub Pages*. [docs.github.com/es/pages](https://docs.github.com/es/pages/getting-started-with-github-pages/about-github-pages)
+- GitHub Docs. *Configuring a custom domain*. [docs.github.com/es/pages/configuring-a-custom-domain-for-your-github-pages-site](https://docs.github.com/es/pages/configuring-a-custom-domain-for-your-github-pages-site)
+- Keep a Changelog. *Formato estándar para changelogs*. [keepachangelog.com/es](https://keepachangelog.com/es/1.0.0/)
+- Quarto Docs. *Website listing options*. [quarto.org/docs/websites/website-listings-custom.html](https://quarto.org/docs/websites/website-listings-custom.html)
+- quarto-dev/quarto-actions. *GitHub Actions for Quarto*. [github.com/quarto-dev/quarto-actions](https://github.com/quarto-dev/quarto-actions)

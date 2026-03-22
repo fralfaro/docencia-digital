@@ -1,0 +1,1023 @@
+---
+title: "Flujo docente completo con Quarto"
+subtitle: "Del repositorio vacío al curso publicado, de punta a punta"
+---
+
+Los capítulos anteriores cubrieron las piezas: el sitio web, las slides, los documentos reproducibles, la publicación. Este capítulo las ensambla en un flujo de trabajo completo — desde el primer `git init` hasta el sitio del curso publicado con material de todas las semanas, integrado con Colab, con LaTeX donde es necesario, y con un protocolo claro para mantenerlo semestre a semestre.
+
+No es un capítulo teórico. Es una guía de acción.
+
+---
+
+## El repositorio como sitio del curso
+
+### El cambio de paradigma
+
+La mayoría de los cursos universitarios tiene el material disperso en múltiples lugares: el programa en el sistema académico, los apuntes en Google Drive, las slides en la nube, los datos en un pendrive, las soluciones en el correo. Cada semestre se repite el mismo caos de buscar "¿dónde puse la versión final del lab 3?".
+
+El repositorio como sitio del curso resuelve esto con un principio simple: **un solo lugar de verdad**.
+
+```{mermaid}
+graph TD
+    R["🐙 Repositorio GitHub\n(una carpeta con todo)"]
+
+    R --> S["🌐 Sitio web\n(GitHub Pages)\nlo que ven los estudiantes"]
+    R --> H["📜 Historial\n(git log)\nquién cambió qué y cuándo"]
+    R --> C["🤝 Colaboración\n(PRs, Issues)\ncon ayudantes"]
+    R --> A["⚙️ Automatización\n(Actions)\ndeploy sin intervención manual"]
+    R --> V["🏷️ Versiones\n(git tags)\nv2024-1, v2024-2, v2025-1"]
+```
+
+Todo en un lugar. Con historial. Colaborativo. Automático.
+
+### El modelo de dos capas
+
+El repositorio tiene exactamente dos tipos de contenido:
+
+**Capa 1 — Código fuente** (branch `main`):
+Todo lo que tú editas: archivos `.qmd`, datos, SCSS, configuración YAML, notebooks `.ipynb`.
+
+**Capa 2 — Sitio publicado** (automático via GitHub Actions):
+El HTML, CSS y JS generados. Los estudiantes acceden aquí. Tú nunca lo editas directamente.
+
+```
+main (tú editas aquí)          gh-pages (generado automáticamente)
+├── index.qmd          →       ├── index.html
+├── lectures/          →       ├── lectures/
+│   ├── semana01/      →       │   ├── semana01/
+│   │   └── index.qmd  →       │   │   └── index.html
+```
+
+Tú trabajas solo en `main`. El sitio se actualiza solo.
+
+---
+
+## Syllabus interactivo en Quarto
+
+### Por qué un syllabus como página web
+
+Un syllabus en PDF es estático — está desactualizado en el momento en que cambias una fecha. Un syllabus en Quarto puede tener:
+
+- Fechas que calculan automáticamente los días restantes.
+- Links directos al material de cada semana.
+- Estado de cada evaluación (pendiente/abierta/cerrada).
+- Calendario embebido o descargable.
+- Búsqueda integrada en el sitio.
+
+### Syllabus completo como documento Quarto
+
+```markdown
+---
+title: "MAT281 — Aplicaciones de la Matemática en Ingeniería"
+subtitle: "Primer Semestre 2025 · Universidad Técnica Federico Santa María"
+date-modified: last-modified
+toc: true
+toc-depth: 3
+---
+
+## Información general
+
+| | |
+|---|---|
+| **Código** | MAT281 |
+| **Créditos** | 5 SCT |
+| **Horas** | 3h teoría + 2h laboratorio / semana |
+| **Requisito** | MAT270 (Probabilidades y Estadística) |
+| **Docente** | Prof. Juan Pérez · [juan.perez@usm.cl](mailto:juan.perez@usm.cl) |
+| **Ayudante** | Ana García · [ana.garcia@usm.cl](mailto:ana.garcia@usm.cl) |
+| **Horario** | Lunes y miércoles 08:30-10:00, Sala B-201 |
+| **Laboratorio** | Viernes 14:00-15:30, Lab Computación D-101 |
+| **Consultas** | Jueves 15:00-17:00 (previa coordinación por Teams) |
+
+## Descripción
+
+MAT281 introduce herramientas computacionales y estadísticas para el análisis de datos en ingeniería. El curso combina fundamentos matemáticos con implementación en Python, con énfasis en aplicaciones a problemas reales de ingeniería y ciencias.
+
+Al finalizar el curso, el estudiante será capaz de:
+
+1. Aplicar técnicas de estadística descriptiva e inferencial a datos de ingeniería.
+2. Implementar y evaluar modelos de regresión y clasificación en Python.
+3. Comunicar resultados mediante visualizaciones y reportes reproducibles.
+4. Usar herramientas modernas de ciencia de datos (pandas, scikit-learn, Quarto).
+
+## Evaluaciones
+
+::: {.callout-important}
+## Requisitos de aprobación
+Para aprobar el curso se requiere:
+- Nota final ponderada ≥ **4.0**
+- Asistencia mínima: **75%** de las sesiones
+- Entrega de al menos el **80%** de los laboratorios
+:::
+
+| Instrumento | Ponderación | Cantidad | Recuperación |
+|-------------|:-----------:|:--------:|:------------:|
+| Laboratorios | 30% | 6 | No aplica |
+| Tareas | 30% | 3 | No aplica |
+| Prueba 1 | 20% | 1 | Sí (semana 15) |
+| Prueba 2 | 20% | 1 | Sí (semana 17) |
+
+### Política de atrasos
+
+- **Laboratorios:** descuento de 1.0 punto por cada 24h de atraso.
+  Máximo 48h de atraso; después nota 1.0.
+- **Tareas:** descuento de 2.0 puntos por cada 24h de atraso.
+  No se aceptan después de 48h.
+- **Recuperaciones:** una sola oportunidad al final del semestre para
+  recuperar una de las dos pruebas (la de menor nota).
+
+## Calendario
+
+```python
+#| echo: false
+#| label: tbl-calendario
+#| tbl-cap: "Calendario de actividades MAT281 — Primer semestre 2025."
+
+import pandas as pd
+from IPython.display import HTML
+
+calendario = [
+    {"Semana": 1,  "Fechas": "03-07 Mar",  "Tema": "Introducción y configuración del entorno",
+     "Evaluación": "—",          "Estado": "✅"},
+    {"Semana": 2,  "Fechas": "10-14 Mar",  "Tema": "Estadística descriptiva con pandas",
+     "Evaluación": "Lab 1",      "Estado": "✅"},
+    {"Semana": 3,  "Fechas": "17-21 Mar",  "Tema": "Visualización con matplotlib y seaborn",
+     "Evaluación": "Lab 2",      "Estado": "✅"},
+    {"Semana": 4,  "Fechas": "24-28 Mar",  "Tema": "Correlación y regresión lineal simple",
+     "Evaluación": "Lab 3",      "Estado": "🟡"},
+    {"Semana": 5,  "Fechas": "31 Mar-4 Abr","Tema": "Regresión múltiple y selección de variables",
+     "Evaluación": "Tarea 1",    "Estado": "🟡"},
+    {"Semana": "—", "Fechas": "7-11 Abr",  "Tema": "**Semana Santa — Sin clases**",
+     "Evaluación": "—",          "Estado": "—"},
+    {"Semana": 6,  "Fechas": "14-18 Abr",  "Tema": "Regresión logística",
+     "Evaluación": "Lab 4",      "Estado": "⏳"},
+    {"Semana": 7,  "Fechas": "21-25 Abr",  "Tema": "Árboles de decisión y Random Forest",
+     "Evaluación": "Tarea 2",    "Estado": "⏳"},
+    {"Semana": 8,  "Fechas": "28 Abr",     "Tema": "**Prueba 1** (semanas 1-7)",
+     "Evaluación": "Prueba 1",   "Estado": "⏳"},
+    {"Semana": 9,  "Fechas": "5-9 May",    "Tema": "Validación cruzada y métricas",
+     "Evaluación": "Lab 5",      "Estado": "⏳"},
+    {"Semana": 10, "Fechas": "12-16 May",  "Tema": "Series de tiempo: introducción",
+     "Evaluación": "—",          "Estado": "⏳"},
+    {"Semana": 11, "Fechas": "19-23 May",  "Tema": "Forecasting con statsmodels y Prophet",
+     "Evaluación": "Lab 6",      "Estado": "⏳"},
+    {"Semana": 12, "Fechas": "26-30 May",  "Tema": "Clustering: k-means y DBSCAN",
+     "Evaluación": "Tarea 3",    "Estado": "⏳"},
+    {"Semana": 13, "Fechas": "2-6 Jun",    "Tema": "Reducción de dimensionalidad (PCA, UMAP)",
+     "Evaluación": "—",          "Estado": "⏳"},
+    {"Semana": 14, "Fechas": "9-13 Jun",   "Tema": "Proyecto integrador — Trabajo en clase",
+     "Evaluación": "—",          "Estado": "⏳"},
+    {"Semana": 15, "Fechas": "16-20 Jun",  "Tema": "**Prueba 2** (semanas 8-14)",
+     "Evaluación": "Prueba 2",   "Estado": "⏳"},
+]
+
+df_cal = pd.DataFrame(calendario)
+display(df_cal.style
+    .hide(axis='index')
+    .set_properties(**{'text-align': 'left'})
+    .map(lambda v: 'background-color: #e8f5e9' if v == '✅' else
+                   'background-color: #fff8e1' if v == '🟡' else '',
+         subset=['Estado'])
+)
+```
+
+::: {.callout-note}
+## Leyenda de estado
+- ✅ Material disponible · 🟡 Material en preparación · ⏳ Próximamente
+:::
+
+## Bibliografía
+
+### Obligatoria
+
+- McKinney, W. (2022). *Python for Data Analysis* (3ª ed.). O'Reilly.
+  [Acceso online gratuito](https://wesmckinney.com/book)
+- VanderPlas, J. (2023). *Python Data Science Handbook*. O'Reilly.
+  [Acceso online gratuito](https://jakevdp.github.io/PythonDataScienceHandbook/)
+
+### Complementaria
+
+- James, G. et al. (2023). *Introduction to Statistical Learning with Python*. Springer.
+  [Acceso online gratuito](https://www.statlearning.com/)
+- Géron, A. (2022). *Hands-On Machine Learning* (3ª ed.). O'Reilly.
+
+## Política de uso de IA
+
+::: {.callout-tip}
+## Uso permitido con declaración
+En este curso se **permite** el uso de herramientas de IA generativa
+(ChatGPT, Claude, Copilot, etc.) con las siguientes condiciones:
+
+**Permitido sin restricción:**
+- Depurar errores de código
+- Entender mensajes de error
+- Buscar documentación de funciones
+- Corregir gramática en informes
+
+**Permitido con declaración explícita:**
+- Asistencia en la escritura de código (declara qué partes)
+- Generación de borradores de texto (declara y revisa)
+
+**No permitido:**
+- Entregar código o texto generado íntegramente por IA sin revisión
+- No declarar el uso cuando lo hay
+- Usar IA en evaluaciones presenciales
+
+Si tienes dudas sobre un caso específico, consulta antes de hacerlo.
+:::
+```
+
+---
+
+## Organización: guías, evaluaciones, soluciones, datos
+
+### El sistema de carpetas que funciona
+
+La organización de carpetas no es un detalle trivial — define si el material es fácil de mantener o un desastre semestral.
+
+```
+mat281-2025-1/
+│
+├── _quarto.yml
+├── index.qmd                        ← inicio del sitio
+│
+├── programa/
+│   └── index.qmd                    ← syllabus (ver arriba)
+│
+├── lectures/                        ← material de clases
+│   ├── index.qmd                    ← listado de semanas
+│   └── semana{NN}/
+│       ├── index.qmd                ← apunte reproducible
+│       ├── slides.qmd               ← diapositivas RevealJS
+│       └── preview.png              ← imagen para la tarjeta del listing
+│
+├── labs/                            ← laboratorios
+│   ├── index.qmd                    ← listing con tabla de labs
+│   └── lab{NN}/
+│       ├── enunciado.qmd            ← visible para estudiantes
+│       ├── datos/
+│       │   ├── dataset.csv
+│       │   └── README.md            ← descripción del dataset
+│       └── solucion/                ← NUNCA en branch main público
+│           └── solucion.qmd
+│
+├── assignments/                     ← tareas individuales
+│   ├── index.qmd
+│   └── tarea{NN}.qmd
+│
+├── examenes/                        ← exámenes y pruebas
+│   ├── index.qmd                    ← solo visible post-evaluación
+│   └── prueba01/
+│       ├── enunciado.qmd            ← publicar DESPUÉS de rendir
+│       └── pauta.qmd                ← nunca pública
+│
+├── recursos/
+│   └── index.qmd                    ← links y material externo
+│
+├── noticias/
+│   ├── index.qmd
+│   └── posts/                       ← anuncios del curso
+│
+├── datasets/                        ← datos del curso
+│   ├── README.md
+│   ├── raw/                         ← datos originales (sin limpiar)
+│   │   └── .gitkeep
+│   └── processed/                   ← datos listos para usar
+│       ├── notas_historicas.csv
+│       └── dataset_ejercicios.csv
+│
+└── assets/
+    ├── img/
+    ├── scss/
+    └── bib/
+```
+
+### El problema de las soluciones
+
+Las soluciones de laboratorios y tareas no pueden vivir en el mismo branch público que el enunciado. Tienes tres opciones:
+
+**Opción A — Branch privado de soluciones:**
+
+```bash
+# Crear y mantener branch solo local / en repo privado
+git checkout -b soluciones
+# Agregar soluciones aquí
+git add labs/lab03/solucion/solucion.qmd
+git commit -m "feat: solución lab 3"
+# NUNCA hacer push de este branch al repo público
+```
+
+**Opción B — Repositorio privado separado:**
+
+```
+mat281-2025-1/        (público — estudiantes acceden)
+mat281-2025-1-private/ (privado — solo docente y ayudantes)
+    └── soluciones/
+        ├── lab01/solucion.qmd
+        ├── lab02/solucion.qmd
+        └── ...
+```
+
+**Opción C — Carpeta excluida con `.gitignore`:**
+
+```bash
+# En .gitignore del repo público
+labs/*/solucion/
+assignments/*/solucion/
+examenes/*/pauta/
+```
+
+Las soluciones existen localmente pero nunca se suben a GitHub.
+
+::: {.callout-tip}
+## La opción más práctica para docentes: Opción C
+Crea la carpeta `solucion/` dentro de cada lab, ponla en `.gitignore`, y trabaja normalmente. El enunciado se publica automáticamente; la solución queda solo en tu máquina. Comparte la solución por el LMS o Teams cuando sea el momento.
+:::
+
+### Gestión de datasets
+
+Los datos del curso merecen su propio protocolo:
+
+```markdown
+# datasets/README.md
+
+## Datasets del curso MAT281 — 2025-1
+
+### Descripción general
+
+Este directorio contiene los datasets utilizados en clases,
+laboratorios y tareas del curso.
+
+### Estructura
+
+| Carpeta | Contenido |
+|---------|-----------|
+| `raw/` | Datos originales sin procesar. Nunca se modifican. |
+| `processed/` | Datos listos para usar en el curso. |
+
+### Datasets disponibles
+
+| Archivo | Descripción | Fuente | Semanas |
+|---------|-------------|--------|---------|
+| `processed/penguins.csv` | Palmers Penguins dataset | [palmerpenguins](https://allisonhorst.github.io/palmerpenguins/) | 2, 3 |
+| `processed/gapminder.csv` | Datos socioeconómicos mundiales 1952-2007 | [Gapminder](https://gapminder.org) | 3, 4 |
+| `processed/notas_historicas.csv` | Notas anonimizadas 2022-2024 | UTFSM (anonimizadas) | 5, 8 |
+
+### Política de datos
+
+Los datos institucionales de la UTFSM están anonimizados y
+no contienen información personal identificable. No redistribuir
+sin autorización de la Dirección de Docencia.
+```
+
+Para datasets muy grandes (>50MB), usa Git LFS o Google Drive:
+
+```bash
+# Instalar Git LFS
+git lfs install
+
+# Rastrear archivos grandes
+git lfs track "datasets/raw/*.csv"
+git lfs track "datasets/raw/*.parquet"
+git add .gitattributes
+git commit -m "chore: configurar Git LFS para datasets"
+```
+
+---
+
+## Integrar notebooks de Google Colab vía enlaces
+
+### El badge de Colab: la integración más simple
+
+El badge de Colab es un enlace con imagen que lleva al estudiante directamente al notebook en Colab, con un clic:
+
+```markdown
+[![Abrir en Colab](https://colab.research.google.com/assets/colab-badge.svg)](
+https://colab.research.google.com/github/tu-username/mat281-2025-1/blob/main/lectures/semana03/index.ipynb)
+```
+
+En Quarto, es más limpio con un shortcode personalizado o simplemente un botón:
+
+```markdown
+[🚀 Abrir en Google Colab](https://colab.research.google.com/github/fralfaro/mat281-2025-1/blob/main/lectures/semana03/index.ipynb){.btn .btn-warning .btn-sm target="_blank"}
+```
+
+### Tabla de material con links a Colab
+
+Esta tabla en `lectures/index.qmd` da acceso directo a todo el material:
+
+```markdown
+| Semana | Tema | Apunte | Slides | Colab |
+|:------:|------|:------:|:------:|:-----:|
+| 1 | Introducción | [📄](semana01/index.qmd) | [📊](semana01/slides.qmd) | [🚀](https://colab.research.google.com/github/fralfaro/mat281-2025-1/blob/main/lectures/semana01/index.ipynb) |
+| 2 | Estadística descriptiva | [📄](semana02/index.qmd) | [📊](semana02/slides.qmd) | [🚀](https://colab.research.google.com/github/fralfaro/mat281-2025-1/blob/main/lectures/semana02/index.ipynb) |
+| 3 | Visualización | [📄](semana03/index.qmd) | [📊](semana03/slides.qmd) | [🚀](https://colab.research.google.com/github/fralfaro/mat281-2025-1/blob/main/lectures/semana03/index.ipynb) |
+```
+
+### Sincronizar el `.qmd` con el `.ipynb`
+
+Puedes trabajar en Quarto (`.qmd`) y exportar el notebook para Colab automáticamente:
+
+```bash
+# Convertir .qmd a .ipynb para Colab
+quarto convert lectures/semana03/index.qmd
+
+# O renderizar directamente a notebook
+quarto render lectures/semana03/index.qmd --to ipynb
+```
+
+Esto genera `index.ipynb` que los estudiantes pueden abrir en Colab directamente desde GitHub.
+
+### GitHub Action para sincronizar automáticamente
+
+```yaml
+# .github/workflows/sync-notebooks.yml
+name: Sincronizar notebooks para Colab
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "lectures/**/*.qmd"
+      - "labs/**/*.qmd"
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          version: "1.5.57"
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - run: pip install -r requirements.txt
+
+      - name: Convertir QMDs a IPYNBs
+        run: |
+          for qmd in lectures/semana*/index.qmd labs/lab*/enunciado.qmd; do
+            echo "Convirtiendo: $qmd"
+            quarto convert "$qmd" --output "${qmd%.qmd}.ipynb"
+          done
+
+      - name: Commit y push de notebooks
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add lectures/**/*.ipynb labs/**/*.ipynb
+          git diff --staged --quiet || git commit -m "chore: actualizar notebooks para Colab"
+          git push
+```
+
+---
+
+## Combinar Quarto con LaTeX para ecuaciones avanzadas
+
+### Ecuaciones en Quarto: LaTeX nativo
+
+Quarto usa MathJax (para HTML) y el motor LaTeX (para PDF) para renderizar ecuaciones. La sintaxis es idéntica a LaTeX:
+
+```markdown
+**Inline:** la media es $\bar{x} = \frac{1}{n}\sum_{i=1}^n x_i$.
+
+**Display:**
+$$
+\hat{\beta} = (X^\top X)^{-1} X^\top y
+$$ {#eq-mco}
+
+**Con numeración y referencia:** ver la @eq-mco.
+
+**Sistema de ecuaciones con `align`:**
+$$
+\begin{aligned}
+\hat{\beta}_1 &= \frac{S_{XY}}{S_{XX}} \\
+\hat{\beta}_0 &= \bar{y} - \hat{\beta}_1 \bar{x}
+\end{aligned}
+$$
+
+**Matrices:**
+$$
+X = \begin{pmatrix}
+1 & x_1 \\
+1 & x_2 \\
+\vdots & \vdots \\
+1 & x_n
+\end{pmatrix}, \quad
+\beta = \begin{pmatrix} \beta_0 \\ \beta_1 \end{pmatrix}
+$$
+```
+
+### Entornos matemáticos personalizados
+
+Para cursos con muchos teoremas y demostraciones, los entornos de Quarto:
+
+```markdown
+::: {#thm-gauss-markov}
+## Teorema de Gauss-Markov
+
+Bajo los supuestos clásicos de regresión, los estimadores MCO son
+los mejores estimadores lineales insesgados (MELI).
+:::
+
+::: {#prp-invarianza-mco}
+## Invarianza ante transformaciones lineales
+
+Si $\tilde{X} = aX + b$ con $a \neq 0$, entonces
+$\hat{\beta}_1^* = \hat{\beta}_1 / a$ y $\hat{\beta}_0^* = \hat{\beta}_0 - b\hat{\beta}_1/a$.
+:::
+
+::: {.proof}
+Sea $\tilde{S}_{XY} = \sum(\tilde{x}_i - \bar{\tilde{x}})(y_i - \bar{y})$...
+:::
+
+El @thm-gauss-markov justifica el uso de MCO bajo los supuestos estándar.
+```
+
+### Paquetes LaTeX adicionales para el output PDF
+
+```yaml
+# En el frontmatter o _quarto.yml
+format:
+  pdf:
+    include-in-header:
+      text: |
+        \usepackage{mathtools}    % extensiones de amsmath
+        \usepackage{bm}           % vectores en negrita: \bm{\beta}
+        \usepackage{bbm}          % indicatrices: \mathbbm{1}
+        \usepackage{physics}      % notación física: \norm{x}, \abs{y}
+        \usepackage{siunitx}      % unidades SI: \SI{9.8}{m/s^2}
+```
+
+Uso en el documento:
+
+```markdown
+El vector de coeficientes $\bm{\beta} \in \mathbb{R}^p$ satisface...
+
+La función indicatriz $\mathbbm{1}[x > 0]$ toma el valor 1 cuando...
+
+La aceleración gravitacional es $\SI{9.8}{m/s^2}$.
+```
+
+### Macros LaTeX globales
+
+Define macros una vez, úsalas en todo el curso:
+
+```yaml
+# En _quarto.yml — macros disponibles en todos los documentos
+format:
+  html:
+    include-in-header:
+      text: |
+        <script>
+        MathJax = {
+          tex: {
+            macros: {
+              E:    ["\\mathbb{E}\\left[#1\\right]", 1],
+              Var:  ["\\text{Var}\\left(#1\\right)", 1],
+              Cov:  ["\\text{Cov}\\left(#1,#2\\right)", 2],
+              R:    "\\mathbb{R}",
+              N:    "\\mathcal{N}",
+              norm: ["\\left\\|#1\\right\\|", 1],
+              abs:  ["\\left|#1\\right|", 1],
+              given: ["\\,\\middle|\\,", 0],
+              ind:  "\\perp\\!\\!\\!\\perp"
+            }
+          }
+        };
+        </script>
+  pdf:
+    include-in-header:
+      text: |
+        \newcommand{\E}[1]{\mathbb{E}\left[#1\right]}
+        \newcommand{\Var}[1]{\text{Var}\left(#1\right)}
+        \newcommand{\Cov}[2]{\text{Cov}\left(#1,#2\right)}
+        \newcommand{\R}{\mathbb{R}}
+        \newcommand{\N}{\mathcal{N}}
+        \newcommand{\norm}[1]{\left\|#1\right\|}
+        \newcommand{\abs}[1]{\left|#1\right|}
+        \newcommand{\ind}{\perp\!\!\!\perp}
+```
+
+Ahora en cualquier `.qmd` del curso:
+
+```markdown
+Sea $X_i \sim \N(\mu, \sigma^2)$. Entonces $\E{X_i} = \mu$ y $\Var{X_i} = \sigma^2$.
+
+Si $X \ind Y$, entonces $\E{XY} = \E{X}\E{Y}$.
+```
+
+### Cuándo exportar a LaTeX en lugar de renderizar con Quarto
+
+Para algunos casos (papers, memorias, documentos muy formateados), puede ser mejor exportar el `.qmd` a `.tex` y finalizarlo en Overleaf:
+
+```bash
+# Exportar el .qmd a .tex
+quarto render apunte_completo.qmd --to latex
+
+# El archivo .tex generado se puede abrir en Overleaf
+# y ajustar con la plantilla institucional
+```
+
+---
+
+## Mantenimiento y actualización semestral
+
+### El protocolo de fin de semestre
+
+Al terminar el semestre, ejecuta esta secuencia antes de archivar:
+
+```bash
+# 1. Asegurarte de que el sitio está al día
+quarto render
+git status                         # no debe haber cambios sin commit
+
+# 2. Crear tag del semestre terminado
+git tag -a v2025-1 -m "Cierre semestre 2025-1
+Material completo:
+- 14 semanas de apuntes
+- 6 laboratorios (con datos)
+- 3 tareas
+- 2 pruebas (enunciados publicados)
+Cambios principales respecto a v2024-2:
+- Migrado de PDF a Quarto
+- Agregado módulo de series de tiempo (semanas 10-11)"
+git push origin v2025-1
+
+# 3. Archivar el repositorio si no lo seguirás actualizando
+# (en GitHub: Settings → Danger Zone → Archive this repository)
+# Archivado = solo lectura, sigue accesible, no acepta nuevos issues/PRs
+```
+
+### El protocolo de inicio de semestre siguiente
+
+```bash
+# 1. Crear rama para el nuevo semestre
+git checkout main
+git pull
+git checkout -b prep/2025-2
+
+# 2. Actualizar fechas en el syllabus
+# Editar programa/index.qmd:
+# - Nuevas fechas del calendario
+# - Actualizar semana santa y feriados
+# - Cambiar evaluaciones si aplica
+
+# 3. Actualizar el _quarto.yml
+# - Cambiar announcement con las primeras fechas
+# - Revisar repo-url si el repositorio cambia
+
+# 4. Resetear estados en el calendario a ⏳
+
+# 5. Revisar y actualizar datasets
+# - ¿Hay datos más recientes?
+# - ¿Los datasets siguen disponibles en sus URLs originales?
+
+# 6. Verificar links externos
+# (ver script de verificación más abajo)
+
+# 7. Merge a main cuando esté listo
+git checkout main
+git merge prep/2025-2
+git tag -a v2025-2-start -m "Inicio semestre 2025-2"
+git push origin main --tags
+```
+
+### Script de verificación de links
+
+```python
+# scripts/check_links.py
+# Verifica que todos los links externos del sitio funcionen
+
+import re
+import requests
+from pathlib import Path
+from concurrent.futures import ThreadPoolExecutor
+
+def extract_links(qmd_file):
+    """Extrae todos los URLs de un archivo .qmd."""
+    content = Path(qmd_file).read_text()
+    return re.findall(r'https?://[^\s\)\]"]+', content)
+
+def check_link(url):
+    """Verifica si un URL responde correctamente."""
+    try:
+        r = requests.head(url, timeout=10, allow_redirects=True)
+        return url, r.status_code, r.status_code < 400
+    except Exception as e:
+        return url, 0, False
+
+def main():
+    # Encontrar todos los .qmd
+    qmds = list(Path('.').rglob('*.qmd'))
+    qmds = [f for f in qmds if '_site' not in str(f) and '_freeze' not in str(f)]
+
+    # Extraer todos los links
+    all_links = set()
+    for qmd in qmds:
+        all_links.update(extract_links(qmd))
+
+    # Filtrar links internos y de assets
+    external = [l for l in all_links
+                if not any(s in l for s in ['github.com/fralfaro', 'localhost',
+                                             'colab.research.google.com/github/fralfaro'])]
+
+    print(f"Verificando {len(external)} links externos...")
+
+    broken = []
+    with ThreadPoolExecutor(max_workers=10) as ex:
+        results = list(ex.map(check_link, external))
+
+    for url, status, ok in results:
+        if not ok:
+            broken.append((url, status))
+            print(f"  ❌ {status} → {url}")
+        else:
+            print(f"  ✅ {status} → {url[:60]}")
+
+    if broken:
+        print(f"\n⚠️  {len(broken)} links rotos. Corregir antes de publicar.")
+    else:
+        print(f"\n✅ Todos los links funcionan.")
+
+if __name__ == '__main__':
+    main()
+```
+
+```bash
+# Ejecutar al inicio de cada semestre
+pip install requests
+python scripts/check_links.py
+```
+
+### Qué mejorar cada semestre
+
+Después de cada semestre, documenta las mejoras en el `CHANGELOG.md` y prioriza:
+
+| Prioridad | Tipo | Criterio |
+|---|---|---|
+| 🔴 Alta | Errores en el material | Reportados por estudiantes o encontrados en corrección |
+| 🔴 Alta | Links rotos | Detectados por el script de verificación |
+| 🟡 Media | Datasets desactualizados | Datos con más de 2 años |
+| 🟡 Media | Código deprecado | Warnings de pandas/scikit-learn actualizados |
+| 🟢 Baja | Mejoras de estilo | Redacción, ejemplos más claros |
+| 🟢 Baja | Contenido nuevo | Semanas adicionales, ejercicios extra |
+
+---
+
+## Caso de cierre: curso real end-to-end desde cero
+
+### El punto de partida
+
+Construimos el sitio de **MAT281** desde cero — repositorio vacío hasta sitio publicado — en 10 pasos documentados. Al final de esta sección tienes todo lo necesario para replicarlo.
+
+### Paso 1: crear el repositorio
+
+```bash
+# En GitHub: crear repositorio "mat281-2025-1" (público, sin README)
+
+# Localmente:
+mkdir mat281-2025-1
+cd mat281-2025-1
+git init
+git remote add origin https://github.com/fralfaro/mat281-2025-1.git
+```
+
+### Paso 2: crear el proyecto Quarto
+
+```bash
+quarto create project website .
+# Quarto crea: _quarto.yml, index.qmd, about.qmd, styles.css
+```
+
+### Paso 3: configurar `_quarto.yml`
+
+Reemplazar el `_quarto.yml` generado con el completo del Capítulo 4 (ver sección `_quarto.yml`).
+
+### Paso 4: crear la estructura de carpetas
+
+```bash
+mkdir -p lectures/semana{01..14}
+mkdir -p labs/lab{01..06}/{datos,solucion}
+mkdir -p assignments
+mkdir -p examenes/prueba{01,02}
+mkdir -p noticias/posts
+mkdir -p recursos
+mkdir -p programa
+mkdir -p datasets/{raw,processed}
+mkdir -p assets/{img/brand,scss,bib}
+
+# Crear placeholders para carpetas vacías
+find . -type d -empty -not -path './.git/*' -exec touch {}/.gitkeep \;
+```
+
+### Paso 5: crear los archivos base
+
+```bash
+# Syllabus
+cat > programa/index.qmd << 'EOF'
+---
+title: "Programa del curso"
+---
+EOF
+
+# Listing de clases
+cat > lectures/index.qmd << 'EOF'
+---
+title: "Clases"
+listing:
+  type: grid
+  contents: "semana*"
+  sort: "date asc"
+  grid-columns: 3
+  fields: [date, title, description, categories]
+  categories: true
+---
+EOF
+
+# Listing de labs
+cat > labs/index.qmd << 'EOF'
+---
+title: "Laboratorios"
+listing:
+  type: table
+  contents: "lab*/enunciado.qmd"
+  sort: "date asc"
+  fields: [date, title, description]
+---
+EOF
+
+# Primera semana como placeholder
+cat > lectures/semana01/index.qmd << 'EOF'
+---
+title: "Semana 1: Introducción"
+date: "2025-03-03"
+description: "Configuración del entorno, Python básico y pandas."
+categories: [introducción, python, pandas]
+---
+
+Contenido de la semana 1.
+EOF
+```
+
+### Paso 6: crear los archivos SCSS
+
+```bash
+# Copiar los archivos light.scss y dark.scss del Capítulo 4
+cp /ruta/a/light.scss assets/scss/light.scss
+cp /ruta/a/dark.scss  assets/scss/dark.scss
+```
+
+### Paso 7: configurar `.gitignore`
+
+```bash
+cat > .gitignore << 'EOF'
+# Quarto
+_site/
+_book/
+/.quarto/
+
+# Soluciones (nunca en el repo público)
+**/solucion/
+**/pauta/
+
+# Python
+__pycache__/
+*.pyc
+.env
+.venv/
+.ipynb_checkpoints/
+
+# R
+.Rhistory
+.RData
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Datos grandes
+datasets/raw/*.csv
+datasets/raw/*.xlsx
+datasets/raw/*.parquet
+!datasets/raw/.gitkeep
+EOF
+```
+
+### Paso 8: crear el workflow de GitHub Actions
+
+```bash
+mkdir -p .github/workflows
+# Copiar el deploy.yml del Capítulo 5
+cp /ruta/a/deploy.yml .github/workflows/deploy.yml
+```
+
+### Paso 9: primer commit y push
+
+```bash
+git add .
+git commit -m "feat: inicializar sitio MAT281-2025-1
+
+Estructura completa del sitio del curso:
+- _quarto.yml con navbar y sidebar configurados
+- Programa del curso
+- Estructura de semanas, labs, tareas
+- Assets: SCSS con colores UTFSM
+- GitHub Actions para deploy automático"
+
+git push -u origin main
+```
+
+### Paso 10: activar GitHub Pages
+
+```
+GitHub → Settings → Pages → Source: GitHub Actions
+```
+
+En 3-5 minutos, el sitio está publicado en:
+```
+https://fralfaro.github.io/mat281-2025-1
+```
+
+### El flujo semanal desde ese momento
+
+```bash
+# Lunes de cada semana: preparar el material de la semana siguiente
+git checkout -b semana-05/regresion-lineal
+
+# Editar lectures/semana05/index.qmd con el apunte
+# Editar lectures/semana05/slides.qmd con las slides
+# Agregar labs/lab03/enunciado.qmd si corresponde
+
+# Verificar localmente
+quarto preview
+
+# Commit y PR
+git add lectures/semana05/ labs/lab03/
+git commit -m "feat: material semana 5 — regresión lineal simple"
+git push origin semana-05/regresion-lineal
+
+# Abrir PR en GitHub
+# → Actions verifica que renderiza
+# → Merge a main
+# → Deploy automático en ~3 min
+# → Material disponible para estudiantes
+```
+
+### Checklist de lanzamiento del curso
+
+```
+Antes del primer día de clases:
+☐ Repositorio creado y pushado
+☐ GitHub Pages activo — sitio accesible en la URL correcta
+☐ Navbar con todos los links funcionando
+☐ Syllabus/programa completo y revisado
+☐ Semana 1 con apunte y slides
+☐ Lab 1 publicado
+☐ Política de uso de IA redactada
+☐ Información de contacto correcta
+☐ GitHub Actions — primer deploy exitoso (Actions tab verde)
+☐ Link de Colab probado para la semana 1
+☐ URL del sitio publicada en el LMS y email de bienvenida
+☐ Acceso de ayudantes configurado (write en el repo)
+☐ README.md del repositorio con link al sitio y descripción
+☐ CHANGELOG.md inicializado con la versión 2025-1
+```
+
+---
+
+## El flujo completo en un diagrama
+
+```{mermaid}
+graph TD
+    I["🖊️ Escribes en VS Code\n(archivos .qmd, .ipynb, .scss)"]
+    I --> C["💾 git commit\ngit push origin branch"]
+    C --> PR["🔀 Pull Request\nen GitHub"]
+    PR --> CI["⚙️ CI verifica\nquarto render en Actions"]
+    CI -->|"✅ pasa"| M["Merge a main"]
+    CI -->|"❌ falla"| FIX["Corregir y push de nuevo"]
+    FIX --> CI
+    M --> D["⚙️ Deploy Actions\nquarto render + publish"]
+    D --> S["🌐 Sitio actualizado\nen GitHub Pages"]
+    S --> E["👨‍🎓 Estudiantes\nven el nuevo material"]
+    S --> C2["🚀 Badge Colab\nacceso a notebooks"]
+
+    style I fill:#e3f2fd
+    style S fill:#e8f5e9
+    style E fill:#e8f5e9
+```
+
+---
+
+## Referencias
+
+- Quarto Docs. *Projects overview*. [quarto.org/docs/projects/quarto-projects.html](https://quarto.org/docs/projects/quarto-projects.html)
+- Quarto Docs. *Freeze*. [quarto.org/docs/projects/code-execution.html#freeze](https://quarto.org/docs/projects/code-execution.html#freeze)
+- Quarto Docs. *MathJax macros*. [quarto.org/docs/authoring/markdown-basics.html#math](https://quarto.org/docs/authoring/markdown-basics.html#math)
+- GitHub Docs. *Git LFS*. [docs.github.com/es/repositories/working-with-files/managing-large-files](https://docs.github.com/es/repositories/working-with-files/managing-large-files)
+- Keep a Changelog. [keepachangelog.com/es/1.0.0](https://keepachangelog.com/es/1.0.0/)
+- Google Colab. *Using Colab with GitHub*. [colab.research.google.com/github/googlecolab/colabtools/blob/main/notebooks/colab-github-demo.ipynb](https://colab.research.google.com/github/googlecolab/colabtools/blob/main/notebooks/colab-github-demo.ipynb)

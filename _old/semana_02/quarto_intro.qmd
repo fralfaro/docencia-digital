@@ -1,0 +1,121 @@
+---
+title: "Introducción a Quarto"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+---
+
+# ¿Qué es Quarto?
+
+**Quarto** es una herramienta de publicación científica y técnica que permite crear documentos reproducibles, presentaciones, libros, sitios web y dashboards combinando texto, código y visualizaciones en un solo archivo.
+
+Es el sucesor natural de R Markdown, compatible con múltiples lenguajes de programación (R, Python, Julia, Observable JS) y enfocado en la reproducibilidad y presentación profesional de contenidos.
+
+> Sitio oficial: [https://quarto.org](https://quarto.org)
+
+
+
+# ¿Cómo funciona Quarto?
+
+Quarto utiliza archivos con extensión `.qmd` (Quarto Markdown), los cuales integran:
+
+- Texto escrito en **Markdown**.
+- **Bloques de código ejecutables** (R, Python, etc.).
+- Gráficos, tablas y salidas interactivas.
+- Estilos personalizables y salida a múltiples formatos.
+
+El flujo básico es:
+
+1. Escribes un documento `.qmd`.
+2. Ejecutas el código embebido.
+3. Quarto genera automáticamente un documento final en HTML, PDF o presentación.
+
+
+
+# ¿Para qué se usa Quarto?
+
+Quarto es una herramienta versátil. Algunos usos comunes incluyen:
+
+- Informes técnicos y reproducibles.
+- Presentaciones académicas (`revealjs`, `beamer`).
+- Dashboards con `Shiny`.
+- Libros y sitios web interactivos.
+- Documentación para proyectos de ciencia de datos.
+
+
+
+# Estructura básica de un archivo `.qmd`
+
+## Encabezado YAML
+
+Cada archivo inicia con un bloque YAML entre líneas ``, donde defines metadatos y el formato de salida:
+
+```yaml
+
+title: "Mi primer informe"
+author: "Francisco Alfaro"
+format: html
+
+```
+
+## Texto en Markdown
+
+Usas sintaxis estándar:
+
+```markdown
+# Título principal
+## Subtítulo
+- Lista de puntos
+**Negrita** y *cursiva*
+```
+
+## Bloques de código
+
+Puedes incluir código de R o Python con triple tilde invertida y el lenguaje:
+
+```r
+```{r}
+summary(cars)
+```
+
+```
+
+También puedes configurar los chunks con opciones:
+
+```r
+```{r, echo=TRUE, message=FALSE}
+plot(cars)
+```
+
+```
+
+
+
+# Principales formatos de salida
+
+Puedes renderizar documentos en múltiples formatos:
+
+- **HTML**: `format: html`
+- **PDF**: `format: pdf`
+- **Presentaciones**: `format: revealjs` o `beamer`
+- **Books/Sites**: definidos en `_quarto.yml`
+
+
+
+# Ventajas de usar Quarto
+
+- Soporte multi-idioma (R, Python, Julia, etc.)
+- Reproducibilidad total
+- Integración con `ggplot2`, `dplyr`, `matplotlib`, `plotly`, etc.
+- Salidas visuales de alta calidad
+- Ideal para proyectos colaborativos y académicos
+
+
+
+# Recursos adicionales
+
+- Documentación oficial: [https://quarto.org/docs/](https://quarto.org/docs/)
+- Guía de inicio rápido: [https://quarto.org/docs/get-started/](https://quarto.org/docs/get-started/)
+- Ejemplos de uso: [https://quarto.org/docs/gallery/](https://quarto.org/docs/gallery/)
+

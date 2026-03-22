@@ -1,68 +1,61 @@
 project:
-  type: website
+  type: book
+  output-dir: docs
 
-website:
-  title: "USM"
-  site-url: "https://sethnut.com/CEEMAT_2025/"
-  favicon: 'images/usm.png'
-  image: 'images/usm.png'
-  page-footer:
-    left: "Website creado con [Quarto](https://quarto.org/) por Francisco Alfaro. Licencia: [CC BY-SA 2.0](https://creativecommons.org/licenses/by-sa/2.0/)."
-    right:
-      - icon: linkedin
-        href: https://www.linkedin.com/school/usantamaria/
-      - icon: globe
-        href: https://usm.cl/
+book:
+  title: "Docencia Digital"
+  subtitle: "Ecosistema digital para el académico del siglo XXI"
+  author: "Francisco Alfaro"
+  date: "06/01/2026"
+  favicon: "assets/img/brand/brand__usm.png"
+  repo-url: "https://github.com/fralfaro/docencia-digital"
 
-  navbar:
-    logo: /images/usm.png
-    
-    left:
-      - text: Encuestas
-        menu:
-          - text: Encuesta 1° Semestre
-            href: https://docs.google.com/forms/d/e/1FAIpQLSeCUqQw0LQxeBDcN15RSLE_Hetv0sffxaZOAagQCR0RkQHVHQ/viewform?usp=dialog
-          - text: Encuesta 2° Semestre
-            href: https://docs.google.com/forms/d/e/1FAIpQLSfD7Uw--mmOWrSJJuwVWdzJ8-1FUJhMwxeUlBWMk4rFvmloiQ/viewform?usp=dialog
-
-      - text: Anexos
-        menu:
-          - text: Anexos
-            href: anexos.html
-     
-
-    right:
-      - icon: linkedin
-        href: https://www.linkedin.com/school/usantamaria/
-      - icon: globe
-        href: https://usm.cl/
-
+  chapters:
+    - index.qmd
+    - part: "🟪 Introducción"
+      chapters:
+        - 00_intro/index.qmd
+    - part: "🟩 GitHub"
+      chapters:
+        - 01_github/01_esencial.qmd
+        - 01_github/02_colaborativo.qmd
+        - 01_github/03_automatizacion.qmd
+    - part: "🟧 Google Colab"
+      chapters:
+        - 02_colab/colab_01_esencial.qmd
+        - 02_colab/colab_02_pandas.qmd
+        - 02_colab/colab_03_visualizacion.qmd
+    - part: "🟥 LaTeX"
+      chapters:
+        - 03_latex/overleaf_01_esencial.qmd
+        - 03_latex/overleaf_02_matematica.qmd
+        - 03_latex/overleaf_03_plantillas.qmd
+    - part: "🟦 Quarto"
+      chapters:
+        - 04_quarto/quarto_01_intro.qmd
+        - 04_quarto/quarto_02_documentos.qmd
+        - 04_quarto/quarto_03_revealjs.qmd
+        - 04_quarto/quarto_04_sitios.qmd
+        - 04_quarto/quarto_05_pages.qmd
+        - 04_quarto/quarto_06_flujo.qmd
+    - part: "🤖 IA"
+      chapters:
+        - 05_ia/ia_01_panorama.qmd
+        - 05_ia/ia_02_prompting.qmd
+        - 05_ia/ia_03_notebooklm.qmd
+        - 05_ia/ia_04_pedagogico.qmd
+        - 05_ia/ia_05_rag.qmd
+        - 05_ia/ia_06_agentes.qmd
+        - 05_ia/ia_07_copilot_studio.qmd
+        - 05_ia/ia_08_etica.qmd
 
 lang: es
 
 format:
   html:
-    smooth-scroll: true
     theme:
-      - pulse
-      - custom.scss
-    link-external-icon: false
-    link-external-newwindow: true
-    citations-hover: true
-    footnotes-hover: true
-    toc: true
-    code-link: true
-
-
-editor: visual
-
-comments:
-  giscus:
-    repo: Seth-Nut/CEEMAT_2025
-
-execute:
-  freeze: true
-
-filters:
-  - webr
-  - pyodide
+      light: [flatly, light.scss]
+      dark: [darkly, dark.scss]
+    number-sections: false
+    toc: false
+    page-layout: full

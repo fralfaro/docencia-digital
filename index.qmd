@@ -1,92 +1,101 @@
----
-title: "Docencia Digital"
-subtitle: "Ecosistema digital para el academico del siglo XXI"
-output: html_document
----
+# 🏠 Home
 
-## Información General
+## Descripción de la Capacitación
 
--   **Nombre completo:** Francisco Alfaro + Mario Navarrete
--   **Formato**: Capacitación de 2 a 6 sesiones (1 hora cada una)
--   **Repositorio base**: https://github.com/fralfaro/docencia-digital
+Esta capacitación entrega herramientas prácticas para modernizar la docencia universitaria mediante un flujo digital integrado. El foco está en diseñar, producir y publicar materiales académicos de forma clara, reproducible y colaborativa.
 
-## Breve Descripción
+Durante las sesiones se trabaja con herramientas que hoy son clave en docencia: **Quarto**, **GitHub**, **Google Colab**, **Overleaf** e **Inteligencia Artificial** aplicada a procesos de enseñanza y aprendizaje.
 
-Esta capacitación presenta un enfoque práctico para modernizar la docencia universitaria mediante el uso de Quarto, Overleaf y GitHub, junto con otras herramientas digitales. En 2 a 6 sesiones se trabajará en la creación, organización y publicación de materiales académicos, incorporando buenas prácticas que permitan mantener contenidos actualizados, reproducibles y bien estructurados.
 
-## Prerrequisitos
 
-No se requieren conocimientos previos en programación o herramientas avanzadas. Solo se necesita entusiasmo por aprender y explorar nuevas formas de trabajar con datos y tecnología.
+## Contribución al Perfil Docente
 
-## Instrucciones
+Esta capacitación contribuye al desarrollo de las siguientes capacidades:
 
-| Paso                         | Acción                                                                                                            |
-|-------------------------------|-----------------------------------------|
-| **1. Cuenta en GitHub**      | Regístrate en [github.com](https://github.com) si aún no tienes una cuenta.                                       |
-| **2. Usar repositorio base** | Ve a [docencia-digital](https://github.com/fralfaro/docencia-digital) y haz clic en **"Use this template"** .     |
-| **3. Subir entregables**     | Guarda tus archivos en la carpeta `entregables/` de tu repositorio.                                               |
-| **4. Apoyar el proyecto**    | Revisa y dale una estrellita ⭐ al repositorio: [docencia-digital](https://github.com/fralfaro/docencia-digital). |
+- **CD1:** Diseñar experiencias de aprendizaje apoyadas en herramientas digitales y buenas prácticas de colaboración.
+- **CD2:** Integrar IA de forma responsable para planificación, producción de materiales y retroalimentación.
+- **CD3:** Publicar recursos académicos reproducibles y sostenibles en el tiempo.
 
-## Sesiones
 
-::: panel-tabset
-## Campus CC
 
--   [**Introducción**](00_intro/presentacion.html): introduccion general al curso y su metodologia.
--   [**GitHub**](github/presentacion.html): fundamentos de GitHub, cuenta, repositorios y proyectos.
--   [**Quarto**](quarto/presentacion.html): creacion de documentos, informes y presentaciones reproducibles.
--   [**Overleaf**](overleaf/presentacion.html): documentos academicos con formato profesional.
--   [**Google Colab**](colab/presentacion.html): notebooks en la nube para actividades practicas y colaborativas.
--   [**Inteligencia Artificial**](ia/presentacion.html): vision general de IA, herramientas y buenas practicas.
+## Resultados de Aprendizaje
 
-## Campus SJ
+Al finalizar la capacitación, el o la participante será capaz de:
 
--   [**Introducción**](00_intro/presentacion.html): introduccion general al curso y su metodologia.
--   [**GitHub**](github/presentacion.html): fundamentos de GitHub, cuenta, repositorios y proyectos.
--   [**Quarto**](quarto/presentacion.html): creacion de documentos, informes y presentaciones reproducibles.
--   [**Overleaf**](overleaf/presentacion.html): documentos academicos con formato profesional.
--   [**Google Colab**](colab/presentacion.html): notebooks en la nube para actividades practicas y colaborativas.
--   [**Inteligencia Artificial**](ia/presentacion.html): vision general de IA, herramientas y buenas practicas.
+- **RA1:** Crear y publicar materiales académicos con Quarto y GitHub.
+- **RA2:** Utilizar Google Colab para actividades prácticas con notebooks en la nube.
+- **RA3:** Elaborar documentos académicos en Overleaf/LaTeX.
+- **RA4:** Aplicar herramientas de IA (ChatGPT, Gemini, Claude, NotebookLM) en tareas docentes.
+- **RA5:** Definir criterios de uso responsable de IA en el aula.
 
-## Campus VT
 
--   [**Introducción**](00_intro/presentacion.html): introduccion general al curso y su metodologia.
--   [**GitHub**](github/presentacion.html): fundamentos de GitHub, cuenta, repositorios y proyectos.
--   [**Quarto**](quarto/presentacion.html): creacion de documentos, informes y presentaciones reproducibles.
--   [**Overleaf**](overleaf/presentacion.html): documentos academicos con formato profesional.
--   [**Google Colab**](colab/presentacion.html): notebooks en la nube para actividades practicas y colaborativas.
--   [**Inteligencia Artificial**](ia/presentacion.html): vision general de IA, herramientas y buenas practicas.
 
-## Sede VM
+## Planificación de Sesiones
 
--   [**Introducción**](00_intro/presentacion.html): introduccion general al curso y su metodologia.
--   [**GitHub**](github/presentacion.html): fundamentos de GitHub, cuenta, repositorios y proyectos.
--   [**Quarto**](quarto/presentacion.html): creacion de documentos, informes y presentaciones reproducibles.
--   [**Overleaf**](overleaf/presentacion.html): documentos academicos con formato profesional.
--   [**Google Colab**](colab/presentacion.html): notebooks en la nube para actividades practicas y colaborativas.
--   [**Inteligencia Artificial**](ia/presentacion.html): vision general de IA, herramientas y buenas practicas.
+| Sesión | Tema | Contenidos clave | Material |
+|--------|------|-----------------|----------|
+| 📘 0 | Introducción | Presentación del curso y metodología. | [Slides](00_intro/presentacion.qmd) |
+| 📗 1 | GitHub para docencia | Repositorios, flujo de trabajo y gestión de proyectos académicos. | [Slides](github/presentacion.qmd) |
+| 📙 2 | Google Colab | Notebooks en la nube, ejecución de código y colaboración. | [Slides](colab/presentacion.qmd) |
+| 📒 3 | Overleaf y LaTeX | Documentos con formato profesional y plantillas académicas. | [Slides](overleaf/presentacion.qmd) |
+| 📕 4 | Quarto para docencia | Sitios, informes y presentaciones reproducibles con GitHub Pages. | [Slides](quarto/presentacion.qmd) |
+| 📓 5 | IA para docencia | Herramientas de IA, prompting y uso responsable en el aula. | [Slides](ia/presentacion.qmd) |
 
-## Sede CC
 
--   [**Introducción**](00_intro/presentacion.html): introduccion general al curso y su metodologia.
--   [**GitHub**](github/presentacion.html): fundamentos de GitHub, cuenta, repositorios y proyectos.
--   [**Quarto**](quarto/presentacion.html): creacion de documentos, informes y presentaciones reproducibles.
--   [**Overleaf**](overleaf/presentacion.html): documentos academicos con formato profesional.
--   [**Google Colab**](colab/presentacion.html): notebooks en la nube para actividades practicas y colaborativas.
--   [**Inteligencia Artificial**](ia/presentacion.html): vision general de IA, herramientas y buenas practicas.
+## Metodología de Enseñanza y Aprendizaje
 
-:::
+La capacitación combina exposición breve, demostraciones en vivo y actividades aplicadas. Cada sesión cierra con productos concretos (repositorio, notebook, documento o recurso pedagógico) para asegurar transferencia inmediata al trabajo docente.
 
-## Certificación
 
-Al finalizar el curso, se otorgará un diploma como este:
 
-::: {style="text-align: center;"}
-<img src="images/diploma-usm.png" style="width: 50%; max-width: 600px;"/>
-:::
+## Evaluación
 
-> **Importante:**
->
-> -   La asistencia es obligatoria, salvo inasistencias justificadas y previamente informadas.
-> -   Las encuestas son requeridas para el seguimiento del curso y su mejora continua.
-> -   La certificación se otorga solo al completar todas las actividades del programa.
+| Estrategia | Resultado | Descripción | Ponderación |
+|------------|-----------|-------------|-------------|
+| Producto digital aplicado | RA1 – RA3 | Desarrollo y publicación de un recurso docente digitales. | 60% |
+| Diseño de uso de IA en aula | RA4 – RA5 | Propuesta de integración de IA con criterios pedagógicos y éticos. | 40% |
+
+
+## Requisitos de Aprobación
+
+- Asistencia mínima definida por la unidad académica.
+- Entrega de los productos solicitados en cada módulo.
+- Calificación mínima de aprobación según normativa institucional.
+
+
+
+## Requisitos Técnicos
+
+- Cuenta en [GitHub](https://github.com)
+- Cuenta Google (Drive y Colab)
+- Cuenta en [Overleaf](https://www.overleaf.com)
+- Navegador actualizado
+
+## Referencias Sugeridas
+
+**GitHub**
+
+- GitHub Docs. *GitHub para principiantes*. [https://docs.github.com](https://docs.github.com)
+- The Turing Way Community. (2022). *The Turing Way: A Handbook for Reproducible Data Science*. [https://the-turing-way.netlify.app](https://the-turing-way.netlify.app)
+
+**Google Colab**
+
+- Google. *Google Colaboratory: Welcome to Colab*. [https://colab.research.google.com](https://colab.research.google.com)
+- Géron, A. (2022). *Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow*. O'Reilly.
+
+**Overleaf y LaTeX**
+
+- Overleaf. *Learn LaTeX in 30 minutes*. [https://www.overleaf.com/learn](https://www.overleaf.com/learn)
+- Lamport, L. (1994). *LaTeX: A Document Preparation System*. Addison-Wesley.
+
+**Quarto**
+
+- Allaire, J.J. et al. (2022). *Quarto*. [https://quarto.org](https://quarto.org)
+- Wickham, H., & Grolemund, G. (2023). *R for Data Science* (2nd ed.). O'Reilly. [https://r4ds.hadley.nz](https://r4ds.hadley.nz)
+
+**Inteligencia Artificial para docencia**
+
+- OpenAI. *ChatGPT para educación*. [https://openai.com/chatgpt/education](https://openai.com/chatgpt/education)
+- Google. *NotebookLM*. [https://notebooklm.google.com](https://notebooklm.google.com)
+- Anthropic. *Claude*. [https://www.anthropic.com](https://www.anthropic.com)
+- Mollick, E. (2024). *Co-Intelligence: Living and Working with AI*. Portfolio/Penguin.

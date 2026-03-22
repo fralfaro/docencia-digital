@@ -1,0 +1,62 @@
+---
+title: "📕 Data Storytelling y Presentación de Proyectos"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+---
+
+# Introducción
+
+En esta última semana del módulo trabajaremos en la construcción de una narrativa clara, visual y efectiva a partir de los análisis realizados en las semanas anteriores. Abordaremos el concepto de **Data Storytelling** y aplicaremos principios de comunicación visual para preparar la **presentación final del proyecto**.
+
+
+
+# Objetivos de la semana
+
+- Comprender los elementos clave del Data Storytelling: audiencia, mensaje, visualización y narrativa.
+- Diseñar presentaciones efectivas utilizando herramientas como `Quarto` o `Shiny`.
+- Compartir resultados de manera clara, profesional y convincente.
+- Presentar y retroalimentar proyectos finales del curso.
+
+
+
+# Contenido a revisar
+
+- [Fundamentos de Data Storytelling](storytelling.qmd)  
+  Introducción teórica y ejemplos ilustrativos.
+
+- [Galería de Proyectos](galeria-proyectos.qmd)  
+  Ejemplos de inspiración y buenas prácticas visuales.
+
+- [Presentaciones Finales](presentaciones.qmd)  
+  Guía para exponer resultados de forma clara y atractiva.
+
+
+
+# Proyecto final
+
+Durante esta semana cada estudiante presentará un proyecto aplicado que integre:
+
+- Análisis exploratorio y estadístico con visualización
+- Una historia o narrativa basada en los hallazgos
+- Presentación clara de resultados y conclusiones
+
+**Formato libre**, puede ser:
+
+- Un informe interactivo en Quarto (`HTML`, `revealjs`)
+- Un dashboard funcional con Shiny
+
+La evaluación considerará: claridad de los gráficos, interpretación de resultados, estructura narrativa, diseño visual y calidad de la entrega.
+
+
+
+# Recursos
+
+- Cairo, A. *El arte funcional: principios del diseño de la visualización de datos*.
+- Cole Nussbaumer Knaflic, *Storytelling with Data*.
+- [https://quarto.org](https://quarto.org)
+- [https://shiny.posit.co](https://shiny.posit.co)
+
+
+

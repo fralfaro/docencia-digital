@@ -1,0 +1,772 @@
+---
+title: "Git y GitHub esencial"
+subtitle: "Control de versiones para el docente universitario"
+---
+
+Si nunca has usado Git, es probable que ya hayas resuelto el problema que Git resuelve — solo que de la peor manera posible. Tienes una carpeta que se llama `apuntes_final_v3_ESTE_SI_corregido2.docx`. O un email que dice "acá va la versión buena, ignora la anterior". O peor: perdiste una semana de trabajo porque guardaste encima del archivo equivocado.
+
+Git es la solución a ese problema. GitHub es el lugar donde ese trabajo vive, se comparte y colabora.
+
+Este capítulo no asume ningún conocimiento previo de control de versiones. Sí asume que manejas la terminal básica (abrir, navegar carpetas, correr un comando).
+
+---
+
+## ¿Qué es el control de versiones y por qué importa en docencia?
+
+### El problema que resuelve
+
+Imagina que estás desarrollando el material de tu curso a lo largo del semestre. Tienes apuntes, guías de laboratorio, enunciados de tareas, soluciones. En algún momento necesitas:
+
+- Volver a la versión del apunte de hace dos semanas porque la nueva tiene un error.
+- Saber exactamente qué cambió entre la versión que enviaste a tus estudiantes y la que tienes ahora.
+- Trabajar con un ayudante en el mismo archivo sin que uno pise el trabajo del otro.
+- Publicar la versión oficial mientras tienes una versión en desarrollo.
+
+Sin control de versiones, cada uno de esos escenarios es un problema. Con Git, son operaciones triviales de una línea.
+
+### Qué es Git
+
+**Git** es un sistema de control de versiones distribuido. "Distribuido" significa que cada persona tiene una copia completa del historial — no solo los archivos actuales, sino toda la historia de cambios desde el principio.
+
+```{mermaid}
+gitGraph
+   commit id: "versión inicial del apunte"
+   commit id: "agrego sección 2"
+   commit id: "corrijo error en ejemplo"
+   branch semestre-2025-2
+   commit id: "actualizo datos del dataset"
+   commit id: "agrego ejercicio nuevo"
+   checkout main
+   commit id: "corrijo typo reportado"
+   merge semestre-2025-2 id: "merge semestre siguiente"
+```
+
+Cada punto en ese grafo es un **commit** — una fotografía del estado de tus archivos en un momento específico. Puedes volver a cualquier fotografía anterior en cualquier momento.
+
+### Por qué importa específicamente en docencia
+
+El control de versiones resuelve problemas muy concretos del trabajo docente:
+
+| Problema docente | Solución con Git |
+|---|---|
+| "¿Cuál era la versión del enunciado que entregué?" | `git log` muestra el historial completo con fechas |
+| "Mi ayudante modificó el archivo que yo también estaba editando" | Branches separados + merge controlado |
+| "Quiero probar un cambio grande sin romper lo que funciona" | Branch nuevo, sin tocar `main` |
+| "El estudiante dice que el enunciado era diferente" | `git diff` muestra exactamente qué cambió y cuándo |
+| "Perdí el archivo" | Está en el repositorio remoto, intacto |
+| "Quiero reutilizar este material el próximo semestre" | Tags por semestre + repositorio archivado |
+
+### Git vs GitHub: la distinción que confunde a todos
+
+**Git** es el software que corre en tu computador. Funciona completamente sin internet.
+
+**GitHub** es una plataforma web que almacena repositorios Git en la nube y agrega funcionalidades de colaboración: interfaz web, issues, pull requests, GitHub Pages, Actions, etc.
+
+La analogía: Git es como tu sistema de archivos local. GitHub es como Google Drive — pero diseñado específicamente para repositorios Git, con herramientas de colaboración que Google Drive no tiene.
+
+```{mermaid}
+graph LR
+    L["💻 Tu computador\n(Git local)"] -- "git push" --> R["☁️ GitHub\n(repositorio remoto)"]
+    R -- "git pull" --> L
+    R -- "git clone" --> C["💻 Computador\nde tu ayudante"]
+    C -- "git push" --> R
+```
+
+> 🖼️ **Asset:** `assets/img/tool/tool__github.png` — logo de GitHub para encabezar esta sección visual.
+
+Puedes usar Git sin GitHub (repositorio solo local). Pero en docencia, casi siempre querrás GitHub para compartir material, publicar con GitHub Pages y colaborar con ayudantes.
+
+---
+
+## Repositorio, commit y branch: los tres conceptos clave
+
+Antes de instalar nada, entiende estos tres conceptos. Todo lo demás es mecánica.
+
+### Repositorio
+
+Un **repositorio** (o *repo*) es una carpeta que Git está rastreando. Contiene:
+
+- Tus archivos (lo que ves normalmente).
+- Una carpeta oculta `.git/` que contiene todo el historial de cambios.
+
+Puedes tener un repositorio por curso, por proyecto de investigación, por colección de charlas — tú decides la granularidad.
+
+```
+mat281-2025-1/          ← esto es el repositorio
+├── .git/               ← historial oculto, no tocar
+├── README.md
+├── lectures/
+├── labs/
+└── assignments/
+```
+
+> 🖼️ **Asset:** `assets/img/screenshot/screenshot__git-folder.png` — muestra la carpeta `.git` visible en un explorador de archivos real.
+
+### Commit
+
+Un **commit** es una fotografía de todos tus archivos en un momento específico, con:
+
+- Un identificador único (hash SHA: `a3f2c19...`).
+- Tu nombre y email (quién hizo el cambio).
+- Fecha y hora exacta.
+- Un mensaje describiendo qué cambió.
+- Una referencia al commit anterior (así se forma la cadena de historia).
+
+El flujo para crear un commit tiene tres pasos:
+
+```{mermaid}
+graph LR
+    W["📁 Working directory\n(archivos que editas)"]
+    S["📋 Staging area\n(lo que vas a commitear)"]
+    R["🗄️ Repositorio\n(historial permanente)"]
+
+    W -- "git add archivo.qmd" --> S
+    S -- "git commit -m 'mensaje'" --> R
+    R -- "git checkout / git restore" --> W
+```
+
+**Working directory:** donde editas tus archivos normalmente.
+
+**Staging area (índice):** zona intermedia donde preparas exactamente qué va en el próximo commit. Puedes modificar 5 archivos pero commitear solo 2. 
+
+**Repositorio:** el historial permanente. Una vez que algo está commiteado, está guardado.
+
+El staging parece un paso innecesario al principio, pero es poderoso: te permite construir commits lógicos y coherentes aunque hayas modificado muchas cosas a la vez.
+
+> 💡 **Imagen sugerida (no en assets):** tres cajas etiquetadas "Working", "Staging", "History" con flechas `git add` y `git commit` entre ellas. Útil como diagrama pedagógico en clase.
+
+### Branch (rama)
+
+Un **branch** es una línea paralela de desarrollo. Bifurca el camino: sigues trabajando en una versión sin afectar la otra.
+
+```{mermaid}
+gitGraph
+   commit id: "material semana 1"
+   commit id: "material semana 2"
+   branch desarrollo
+   commit id: "borrador semana 3 (incompleto)"
+   commit id: "experimento nuevo formato"
+   checkout main
+   commit id: "corrijo error semana 1 (urgente)"
+   merge desarrollo id: "semana 3 lista, merge"
+   commit id: "material semana 4"
+```
+
+En docencia, los branches más útiles son:
+
+- `main` — la versión estable que los estudiantes ven.
+- `dev` — donde preparas material antes de publicar.
+- `semestre-2025-2` — fork para adaptar el curso al siguiente semestre.
+
+El branch `main` existe por defecto. No necesitas crear más hasta que los necesites.
+
+---
+
+## Instalación y configuración inicial
+
+### Instalar Git
+
+**macOS:**
+```bash
+# Con Homebrew (recomendado)
+brew install git
+
+# Sin Homebrew: instala Xcode Command Line Tools
+xcode-select --install
+```
+
+**Windows:**
+
+Descarga Git for Windows desde [git-scm.com](https://git-scm.com/download/win). El instalador incluye **Git Bash** (terminal Unix en Windows). Durante la instalación elige VS Code como editor por defecto.
+
+**Linux (Ubuntu/Debian):**
+```bash
+sudo apt update && sudo apt install git
+```
+
+Verifica la instalación:
+```bash
+git --version
+# git version 2.43.0
+```
+
+### Configuración inicial (obligatoria, solo una vez)
+
+Antes de hacer cualquier commit, Git necesita saber quién eres:
+
+```bash
+git config --global user.name "Juan Pérez"
+git config --global user.email "juan.perez@usm.cl"
+git config --global core.editor "code --wait"    # VS Code como editor
+git config --global init.defaultBranch main
+```
+
+Esto se guarda en `~/.gitconfig` y se aplica a todos tus repositorios.
+
+Verifica que quedó bien:
+```bash
+git config --list
+# user.name=Juan Pérez
+# user.email=juan.perez@usm.cl
+# core.editor=code --wait
+# init.defaultbranch=main
+```
+
+::: {.callout-tip}
+## Usa tu email institucional
+Configura `user.email` con tu correo `@usm.cl`. Es lo que aparece en el historial de commits y lo que GitHub usa para asociar tus commits a tu perfil. Si usas un email distinto al de tu cuenta GitHub, los commits no aparecerán vinculados a tu perfil en la interfaz web.
+:::
+
+---
+
+## Clonar un repositorio y hacer push de cambios
+
+### Flujo completo desde cero
+
+Existen dos formas de empezar: crear desde GitHub o inicializar desde una carpeta local existente.
+
+#### Opción A — Crear repositorio desde GitHub (recomendado)
+
+1. Ve a [github.com](https://github.com) → botón **+** → **New repository**
+2. Nombre: `mat281-2025-1` (sin espacios, sin tildes)
+3. Descripción: "Material del curso MAT281, semestre 2025-1"
+4. Visibilidad: **Public** para compartir con estudiantes, **Private** si prefieres control de acceso
+5. Marca: ✅ **Add a README file**
+6. `.gitignore`: elige **Python** o **R** según tu curso
+7. License: **MIT License**
+8. Clic en **Create repository**
+
+> 🖼️ **Asset:** `assets/img/screenshot/screenshot__github--before.png` — formulario de creación de repositorio en GitHub.
+
+> 🖼️ **Asset:** `assets/img/screenshot/screenshot__github--after.png` — vista del repositorio recién creado con README renderizado.
+
+Ahora **clona** ese repositorio a tu máquina:
+
+```bash
+# Con HTTPS (más simple para empezar)
+git clone https://github.com/tu-username/mat281-2025-1.git
+
+# Con SSH (recomendado si ya tienes clave SSH configurada)
+git clone git@github.com:tu-username/mat281-2025-1.git
+
+# Entra a la carpeta
+cd mat281-2025-1
+
+# Verifica el estado inicial
+git status
+git log --oneline
+```
+
+#### Opción B — Inicializar desde una carpeta existente
+
+Si ya tienes una carpeta con material del semestre pasado:
+
+```bash
+cd ~/cursos/mat281-2025-1    # entra a tu carpeta existente
+
+git init                      # inicializa el repositorio Git local
+git add .                     # agrega todos los archivos al staging
+git commit -m "feat: material inicial del curso"
+
+# Conectar con GitHub (crea el repo en GitHub primero, sin marcar README)
+git remote add origin https://github.com/tu-username/mat281-2025-1.git
+git branch -M main
+git push -u origin main
+```
+
+### El ciclo de trabajo diario
+
+Una vez configurado, el flujo cotidiano es siempre el mismo:
+
+```bash
+# 1. Antes de empezar: traer cambios del remoto
+git pull
+
+# 2. Trabajar normalmente
+# ... editas lectures/semana03.qmd ...
+
+# 3. Ver qué cambió
+git status
+# On branch main
+# Changes not staged for commit:
+#   modified:   lectures/semana03.qmd
+
+# 4. Ver exactamente qué líneas cambiaron
+git diff lectures/semana03.qmd
+
+# 5. Agregar al staging
+git add lectures/semana03.qmd
+# o para agregar todo lo modificado:
+git add .
+
+# 6. Crear el commit
+git commit -m "docs: agrego material semana 3 - regresión lineal"
+
+# 7. Subir al remoto
+git push
+```
+
+### Inspeccionar el historial
+
+```bash
+# Historial completo
+git log
+
+# Historial compacto (una línea por commit) — el más útil en el día a día
+git log --oneline
+
+# Con gráfico de branches
+git log --oneline --graph --all
+
+# Ver qué archivos cambiaron en el último commit
+git show --stat HEAD
+
+# Ver qué cambió en un commit específico
+git show a3f2c19
+
+# Comparar dos commits
+git diff a3f2c19 b82e104
+```
+
+Ejemplo de `git log --oneline` de un curso real:
+```
+a3f2c19 docs: material semana 5 - series de tiempo
+b82e104 fix: corrijo error en ejemplo regresión logística
+3d91a87 docs: agrego dataset gapminder a labs/lab03
+9c1f445 feat: agrego solución lab 2 en carpeta privada
+f1c2e50 feat: estructura inicial del repositorio
+```
+
+### Volver a una versión anterior
+
+```bash
+# Ver el estado del repo en un commit pasado (modo lectura, sin modificar nada)
+git checkout a3f2c19
+# Para volver al presente:
+git checkout main
+
+# Deshacer el último commit pero conservar los cambios en los archivos
+git reset --soft HEAD~1
+
+# Recuperar un archivo específico de un commit pasado
+git checkout a3f2c19 -- lectures/semana03.qmd
+
+# Crear archivo con contenido de una versión antigua (sin modificar el actual)
+git show a3f2c19:lectures/semana03.qmd > lectures/semana03_v_antigua.qmd
+```
+
+::: {.callout-warning}
+## `git reset --hard`: úsalo con cuidado
+`git reset --hard HEAD~1` deshace el último commit **y descarta los cambios en los archivos**. Es irreversible en la práctica. Para uso docente cotidiano, `git reset --soft` es más seguro: deshace el commit pero deja tus archivos intactos para que puedas volver a commitearlos correctamente.
+:::
+
+---
+
+## README y .gitignore: lo mínimo de todo repo
+
+### El README.md
+
+El `README.md` es el primer archivo que ve cualquier persona que llega a tu repositorio. GitHub lo renderiza automáticamente en la página principal. Para un curso debe responder en 30 segundos: ¿qué es esto, para quién es, cómo se usa?
+
+**Estructura recomendada:**
+
+````markdown
+# MAT281 — Aplicaciones de la Matemática en Ingeniería
+
+**Semestre:** 2025-1  
+**Docente:** Juan Pérez — juan.perez@usm.cl  
+**Universidad:** Universidad Técnica Federico Santa María
+
+![License](https://img.shields.io/badge/license-MIT-blue)
+![Quarto](https://img.shields.io/badge/Quarto-1.5-blue)
+
+## Descripción
+
+Curso de introducción a ciencia de datos con Python para estudiantes
+de ingeniería. Cubre estadística descriptiva, visualización,
+modelamiento predictivo y comunicación de resultados.
+
+## Estructura del repositorio
+
+```
+mat281-2025-1/
+├── lectures/      # Material de clases (notebooks y slides)
+├── labs/          # Guías de laboratorio con enunciado y datos
+├── assignments/   # Enunciados de tareas
+├── datasets/      # Datos utilizados en el curso
+└── docs/          # Programa, calendario y documentos oficiales
+```
+
+## Cómo usar este repositorio
+
+```bash
+git clone https://github.com/tu-username/mat281-2025-1.git
+cd mat281-2025-1
+```
+
+## Calendario
+
+| Semana | Tema | Material |
+|--------|------|----------|
+| 1 | Introducción y configuración | [Ver](lectures/semana01/) |
+| 2 | Estadística descriptiva | [Ver](lectures/semana02/) |
+| 3 | Regresión lineal | [Ver](lectures/semana03/) |
+
+## Licencia
+
+Código bajo [MIT License](LICENSE).  
+Contenido educativo bajo [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+````
+
+> 🖼️ **Asset sugerido (no en assets):** captura de un README bien renderizado en GitHub con badges, tabla de contenidos y estructura de carpetas. Útil para mostrar el resultado final.
+
+::: {.callout-tip}
+## Herramientas para construir el README
+- **[readme.so](https://readme.so)** — editor visual de READMEs con secciones predefinidas.
+- **[shields.io](https://shields.io)** — generador de badges personalizados.
+- **[github-readme-stats](https://github.com/anuraghazra/github-readme-stats)** — tarjetas de estadísticas de actividad en GitHub.
+:::
+
+### El .gitignore
+
+El `.gitignore` le dice a Git qué archivos **no** debe rastrear. Es crítico para mantener el repositorio limpio.
+
+**¿Por qué importa?**
+
+- Cache de Python (`__pycache__/`, `.ipynb_checkpoints/`) cambia en cada ejecución y ensucia el historial.
+- Archivos del sistema operativo (`.DS_Store`, `Thumbs.db`) son basura local irrelevante.
+- Salidas de Quarto (`_site/`, `_book/`) son archivos generados — están implícitos en el código fuente.
+- Credenciales y tokens (`.env`) **nunca deben subirse a ningún repositorio**.
+
+**`.gitignore` completo para un curso con Python / R / Quarto:**
+
+```gitignore
+# ── Python ──────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+.ipynb_checkpoints/
+.env
+.venv/
+venv/
+env/
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.mypy_cache/
+
+# ── R ───────────────────────────────────────────────────
+.Rhistory
+.RData
+.Rproj.user/
+*.Rproj
+
+# ── Quarto ──────────────────────────────────────────────
+_site/
+_book/
+_freeze/
+/.quarto/
+
+# ── Jupyter ─────────────────────────────────────────────
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/
+
+# ── Datos grandes (excluir, usar DVC o Drive para estos) ─
+datasets/raw/*.csv
+datasets/raw/*.xlsx
+datasets/raw/*.parquet
+datasets/raw/*.zip
+# Conservar el placeholder de la carpeta:
+!datasets/raw/.gitkeep
+
+# ── Sistema operativo ────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+desktop.ini
+*~
+
+# ── Editores ─────────────────────────────────────────────
+.vscode/settings.json
+.idea/
+*.swp
+*.swo
+
+# ── Credenciales (NUNCA subir) ────────────────────────────
+.env
+.env.local
+*.pem
+*.key
+secrets.yaml
+config_local.py
+credentials.json
+token.json
+```
+
+::: {.callout-warning}
+## Si ya subiste un archivo que no debías
+Borrarlo con un nuevo commit **no es suficiente** — el archivo sigue en el historial de Git. Necesitas usar [BFG Repo Cleaner](https://rtyley.github.io/bfg-repo-cleaner/) o `git filter-repo` para limpiar el historial completo. La regla es: revisa siempre con `git status` antes de hacer `git add .`.
+:::
+
+**Generar `.gitignore` automáticamente:**
+
+Ve a [gitignore.io](https://www.toptal.com/developers/gitignore) e ingresa: `python`, `r`, `macos`, `windows`, `visualstudiocode`. Descarga el resultado y agrega manualmente las líneas de Quarto y datos.
+
+---
+
+## Issues y Projects para gestionar tareas docentes
+
+### Issues: el registro vivo del curso
+
+Un **Issue** en GitHub es una unidad de trabajo: algo pendiente, un problema reportado, una idea para el próximo semestre. Para un repositorio de curso, los Issues son el sistema de gestión de tareas del equipo docente.
+
+**Casos de uso docentes concretos:**
+
+```
+✅ Preparar guía lab 4 — series de tiempo
+🐛 Error en la celda 7 del notebook semana 3 (variable no definida)
+💡 Agregar ejercicio de validación cruzada en tarea 2
+📅 Actualizar dataset de la semana 5 con datos 2024
+🔄 Revisar licencia del dataset gapminder antes de publicar
+```
+
+**Crear un Issue:**
+
+1. Repositorio → tab **Issues** → **New issue**
+2. Título: breve y accionable (verbo + objeto)
+3. Descripción: contexto, pasos para reproducir si es un error, capturas si ayudan
+4. **Assignees:** asigna a quien lo resuelve
+5. **Labels:** categoriza el issue
+6. **Milestone:** asocia al semestre o unidad temática
+
+**Etiquetas recomendadas para repositorios de curso:**
+
+| Label | Color | Uso |
+|---|---|---|
+| `content` | Azul | Nuevo contenido por crear |
+| `bug` | Rojo | Error en material existente |
+| `correction` | Naranja | Corrección post-entrega |
+| `next-semester` | Gris | Pendiente para el siguiente semestre |
+| `urgent` | Rojo oscuro | Necesario antes de la próxima clase |
+| `question` | Verde | Pregunta o duda del equipo |
+
+**Cerrar un Issue desde un commit:**
+
+```bash
+git commit -m "fix: corrijo error variable no definida en notebook semana 3
+
+Closes #12"
+```
+
+Al hacer push, GitHub cierra automáticamente el Issue #12 y vincula el commit. El historial queda trazable.
+
+También funciona con: `Fixes #12`, `Resolves #12`, `Closes #12`.
+
+### Projects: el tablero Kanban del curso
+
+**GitHub Projects** es un tablero visual para gestionar Issues como tarjetas. Para un curso, una configuración simple funciona muy bien:
+
+```
+📋 MAT281 — Planificación 2025-1
+
+┌──────────────┬──────────────┬──────────────────┬────────────────┐
+│  📥 Backlog  │  🔄 En curso │  👀 Para revisar │  ✅ Publicado  │
+├──────────────┼──────────────┼──────────────────┼────────────────┤
+│ Lab 5        │ Semana 6     │ Tarea 2          │ Semanas 1-5    │
+│ Lab 6        │              │                  │ Labs 1-2-3-4   │
+│ Tarea 3      │              │                  │ Tarea 1        │
+└──────────────┴──────────────┴──────────────────┴────────────────┘
+```
+
+**Configurar el proyecto:**
+
+1. Repositorio → tab **Projects** → **New project**
+2. Elige plantilla **Board** (Kanban)
+3. Agrega columnas: `Backlog`, `En curso`, `Revisión`, `Publicado`
+4. Agrega Issues al proyecto: desde el Issue, en el panel derecho bajo **Projects**
+
+::: {.callout-tip}
+## Issues como planificación semestral
+Al inicio del semestre, crea un Issue por cada semana de material, cada guía de laboratorio y cada tarea. Asígnalos. Úsalos como lista de trabajo. Al final del semestre, el historial de Issues cerrados es un registro completo de todo lo preparado — útil para informes docentes y para planificar el siguiente semestre.
+:::
+
+---
+
+## Licencias abiertas para material educativo
+
+### Por qué importa definir una licencia
+
+Sin licencia explícita, el material publicado en GitHub tiene **todos los derechos reservados por defecto** — aunque sea público y aunque quieras que otros lo usen. Legalmente, nadie puede reutilizarlo, adaptarlo ni redistribuirlo sin tu permiso escrito.
+
+Agregar una licencia abierta es un acto de claridad: comunicas exactamente qué pueden hacer otros con tu material.
+
+### Licencias de software: para código y notebooks
+
+| Licencia | Qué permite | Restricción |
+|---|---|---|
+| **MIT** | Todo: usar, copiar, modificar, distribuir, comercializar | Solo mantener el aviso de copyright |
+| **Apache 2.0** | Igual que MIT + protección explícita de patentes | Mantener NOTICE y LICENSE |
+| **GPL v3** | Usar, modificar, distribuir | Las obras derivadas deben ser también GPL ("copyleft") |
+
+**Recomendación para cursos:** MIT. Es la más simple, más permisiva y la más usada en educación. Permite que otros docentes tomen tus notebooks y los adapten sin burocracia.
+
+### Licencias Creative Commons: para contenido educativo
+
+Las CC están diseñadas para obras no-software (texto, imágenes, slides, apuntes). Se construyen combinando cuatro módulos:
+
+| Módulo | Qué significa |
+|---|---|
+| **BY** | Debes dar crédito al autor original |
+| **SA** | Las obras derivadas deben usar la misma licencia |
+| **NC** | Solo uso no comercial |
+| **ND** | Sin obras derivadas — solo redistribuir tal cual |
+
+**Las más usadas en educación:**
+
+**CC BY 4.0** — la más abierta. Cualquier uso (incluso comercial) con solo dar crédito. Recomendada para material que quieres que se difunda.
+
+```
+Este material está bajo CC BY 4.0.
+Puedes compartirlo y adaptarlo con atribución.
+https://creativecommons.org/licenses/by/4.0/
+```
+
+**CC BY-SA 4.0** — igual que BY pero las adaptaciones deben mantener la misma licencia. Efecto "viral" similar a GPL.
+
+**CC BY-NC 4.0** — permite uso y adaptación pero no comercial. Más restrictiva; puede complicar uso en algunas plataformas de MOOCs.
+
+**CC BY-NC-SA 4.0** — la más restrictiva de las abiertas. No comercial + mismo tipo de licencia en derivados.
+
+> 🖼️ **Asset sugerido (no en assets):** diagrama de los 6 tipos de licencias CC como íconos, estilo infografía. Muy útil para mostrar en clase.
+
+### Combinación recomendada para un repositorio de curso
+
+```
+Código (notebooks, scripts R/Python):    MIT License
+Contenido (apuntes, slides, guías):      CC BY 4.0
+```
+
+**Implementación:**
+
+**1. Archivo `LICENSE` en la raíz (MIT para el código):**
+
+```
+MIT License
+
+Copyright (c) 2025 Juan Pérez
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject
+to the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+**2. Sección en el README:**
+
+```markdown
+## Licencia
+
+El código de este repositorio (notebooks, scripts) está bajo
+[MIT License](LICENSE).
+
+El material educativo (apuntes, slides, guías de laboratorio) está bajo
+[Creative Commons BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+
+En ambos casos: puedes usar, compartir y adaptar el material
+citando la fuente original.
+```
+
+::: {.callout-note}
+## Licencia y política institucional
+Antes de publicar material con licencia abierta, verifica la política de propiedad intelectual de tu institución. En algunas universidades, el material producido en el contexto laboral puede tener restricciones. En la UTFSM, el uso de CC para material docente es práctica habitual, pero consulta con la Dirección de Docencia si tienes dudas sobre un caso específico.
+:::
+
+---
+
+## Resumen: el repositorio mínimo de un curso
+
+Al terminar este capítulo, un repositorio bien configurado tiene esta estructura:
+
+```
+mat281-2025-1/
+├── .git/                        # historial de Git (automático)
+├── .gitignore                   # archivos excluidos del repo
+├── LICENSE                      # licencia MIT para el código
+├── README.md                    # portada del repositorio
+│
+├── lectures/                    # material de clases
+│   ├── semana01/
+│   │   ├── notebook.ipynb
+│   │   └── slides.qmd
+│   └── semana02/
+│       └── notebook.ipynb
+│
+├── labs/                        # guías de laboratorio
+│   ├── lab01/
+│   │   ├── enunciado.qmd
+│   │   ├── datos.csv
+│   │   └── solucion/            # branch separado o carpeta privada
+│   └── lab02/
+│
+├── assignments/                 # tareas
+│   └── tarea01/
+│       └── enunciado.qmd
+│
+└── datasets/
+    ├── raw/
+    │   └── .gitkeep             # placeholder (datos reales en .gitignore)
+    └── processed/
+        └── .gitkeep
+```
+
+Y el flujo de trabajo semanal que usarás:
+
+```bash
+# Lunes: preparar material de la semana
+git pull
+# ... crear/editar archivos ...
+git add lectures/semana05/
+git commit -m "docs: material semana 5 - series de tiempo"
+git push
+
+# Después de clase: corregir errores del pizarrón
+git add lectures/semana05/notebook.ipynb
+git commit -m "fix: corrijo notación en demostración teorema 3"
+git push
+
+# Fin de semestre: etiquetar la versión
+git tag -a v2025-1 -m "Cierre semestre 2025-1"
+git push origin v2025-1
+```
+
+Con esto tienes control total sobre tu material: quién cambió qué, cuándo, por qué, y la capacidad de volver a cualquier punto del historial en segundos.
+
+---
+
+## Referencias
+
+- Chacon, S. & Straub, B. (2014). *Pro Git* (2ª ed.). Apress. Disponible en: [git-scm.com/book/es/v2](https://git-scm.com/book/es/v2)
+- GitHub Docs. *Introducción a Git*. [docs.github.com/es](https://docs.github.com/es/get-started/using-git/about-git)
+- The Turing Way Community. (2022). *Version Control for Research*. [the-turing-way.netlify.app](https://the-turing-way.netlify.app/reproducible-research/vcs)
+- Creative Commons. *Licencias CC — cómo elegir*. [creativecommons.org/choose](https://creativecommons.org/choose/?lang=es)
+- [learngitbranching.js.org](https://learngitbranching.js.org/?locale=es_ES) — tutorial interactivo de Git, muy recomendado para mostrar a estudiantes en clase.
+- [gitignore.io](https://www.toptal.com/developers/gitignore) — generador de `.gitignore` por lenguaje y entorno.

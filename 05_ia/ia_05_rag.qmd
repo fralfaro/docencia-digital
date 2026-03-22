@@ -1,0 +1,770 @@
+---
+title: "Chatbots y RAG"
+subtitle: "Construir asistentes sobre tu propio material sin código y con código"
+---
+
+El capítulo anterior cubrió NotebookLM — la implementación más accesible de RAG para docentes. Este capítulo profundiza en el concepto técnico y lo extiende: cómo funciona RAG por dentro, cuándo NotebookLM no es suficiente, qué alternativas sin código existen, y una introducción al territorio de las herramientas con código (LangChain, LlamaIndex) para quien quiera ir más lejos.
+
+---
+
+## Qué es RAG y cómo funciona
+
+### El problema que RAG resuelve
+
+Los modelos de lenguaje tienen dos limitaciones fundamentales para uso docente:
+
+**1. Fecha de corte:** no saben nada posterior a su entrenamiento.
+**2. Sin acceso a tu material específico:** no conocen tu syllabus, tus apuntes, tus rúbricas.
+
+La solución naïve sería incluir todo el material en el prompt. El problema: los prompts tienen límites de tamaño, son costosos, y el modelo tiene dificultad para recuperar información específica de documentos muy largos.
+
+**RAG** (Retrieval-Augmented Generation) resuelve esto con una arquitectura más elegante: en lugar de meter todo en el prompt, *recupera* solo los fragmentos relevantes en el momento en que se necesitan.
+
+### La arquitectura RAG paso a paso
+
+```{mermaid}
+graph TD
+    subgraph "Fase de indexación (una sola vez)"
+        DOC["📄 Tus documentos\n(PDF, Markdown, URLs)"]
+        CHUNK["✂️ Chunking\nDividir en fragmentos\nde 500-1000 tokens"]
+        EMB["🔢 Embedding\nConvertir fragmentos\na vectores numéricos"]
+        VDB["🗄️ Vector database\nAlmacenar los vectores\n(Chroma, FAISS, Pinecone)"]
+        DOC --> CHUNK --> EMB --> VDB
+    end
+
+    subgraph "Fase de inferencia (cada pregunta)"
+        Q["❓ Pregunta del usuario\n'¿Cuánto vale el Lab 3?'"]
+        QE["🔢 Embedding de la pregunta"]
+        RET["🔍 Búsqueda semántica\nTop-K fragmentos más similares"]
+        CTX["📋 Contexto recuperado\nLos fragmentos relevantes"]
+        LLM["🧠 LLM\n(Claude, GPT, Gemini)"]
+        ANS["💬 Respuesta\ncon citas de tus documentos"]
+
+        Q --> QE
+        QE --> RET
+        VDB --> RET
+        RET --> CTX
+        CTX --> LLM
+        Q --> LLM
+        LLM --> ANS
+    end
+```
+
+### Los componentes técnicos
+
+**Chunking:** dividir documentos largos en fragmentos manejables. El tamaño importa:
+
+| Chunk size | Ventaja | Desventaja |
+|---|---|---|
+| Pequeño (~200 tokens) | Recuperación precisa | Pierde contexto, fragmenta ideas |
+| Mediano (~500 tokens) | Balance | — |
+| Grande (~1000 tokens) | Preserva contexto | Recupera información irrelevante |
+
+**Embeddings:** representaciones vectoriales del significado del texto. Dos fragmentos semánticamente similares tienen vectores cercanos en el espacio de embedding, aunque usen palabras distintas.
+
+```python
+# Ejemplo conceptual de embeddings
+fragmento_1 = "La nota mínima de aprobación es 4.0"
+fragmento_2 = "Para pasar el curso necesitas al menos un 4.0"
+# Ambos tienen embeddings muy similares aunque las palabras sean distintas
+
+pregunta = "¿Qué nota necesito para aprobar?"
+# El embedding de la pregunta es similar al de ambos fragmentos
+# → El retriever los recupera ambos
+```
+
+**Vector database:** base de datos optimizada para búsqueda por similitud de vectores. Alternativas comunes: FAISS (local, gratuito), Chroma (local, fácil de usar), Pinecone (cloud, escalable).
+
+**Búsqueda semántica vs léxica:** la búsqueda tradicional busca palabras exactas. La búsqueda semántica busca significado:
+
+```
+Pregunta: "¿Cuándo es la evaluación de mitad de semestre?"
+
+Búsqueda léxica: busca "evaluación" + "mitad" + "semestre"
+→ Puede fallar si el documento dice "Prueba 1" o "midterm"
+
+Búsqueda semántica: busca conceptos relacionados
+→ Encuentra "Prueba 1 — semana 8" aunque no diga "mitad de semestre"
+```
+
+---
+
+## Diferencia entre chatbot genérico y chatbot sobre documentos propios
+
+### Por qué importa la distinción
+
+```{mermaid}
+graph LR
+    subgraph "Chatbot genérico (ChatGPT sin archivos)"
+        Q1["'¿Qué dice el syllabus\nsobre las recuperaciones?'"]
+        M1["🧠 Conocimiento general\nde miles de syllabi\nde miles de cursos"]
+        A1["Respuesta genérica:\n'Típicamente los cursos\ntienen una recuperación...'"]
+        Q1 --> M1 --> A1
+    end
+
+    subgraph "Chatbot RAG (sobre tu material)"
+        Q2["'¿Qué dice el syllabus\nsobre las recuperaciones?'"]
+        M2["📄 TU syllabus específico\nde este semestre"]
+        A2["Respuesta específica:\n'Según tu programa 2025-1:\nRecuperación Prueba 1 el 15 de junio...'"]
+        Q2 --> M2 --> A2
+    end
+```
+
+**El chatbot genérico** responde desde su conocimiento de entrenamiento — útil para conceptos generales, pero no sabe nada específico de tu curso.
+
+**El chatbot RAG sobre tu material** responde solo desde tus documentos — puede dar información incorrecta si no está en el documento, pero lo que sí responde es preciso y trazable.
+
+### Cuándo usar cada uno
+
+| Necesidad | Herramienta |
+|---|---|
+| Explicar regresión lineal en términos simples | ChatGPT / Claude genérico |
+| Qué dice MI syllabus sobre atrasos | RAG sobre tu syllabus |
+| Generar preguntas de examen sobre un tema | ChatGPT / Claude + prompt detallado |
+| Qué dice mi apunte sobre homocedasticidad | RAG sobre tus apuntes |
+| Buscar papers recientes sobre ML en educación | Perplexity / Gemini (con internet) |
+| Responder dudas 24/7 sobre TU curso | RAG configurado con tu material |
+
+---
+
+## Herramientas sin código
+
+### NotebookLM (ya cubierto en el capítulo anterior)
+
+La opción más recomendada para la mayoría de los docentes. Ver Capítulo 3 de esta sesión para la guía completa.
+
+### ChatGPT con archivos (Projects)
+
+**ChatGPT Projects** permite subir archivos que el modelo usa como contexto en todas las conversaciones del proyecto.
+
+**Configuración:**
+
+1. En ChatGPT → **+** → **New project**
+2. Nombre: "Asistente MAT281 2025-1"
+3. **+ Add files** → subir PDFs del curso
+4. En **Custom instructions**: configurar el rol del asistente
+
+```
+Custom instructions para el proyecto:
+
+Eres el asistente del curso MAT281 (Aplicaciones de la Matemática en
+Ingeniería) de la UTFSM, semestre 2025-1.
+
+Responde preguntas sobre el programa, evaluaciones, contenido y
+laboratorios del curso usando los archivos subidos.
+
+Si la pregunta no puede responderse con los archivos disponibles,
+di explícitamente: "Esta información no está en el material disponible.
+Consulta directamente al profesor."
+
+No proporciones soluciones a evaluaciones ni codes completos para
+los laboratorios — orienta al estudiante con preguntas o pistas.
+
+Tono: académico, cordial, directo.
+Idioma: español.
+```
+
+**Diferencias con NotebookLM:**
+
+| Característica | ChatGPT Projects | NotebookLM |
+|---|---|---|
+| Límite de archivos | Sin límite explícito | 50 fuentes |
+| Citas de fuente | No siempre | Sí, siempre con cita |
+| Audio Overview | No | Sí |
+| Precio | ChatGPT Plus (USD 20/mes) | Gratis |
+| Compartir con estudiantes | Link de conversación | Link de notebook |
+| Alucinaciones | Mayor riesgo | Menor riesgo |
+
+### Poe (Quora)
+
+[poe.com](https://poe.com) es una plataforma que permite crear chatbots personalizados (llamados "bots") con instrucciones de sistema y, en algunos planes, subir documentos como base de conocimiento.
+
+**Para docencia:**
+
+```
+Crear bot en Poe:
+1. poe.com → Create Bot
+2. Nombre: "Asistente MAT281"
+3. Prompt del sistema: [las instrucciones de asistente del curso]
+4. Modelo base: GPT-4o, Claude 3.5, u otros disponibles
+5. Compartir: link público o privado con los estudiantes
+```
+
+**Ventajas:** más flexible que NotebookLM para personalizar el comportamiento, permite elegir el modelo base, puede compartirse sin que los estudiantes necesiten cuenta.
+
+**Desventajas:** el soporte de documentos es más limitado que NotebookLM, el plan gratuito tiene límites de mensajes diarios.
+
+### Perplexity
+
+[perplexity.ai](https://perplexity.ai) combina búsqueda web con modelo de lenguaje — responde con información actualizada y cita las fuentes. No es RAG sobre tu material propio, pero sí es útil para:
+
+- Preguntas que requieren información reciente (librerías actualizadas, papers de 2024-2025).
+- Verificar afirmaciones antes de incluirlas en el material.
+- Buscar datasets y recursos externos citados.
+
+```
+Caso de uso: "¿Cuáles son los últimos benchmarks de modelos de clasificación
+en el dataset de deserción universitaria de Chile? ¿Hay papers de 2024?"
+→ Perplexity busca en tiempo real y cita las fuentes
+```
+
+### Comparativa rápida de herramientas sin código
+
+| Herramienta | Costo | RAG propio | Citas | Compartir | Mejor para |
+|---|---|---|---|---|---|
+| **NotebookLM** | Gratis | ✅ (50 fuentes) | ✅ siempre | ✅ link | Asistente del curso, Audio Overview |
+| **ChatGPT Projects** | USD 20/mes | ✅ | ⚠️ a veces | ⚠️ limitado | Asistente con GPT-4o |
+| **Claude Projects** | USD 20/mes | ✅ (200K tokens) | ⚠️ a veces | ✅ | Documentos largos |
+| **Poe** | Gratis/Plus | ⚠️ limitado | ❌ | ✅ público | Chatbot personalizable |
+| **Perplexity** | Gratis/Plus | ❌ | ✅ (web) | ✅ | Búsqueda actualizada |
+
+---
+
+## Herramientas con código: LangChain y LlamaIndex
+
+Para quien quiere ir más allá de las herramientas no-code — sea por necesidades específicas, para investigación, o para integrar el chatbot en un sistema institucional — LangChain y LlamaIndex son los frameworks de Python más usados para construir aplicaciones RAG.
+
+### Cuándo tiene sentido usar código
+
+Antes de entrar al código, la pregunta honesta: ¿necesitas realmente esto?
+
+```
+Usa herramientas no-code si:
+✅ Tu objetivo es tener un asistente del curso funcionando esta semana
+✅ No tienes tiempo para mantener código en producción
+✅ NotebookLM o Claude Projects cumplen el caso de uso
+
+Considera código si:
+→ Necesitas integrar el chatbot en un sistema institucional (LMS, intranet)
+→ Quieres personalizar el chunking, el retriever o el modelo
+→ Procesas documentos de forma automática (nuevos archivos cada semana)
+→ Quieres control total sobre qué datos se envían a qué servicio
+→ Es parte de un proyecto de investigación o tesis
+```
+
+### LlamaIndex: orientado a documentos e indexación
+
+LlamaIndex está diseñado específicamente para construir pipelines de indexación y recuperación de documentos. Su API es más simple que LangChain para el caso de uso RAG básico.
+
+```python
+# Instalación
+# pip install llama-index llama-index-llms-anthropic llama-index-embeddings-openai
+
+from llama_index.core import VectorStoreIndex, SimpleDirectoryReader
+from llama_index.llms.anthropic import Anthropic
+from llama_index.core import Settings
+
+# ── Configuración ──────────────────────────────────────────────
+Settings.llm = Anthropic(model="claude-sonnet-4-20250514")
+# Settings.embed_model = OpenAIEmbedding()  # o usar embeddings locales
+
+# ── Cargar documentos ──────────────────────────────────────────
+# SimpleDirectoryReader carga todos los archivos de una carpeta
+documentos = SimpleDirectoryReader(
+    input_dir="material_curso/",   # carpeta con PDFs, .txt, .md
+    recursive=True,                 # incluir subcarpetas
+    required_exts=[".pdf", ".md", ".txt"]
+).load_data()
+
+print(f"Cargados {len(documentos)} fragmentos de documentos")
+
+# ── Crear el índice vectorial ──────────────────────────────────
+# LlamaIndex hace el chunking y embedding automáticamente
+indice = VectorStoreIndex.from_documents(
+    documentos,
+    show_progress=True
+)
+
+# ── Persistir el índice (para no reindexar cada vez) ──────────
+indice.storage_context.persist(persist_dir="indice_curso/")
+
+# ── Crear el motor de consultas ────────────────────────────────
+motor = indice.as_query_engine(
+    similarity_top_k=4,          # recuperar los 4 fragmentos más similares
+    response_mode="compact",     # modo de respuesta compacto
+    verbose=True                 # mostrar qué fragmentos recuperó
+)
+
+# ── Consultar ─────────────────────────────────────────────────
+respuesta = motor.query(
+    "¿Cuánto vale la Prueba 1 en la nota final del curso?"
+)
+
+print(respuesta.response)
+print("\nFuentes:")
+for nodo in respuesta.source_nodes:
+    print(f"  Score: {nodo.score:.3f} | {nodo.metadata.get('file_name', 'N/A')}")
+```
+
+**Cargar el índice persistido (sin reindexar):**
+
+```python
+from llama_index.core import StorageContext, load_index_from_storage
+
+# Cargar índice existente
+storage_context = StorageContext.from_defaults(persist_dir="indice_curso/")
+indice = load_index_from_storage(storage_context)
+motor = indice.as_query_engine(similarity_top_k=4)
+
+# Ya listo para consultas
+respuesta = motor.query("¿Qué datasets se usan en los laboratorios?")
+```
+
+### LangChain: orquestación de pipelines complejos
+
+LangChain es más general que LlamaIndex — permite construir pipelines donde el LLM no solo responde sino que toma decisiones, llama herramientas externas, y encadena múltiples pasos.
+
+```python
+# pip install langchain langchain-anthropic langchain-community faiss-cpu
+
+from langchain_anthropic import ChatAnthropic
+from langchain_community.document_loaders import DirectoryLoader, PyPDFLoader
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_community.vectorstores import FAISS
+from langchain.chains import RetrievalQA
+from langchain.prompts import PromptTemplate
+
+# ── 1. Cargar documentos ───────────────────────────────────────
+loader = DirectoryLoader(
+    "material_curso/",
+    glob="**/*.pdf",
+    loader_cls=PyPDFLoader,
+    show_progress=True
+)
+documentos_raw = loader.load()
+print(f"Páginas cargadas: {len(documentos_raw)}")
+
+# ── 2. Chunking ────────────────────────────────────────────────
+splitter = RecursiveCharacterTextSplitter(
+    chunk_size=800,          # tokens por fragmento
+    chunk_overlap=150,       # solapamiento para no perder contexto
+    separators=["\n\n", "\n", ". ", " "]  # puntos de corte preferidos
+)
+chunks = splitter.split_documents(documentos_raw)
+print(f"Fragmentos creados: {len(chunks)}")
+
+# ── 3. Embeddings locales (sin costo de API) ───────────────────
+# Alternativa gratuita: modelo de HuggingFace que corre localmente
+embeddings = HuggingFaceEmbeddings(
+    model_name="sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+    # Modelo multilingüe que funciona bien en español
+)
+
+# ── 4. Vector store ────────────────────────────────────────────
+vectorstore = FAISS.from_documents(chunks, embeddings)
+vectorstore.save_local("vectorstore_curso/")   # guardar en disco
+
+# ── 5. Prompt personalizado ────────────────────────────────────
+TEMPLATE_ASISTENTE = """Eres el asistente oficial del curso MAT281
+(Aplicaciones de la Matemática en Ingeniería) de la UTFSM.
+
+Usa EXCLUSIVAMENTE la siguiente información del curso para responder:
+
+{context}
+
+Si la información no está en el contexto, responde:
+"Esta información no está en el material disponible del curso."
+
+No inventes información. No uses conocimiento externo al contexto dado.
+
+Pregunta: {question}
+Respuesta en español:"""
+
+prompt = PromptTemplate(
+    template=TEMPLATE_ASISTENTE,
+    input_variables=["context", "question"]
+)
+
+# ── 6. Cadena RAG ─────────────────────────────────────────────
+llm = ChatAnthropic(
+    model="claude-sonnet-4-20250514",
+    temperature=0,           # 0 = máxima precisión, mínima creatividad
+    max_tokens=1000
+)
+
+retriever = vectorstore.as_retriever(
+    search_type="similarity",
+    search_kwargs={"k": 4}   # recuperar top-4 fragmentos
+)
+
+cadena_rag = RetrievalQA.from_chain_type(
+    llm=llm,
+    chain_type="stuff",      # "stuff" = meter todos los fragmentos en el prompt
+    retriever=retriever,
+    chain_type_kwargs={"prompt": prompt},
+    return_source_documents=True,
+    verbose=False
+)
+
+# ── 7. Hacer consultas ─────────────────────────────────────────
+def consultar(pregunta: str) -> None:
+    resultado = cadena_rag.invoke({"query": pregunta})
+    print(f"\nPregunta: {pregunta}")
+    print(f"\nRespuesta:\n{resultado['result']}")
+    print("\nFuentes:")
+    for doc in resultado['source_documents']:
+        fuente = doc.metadata.get('source', 'N/A')
+        pagina = doc.metadata.get('page', '?')
+        print(f"  → {fuente}, p.{pagina}")
+
+# Pruebas
+consultar("¿Cuánto vale la Prueba 1?")
+consultar("¿Cuáles son los criterios de evaluación del Lab 3?")
+consultar("¿Puedo usar calculadora en el examen?")
+```
+
+### Interfaz web simple con Streamlit
+
+Para convertir el chatbot en una aplicación web que los estudiantes puedan usar sin instalar nada:
+
+```python
+# app.py — Asistente del curso con interfaz web
+# pip install streamlit langchain langchain-anthropic faiss-cpu
+
+import streamlit as st
+from langchain_community.vectorstores import FAISS
+from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_anthropic import ChatAnthropic
+from langchain.chains import RetrievalQA
+from langchain.prompts import PromptTemplate
+
+# Configuración de la página
+st.set_page_config(
+    page_title="Asistente MAT281",
+    page_icon="🤖",
+    layout="centered"
+)
+
+st.title("🤖 Asistente MAT281")
+st.caption("Basado en el material oficial del curso. Responde solo con información del syllabus y apuntes.")
+
+# Cargar vectorstore (una sola vez gracias al cache)
+@st.cache_resource
+def cargar_sistema():
+    embeddings = HuggingFaceEmbeddings(
+        model_name="sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+    )
+    vectorstore = FAISS.load_local(
+        "vectorstore_curso/",
+        embeddings,
+        allow_dangerous_deserialization=True
+    )
+
+    PROMPT = PromptTemplate(
+        template="""Eres el asistente del curso MAT281 de la UTFSM.
+Usa SOLO esta información para responder: {context}
+Si no está en el contexto, di: "Esta información no está disponible."
+Pregunta: {question}
+Respuesta:""",
+        input_variables=["context", "question"]
+    )
+
+    llm = ChatAnthropic(model="claude-sonnet-4-20250514", temperature=0)
+    cadena = RetrievalQA.from_chain_type(
+        llm=llm,
+        retriever=vectorstore.as_retriever(search_kwargs={"k": 4}),
+        chain_type_kwargs={"prompt": PROMPT},
+        return_source_documents=True
+    )
+    return cadena
+
+cadena = cargar_sistema()
+
+# Historial de conversación
+if "mensajes" not in st.session_state:
+    st.session_state.mensajes = []
+
+# Mostrar historial
+for msg in st.session_state.mensajes:
+    with st.chat_message(msg["rol"]):
+        st.write(msg["contenido"])
+
+# Input del usuario
+if pregunta := st.chat_input("Pregunta sobre el curso..."):
+    # Mostrar pregunta
+    with st.chat_message("user"):
+        st.write(pregunta)
+    st.session_state.mensajes.append({"rol": "user", "contenido": pregunta})
+
+    # Generar respuesta
+    with st.chat_message("assistant"):
+        with st.spinner("Buscando en el material del curso..."):
+            resultado = cadena.invoke({"query": pregunta})
+            respuesta = resultado["result"]
+            fuentes = resultado["source_documents"]
+
+        st.write(respuesta)
+
+        # Mostrar fuentes
+        if fuentes:
+            with st.expander("📄 Fuentes"):
+                for doc in fuentes:
+                    fuente = doc.metadata.get("source", "N/A")
+                    pagina = doc.metadata.get("page", "?")
+                    st.caption(f"→ {fuente}, p.{pagina}")
+
+    st.session_state.mensajes.append({"rol": "assistant", "contenido": respuesta})
+```
+
+```bash
+# Ejecutar localmente
+streamlit run app.py
+
+# Para que los estudiantes accedan, necesitas un servidor o usar:
+# streamlit share (gratuito para apps públicas)
+```
+
+---
+
+## Límites y riesgos: respuestas incorrectas, privacidad
+
+### Cuándo RAG falla
+
+RAG no es perfecto. Los principales modos de falla:
+
+**1. El fragmento relevante no fue recuperado**
+
+Si el retriever no encuentra el fragmento correcto (porque la pregunta usa palabras muy distintas al documento), el LLM responde sin contexto y puede alucinar.
+
+```python
+# Diagnóstico: verificar qué fragmentos recupera el retriever
+resultado = cadena_rag.invoke({"query": "¿Cuándo es la Prueba 1?"})
+for doc in resultado['source_documents']:
+    print(doc.page_content[:200])  # ver los primeros 200 chars de cada fragmento
+```
+
+Si el fragmento correcto no aparece, ajusta:
+- Aumentar `k` (recuperar más fragmentos).
+- Revisar el chunking (fragmentos demasiado grandes pueden "diluir" la información relevante).
+- Usar búsqueda híbrida (semántica + léxica).
+
+**2. El fragmento fue recuperado pero el contexto es insuficiente**
+
+```
+Documento: "Las recuperaciones son el 15 de junio."
+Pregunta: "¿Qué pasa si reprobo la prueba 1?"
+
+El retriever recupera el fragmento correcto, pero el LLM no sabe
+si hay algún requisito adicional (nota mínima, asistencia) porque
+esa información está en otro fragmento que no fue recuperado.
+```
+
+Solución: aumentar el tamaño del chunk o usar técnicas de recuperación jerárquica.
+
+**3. El LLM ignora el contexto y responde desde su entrenamiento**
+
+Incluso con instrucciones claras de "responde solo con el contexto", los modelos a veces mezclan con su conocimiento general. Esto es especialmente problemático para información específica del curso.
+
+```python
+# Temperatura 0 reduce (pero no elimina) este comportamiento
+llm = ChatAnthropic(
+    model="claude-sonnet-4-20250514",
+    temperature=0  # determinístico
+)
+
+# Instrucción más estricta en el prompt:
+TEMPLATE = """...
+IMPORTANTE: Si la información NO está en el contexto de abajo,
+responde LITERALMENTE: "Información no disponible en el material del curso."
+No uses ningún otro conocimiento. No hagas inferencias.
+...
+"""
+```
+
+**4. Respuestas contradictorias entre fragmentos**
+
+Si el syllabus del año pasado y el del año en curso están ambos indexados, el retriever puede recuperar fragmentos de ambos y el LLM puede mezclarlos.
+
+Solución: asegurarse de indexar solo el material del semestre actual, o agregar metadatos de versión y filtrar por ellos.
+
+### Riesgos de privacidad
+
+```{mermaid}
+graph TD
+    R["⚠️ Riesgos de privacidad en RAG docente"]
+    R --> R1["📋 Datos de estudiantes\nen los documentos\nindexados"]
+    R --> R2["☁️ Envío de fragmentos\na APIs de terceros\n(OpenAI, Anthropic)"]
+    R --> R3["🗄️ Almacenamiento\ndel vectorstore\nen infraestructura externa"]
+    R --> R4["🔓 Acceso no autorizado\nal índice vectorial\nsi se comparte"]
+
+    R1 --> S1["✅ Solución: anonimizar\nantes de indexar"]
+    R2 --> S2["✅ Solución: usar embeddings\nlocales (HuggingFace)"]
+    R3 --> S3["✅ Solución: vectorstore\nlocal (FAISS) en disco propio"]
+    R4 --> S4["✅ Solución: no publicar\nel vectorstore, solo la app"]
+```
+
+**Lo que pasa cuando usas embeddings de OpenAI o Anthropic:**
+
+Cada fragmento de tu documento se envía como texto a la API para ser convertido a vector. Esto significa que el contenido del documento pasa por los servidores de la empresa.
+
+**Alternativa con embeddings locales (gratis, sin envío de datos):**
+
+```python
+# Embeddings locales con HuggingFace — corren en tu máquina
+# pip install sentence-transformers
+
+from langchain_community.embeddings import HuggingFaceEmbeddings
+
+embeddings = HuggingFaceEmbeddings(
+    model_name="sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+    # Modelo multilingüe de 50MB, corre localmente
+    # Calidad menor que OpenAI text-embedding-3, pero suficiente para docs del curso
+    model_kwargs={"device": "cpu"}
+)
+```
+
+**Reglas de privacidad para RAG docente:**
+
+```
+NUNCA indexar:
+- Documentos con nombres y datos de estudiantes
+- Notas individuales
+- Evaluaciones no publicadas (mientras están vigentes)
+- Documentos institucionales confidenciales
+
+SÍ indexar (sin problema):
+- Syllabus y programa del curso
+- Apuntes y material publicado
+- Enunciados de laboratorios ya publicados
+- Rúbricas publicadas a los estudiantes
+- FAQs de consultas previas (anonimizadas)
+```
+
+### Costos de operación
+
+Para referencia al evaluar si usar API externa o embeddings locales:
+
+| Componente | Opción gratuita | Opción de pago |
+|---|---|---|
+| Embeddings | HuggingFace local | OpenAI (~USD 0.02/millón tokens) |
+| Vector store | FAISS local | Pinecone, Weaviate cloud |
+| LLM | Claude gratuito (límites) | Claude Pro / API (~USD 0.003/1K tokens) |
+| Hosting | Local / Streamlit Community | Render, Railway, GCP |
+
+Para un curso de 35 estudiantes con uso moderado:
+
+```
+Estimación mensual con API:
+- Indexación inicial: ~50 páginas × 500 tokens/página = 25K tokens → ~USD 0.05
+- Consultas: 35 estudiantes × 10 consultas/mes × 1K tokens/consulta = 350K tokens → ~USD 1.05
+Total estimado: USD 1-3/mes para uso real de clase
+```
+
+---
+
+## Ejemplo completo: asistente del curso desplegado
+
+### El flujo completo en producción
+
+```
+1. Preparar material
+   ↓ (manual, una vez por semestre)
+2. Indexar documentos
+   python indexar.py
+   ↓ (automático, ~5 minutos para 50 PDFs)
+3. Probar localmente
+   streamlit run app.py
+   ↓ (verificar respuestas)
+4. Desplegar en Streamlit Community Cloud
+   git push → deploy automático
+   ↓ (gratuito para apps públicas)
+5. Compartir URL con estudiantes
+   https://mat281-asistente.streamlit.app
+```
+
+### Script de indexación completo
+
+```python
+# indexar.py — Script para (re)indexar el material del curso
+
+import pathlib
+from langchain_community.document_loaders import PyPDFLoader, DirectoryLoader
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_community.vectorstores import FAISS
+import json
+
+def indexar_material(
+    carpeta: str = "material_curso/",
+    output: str = "vectorstore_curso/",
+    chunk_size: int = 800,
+    chunk_overlap: int = 150
+) -> None:
+    """
+    Indexa todos los PDFs de una carpeta y guarda el vectorstore.
+
+    Uso:
+        python indexar.py
+    """
+    carpeta_path = pathlib.Path(carpeta)
+
+    # Verificar que existen documentos
+    pdfs = list(carpeta_path.rglob("*.pdf"))
+    mds  = list(carpeta_path.rglob("*.md"))
+    print(f"Encontrados: {len(pdfs)} PDFs, {len(mds)} Markdowns")
+
+    if not pdfs and not mds:
+        raise ValueError(f"No se encontraron documentos en {carpeta}")
+
+    # Cargar documentos
+    all_docs = []
+
+    for pdf in pdfs:
+        loader = PyPDFLoader(str(pdf))
+        docs = loader.load()
+        # Agregar metadatos del archivo
+        for doc in docs:
+            doc.metadata['archivo'] = pdf.name
+            doc.metadata['tipo'] = 'PDF'
+        all_docs.extend(docs)
+        print(f"  ✓ {pdf.name}: {len(docs)} páginas")
+
+    # Chunking
+    splitter = RecursiveCharacterTextSplitter(
+        chunk_size=chunk_size,
+        chunk_overlap=chunk_overlap,
+        separators=["\n\n", "\n", ". ", " "]
+    )
+    chunks = splitter.split_documents(all_docs)
+    print(f"\nFragmentos totales: {len(chunks)}")
+
+    # Embeddings locales
+    print("Generando embeddings (puede tardar 2-5 minutos)...")
+    embeddings = HuggingFaceEmbeddings(
+        model_name="sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+        model_kwargs={"device": "cpu"}
+    )
+
+    # Crear y guardar vectorstore
+    vectorstore = FAISS.from_documents(chunks, embeddings)
+    vectorstore.save_local(output)
+
+    # Guardar registro de indexación
+    registro = {
+        "fecha": str(pathlib.Path(output).stat().st_mtime),
+        "documentos": len(pdfs) + len(mds),
+        "chunks": len(chunks),
+        "archivos": [str(p.name) for p in pdfs + mds]
+    }
+    with open(pathlib.Path(output) / "registro.json", "w") as f:
+        json.dump(registro, f, indent=2, ensure_ascii=False)
+
+    print(f"\n✅ Vectorstore guardado en '{output}'")
+    print(f"   {len(chunks)} fragmentos de {len(pdfs + mds)} documentos indexados")
+
+if __name__ == "__main__":
+    indexar_material()
+```
+
+---
+
+## Referencias
+
+- Lewis, P. et al. (2020). *Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks*. NeurIPS 2020. [arxiv.org/abs/2005.11401](https://arxiv.org/abs/2005.11401)
+- LlamaIndex documentation. [docs.llamaindex.ai](https://docs.llamaindex.ai)
+- LangChain documentation. [python.langchain.com](https://python.langchain.com)
+- FAISS (Facebook AI Similarity Search). [github.com/facebookresearch/faiss](https://github.com/facebookresearch/faiss)
+- Sentence Transformers — multilingüe. [huggingface.co/sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2](https://huggingface.co/sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2)
+- Streamlit documentation. [docs.streamlit.io](https://docs.streamlit.io)
+- Gao, Y. et al. (2023). *Retrieval-Augmented Generation for Large Language Models: A Survey*. [arxiv.org/abs/2312.10997](https://arxiv.org/abs/2312.10997)

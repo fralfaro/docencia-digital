@@ -1,0 +1,2211 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.554">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Docencia Digital - LaTeX esencial</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../03_latex/overleaf_03_plantillas.html" rel="next">
+<link href="../02_colab/colab_03_visualizacion.html" rel="prev">
+<link href="../assets/img/brand/brand__usm.png" rel="icon" type="image/png">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Sin resultados",
+    "search-matching-documents-text": "documentos encontrados",
+    "search-copy-link-title": "Copiar el enlace en la búsqueda",
+    "search-hide-matches-text": "Ocultar resultados adicionales",
+    "search-more-match-text": "resultado adicional en este documento",
+    "search-more-matches-text": "resultados adicionales en este documento",
+    "search-clear-button-title": "Borrar",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Buscar"
+  }
+}</script>
+<script src="../site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="../site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../03_latex/overleaf_01_esencial.html">🟥 LaTeX</a></li><li class="breadcrumb-item"><a href="../03_latex/overleaf_01_esencial.html"><span class="chapter-title">LaTeX esencial</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Docencia Digital</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/fralfaro/docencia-digital" title="Ejecutar el código" class="quarto-navigation-tool px-1" aria-label="Ejecutar el código"><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo oscuro"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Buscar"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🏠 Home</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">🟪 Introducción</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../00_intro/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Bienvenida al Curso</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">🟩 GitHub</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../01_github/01_esencial.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Git y GitHub esencial</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../01_github/02_colaborativo.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Flujo colaborativo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../01_github/03_automatizacion.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Automatización y Pages</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">🟧 Google Colab</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../02_colab/colab_01_esencial.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Colab esencial</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../02_colab/colab_02_pandas.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Manipulación de datos con pandas</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../02_colab/colab_03_visualizacion.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Visualización de datos</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">🟥 LaTeX</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../03_latex/overleaf_01_esencial.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">LaTeX esencial</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../03_latex/overleaf_03_plantillas.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Plantillas y producción de documentos</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">🟦 Quarto</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../04_quarto/quarto_01_intro.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Qué es Quarto y por qué usarlo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../04_quarto/quarto_02_documentos.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Documentos reproducibles</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../04_quarto/quarto_03_revealjs.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Presentaciones con RevealJS</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../04_quarto/quarto_04_sitios.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Sitios web y blogs docentes</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../04_quarto/quarto_05_pages.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Publicación con GitHub Pages</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../04_quarto/quarto_06_flujo.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Flujo docente completo con Quarto</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text">🤖 IA</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../05_ia/ia_01_panorama.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Panorama de herramientas IA</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../05_ia/ia_02_prompting.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Prompting efectivo para docentes</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../05_ia/ia_03_notebooklm.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">NotebookLM en profundidad</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../05_ia/ia_04_pedagogico.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Diseño pedagógico con IA</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../05_ia/ia_05_rag.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Chatbots y RAG</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../05_ia/ia_06_agentes.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Agentes IA</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../05_ia/ia_07_copilot_studio.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Copilot Studio y plataformas institucionales</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../05_ia/ia_08_etica.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Ética y uso responsable de IA en el aula</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content column-page-right" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../03_latex/overleaf_01_esencial.html">🟥 LaTeX</a></li><li class="breadcrumb-item"><a href="../03_latex/overleaf_01_esencial.html"><span class="chapter-title">LaTeX esencial</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-title">LaTeX esencial</span></h1>
+<p class="subtitle lead">El estándar de publicación académica desde cero</p>
+</div>
+
+
+
+<div class="quarto-title-meta column-page-right">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Si alguna vez has intentado escribir una ecuación compleja en Word y pasado diez minutos ajustando el formato para que no se vea horrible, ya entiendes por qué existe LaTeX. Si alguna vez has enviado un documento a una revista científica y te han pedido que lo reformates en su plantilla, ya entiendes por qué LaTeX es el estándar.</p>
+<p>LaTeX no es un procesador de texto — es un sistema de composición tipográfica. Tú describes la <em>estructura</em> del documento (esto es una sección, esto es una ecuación, esto es una figura), y LaTeX decide cómo se ve. El resultado es tipografía de calidad profesional, matemáticas perfectas, referencias cruzadas automáticas y bibliografías que se actualizan solas.</p>
+<p>Este capítulo cubre lo esencial para que un docente universitario pueda producir guías de ejercicios, apuntes, evaluaciones e informes con LaTeX desde cero.</p>
+<hr>
+<section id="por-qué-latex-es-el-estándar-en-publicación-académica" class="level2">
+<h2 class="anchored" data-anchor-id="por-qué-latex-es-el-estándar-en-publicación-académica">Por qué LaTeX es el estándar en publicación académica</h2>
+<section id="la-realidad-de-la-publicación-científica" class="level3">
+<h3 class="anchored" data-anchor-id="la-realidad-de-la-publicación-científica">La realidad de la publicación científica</h3>
+<p>Más del 90% de las revistas de matemáticas, física, ingeniería y ciencias de la computación aceptan o requieren LaTeX. La razón es simple: ningún otro sistema produce ecuaciones matemáticas de esa calidad tipográfica. Cuando ves una fórmula bien compuesta en un paper, casi con certeza fue hecha en LaTeX.</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">graph LR
+    W["📝 Word/Google Docs"]
+    L["⚙️ LaTeX"]
+    Q["📄 Quarto (.qmd)"]
+
+    W --&gt;|"WYSIWYG\nves el resultado mientras escribes"| O1["❌ Ecuaciones limitadas\n❌ Numeración manual\n❌ Referencias frágiles\n✅ Curva de entrada baja"]
+    L --&gt;|"Markup\ndescribes la estructura"| O2["✅ Ecuaciones perfectas\n✅ Numeración automática\n✅ Referencias robustas\n❌ Curva de entrada alta"]
+    Q --&gt;|"Markdown + LaTeX\nhíbrido"| O3["✅ Ecuaciones LaTeX\n✅ Código ejecutable\n✅ Publicación web/PDF\n✅ Curva de entrada media"]
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+</section>
+<section id="ventajas-concretas-para-docentes" class="level3">
+<h3 class="anchored" data-anchor-id="ventajas-concretas-para-docentes">Ventajas concretas para docentes</h3>
+<p><strong>Consistencia tipográfica total.</strong> LaTeX aplica las mismas reglas en todo el documento. Nunca vas a tener una ecuación más grande que otra porque alguien cambió el tamaño de fuente manualmente.</p>
+<p><strong>Numeración automática.</strong> Secciones, ecuaciones, figuras, tablas, teoremas — todo se numera solo. Si insertas una figura nueva en el medio del documento, todas las referencias se actualizan.</p>
+<p><strong>Separación de contenido y formato.</strong> Cambiar el formato de todo el documento (para ajustarlo a la plantilla de una revista) es cambiar una línea en el preámbulo. En Word requeriría revisar cada párrafo manualmente.</p>
+<p><strong>Estabilidad a largo plazo.</strong> Un archivo <code>.tex</code> de 1990 compila igual hoy. Un archivo <code>.docx</code> de 2010 puede verse distorsionado en Word 2024.</p>
+<p><strong>Colaboración con control de versiones.</strong> Al ser texto plano, los archivos <code>.tex</code> funcionan perfectamente con Git — puedes ver exactamente qué línea cambió en cada commit.</p>
+</section>
+<section id="cuándo-no-usar-latex" class="level3">
+<h3 class="anchored" data-anchor-id="cuándo-no-usar-latex">Cuándo NO usar LaTeX</h3>
+<p>LaTeX no siempre es la herramienta correcta:</p>
+<ul>
+<li><strong>Documentos administrativos simples</strong> (actas, circulares, formularios): usa Word o Google Docs.</li>
+<li><strong>Material que necesitas editar rápidamente con colaboradores no técnicos</strong>: Overleaf ayuda, pero sigue siendo LaTeX.</li>
+<li><strong>Documentos con muchas imágenes flotantes y diseño visual complejo</strong>: InDesign es mejor.</li>
+<li><strong>Sitios web y material interactivo</strong>: Quarto es superior (y puede usar LaTeX para ecuaciones).</li>
+</ul>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+LaTeX y Quarto: herramientas complementarias
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>En este curso usamos ambas. LaTeX en Overleaf para documentos formales: guías de ejercicios, exámenes, informes técnicos, tesis. Quarto para material del curso en web: apuntes, notebooks, sitios. Quarto usa la sintaxis de LaTeX para ecuaciones, así que aprender LaTeX acá tiene doble beneficio.</p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="estructura-de-un-documento-preámbulo-cuerpo-paquetes" class="level2">
+<h2 class="anchored" data-anchor-id="estructura-de-un-documento-preámbulo-cuerpo-paquetes">Estructura de un documento: preámbulo, cuerpo, paquetes</h2>
+<section id="el-modelo-mental-de-un-documento-latex" class="level3">
+<h3 class="anchored" data-anchor-id="el-modelo-mental-de-un-documento-latex">El modelo mental de un documento LaTeX</h3>
+<p>Un archivo LaTeX (<code>.tex</code>) tiene exactamente dos partes:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode latex code-with-copy"><code class="sourceCode latex"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">% ── PREÁMBULO ──────────────────────────────────────────────────</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">\documentclass</span>[opciones]{<span class="ex">clase</span>}   <span class="co">% tipo de documento</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>{<span class="ex">paquete</span>}              <span class="co">% cargar extensiones</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">% configuraciones, macros propias, metadata</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">% ── CUERPO ─────────────────────────────────────────────────────</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">document</span>}</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>El contenido del documento va aquí.</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">document</span>}</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Todo lo que está antes de <code>\begin{document}</code> es el <strong>preámbulo</strong>. Todo lo que está entre <code>\begin{document}</code> y <code>\end{document}</code> es el <strong>cuerpo</strong>.</p>
+</section>
+<section id="clases-de-documento" class="level3">
+<h3 class="anchored" data-anchor-id="clases-de-documento">Clases de documento</h3>
+<p>La clase define el tipo de documento y sus parámetros por defecto:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode latex code-with-copy"><code class="sourceCode latex"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">\documentclass</span>[12pt, letterpaper, spanish]{<span class="ex">article</span>}</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">%              ↑     ↑             ↑</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">%              tamaño papel        idioma</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">%              de fuente</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<table class="table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Clase</th>
+<th>Para qué</th>
+<th>Uso en docencia</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>article</code></td>
+<td>Artículos, guías, apuntes cortos</td>
+<td>Guías de ejercicios, informes</td>
+</tr>
+<tr class="even">
+<td><code>report</code></td>
+<td>Documentos más largos con capítulos</td>
+<td>Informes de laboratorio, tesis cortas</td>
+</tr>
+<tr class="odd">
+<td><code>book</code></td>
+<td>Libros con partes y capítulos</td>
+<td>Apuntes completos del curso</td>
+</tr>
+<tr class="even">
+<td><code>beamer</code></td>
+<td>Presentaciones</td>
+<td>Slides de clase (equivalente a RevealJS)</td>
+</tr>
+<tr class="odd">
+<td><code>IEEEtran</code></td>
+<td>Estilo IEEE</td>
+<td>Papers de ingeniería y computación</td>
+</tr>
+</tbody>
+</table>
+<p>Opciones de clase más comunes:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode latex code-with-copy"><code class="sourceCode latex"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">\documentclass</span>[</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  12pt,          <span class="co">% tamaño de fuente (10pt, 11pt, 12pt)</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  letterpaper,   <span class="co">% tamaño de papel (a4paper, letterpaper)</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  twoside,       <span class="co">% impresión a doble cara</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  spanish        <span class="co">% idioma (afecta guiones, fechas, "Índice" vs "Contents")</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>]{<span class="ex">article</span>}</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="paquetes-esenciales" class="level3">
+<h3 class="anchored" data-anchor-id="paquetes-esenciales">Paquetes esenciales</h3>
+<p>Los paquetes extienden las capacidades de LaTeX. Este es el conjunto mínimo para un documento en español con matemáticas:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode latex code-with-copy"><code class="sourceCode latex"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">% ── Idioma y codificación ──────────────────────────────────────</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>[utf8]{<span class="ex">inputenc</span>}          <span class="co">% codificación del archivo (UTF-8)</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>[T1]{<span class="ex">fontenc</span>}             <span class="co">% codificación de fuente (tildes correctas)</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>[spanish, es-nodecimaldot]{<span class="ex">babel</span>}  <span class="co">% español sin punto decimal</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>{<span class="ex">csquotes</span>}                <span class="co">% comillas tipográficas correctas</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co">% ── Márgenes y geometría ───────────────────────────────────────</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>[</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  top=2.5cm, bottom=2.5cm,</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  left=2.5cm, right=2.5cm</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>]{<span class="ex">geometry</span>}</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co">% ── Matemáticas ────────────────────────────────────────────────</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>{<span class="ex">amsmath</span>}                 <span class="co">% entornos matemáticos avanzados</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>{<span class="ex">amssymb</span>}                 <span class="co">% símbolos matemáticos adicionales</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>{<span class="ex">amsthm</span>}                  <span class="co">% teoremas, lemas, demostraciones</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>{<span class="ex">mathtools</span>}               <span class="co">% extensiones de amsmath</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="co">% ── Figuras ────────────────────────────────────────────────────</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>{<span class="ex">graphicx</span>}                <span class="co">% incluir imágenes</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>{<span class="ex">float</span>}                   <span class="co">% control de posicionamiento [H]</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>{<span class="ex">caption</span>}                 <span class="co">% personalización de pies de figura</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>{<span class="ex">subcaption</span>}              <span class="co">% subfiguras (a), (b), (c)</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="co">% ── Tablas ─────────────────────────────────────────────────────</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>{<span class="ex">booktabs</span>}                <span class="co">% tablas de publicación académica</span></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>{<span class="ex">array</span>}                   <span class="co">% columnas con ancho fijo</span></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>{<span class="ex">longtable</span>}               <span class="co">% tablas que se extienden a varias páginas</span></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>{<span class="ex">multirow</span>}                <span class="co">% celdas que ocupan varias filas</span></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a><span class="co">% ── Hipervínculos y referencias ────────────────────────────────</span></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>[colorlinks=true,</span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>            linkcolor=blue,</span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>            citecolor=blue,</span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>            urlcolor=blue]{<span class="ex">hyperref</span>} <span class="co">% links clicables (siempre el último paquete)</span></span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a><span class="co">% ── Código fuente ──────────────────────────────────────────────</span></span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>{<span class="ex">listings</span>}                <span class="co">% bloques de código</span></span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>{<span class="ex">xcolor</span>}                  <span class="co">% colores para syntax highlighting</span></span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a><span class="co">% ── Tipografía ─────────────────────────────────────────────────</span></span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>{<span class="ex">microtype</span>}               <span class="co">% mejoras tipográficas sutiles (justificación)</span></span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>{<span class="ex">parskip</span>}                 <span class="co">% párrafos separados por espacio, sin sangría</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="documento-mínimo-funcional" class="level3">
+<h3 class="anchored" data-anchor-id="documento-mínimo-funcional">Documento mínimo funcional</h3>
+<div class="sourceCode" id="cb5"><pre class="sourceCode latex code-with-copy"><code class="sourceCode latex"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="bu">\documentclass</span>[12pt, letterpaper]{<span class="ex">article</span>}</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>[utf8]{<span class="ex">inputenc</span>}</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>[T1]{<span class="ex">fontenc</span>}</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>[spanish]{<span class="ex">babel</span>}</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>[top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm]{<span class="ex">geometry</span>}</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>{<span class="ex">amsmath, amssymb</span>}</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>{<span class="ex">graphicx</span>}</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>{<span class="ex">booktabs</span>}</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>[colorlinks=true, linkcolor=blue, citecolor=blue]{<span class="ex">hyperref</span>}</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co">% ── Metadata ───────────────────────────────────────────────────</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="fu">\title</span>{Guía de Ejercicios N°3<span class="fu">\\</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>       <span class="fu">\large</span> Regresión Lineal y Mínimos Cuadrados}</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="fu">\author</span>{Juan Pérez<span class="fu">\\</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>        <span class="fu">\small</span> Departamento de Matemáticas<span class="fu">\\</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>        <span class="fu">\small</span> Universidad Técnica Federico Santa María}</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="fu">\date</span>{Primer semestre 2025}</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">document</span>}</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="fu">\maketitle</span>                          <span class="co">% genera título, autor y fecha</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="fu">\tableofcontents</span>                    <span class="co">% índice automático</span></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="fu">\newpage</span></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a><span class="kw">\section</span>{Introducción}</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>Texto de la sección...</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">document</span>}</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Compilación: del <code>.tex</code> al <code>.pdf</code>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>LaTeX no genera PDF directamente desde el archivo <code>.tex</code> — necesita compilarse. En Overleaf esto ocurre automáticamente al hacer clic en “Recompilar”. Localmente, el comando es:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pdflatex</span> documento.tex    <span class="co"># primera pasada</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="ex">bibtex</span> documento          <span class="co"># procesar bibliografía (si la hay)</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="ex">pdflatex</span> documento.tex    <span class="co"># segunda pasada (referencias)</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="ex">pdflatex</span> documento.tex    <span class="co"># tercera pasada (índice, cross-refs)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Las múltiples pasadas existen porque LaTeX resuelve referencias cruzadas en dos fases: primero registra las etiquetas, luego las usa. Overleaf hace esto automáticamente.</p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="secciones-párrafos-y-listas" class="level2">
+<h2 class="anchored" data-anchor-id="secciones-párrafos-y-listas">Secciones, párrafos y listas</h2>
+<section id="jerarquía-de-secciones" class="level3">
+<h3 class="anchored" data-anchor-id="jerarquía-de-secciones">Jerarquía de secciones</h3>
+<div class="sourceCode" id="cb7"><pre class="sourceCode latex code-with-copy"><code class="sourceCode latex"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">\part</span>{Parte I: Álgebra Lineal}           <span class="co">% solo en book/report</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">\chapter</span>{Vectores y matrices}             <span class="co">% solo en book/report</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="kw">\section</span>{Definiciones fundamentales}</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="kw">\subsection</span>{Vectores en <span class="ss">$</span><span class="sc">\mathbb</span><span class="ss">{R}^n$</span>}</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="kw">\subsubsection</span>{Norma de un vector}</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="kw">\paragraph</span>{Norma Euclidiana.}             <span class="co">% sin número</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="kw">\subparagraph</span>{Caso especial.}             <span class="co">% sin número</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>LaTeX numera automáticamente hasta <code>subsubsection</code>. Para suprimir la numeración de una sección específica, usa el asterisco:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode latex code-with-copy"><code class="sourceCode latex"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">\section*</span>{Introducción}     <span class="co">% sin número, y NO aparece en el índice</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Para que aparezca en el índice pero sin número:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode latex code-with-copy"><code class="sourceCode latex"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">\section*</span>{Introducción}</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">\addcontentsline</span>{toc}{section}{Introducción}</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="párrafos-y-saltos-de-línea" class="level3">
+<h3 class="anchored" data-anchor-id="párrafos-y-saltos-de-línea">Párrafos y saltos de línea</h3>
+<div class="sourceCode" id="cb10"><pre class="sourceCode latex code-with-copy"><code class="sourceCode latex"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>Este es el primer párrafo. En LaTeX, los párrafos se separan</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>con una línea en blanco, no con Enter.</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>Este es el segundo párrafo. LaTeX maneja el espaciado</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>automáticamente — nunca uses <span class="fu">\\</span> para separar párrafos.</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co">% Salto de línea forzado (solo dentro de entornos, no para párrafos)</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>Primera línea <span class="fu">\\</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>Segunda línea</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="co">% Salto de página explícito</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="fu">\newpage</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="fu">\clearpage</span>    <span class="co">% además vacía todos los floats pendientes (figuras)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="énfasis-y-formato-de-texto" class="level3">
+<h3 class="anchored" data-anchor-id="énfasis-y-formato-de-texto">Énfasis y formato de texto</h3>
+<div class="sourceCode" id="cb11"><pre class="sourceCode latex code-with-copy"><code class="sourceCode latex"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>Texto <span class="fu">\textbf</span>{en negrita} para conceptos clave.</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>Texto <span class="fu">\textit</span>{en cursiva} para términos nuevos o títulos de obras.</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>Texto <span class="fu">\texttt</span>{en monoespaciado} para código: <span class="fu">\texttt</span>{df.head()}.</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>Texto <span class="fu">\underline</span>{subrayado} (úsalo con moderación).</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>Texto <span class="fu">\emph</span>{enfatizado} — cursiva por defecto, negrita si ya estás en cursiva.</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co">% Tamaños de fuente (relativo al \documentclass)</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>{<span class="fu">\tiny</span> texto muy pequeño}</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>{<span class="fu">\footnotesize</span> texto de nota al pie}</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>{<span class="fu">\small</span> texto pequeño}</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>{<span class="fu">\normalsize</span> texto normal}</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>{<span class="fu">\large</span> texto grande}</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>{<span class="fu">\Large</span> texto más grande}</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>{<span class="fu">\LARGE</span> texto aún más grande}</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>{<span class="fu">\huge</span> texto enorme}</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="listas" class="level3">
+<h3 class="anchored" data-anchor-id="listas">Listas</h3>
+<div class="sourceCode" id="cb12"><pre class="sourceCode latex code-with-copy"><code class="sourceCode latex"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">% Lista no ordenada</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">itemize</span>}</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\item</span> Primer elemento</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\item</span> Segundo elemento</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\item</span>[<span class="ss">$</span><span class="sc">\bullet</span><span class="ss">$</span>] Elemento con bullet personalizado</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\item</span>[<span class="ss">$</span><span class="sc">\checkmark</span><span class="ss">$</span>] Elemento con checkmark</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">itemize</span>}</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co">% Lista numerada</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">enumerate</span>}</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\item</span> Primer paso</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\item</span> Segundo paso</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>        <span class="kw">\begin</span>{<span class="ex">enumerate</span>}</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>            <span class="fu">\item</span>[a)] Subpaso a (con etiqueta personalizada)</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>            <span class="fu">\item</span>[b)] Subpaso b</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>        <span class="kw">\end</span>{<span class="ex">enumerate</span>}</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\item</span> Tercer paso</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">enumerate</span>}</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a><span class="co">% Lista de definiciones</span></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">description</span>}</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\item</span>[Media aritmética] Suma de valores dividida por el total de observaciones.</span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\item</span>[Mediana] Valor central de un conjunto ordenado de datos.</span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\item</span>[Moda] Valor que aparece con mayor frecuencia.</span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">description</span>}</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Para personalizar las listas con más control, usa el paquete <code>enumitem</code>:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode latex code-with-copy"><code class="sourceCode latex"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>{<span class="ex">enumitem</span>}</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co">% Lista con espaciado reducido (ideal para guías de ejercicios)</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">enumerate</span>}[noitemsep, label=<span class="fu">\textbf</span>{<span class="fu">\arabic*</span>.}]</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\item</span> Calcula la media y mediana del siguiente conjunto de datos.</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\item</span> Determina si la distribución es simétrica.</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\item</span> Grafica el histograma con 5 intervalos.</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">enumerate</span>}</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="co">% Lista con letras</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">enumerate</span>}[label=(<span class="fu">\alph*</span>)]</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\item</span> Primera alternativa</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\item</span> Segunda alternativa</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\item</span> Tercera alternativa</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">enumerate</span>}</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+</section>
+</section>
+<section id="figuras-incluir-imágenes-y-configurar-tamaño" class="level2">
+<h2 class="anchored" data-anchor-id="figuras-incluir-imágenes-y-configurar-tamaño">Figuras: incluir imágenes y configurar tamaño</h2>
+<section id="el-entorno-figure" class="level3">
+<h3 class="anchored" data-anchor-id="el-entorno-figure">El entorno <code>figure</code></h3>
+<p>Las figuras en LaTeX son <strong>objetos flotantes</strong>: LaTeX decide dónde ubicarlas para optimizar la distribución de la página. No siempre quedan exactamente donde las pusiste en el código.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode latex code-with-copy"><code class="sourceCode latex"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">figure</span>}[htbp]</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co">%              ^^^^</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co">%              h = here (aquí, si cabe)</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co">%              t = top (al inicio de la página)</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co">%              b = bottom (al final de la página)</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co">%              p = page (en una página dedicada a floats)</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co">%              Orden de preferencia: LaTeX prueba en ese orden</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\centering</span>                              <span class="co">% centrar la imagen</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">\includegraphics</span>[width=0.7<span class="fu">\textwidth</span>]{<span class="ex">mi_grafico.png</span>}</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\caption</span>{Distribución de notas finales por carrera, semestre 2025-1.}</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">\label</span>{<span class="ex">fig:distribucion_notas</span>}          <span class="co">% etiqueta para referencia cruzada</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">figure</span>}</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Para referenciar la figura en el texto:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode latex code-with-copy"><code class="sourceCode latex"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>Como se observa en la Figura~<span class="kw">\ref</span>{<span class="ex">fig:distribucion_notas</span>}, la distribución</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>de Ingeniería Civil presenta mayor dispersión.</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>El <code>~</code> evita que el número quede en una línea diferente a “Figura”.</p>
+</section>
+<section id="opciones-de-tamaño-de-includegraphics" class="level3">
+<h3 class="anchored" data-anchor-id="opciones-de-tamaño-de-includegraphics">Opciones de tamaño de <code>\includegraphics</code></h3>
+<div class="sourceCode" id="cb16"><pre class="sourceCode latex code-with-copy"><code class="sourceCode latex"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co">% Por ancho (relativo al texto)</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="bu">\includegraphics</span>[width=0.8<span class="fu">\textwidth</span>]{<span class="ex">imagen.png</span>}      <span class="co">% 80% del ancho del texto</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="bu">\includegraphics</span>[width=0.5<span class="fu">\linewidth</span>]{<span class="ex">imagen.png</span>}      <span class="co">% 50% del ancho de la línea</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="co">% Por alto (respeta la proporción)</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="bu">\includegraphics</span>[height=6cm]{<span class="ex">imagen.png</span>}</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="co">% Tamaño absoluto</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="bu">\includegraphics</span>[width=8cm, height=5cm]{<span class="ex">imagen.png</span>}    <span class="co">% puede distorsionar</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="co">% Escala relativa al tamaño original</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="bu">\includegraphics</span>[scale=0.5]{<span class="ex">imagen.png</span>}                <span class="co">% mitad del tamaño original</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="co">% Rotar</span></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="bu">\includegraphics</span>[width=0.5<span class="fu">\textwidth</span>, angle=90]{<span class="ex">imagen.png</span>}</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="rutas-de-imágenes" class="level3">
+<h3 class="anchored" data-anchor-id="rutas-de-imágenes">Rutas de imágenes</h3>
+<div class="sourceCode" id="cb17"><pre class="sourceCode latex code-with-copy"><code class="sourceCode latex"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co">% En el preámbulo: definir carpeta base de imágenes</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">\graphicspath</span>{{imagenes/}{figuras/}{../assets/}}</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co">% Formatos soportados (pdflatex): PNG, JPG, PDF, EPS</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="co">% Preferir PDF para gráficos vectoriales (no pixela al escalar)</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="co">% Preferir PNG para capturas de pantalla y gráficos rasterizados</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="bu">\includegraphics</span>[width=0.6<span class="fu">\textwidth</span>]{<span class="ex">graficos/distribucion</span>}  <span class="co">% sin extensión: busca automáticamente</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="subfiguras-lado-a-lado" class="level3">
+<h3 class="anchored" data-anchor-id="subfiguras-lado-a-lado">Subfiguras lado a lado</h3>
+<div class="sourceCode" id="cb18"><pre class="sourceCode latex code-with-copy"><code class="sourceCode latex"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>{<span class="ex">subcaption</span>}</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">figure</span>}[htbp]</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\centering</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">\begin</span>{<span class="ex">subfigure</span>}[b]{0.48<span class="fu">\textwidth</span>}</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>        <span class="fu">\centering</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>        <span class="bu">\includegraphics</span>[width=<span class="fu">\textwidth</span>]{<span class="ex">histograma_civil.png</span>}</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>        <span class="fu">\caption</span>{Ingeniería Civil}</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>        <span class="kw">\label</span>{<span class="ex">fig:hist_civil</span>}</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">\end</span>{<span class="ex">subfigure</span>}</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\hfill</span>                                  <span class="co">% espacio horizontal entre subfiguras</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">\begin</span>{<span class="ex">subfigure</span>}[b]{0.48<span class="fu">\textwidth</span>}</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>        <span class="fu">\centering</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>        <span class="bu">\includegraphics</span>[width=<span class="fu">\textwidth</span>]{<span class="ex">histograma_industrial.png</span>}</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>        <span class="fu">\caption</span>{Ingeniería Industrial}</span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>        <span class="kw">\label</span>{<span class="ex">fig:hist_industrial</span>}</span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">\end</span>{<span class="ex">subfigure</span>}</span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\caption</span>{Distribución de notas por carrera. (a) Ingeniería Civil presenta</span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>             mayor dispersión. (b) Ingeniería Industrial muestra distribución</span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>             más concentrada alrededor de la media.}</span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">\label</span>{<span class="ex">fig:histogramas_comparacion</span>}</span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">figure</span>}</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Referencia: “En la Figura~<span class="math inline">\(\ref{fig:histogramas_comparacion}\)</span>(a)…” o directamente “Figura~<span class="math inline">\(\ref{fig:hist_civil}\)</span>”.</p>
+</section>
+<section id="forzar-la-posición-con-h" class="level3">
+<h3 class="anchored" data-anchor-id="forzar-la-posición-con-h">Forzar la posición con <code>[H]</code></h3>
+<div class="sourceCode" id="cb19"><pre class="sourceCode latex code-with-copy"><code class="sourceCode latex"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>{<span class="ex">float</span>}</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">figure</span>}[H]               <span class="co">% exactamente aquí, sin flotación</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\centering</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">\includegraphics</span>[width=0.7<span class="fu">\textwidth</span>]{<span class="ex">ejemplo.png</span>}</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\caption</span>{Esta figura no se moverá de este lugar.}</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">\label</span>{<span class="ex">fig:fija</span>}</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">figure</span>}</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<code>[H]</code> puede causar espacios en blanco grandes
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Usar <code>[H]</code> en todas las figuras puede crear páginas con mucho espacio en blanco porque LaTeX no puede redistribuir el contenido. Úsalo con criterio — especialmente en documentos cortos (guías de ejercicios). Para documentos largos, confía en los especificadores <code>[htbp]</code> o al menos <code>[tp]</code>.</p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="tablas-tabular-y-paquete-booktabs" class="level2">
+<h2 class="anchored" data-anchor-id="tablas-tabular-y-paquete-booktabs">Tablas: <code>tabular</code> y paquete <code>booktabs</code></h2>
+<section id="tablas-básicas-con-tabular" class="level3">
+<h3 class="anchored" data-anchor-id="tablas-básicas-con-tabular">Tablas básicas con <code>tabular</code></h3>
+<div class="sourceCode" id="cb20"><pre class="sourceCode latex code-with-copy"><code class="sourceCode latex"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">table</span>}[htbp]</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\centering</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\caption</span>{Estadísticas descriptivas de la nota final por carrera.}</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">\label</span>{<span class="ex">tab:estadisticas_notas</span>}</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">\begin</span>{<span class="ex">tabular</span>}{l r r r r}</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">%              ^ ^ ^ ^ ^</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">%              l = alineado a la izquierda</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">%              c = centrado</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">%              r = alineado a la derecha</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>    <span class="co">%              | = línea vertical (evitar con booktabs)</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>        <span class="fu">\hline</span></span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>        Carrera <span class="op">&amp;</span> <span class="ss">$n$</span> <span class="op">&amp;</span> Media <span class="op">&amp;</span> Mediana <span class="op">&amp;</span> D.E. <span class="fu">\\</span></span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>        <span class="fu">\hline</span></span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>        Ing. Civil       <span class="op">&amp;</span> 89  <span class="op">&amp;</span> 5.21 <span class="op">&amp;</span> 5.50 <span class="op">&amp;</span> 1.12 <span class="fu">\\</span></span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>        Ing. Industrial  <span class="op">&amp;</span> 73  <span class="op">&amp;</span> 5.08 <span class="op">&amp;</span> 5.20 <span class="op">&amp;</span> 0.98 <span class="fu">\\</span></span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>        Ing. Eléctrica   <span class="op">&amp;</span> 61  <span class="op">&amp;</span> 4.95 <span class="op">&amp;</span> 5.00 <span class="op">&amp;</span> 1.23 <span class="fu">\\</span></span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>        Matemáticas      <span class="op">&amp;</span> 42  <span class="op">&amp;</span> 5.67 <span class="op">&amp;</span> 5.80 <span class="op">&amp;</span> 0.87 <span class="fu">\\</span></span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>        <span class="fu">\hline</span></span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>        Total            <span class="op">&amp;</span> 265 <span class="op">&amp;</span> 5.18 <span class="op">&amp;</span> 5.30 <span class="op">&amp;</span> 1.08 <span class="fu">\\</span></span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>        <span class="fu">\hline</span></span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">\end</span>{<span class="ex">tabular</span>}</span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">table</span>}</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="tablas-de-publicación-con-booktabs" class="level3">
+<h3 class="anchored" data-anchor-id="tablas-de-publicación-con-booktabs">Tablas de publicación con <code>booktabs</code></h3>
+<p><code>booktabs</code> produce tablas con tipografía de nivel de publicación académica: líneas horizontales de distinto grosor, sin líneas verticales, con espaciado correcto.</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode latex code-with-copy"><code class="sourceCode latex"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>{<span class="ex">booktabs</span>}</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">table</span>}[htbp]</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\centering</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\caption</span>{Estadísticas descriptivas de la nota final por carrera.}</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">\label</span>{<span class="ex">tab:estadisticas_notas_booktabs</span>}</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">\begin</span>{<span class="ex">tabular</span>}{<span class="ch">@{}</span>l r r r r<span class="ch">@{}</span>}</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">%              @{} elimina el espacio extra en los bordes laterales</span></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>        <span class="fu">\toprule</span></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>        Carrera <span class="op">&amp;</span> <span class="ss">$n$</span> <span class="op">&amp;</span> Media <span class="op">&amp;</span> Mediana <span class="op">&amp;</span> D.E. <span class="fu">\\</span></span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>        <span class="fu">\midrule</span></span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>        Ing. Civil       <span class="op">&amp;</span> 89  <span class="op">&amp;</span> 5.21 <span class="op">&amp;</span> 5.50 <span class="op">&amp;</span> 1.12 <span class="fu">\\</span></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>        Ing. Industrial  <span class="op">&amp;</span> 73  <span class="op">&amp;</span> 5.08 <span class="op">&amp;</span> 5.20 <span class="op">&amp;</span> 0.98 <span class="fu">\\</span></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>        Ing. Eléctrica   <span class="op">&amp;</span> 61  <span class="op">&amp;</span> 4.95 <span class="op">&amp;</span> 5.00 <span class="op">&amp;</span> 1.23 <span class="fu">\\</span></span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>        Matemáticas      <span class="op">&amp;</span> 42  <span class="op">&amp;</span> 5.67 <span class="op">&amp;</span> 5.80 <span class="op">&amp;</span> 0.87 <span class="fu">\\</span></span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>        <span class="fu">\midrule</span></span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>        <span class="fu">\textbf</span>{Total}   <span class="op">&amp;</span> <span class="fu">\textbf</span>{265} <span class="op">&amp;</span> <span class="fu">\textbf</span>{5.18} <span class="op">&amp;</span> <span class="fu">\textbf</span>{5.30} <span class="op">&amp;</span> <span class="fu">\textbf</span>{1.08} <span class="fu">\\</span></span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>        <span class="fu">\bottomrule</span></span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">\end</span>{<span class="ex">tabular</span>}</span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">table</span>}</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Las tres reglas de <code>booktabs</code>:</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Comando</th>
+<th>Grosor</th>
+<th>Posición</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>\toprule</code></td>
+<td>Más grueso</td>
+<td>Encima del encabezado</td>
+</tr>
+<tr class="even">
+<td><code>\midrule</code></td>
+<td>Normal</td>
+<td>Entre secciones de la tabla</td>
+</tr>
+<tr class="odd">
+<td><code>\bottomrule</code></td>
+<td>Más grueso</td>
+<td>Debajo de la última fila</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="columnas-con-ancho-fijo-y-texto-largo" class="level3">
+<h3 class="anchored" data-anchor-id="columnas-con-ancho-fijo-y-texto-largo">Columnas con ancho fijo y texto largo</h3>
+<div class="sourceCode" id="cb22"><pre class="sourceCode latex code-with-copy"><code class="sourceCode latex"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>{<span class="ex">array</span>}</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">tabular</span>}{<span class="ch">@{}</span> p{4cm} p{8cm} r <span class="ch">@{}</span>}</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="co">%                   ↑       ↑</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="co">%                   p{ancho} = columna con ancho fijo y texto que hace wrap</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\toprule</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>    Herramienta <span class="op">&amp;</span> Descripción <span class="op">&amp;</span> Costo <span class="fu">\\</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\midrule</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>    GitHub <span class="op">&amp;</span> Plataforma de control de versiones y colaboración para proyectos de software y materiales docentes. <span class="op">&amp;</span> Gratuito <span class="fu">\\</span></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>    Overleaf <span class="op">&amp;</span> Editor colaborativo de LaTeX en línea, con compilación automática y plantillas. <span class="op">&amp;</span> Gratuito / Pro <span class="fu">\\</span></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\bottomrule</span></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">tabular</span>}</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="celdas-que-abarcan-múltiples-columnas-multicolumn" class="level3">
+<h3 class="anchored" data-anchor-id="celdas-que-abarcan-múltiples-columnas-multicolumn">Celdas que abarcan múltiples columnas: <code>\multicolumn</code></h3>
+<div class="sourceCode" id="cb23"><pre class="sourceCode latex code-with-copy"><code class="sourceCode latex"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>{<span class="ex">multirow</span>}</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">tabular</span>}{<span class="ch">@{}</span> l c c c c c <span class="ch">@{}</span>}</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\toprule</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">&amp;</span> <span class="fu">\multicolumn</span>{2}{c}{Semestre 2024-1} <span class="op">&amp;</span> <span class="fu">\multicolumn</span>{2}{c}{Semestre 2024-2} <span class="fu">\\</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">%  ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ abarca 2 columnas, centrado</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\cmidrule</span>(lr){2-3} <span class="fu">\cmidrule</span>(lr){4-5}</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">%                                   ^ línea parcial entre columnas</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>    Carrera <span class="op">&amp;</span> Media <span class="op">&amp;</span> Tasa apro. <span class="op">&amp;</span> Media <span class="op">&amp;</span> Tasa apro. <span class="fu">\\</span></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\midrule</span></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>    Ing. Civil      <span class="op">&amp;</span> 5.21 <span class="op">&amp;</span> 72<span class="fu">\%</span> <span class="op">&amp;</span> 5.35 <span class="op">&amp;</span> 75<span class="fu">\%</span> <span class="fu">\\</span></span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>    Ing. Industrial <span class="op">&amp;</span> 5.08 <span class="op">&amp;</span> 68<span class="fu">\%</span> <span class="op">&amp;</span> 5.18 <span class="op">&amp;</span> 71<span class="fu">\%</span> <span class="fu">\\</span></span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\bottomrule</span></span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">tabular</span>}</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="celdas-que-abarcan-múltiples-filas-multirow" class="level3">
+<h3 class="anchored" data-anchor-id="celdas-que-abarcan-múltiples-filas-multirow">Celdas que abarcan múltiples filas: <code>\multirow</code></h3>
+<div class="sourceCode" id="cb24"><pre class="sourceCode latex code-with-copy"><code class="sourceCode latex"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">tabular</span>}{<span class="ch">@{}</span> l l r <span class="ch">@{}</span>}</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\toprule</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>    Departamento <span class="op">&amp;</span> Carrera <span class="op">&amp;</span> Estudiantes <span class="fu">\\</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\midrule</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\multirow</span>{3}{*}{Matemáticas} <span class="op">&amp;</span> Matemáticas <span class="op">&amp;</span> 142 <span class="fu">\\</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>                                  <span class="op">&amp;</span> Estadística <span class="op">&amp;</span> 89  <span class="fu">\\</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>                                  <span class="op">&amp;</span> Actuaría    <span class="op">&amp;</span> 63  <span class="fu">\\</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\midrule</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\multirow</span>{2}{*}{Ingeniería}  <span class="op">&amp;</span> Civil       <span class="op">&amp;</span> 412 <span class="fu">\\</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>                                  <span class="op">&amp;</span> Industrial  <span class="op">&amp;</span> 378 <span class="fu">\\</span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\bottomrule</span></span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">tabular</span>}</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="tabla-generada-desde-python-pandas-latex" class="level3">
+<h3 class="anchored" data-anchor-id="tabla-generada-desde-python-pandas-latex">Tabla generada desde Python (pandas → LaTeX)</h3>
+<div class="sourceCode" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># En Google Colab, generar el código LaTeX de una tabla pandas:</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>resumen <span class="op">=</span> df.groupby(<span class="st">'carrera'</span>).agg(</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>    n<span class="op">=</span>(<span class="st">'nota_final'</span>, <span class="st">'count'</span>),</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>    media<span class="op">=</span>(<span class="st">'nota_final'</span>, <span class="st">'mean'</span>),</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>    mediana<span class="op">=</span>(<span class="st">'nota_final'</span>, <span class="st">'median'</span>),</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>    std<span class="op">=</span>(<span class="st">'nota_final'</span>, <span class="st">'std'</span>)</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>).<span class="bu">round</span>(<span class="dv">2</span>).reset_index()</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>latex_tabla <span class="op">=</span> resumen.to_latex(</span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>    caption<span class="op">=</span><span class="st">'Estadísticas de nota final por carrera'</span>,</span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="st">'tab:estadisticas'</span>,</span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>    column_format<span class="op">=</span><span class="st">'@</span><span class="sc">{}</span><span class="st">lrrrr@</span><span class="sc">{}</span><span class="st">'</span>,</span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>    escape<span class="op">=</span><span class="va">False</span>,     <span class="co"># permite LaTeX en las celdas</span></span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>    float_format<span class="op">=</span><span class="st">'</span><span class="sc">%.2f</span><span class="st">'</span></span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(latex_tabla)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Generadores de tablas LaTeX online
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Si tienes una tabla en Excel o Google Sheets, convierte a LaTeX en <a href="https://www.tablesgenerator.com">tablesgenerator.com</a>. Pega los datos, elige el estilo <code>booktabs</code> y copia el código generado. Ahorra el tiempo de escribir la tabla a mano.</p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="referencias-cruzadas-con-label-y-ref" class="level2">
+<h2 class="anchored" data-anchor-id="referencias-cruzadas-con-label-y-ref">Referencias cruzadas con <code>\label</code> y <code>\ref</code></h2>
+<section id="el-sistema-de-etiquetas" class="level3">
+<h3 class="anchored" data-anchor-id="el-sistema-de-etiquetas">El sistema de etiquetas</h3>
+<p>Las referencias cruzadas son una de las grandes ventajas de LaTeX: las figuras, tablas, ecuaciones y secciones se numeran automáticamente, y puedes referenciarlas por nombre sin preocuparte por el número actual.</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode latex code-with-copy"><code class="sourceCode latex"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co">% 1. Definir la etiqueta (donde está el elemento)</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="kw">\section</span>{Resultados}</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="kw">\label</span>{<span class="ex">sec:resultados</span>}</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">equation</span>}</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="ss">    </span><span class="sc">\bar</span><span class="ss">{x} = </span><span class="sc">\frac</span><span class="ss">{1}{n}</span><span class="sc">\sum</span><span class="ss">_{i=1}^{n} x_i</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="ss">    </span><span class="sc">\label</span><span class="ss">{eq:media_aritmetica}</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">equation</span>}</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">figure</span>}[htbp]</span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\centering</span></span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">\includegraphics</span>[width=0.7<span class="fu">\textwidth</span>]{<span class="ex">histograma.png</span>}</span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\caption</span>{Histograma de notas.}</span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">\label</span>{<span class="ex">fig:histograma_notas</span>}</span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">figure</span>}</span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">table</span>}[htbp]</span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\centering</span></span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\caption</span>{Estadísticas descriptivas.}</span>
+<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">\label</span>{<span class="ex">tab:estadisticas</span>}</span>
+<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a>    ...</span>
+<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">table</span>}</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode latex code-with-copy"><code class="sourceCode latex"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co">% 2. Referenciar desde cualquier parte del documento</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>En la Sección~<span class="kw">\ref</span>{<span class="ex">sec:resultados</span>} se presentan los análisis.</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>La media aritmética se define en la Ecuación~<span class="kw">\ref</span>{<span class="ex">eq:media_aritmetica</span>}.</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>El histograma (Figura~<span class="kw">\ref</span>{<span class="ex">fig:histograma_notas</span>}) muestra...</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>Los datos completos están en la Tabla~<span class="kw">\ref</span>{<span class="ex">tab:estadisticas</span>}.</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="convenciones-de-nombres-de-etiquetas" class="level3">
+<h3 class="anchored" data-anchor-id="convenciones-de-nombres-de-etiquetas">Convenciones de nombres de etiquetas</h3>
+<div class="sourceCode" id="cb28"><pre class="sourceCode latex code-with-copy"><code class="sourceCode latex"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co">% Prefijos convencionales (facilitan la lectura del código)</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="kw">\label</span>{<span class="ex">fig:nombre</span>}       <span class="co">% figuras</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="kw">\label</span>{<span class="ex">tab:nombre</span>}       <span class="co">% tablas</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="kw">\label</span>{<span class="ex">eq:nombre</span>}        <span class="co">% ecuaciones</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="kw">\label</span>{<span class="ex">sec:nombre</span>}       <span class="co">% secciones</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a><span class="kw">\label</span>{<span class="ex">thm:nombre</span>}       <span class="co">% teoremas</span></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a><span class="kw">\label</span>{<span class="ex">def:nombre</span>}       <span class="co">% definiciones</span></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a><span class="kw">\label</span>{<span class="ex">lem:nombre</span>}       <span class="co">% lemas</span></span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a><span class="kw">\label</span>{<span class="ex">prop:nombre</span>}      <span class="co">% proposiciones</span></span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a><span class="kw">\label</span>{<span class="ex">ex:nombre</span>}        <span class="co">% ejemplos</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="el-paquete-cleveref-para-referencias-más-inteligentes" class="level3">
+<h3 class="anchored" data-anchor-id="el-paquete-cleveref-para-referencias-más-inteligentes">El paquete <code>cleveref</code> para referencias más inteligentes</h3>
+<div class="sourceCode" id="cb29"><pre class="sourceCode latex code-with-copy"><code class="sourceCode latex"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>{<span class="ex">cleveref</span>}   <span class="co">% cargar DESPUÉS de hyperref</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="co">% En lugar de escribir "Figura~\ref{...}" explícitamente:</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="kw">\cref</span>{<span class="ex">fig:histograma_notas</span>}    <span class="co">% → "figura 3.1"</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="kw">\Cref</span>{<span class="ex">fig:histograma_notas</span>}    <span class="co">% → "Figura 3.1" (mayúscula)</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="co">% Múltiples referencias de una vez</span></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a><span class="kw">\cref</span>{<span class="ex">fig:hist_civil,fig:hist_industrial</span>}  <span class="co">% → "figuras 3.1 y 3.2"</span></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a><span class="co">% Rangos</span></span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a><span class="kw">\cref</span>{<span class="ex">eq:media,eq:varianza,eq:std</span>}  <span class="co">% → "ecuaciones 2.1 a 2.3"</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="páginas-y-referencias-especiales" class="level3">
+<h3 class="anchored" data-anchor-id="páginas-y-referencias-especiales">Páginas y referencias especiales</h3>
+<div class="sourceCode" id="cb30"><pre class="sourceCode latex code-with-copy"><code class="sourceCode latex"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co">% Página donde está el elemento</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>en la página~<span class="kw">\pageref</span>{<span class="ex">fig:histograma_notas</span>}</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="co">% En documentos largos: combinación de ref y pageref</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>Ver Figura~<span class="kw">\ref</span>{<span class="ex">fig:histograma_notas</span>} (p.~<span class="kw">\pageref</span>{<span class="ex">fig:histograma_notas</span>}).</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="co">% Referencia a la última página (para saber cuántas páginas tiene el doc)</span></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>{<span class="ex">lastpage</span>}</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>Total de páginas: <span class="kw">\pageref</span>{<span class="ex">LastPage</span>}</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+</section>
+</section>
+<section id="bibliografía-con-bibtex-y-cite" class="level2">
+<h2 class="anchored" data-anchor-id="bibliografía-con-bibtex-y-cite">Bibliografía con BibTeX y <code>\cite</code></h2>
+<section id="el-sistema-de-bibliografía-en-latex" class="level3">
+<h3 class="anchored" data-anchor-id="el-sistema-de-bibliografía-en-latex">El sistema de bibliografía en LaTeX</h3>
+<p>LaTeX tiene un sistema bibliográfico de dos partes:</p>
+<ol type="1">
+<li><strong>Base de datos bibliográfica</strong> (<code>.bib</code>): archivo de texto con las referencias en formato BibTeX.</li>
+<li><strong>Citas en el documento</strong> (<code>\cite</code>): referencias a las entradas del <code>.bib</code>.</li>
+</ol>
+<p>El procesador BibTeX genera automáticamente la sección de bibliografía con el formato correcto.</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">graph LR
+    A["📄 documento.tex\n\\cite{wickham2016}"] --&gt; B["⚙️ BibTeX\n(procesador)"]
+    C["📚 referencias.bib\n@book{wickham2016...}"] --&gt; B
+    B --&gt; D["📄 Bibliografía formateada\nWickham, H. (2016).\nR for Data Science..."]
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+</section>
+<section id="el-archivo-.bib-tipos-de-entrada" class="level3">
+<h3 class="anchored" data-anchor-id="el-archivo-.bib-tipos-de-entrada">El archivo <code>.bib</code>: tipos de entrada</h3>
+<p>Cada entrada en el <code>.bib</code> tiene un tipo (<code>@book</code>, <code>@article</code>, etc.) y campos obligatorios y opcionales.</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode bibtex code-with-copy"><code class="sourceCode bibtex"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co">% Libro</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="va">@book</span>{<span class="ot">wickham2016</span>,</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">author</span>    = {Wickham, Hadley and Grolemund, Garrett},</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">title</span>     = {R for Data Science},</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">subtitle</span>  = {Import, Tidy, Transform, Visualize, and Model Data},</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">publisher</span> = {O'Reilly Media},</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">year</span>      = {2016},</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">edition</span>   = {1},</span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>  <span class="dt">isbn</span>      = {978-1491910399},</span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>  <span class="dt">url</span>       = {https://r4ds.hadley.nz}</span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a><span class="co">% Artículo de revista</span></span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a><span class="va">@article</span>{<span class="ot">hunter2007</span>,</span>
+<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a>  <span class="dt">author</span>   = {Hunter, John D.},</span>
+<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>  <span class="dt">title</span>    = {Matplotlib: A 2D Graphics Environment},</span>
+<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>  <span class="dt">journal</span>  = {Computing in Science <span class="ch">\&amp;</span> Engineering},</span>
+<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a>  <span class="dt">volume</span>   = {9},</span>
+<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a>  <span class="dt">number</span>   = {3},</span>
+<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>  <span class="dt">pages</span>    = {90--95},</span>
+<span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a>  <span class="dt">year</span>     = {2007},</span>
+<span id="cb31-22"><a href="#cb31-22" aria-hidden="true" tabindex="-1"></a>  <span class="dt">doi</span>      = {10.1109/MCSE.2007.55}</span>
+<span id="cb31-23"><a href="#cb31-23" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb31-24"><a href="#cb31-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-25"><a href="#cb31-25" aria-hidden="true" tabindex="-1"></a><span class="co">% Artículo de conferencia</span></span>
+<span id="cb31-26"><a href="#cb31-26" aria-hidden="true" tabindex="-1"></a><span class="va">@inproceedings</span>{<span class="ot">chen2016xgboost</span>,</span>
+<span id="cb31-27"><a href="#cb31-27" aria-hidden="true" tabindex="-1"></a>  <span class="dt">author</span>    = {Chen, Tianqi and Guestrin, Carlos},</span>
+<span id="cb31-28"><a href="#cb31-28" aria-hidden="true" tabindex="-1"></a>  <span class="dt">title</span>     = {{XGBoost}: A Scalable Tree Boosting System},</span>
+<span id="cb31-29"><a href="#cb31-29" aria-hidden="true" tabindex="-1"></a>  <span class="dt">booktitle</span> = {Proceedings of the 22nd ACM SIGKDD International Conference</span>
+<span id="cb31-30"><a href="#cb31-30" aria-hidden="true" tabindex="-1"></a>               on Knowledge Discovery and Data Mining},</span>
+<span id="cb31-31"><a href="#cb31-31" aria-hidden="true" tabindex="-1"></a>  <span class="dt">year</span>      = {2016},</span>
+<span id="cb31-32"><a href="#cb31-32" aria-hidden="true" tabindex="-1"></a>  <span class="dt">pages</span>     = {785--794},</span>
+<span id="cb31-33"><a href="#cb31-33" aria-hidden="true" tabindex="-1"></a>  <span class="dt">doi</span>       = {10.1145/2939672.2939785}</span>
+<span id="cb31-34"><a href="#cb31-34" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb31-35"><a href="#cb31-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-36"><a href="#cb31-36" aria-hidden="true" tabindex="-1"></a><span class="co">% Tesis</span></span>
+<span id="cb31-37"><a href="#cb31-37" aria-hidden="true" tabindex="-1"></a><span class="va">@phdthesis</span>{<span class="ot">perez2023</span>,</span>
+<span id="cb31-38"><a href="#cb31-38" aria-hidden="true" tabindex="-1"></a>  <span class="dt">author</span> = {Pérez, Juan},</span>
+<span id="cb31-39"><a href="#cb31-39" aria-hidden="true" tabindex="-1"></a>  <span class="dt">title</span>  = {Modelos predictivos de deserción estudiantil en educación superior chilena},</span>
+<span id="cb31-40"><a href="#cb31-40" aria-hidden="true" tabindex="-1"></a>  <span class="dt">school</span> = {Universidad Técnica Federico Santa María},</span>
+<span id="cb31-41"><a href="#cb31-41" aria-hidden="true" tabindex="-1"></a>  <span class="dt">year</span>   = {2023},</span>
+<span id="cb31-42"><a href="#cb31-42" aria-hidden="true" tabindex="-1"></a>  <span class="dt">type</span>   = {Tesis de Doctorado}</span>
+<span id="cb31-43"><a href="#cb31-43" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb31-44"><a href="#cb31-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-45"><a href="#cb31-45" aria-hidden="true" tabindex="-1"></a><span class="co">% Sitio web / recurso en línea</span></span>
+<span id="cb31-46"><a href="#cb31-46" aria-hidden="true" tabindex="-1"></a><span class="va">@misc</span>{<span class="ot">quarto2022</span>,</span>
+<span id="cb31-47"><a href="#cb31-47" aria-hidden="true" tabindex="-1"></a>  <span class="dt">author</span>       = {{Allaire, J.J. and others}},</span>
+<span id="cb31-48"><a href="#cb31-48" aria-hidden="true" tabindex="-1"></a>  <span class="dt">title</span>        = {Quarto},</span>
+<span id="cb31-49"><a href="#cb31-49" aria-hidden="true" tabindex="-1"></a>  <span class="dt">year</span>         = {2022},</span>
+<span id="cb31-50"><a href="#cb31-50" aria-hidden="true" tabindex="-1"></a>  <span class="dt">howpublished</span> = {<span class="ch">\url</span>{https://quarto.org}},</span>
+<span id="cb31-51"><a href="#cb31-51" aria-hidden="true" tabindex="-1"></a>  <span class="dt">note</span>         = {Versión 1.5}</span>
+<span id="cb31-52"><a href="#cb31-52" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb31-53"><a href="#cb31-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-54"><a href="#cb31-54" aria-hidden="true" tabindex="-1"></a><span class="co">% Informe técnico</span></span>
+<span id="cb31-55"><a href="#cb31-55" aria-hidden="true" tabindex="-1"></a><span class="va">@techreport</span>{<span class="ot">usm2025</span>,</span>
+<span id="cb31-56"><a href="#cb31-56" aria-hidden="true" tabindex="-1"></a>  <span class="dt">author</span>      = {{Dirección de Transformación Digital}},</span>
+<span id="cb31-57"><a href="#cb31-57" aria-hidden="true" tabindex="-1"></a>  <span class="dt">title</span>       = {Estudio de Madurez Digital Institucional},</span>
+<span id="cb31-58"><a href="#cb31-58" aria-hidden="true" tabindex="-1"></a>  <span class="dt">institution</span> = {Universidad Técnica Federico Santa María},</span>
+<span id="cb31-59"><a href="#cb31-59" aria-hidden="true" tabindex="-1"></a>  <span class="dt">year</span>        = {2025},</span>
+<span id="cb31-60"><a href="#cb31-60" aria-hidden="true" tabindex="-1"></a>  <span class="dt">type</span>        = {Informe técnico}</span>
+<span id="cb31-61"><a href="#cb31-61" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="usar-las-citas-en-el-documento" class="level3">
+<h3 class="anchored" data-anchor-id="usar-las-citas-en-el-documento">Usar las citas en el documento</h3>
+<div class="sourceCode" id="cb32"><pre class="sourceCode latex code-with-copy"><code class="sourceCode latex"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">document</span>}</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="co">% Cita básica (número o autor-año según el estilo)</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>Como señala <span class="kw">\cite</span>{<span class="ex">wickham2016</span>}, el análisis exploratorio es el primer paso.</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a><span class="co">% Cita con página específica</span></span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>El concepto de gramática de gráficos <span class="kw">\cite</span>[p.~42]{<span class="ex">wickham2016</span>} fue adaptado de Wilkinson.</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a><span class="co">% Cita entre paréntesis (autor, año)</span></span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>Los datos fueron analizados con XGBoost <span class="kw">\cite</span>{<span class="ex">chen2016xgboost</span>}.</span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a><span class="co">% Múltiples citas</span></span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>Varios autores abordan este tema <span class="kw">\cite</span>{<span class="ex">wickham2016, hunter2007, chen2016xgboost</span>}.</span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a><span class="co">% Solo el año (con natbib)</span></span>
+<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a><span class="kw">\citeyear</span>{<span class="ex">wickham2016</span>}   <span class="co">% → 2016</span></span>
+<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a><span class="co">% Solo el autor (con natbib)</span></span>
+<span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a><span class="kw">\citeauthor</span>{<span class="ex">wickham2016</span>} <span class="co">% → Wickham and Grolemund</span></span>
+<span id="cb32-20"><a href="#cb32-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-21"><a href="#cb32-21" aria-hidden="true" tabindex="-1"></a><span class="co">% Cita en texto natural (con natbib)</span></span>
+<span id="cb32-22"><a href="#cb32-22" aria-hidden="true" tabindex="-1"></a><span class="kw">\citet</span>{<span class="ex">wickham2016</span>} demuestran que...  <span class="co">% → Wickham and Grolemund (2016) demuestran que...</span></span>
+<span id="cb32-23"><a href="#cb32-23" aria-hidden="true" tabindex="-1"></a><span class="kw">\citep</span>{<span class="ex">wickham2016</span>}                     <span class="co">% → (Wickham and Grolemund, 2016)</span></span>
+<span id="cb32-24"><a href="#cb32-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-25"><a href="#cb32-25" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">document</span>}</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="configurar-el-estilo-bibliográfico" class="level3">
+<h3 class="anchored" data-anchor-id="configurar-el-estilo-bibliográfico">Configurar el estilo bibliográfico</h3>
+<p>Al final del documento, antes de <code>\end{document}</code>:</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode latex code-with-copy"><code class="sourceCode latex"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co">% Estilo numérico (IEEE, ingeniería)</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="bu">\bibliographystyle</span>{<span class="ex">ieeetr</span>}</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="bu">\bibliography</span>{<span class="ex">referencias</span>}   <span class="co">% archivo referencias.bib (sin extensión)</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="co">% Estilo autor-año (APA, ciencias sociales)</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>{<span class="ex">natbib</span>}</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a><span class="bu">\bibliographystyle</span>{<span class="ex">apalike</span>}</span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a><span class="bu">\bibliography</span>{<span class="ex">referencias</span>}</span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a><span class="co">% Estilo alfabético con natbib</span></span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a><span class="bu">\bibliographystyle</span>{<span class="ex">plainnat</span>}</span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a><span class="bu">\bibliography</span>{<span class="ex">referencias</span>}</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Estilos más comunes:</p>
+<table class="table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Estilo</th>
+<th>Cita en texto</th>
+<th>Bibliografía</th>
+<th>Usado en</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>ieeetr</code></td>
+<td>[1], [2]</td>
+<td>Ordenada por orden de aparición</td>
+<td>Ingeniería, IEEE</td>
+</tr>
+<tr class="even">
+<td><code>apalike</code></td>
+<td>(Apellido, Año)</td>
+<td>Alfabética por apellido</td>
+<td>Ciencias sociales</td>
+</tr>
+<tr class="odd">
+<td><code>plainnat</code></td>
+<td>(Apellido, Año)</td>
+<td>Alfabética</td>
+<td>General académico</td>
+</tr>
+<tr class="even">
+<td><code>plain</code></td>
+<td>[1], [2]</td>
+<td>Alfabética por apellido</td>
+<td>General</td>
+</tr>
+<tr class="odd">
+<td><code>alpha</code></td>
+<td>[Wick16]</td>
+<td>Alfabética</td>
+<td>Matemáticas</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="bibtex-moderno-biblatex-biber" class="level3">
+<h3 class="anchored" data-anchor-id="bibtex-moderno-biblatex-biber">BibTeX moderno: biblatex + biber</h3>
+<p>Para proyectos más complejos, <code>biblatex</code> con <code>biber</code> ofrece más control:</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode latex code-with-copy"><code class="sourceCode latex"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>[</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  style=apa,        <span class="co">% apa, ieee, authoryear, numeric, etc.</span></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  backend=biber,    <span class="co">% más potente que bibtex</span></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>  sorting=nyt,      <span class="co">% nombre-año-título</span></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>  language=spanish</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>]{<span class="ex">biblatex</span>}</span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a><span class="fu">\addbibresource</span>{referencias.bib}</span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a><span class="co">% En el cuerpo</span></span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a><span class="kw">\cite</span>{<span class="ex">wickham2016</span>}</span>
+<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a><span class="kw">\parencite</span>{<span class="ex">wickham2016</span>}    <span class="co">% con paréntesis: (Wickham, 2016)</span></span>
+<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a><span class="kw">\textcite</span>{<span class="ex">wickham2016</span>}     <span class="co">% en texto: Wickham (2016)</span></span>
+<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-15"><a href="#cb34-15" aria-hidden="true" tabindex="-1"></a><span class="co">% Al final del documento (en lugar de \bibliography)</span></span>
+<span id="cb34-16"><a href="#cb34-16" aria-hidden="true" tabindex="-1"></a><span class="fu">\printbibliography</span>[title={Referencias}]</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Gestores de bibliografía: Zotero y Mendeley
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>No escribas el <code>.bib</code> a mano. Usa un gestor de referencias:</p>
+<ul>
+<li><strong>Zotero</strong> (gratuito, open source, recomendado): instala el plugin de Chrome/Firefox, captura referencias desde cualquier web con un clic, exporta directamente a <code>.bib</code>.</li>
+<li><strong>Mendeley</strong> (gratuito, propiedad de Elsevier): interfaz más visual, pero con limitaciones en la versión gratuita.</li>
+</ul>
+<p>Ambos se integran con Overleaf directamente.</p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="overleaf-edición-colaborativa-en-la-nube" class="level2">
+<h2 class="anchored" data-anchor-id="overleaf-edición-colaborativa-en-la-nube">Overleaf: edición colaborativa en la nube</h2>
+<section id="qué-es-overleaf" class="level3">
+<h3 class="anchored" data-anchor-id="qué-es-overleaf">Qué es Overleaf</h3>
+<p><strong>Overleaf</strong> es un editor de LaTeX en la nube que elimina la necesidad de instalar LaTeX localmente. Compila en tiempo real, incluye plantillas de miles de revistas y universidades, y permite colaboración en tiempo real como Google Docs.</p>
+<blockquote class="blockquote">
+<p>🖼️ <strong>Asset:</strong> <code>assets/img/tool/tool__overleaf.png</code> — logo de Overleaf.</p>
+</blockquote>
+<p><strong>Ventajas concretas para docencia:</strong> - Cero instalación para el docente y los estudiantes. - Compilación inmediata con feedback de errores. - Plantillas institucionales preconfiguradas. - Historial de versiones (similar a Git). - Compartición por link con distintos niveles de acceso.</p>
+</section>
+<section id="crear-y-configurar-un-proyecto" class="level3">
+<h3 class="anchored" data-anchor-id="crear-y-configurar-un-proyecto">Crear y configurar un proyecto</h3>
+<ol type="1">
+<li>Ve a <a href="https://www.overleaf.com">overleaf.com</a> → <strong>Register</strong> con tu email institucional.</li>
+<li><strong>New Project</strong> → elige una plantilla o <strong>Blank Project</strong>.</li>
+<li>Escribe el nombre del proyecto: <code>MAT281-Guia3-RegresionLineal</code>.</li>
+</ol>
+<p>La interfaz tiene tres paneles:</p>
+<pre><code>┌──────────────────┬────────────────────┬──────────────────────┐
+│   Árbol de       │  Editor de código  │  Vista previa PDF    │
+│   archivos       │  (.tex, .bib, img) │  (compilada en vivo) │
+│                  │                    │                       │
+│ main.tex         │ \documentclass{...}│ [PDF renderizado]     │
+│ referencias.bib  │ \usepackage{...}   │                       │
+│ imagenes/        │ \begin{document}   │                       │
+│   fig1.png       │   ...              │                       │
+└──────────────────┴────────────────────┴──────────────────────┘</code></pre>
+</section>
+<section id="atajos-de-teclado-en-overleaf" class="level3">
+<h3 class="anchored" data-anchor-id="atajos-de-teclado-en-overleaf">Atajos de teclado en Overleaf</h3>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Atajo</th>
+<th>Acción</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>Ctrl+Enter</code></td>
+<td>Compilar (recompilar el PDF)</td>
+</tr>
+<tr class="even">
+<td><code>Ctrl+/</code></td>
+<td>Comentar/descomentar la línea</td>
+</tr>
+<tr class="odd">
+<td><code>Ctrl+F</code></td>
+<td>Buscar en el documento</td>
+</tr>
+<tr class="even">
+<td><code>Ctrl+H</code></td>
+<td>Buscar y reemplazar</td>
+</tr>
+<tr class="odd">
+<td><code>Ctrl+Z</code></td>
+<td>Deshacer</td>
+</tr>
+<tr class="even">
+<td><code>Ctrl+Shift+F</code></td>
+<td>Buscar en todos los archivos del proyecto</td>
+</tr>
+<tr class="odd">
+<td>Clic en PDF</td>
+<td>Ir al código fuente correspondiente (SyncTeX)</td>
+</tr>
+<tr class="even">
+<td><code>Ctrl+Clic</code> código</td>
+<td>Ir al PDF correspondiente (SyncTeX inverso)</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="colaboración-en-overleaf" class="level3">
+<h3 class="anchored" data-anchor-id="colaboración-en-overleaf">Colaboración en Overleaf</h3>
+<p><strong>Compartir un proyecto:</strong> 1. Menú <strong>Share</strong> (arriba a la derecha) 2. <strong>Link sharing</strong> → activar y copiar el link 3. Niveles: <strong>Can edit</strong> (co-autor) o <strong>Can view</strong> (solo lectura)</p>
+<p><strong>Invitar por email:</strong> 1. <strong>Share</strong> → <strong>Invite people</strong> 2. Ingresar email del colaborador 3. Nivel de acceso: <strong>Editor</strong> o <strong>Viewer</strong></p>
+<p>Los colaboradores ven los cursores en tiempo real — exactamente como Google Docs.</p>
+<p><strong>Modo de revisión:</strong> Overleaf Pro tiene <strong>Track Changes</strong> (Control de cambios). En la versión gratuita, usa comentarios:</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode latex code-with-copy"><code class="sourceCode latex"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co">% </span><span class="al">TODO</span><span class="co">: revisar esta sección — los datos son del 2023, actualizar</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="kw">\section</span>{Resultados}</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a><span class="co">% NOTA para el ayudante: agregar gráfico de dispersión aquí</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="historial-de-versiones" class="level3">
+<h3 class="anchored" data-anchor-id="historial-de-versiones">Historial de versiones</h3>
+<p>Overleaf guarda el historial de cambios:</p>
+<ul>
+<li><strong>Versión gratuita:</strong> historial de las últimas 24 horas.</li>
+<li><strong>Versión Pro (o Education):</strong> historial ilimitado con posibilidad de etiquetar versiones (como <code>git tag</code>).</li>
+</ul>
+<p>Para ver el historial: ícono del reloj (History) en el menú superior.</p>
+<p>Para crear un punto de referencia (Pro): <strong>History</strong> → <strong>Label this version</strong> → <code>"Versión enviada a revisión"</code>.</p>
+</section>
+<section id="sincronización-con-github" class="level3">
+<h3 class="anchored" data-anchor-id="sincronización-con-github">Sincronización con GitHub</h3>
+<p>Overleaf Pro permite sincronizar proyectos con repositorios de GitHub bidireccional: editas en Overleaf, haces pull en GitHub y viceversa.</p>
+<pre><code>Overleaf &lt;── push/pull ──&gt; GitHub
+   ↑                            ↑
+Edición visual             Control de versiones
+colaborativa               y CI/CD</code></pre>
+<p>Configurar: <strong>Menu (☰)</strong> → <strong>GitHub</strong> → <strong>Create a GitHub repository</strong> o <strong>Link to existing repository</strong>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Overleaf Education: acceso Pro gratuito
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Muchas universidades tienen licencias institucionales de Overleaf Pro. Verifica si la UTFSM tiene un acuerdo — si es así, todos los usuarios con email <code>@usm.cl</code> tienen acceso a Pro gratuitamente. Si no, <a href="https://www.overleaf.com/edu">education.overleaf.com</a> tiene beneficios para docentes verificados.</p>
+</div>
+</div>
+</section>
+<section id="plantillas-recomendadas-para-docencia" class="level3">
+<h3 class="anchored" data-anchor-id="plantillas-recomendadas-para-docencia">Plantillas recomendadas para docencia</h3>
+<p>Overleaf tiene una galería de plantillas en <a href="https://www.overleaf.com/gallery">overleaf.com/gallery</a>. Búsquedas útiles:</p>
+<ul>
+<li><strong>“exam”</strong> → plantillas de pruebas y evaluaciones con espacios de respuesta.</li>
+<li><strong>“lecture notes”</strong> → apuntes de clase con formato de libro.</li>
+<li><strong>“problem set”</strong> → guías de ejercicios.</li>
+<li><strong>“IEEE”</strong> → artículos para publicación en revistas de ingeniería.</li>
+<li><strong>“beamer”</strong> → presentaciones en LaTeX.</li>
+</ul>
+<p>Para un punto de partida, esta es la estructura de proyecto recomendada en Overleaf para un curso:</p>
+<pre><code>mat281-guia3/
+├── main.tex              # documento principal
+├── referencias.bib       # base de datos bibliográfica
+├── preambulo.tex         # paquetes y configuraciones (incluido con \input)
+├── secciones/
+│   ├── introduccion.tex
+│   ├── teoria.tex
+│   ├── ejercicios.tex
+│   └── soluciones.tex
+└── imagenes/
+    ├── histograma.png
+    ├── scatter.png
+    └── diagrama.pdf</code></pre>
+<p>Con <code>\input</code> para modularizar el documento:</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode latex code-with-copy"><code class="sourceCode latex"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co">% main.tex</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="bu">\documentclass</span>[12pt]{<span class="ex">article</span>}</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="fu">\input</span>{preambulo}                    <span class="co">% carga todos los paquetes</span></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">document</span>}</span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a><span class="fu">\maketitle</span></span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a><span class="fu">\tableofcontents</span></span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a><span class="fu">\input</span>{secciones/introduccion}</span>
+<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a><span class="fu">\input</span>{secciones/teoria}</span>
+<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a><span class="fu">\input</span>{secciones/ejercicios}</span>
+<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a><span class="co">% \input{secciones/soluciones}      % comentar para la versión del estudiante</span></span>
+<span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-14"><a href="#cb39-14" aria-hidden="true" tabindex="-1"></a><span class="bu">\bibliography</span>{<span class="ex">referencias</span>}</span>
+<span id="cb39-15"><a href="#cb39-15" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">document</span>}</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+</section>
+</section>
+<section id="documento-completo-de-ejemplo-guía-de-ejercicios" class="level2">
+<h2 class="anchored" data-anchor-id="documento-completo-de-ejemplo-guía-de-ejercicios">Documento completo de ejemplo: Guía de Ejercicios</h2>
+<p>El siguiente ejemplo integra todo lo cubierto en este capítulo — listo para compilar en Overleaf:</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode latex code-with-copy"><code class="sourceCode latex"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="bu">\documentclass</span>[12pt, letterpaper]{<span class="ex">article</span>}</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="co">% ── Paquetes esenciales ────────────────────────────────────────</span></span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>[utf8]{<span class="ex">inputenc</span>}</span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>[T1]{<span class="ex">fontenc</span>}</span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>[spanish, es-nodecimaldot]{<span class="ex">babel</span>}</span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>[top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm]{<span class="ex">geometry</span>}</span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>{<span class="ex">amsmath, amssymb, amsthm</span>}</span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>{<span class="ex">graphicx</span>}</span>
+<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>{<span class="ex">float</span>}</span>
+<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>{<span class="ex">booktabs</span>}</span>
+<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>{<span class="ex">enumitem</span>}</span>
+<span id="cb40-13"><a href="#cb40-13" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>{<span class="ex">microtype</span>}</span>
+<span id="cb40-14"><a href="#cb40-14" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>{<span class="ex">parskip</span>}</span>
+<span id="cb40-15"><a href="#cb40-15" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>[colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue]{<span class="ex">hyperref</span>}</span>
+<span id="cb40-16"><a href="#cb40-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-17"><a href="#cb40-17" aria-hidden="true" tabindex="-1"></a><span class="co">% ── Entornos para ejercicios ───────────────────────────────────</span></span>
+<span id="cb40-18"><a href="#cb40-18" aria-hidden="true" tabindex="-1"></a><span class="fu">\newtheorem</span>{ejercicio}{Ejercicio}</span>
+<span id="cb40-19"><a href="#cb40-19" aria-hidden="true" tabindex="-1"></a><span class="fu">\newtheorem</span>{problema}{Problema}</span>
+<span id="cb40-20"><a href="#cb40-20" aria-hidden="true" tabindex="-1"></a><span class="fu">\newenvironment</span>{solucion}{<span class="fu">\textbf</span>{Solución.}}{}</span>
+<span id="cb40-21"><a href="#cb40-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-22"><a href="#cb40-22" aria-hidden="true" tabindex="-1"></a><span class="co">% ── Comandos propios ───────────────────────────────────────────</span></span>
+<span id="cb40-23"><a href="#cb40-23" aria-hidden="true" tabindex="-1"></a><span class="fu">\newcommand</span>{<span class="ex">\E</span>}[1]{<span class="fu">\mathbb</span>{E}<span class="fu">\left</span>[#1<span class="fu">\right</span>]}     <span class="co">% valor esperado</span></span>
+<span id="cb40-24"><a href="#cb40-24" aria-hidden="true" tabindex="-1"></a><span class="fu">\newcommand</span>{<span class="ex">\Var</span>}[1]{<span class="fu">\text</span>{Var}<span class="fu">\left</span>(#1<span class="fu">\right</span>)}   <span class="co">% varianza</span></span>
+<span id="cb40-25"><a href="#cb40-25" aria-hidden="true" tabindex="-1"></a><span class="fu">\newcommand</span>{<span class="ex">\R</span>}{<span class="fu">\mathbb</span>{R}}                        <span class="co">% reales</span></span>
+<span id="cb40-26"><a href="#cb40-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-27"><a href="#cb40-27" aria-hidden="true" tabindex="-1"></a><span class="co">% ── Encabezado y pie de página ─────────────────────────────────</span></span>
+<span id="cb40-28"><a href="#cb40-28" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>{<span class="ex">fancyhdr</span>}</span>
+<span id="cb40-29"><a href="#cb40-29" aria-hidden="true" tabindex="-1"></a><span class="fu">\pagestyle</span>{fancy}</span>
+<span id="cb40-30"><a href="#cb40-30" aria-hidden="true" tabindex="-1"></a><span class="fu">\fancyhf</span>{}</span>
+<span id="cb40-31"><a href="#cb40-31" aria-hidden="true" tabindex="-1"></a><span class="fu">\lhead</span>{<span class="fu">\small</span> MAT281 — Aplicaciones de la Matemática en Ingeniería}</span>
+<span id="cb40-32"><a href="#cb40-32" aria-hidden="true" tabindex="-1"></a><span class="fu">\rhead</span>{<span class="fu">\small</span> Guía N°3: Regresión Lineal}</span>
+<span id="cb40-33"><a href="#cb40-33" aria-hidden="true" tabindex="-1"></a><span class="fu">\cfoot</span>{<span class="fu">\small</span> Página <span class="fu">\thepage</span>}</span>
+<span id="cb40-34"><a href="#cb40-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-35"><a href="#cb40-35" aria-hidden="true" tabindex="-1"></a><span class="co">% ── Metadata ───────────────────────────────────────────────────</span></span>
+<span id="cb40-36"><a href="#cb40-36" aria-hidden="true" tabindex="-1"></a><span class="fu">\title</span>{</span>
+<span id="cb40-37"><a href="#cb40-37" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\vspace</span>{-1cm}</span>
+<span id="cb40-38"><a href="#cb40-38" aria-hidden="true" tabindex="-1"></a>    {<span class="fu">\Large</span> MAT281 — Aplicaciones de la Matemática en Ingeniería}<span class="fu">\\</span>[0.5em]</span>
+<span id="cb40-39"><a href="#cb40-39" aria-hidden="true" tabindex="-1"></a>    {<span class="fu">\huge</span> Guía de Ejercicios N°3}<span class="fu">\\</span>[0.3em]</span>
+<span id="cb40-40"><a href="#cb40-40" aria-hidden="true" tabindex="-1"></a>    {<span class="fu">\large</span> Regresión Lineal Simple y Mínimos Cuadrados}</span>
+<span id="cb40-41"><a href="#cb40-41" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb40-42"><a href="#cb40-42" aria-hidden="true" tabindex="-1"></a><span class="fu">\author</span>{</span>
+<span id="cb40-43"><a href="#cb40-43" aria-hidden="true" tabindex="-1"></a>    Prof. Juan Pérez<span class="fu">\\</span></span>
+<span id="cb40-44"><a href="#cb40-44" aria-hidden="true" tabindex="-1"></a>    {<span class="fu">\small</span> Departamento de Matemáticas · UTFSM}<span class="fu">\\</span>[0.3em]</span>
+<span id="cb40-45"><a href="#cb40-45" aria-hidden="true" tabindex="-1"></a>    {<span class="fu">\small</span> <span class="fu">\href</span>{mailto:juan.perez@usm.cl}{juan.perez@usm.cl}}</span>
+<span id="cb40-46"><a href="#cb40-46" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb40-47"><a href="#cb40-47" aria-hidden="true" tabindex="-1"></a><span class="fu">\date</span>{Primer semestre 2025 <span class="fu">\quad</span>|<span class="fu">\quad</span> Entrega: 15 de abril}</span>
+<span id="cb40-48"><a href="#cb40-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-49"><a href="#cb40-49" aria-hidden="true" tabindex="-1"></a><span class="co">% ══════════════════════════════════════════════════════════════</span></span>
+<span id="cb40-50"><a href="#cb40-50" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">document</span>}</span>
+<span id="cb40-51"><a href="#cb40-51" aria-hidden="true" tabindex="-1"></a><span class="co">% ══════════════════════════════════════════════════════════════</span></span>
+<span id="cb40-52"><a href="#cb40-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-53"><a href="#cb40-53" aria-hidden="true" tabindex="-1"></a><span class="fu">\maketitle</span></span>
+<span id="cb40-54"><a href="#cb40-54" aria-hidden="true" tabindex="-1"></a><span class="fu">\thispagestyle</span>{empty}</span>
+<span id="cb40-55"><a href="#cb40-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-56"><a href="#cb40-56" aria-hidden="true" tabindex="-1"></a><span class="fu">\hrule</span></span>
+<span id="cb40-57"><a href="#cb40-57" aria-hidden="true" tabindex="-1"></a><span class="fu">\vspace</span>{0.3cm}</span>
+<span id="cb40-58"><a href="#cb40-58" aria-hidden="true" tabindex="-1"></a><span class="fu">\noindent\textbf</span>{Instrucciones:} Resuelva cada ejercicio mostrando el procedimiento completo. Las respuestas sin desarrollo no serán evaluadas. Puede usar calculadora y material de consulta, pero no herramientas computacionales (Python, R, Excel) salvo que el enunciado lo indique explícitamente.</span>
+<span id="cb40-59"><a href="#cb40-59" aria-hidden="true" tabindex="-1"></a><span class="fu">\vspace</span>{0.3cm}</span>
+<span id="cb40-60"><a href="#cb40-60" aria-hidden="true" tabindex="-1"></a><span class="fu">\hrule</span></span>
+<span id="cb40-61"><a href="#cb40-61" aria-hidden="true" tabindex="-1"></a><span class="fu">\vspace</span>{1cm}</span>
+<span id="cb40-62"><a href="#cb40-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-63"><a href="#cb40-63" aria-hidden="true" tabindex="-1"></a><span class="co">% ── Sección 1: Teoría ─────────────────────────────────────────</span></span>
+<span id="cb40-64"><a href="#cb40-64" aria-hidden="true" tabindex="-1"></a><span class="kw">\section</span>{Fundamentos de Regresión Lineal}</span>
+<span id="cb40-65"><a href="#cb40-65" aria-hidden="true" tabindex="-1"></a><span class="kw">\label</span>{<span class="ex">sec:teoria</span>}</span>
+<span id="cb40-66"><a href="#cb40-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-67"><a href="#cb40-67" aria-hidden="true" tabindex="-1"></a>La regresión lineal simple modela la relación entre una variable respuesta <span class="ss">$Y$</span> y una variable predictora <span class="ss">$X$</span> mediante:</span>
+<span id="cb40-68"><a href="#cb40-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-69"><a href="#cb40-69" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">equation</span>}</span>
+<span id="cb40-70"><a href="#cb40-70" aria-hidden="true" tabindex="-1"></a><span class="ss">    Y_i = </span><span class="sc">\beta</span><span class="ss">_0 + </span><span class="sc">\beta</span><span class="ss">_1 X_i + </span><span class="sc">\varepsilon</span><span class="ss">_i, </span><span class="sc">\quad</span><span class="ss"> i = 1, </span><span class="sc">\ldots</span><span class="ss">, n</span></span>
+<span id="cb40-71"><a href="#cb40-71" aria-hidden="true" tabindex="-1"></a><span class="ss">    </span><span class="sc">\label</span><span class="ss">{eq:modelo_regresion}</span></span>
+<span id="cb40-72"><a href="#cb40-72" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">equation</span>}</span>
+<span id="cb40-73"><a href="#cb40-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-74"><a href="#cb40-74" aria-hidden="true" tabindex="-1"></a>donde <span class="ss">$</span><span class="sc">\varepsilon</span><span class="ss">_i </span><span class="sc">\sim</span><span class="ss"> </span><span class="sc">\mathcal</span><span class="ss">{N}(0, </span><span class="sc">\sigma</span><span class="ss">^2)$</span> son los errores aleatorios independientes.</span>
+<span id="cb40-75"><a href="#cb40-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-76"><a href="#cb40-76" aria-hidden="true" tabindex="-1"></a>Los estimadores de mínimos cuadrados ordinarios (MCO) para los parámetros <span class="ss">$</span><span class="sc">\beta</span><span class="ss">_0$</span> y <span class="ss">$</span><span class="sc">\beta</span><span class="ss">_1$</span> son:</span>
+<span id="cb40-77"><a href="#cb40-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-78"><a href="#cb40-78" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">align</span>}</span>
+<span id="cb40-79"><a href="#cb40-79" aria-hidden="true" tabindex="-1"></a><span class="ss">    </span><span class="sc">\hat</span><span class="ss">{</span><span class="sc">\beta</span><span class="ss">}_1 &amp;= </span><span class="sc">\frac</span><span class="ss">{</span><span class="sc">\sum</span><span class="ss">_{i=1}^{n}(X_i - </span><span class="sc">\bar</span><span class="ss">{X})(Y_i - </span><span class="sc">\bar</span><span class="ss">{Y})}</span></span>
+<span id="cb40-80"><a href="#cb40-80" aria-hidden="true" tabindex="-1"></a><span class="ss">                          {</span><span class="sc">\sum</span><span class="ss">_{i=1}^{n}(X_i - </span><span class="sc">\bar</span><span class="ss">{X})^2}</span></span>
+<span id="cb40-81"><a href="#cb40-81" aria-hidden="true" tabindex="-1"></a><span class="ss">                 = </span><span class="sc">\frac</span><span class="ss">{S_{XY}}{S_{XX}}</span></span>
+<span id="cb40-82"><a href="#cb40-82" aria-hidden="true" tabindex="-1"></a><span class="ss">    </span><span class="sc">\label</span><span class="ss">{eq:beta1} </span><span class="sc">\\</span><span class="ss">[0.5em]</span></span>
+<span id="cb40-83"><a href="#cb40-83" aria-hidden="true" tabindex="-1"></a><span class="ss">    </span><span class="sc">\hat</span><span class="ss">{</span><span class="sc">\beta</span><span class="ss">}_0 &amp;= </span><span class="sc">\bar</span><span class="ss">{Y} - </span><span class="sc">\hat</span><span class="ss">{</span><span class="sc">\beta</span><span class="ss">}_1 </span><span class="sc">\bar</span><span class="ss">{X}</span></span>
+<span id="cb40-84"><a href="#cb40-84" aria-hidden="true" tabindex="-1"></a><span class="ss">    </span><span class="sc">\label</span><span class="ss">{eq:beta0}</span></span>
+<span id="cb40-85"><a href="#cb40-85" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">align</span>}</span>
+<span id="cb40-86"><a href="#cb40-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-87"><a href="#cb40-87" aria-hidden="true" tabindex="-1"></a>donde <span class="ss">$</span><span class="sc">\bar</span><span class="ss">{X}$</span> e <span class="ss">$</span><span class="sc">\bar</span><span class="ss">{Y}$</span> son las medias muestrales.</span>
+<span id="cb40-88"><a href="#cb40-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-89"><a href="#cb40-89" aria-hidden="true" tabindex="-1"></a><span class="kw">\subsection</span>{Bondad de ajuste}</span>
+<span id="cb40-90"><a href="#cb40-90" aria-hidden="true" tabindex="-1"></a><span class="kw">\label</span>{<span class="ex">subsec:bondad</span>}</span>
+<span id="cb40-91"><a href="#cb40-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-92"><a href="#cb40-92" aria-hidden="true" tabindex="-1"></a>El coeficiente de determinación <span class="ss">$R^2$</span> mide la proporción de variabilidad de <span class="ss">$Y$</span> explicada por el modelo:</span>
+<span id="cb40-93"><a href="#cb40-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-94"><a href="#cb40-94" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">equation</span>}</span>
+<span id="cb40-95"><a href="#cb40-95" aria-hidden="true" tabindex="-1"></a><span class="ss">    R^2 = 1 - </span><span class="sc">\frac</span><span class="ss">{</span><span class="sc">\text</span>{SCR}<span class="ss">}{</span><span class="sc">\text</span>{SCT}<span class="ss">} = 1 - </span><span class="sc">\frac</span><span class="ss">{</span><span class="sc">\sum</span><span class="ss">_{i=1}^{n}(Y_i - </span><span class="sc">\hat</span><span class="ss">{Y}_i)^2}</span></span>
+<span id="cb40-96"><a href="#cb40-96" aria-hidden="true" tabindex="-1"></a><span class="ss">                                                        {</span><span class="sc">\sum</span><span class="ss">_{i=1}^{n}(Y_i - </span><span class="sc">\bar</span><span class="ss">{Y})^2}</span></span>
+<span id="cb40-97"><a href="#cb40-97" aria-hidden="true" tabindex="-1"></a><span class="ss">    </span><span class="sc">\label</span><span class="ss">{eq:r_cuadrado}</span></span>
+<span id="cb40-98"><a href="#cb40-98" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">equation</span>}</span>
+<span id="cb40-99"><a href="#cb40-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-100"><a href="#cb40-100" aria-hidden="true" tabindex="-1"></a>Un <span class="ss">$R^2$</span> cercano a 1 indica un ajuste casi perfecto del modelo a los datos.</span>
+<span id="cb40-101"><a href="#cb40-101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-102"><a href="#cb40-102" aria-hidden="true" tabindex="-1"></a><span class="co">% ── Sección 2: Ejercicios ─────────────────────────────────────</span></span>
+<span id="cb40-103"><a href="#cb40-103" aria-hidden="true" tabindex="-1"></a><span class="kw">\section</span>{Ejercicios}</span>
+<span id="cb40-104"><a href="#cb40-104" aria-hidden="true" tabindex="-1"></a><span class="kw">\label</span>{<span class="ex">sec:ejercicios</span>}</span>
+<span id="cb40-105"><a href="#cb40-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-106"><a href="#cb40-106" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">ejercicio</span>}</span>
+<span id="cb40-107"><a href="#cb40-107" aria-hidden="true" tabindex="-1"></a><span class="kw">\label</span>{<span class="ex">ej:estimadores</span>}</span>
+<span id="cb40-108"><a href="#cb40-108" aria-hidden="true" tabindex="-1"></a>Se registró el número de horas de estudio semanales (<span class="ss">$X$</span>) y la nota final en el curso (<span class="ss">$Y$</span>) para una muestra de 8 estudiantes. Los resultados se muestran en la Tabla~<span class="kw">\ref</span>{<span class="ex">tab:datos_ejercicio</span>}.</span>
+<span id="cb40-109"><a href="#cb40-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-110"><a href="#cb40-110" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">table</span>}[H]</span>
+<span id="cb40-111"><a href="#cb40-111" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\centering</span></span>
+<span id="cb40-112"><a href="#cb40-112" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\caption</span>{Horas de estudio y nota final de 8 estudiantes.}</span>
+<span id="cb40-113"><a href="#cb40-113" aria-hidden="true" tabindex="-1"></a>    <span class="kw">\label</span>{<span class="ex">tab:datos_ejercicio</span>}</span>
+<span id="cb40-114"><a href="#cb40-114" aria-hidden="true" tabindex="-1"></a>    <span class="kw">\begin</span>{<span class="ex">tabular</span>}{<span class="ch">@{}</span> c r r <span class="ch">@{}</span>}</span>
+<span id="cb40-115"><a href="#cb40-115" aria-hidden="true" tabindex="-1"></a>        <span class="fu">\toprule</span></span>
+<span id="cb40-116"><a href="#cb40-116" aria-hidden="true" tabindex="-1"></a>        Estudiante <span class="op">&amp;</span> Horas de estudio (<span class="ss">$X$</span>) <span class="op">&amp;</span> Nota final (<span class="ss">$Y$</span>) <span class="fu">\\</span></span>
+<span id="cb40-117"><a href="#cb40-117" aria-hidden="true" tabindex="-1"></a>        <span class="fu">\midrule</span></span>
+<span id="cb40-118"><a href="#cb40-118" aria-hidden="true" tabindex="-1"></a>        1 <span class="op">&amp;</span> 4  <span class="op">&amp;</span> 4.5 <span class="fu">\\</span></span>
+<span id="cb40-119"><a href="#cb40-119" aria-hidden="true" tabindex="-1"></a>        2 <span class="op">&amp;</span> 6  <span class="op">&amp;</span> 5.2 <span class="fu">\\</span></span>
+<span id="cb40-120"><a href="#cb40-120" aria-hidden="true" tabindex="-1"></a>        3 <span class="op">&amp;</span> 8  <span class="op">&amp;</span> 5.8 <span class="fu">\\</span></span>
+<span id="cb40-121"><a href="#cb40-121" aria-hidden="true" tabindex="-1"></a>        4 <span class="op">&amp;</span> 5  <span class="op">&amp;</span> 4.9 <span class="fu">\\</span></span>
+<span id="cb40-122"><a href="#cb40-122" aria-hidden="true" tabindex="-1"></a>        5 <span class="op">&amp;</span> 10 <span class="op">&amp;</span> 6.5 <span class="fu">\\</span></span>
+<span id="cb40-123"><a href="#cb40-123" aria-hidden="true" tabindex="-1"></a>        6 <span class="op">&amp;</span> 7  <span class="op">&amp;</span> 5.5 <span class="fu">\\</span></span>
+<span id="cb40-124"><a href="#cb40-124" aria-hidden="true" tabindex="-1"></a>        7 <span class="op">&amp;</span> 3  <span class="op">&amp;</span> 3.8 <span class="fu">\\</span></span>
+<span id="cb40-125"><a href="#cb40-125" aria-hidden="true" tabindex="-1"></a>        8 <span class="op">&amp;</span> 9  <span class="op">&amp;</span> 6.1 <span class="fu">\\</span></span>
+<span id="cb40-126"><a href="#cb40-126" aria-hidden="true" tabindex="-1"></a>        <span class="fu">\bottomrule</span></span>
+<span id="cb40-127"><a href="#cb40-127" aria-hidden="true" tabindex="-1"></a>    <span class="kw">\end</span>{<span class="ex">tabular</span>}</span>
+<span id="cb40-128"><a href="#cb40-128" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">table</span>}</span>
+<span id="cb40-129"><a href="#cb40-129" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-130"><a href="#cb40-130" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">enumerate</span>}[label=(<span class="fu">\alph*</span>), noitemsep]</span>
+<span id="cb40-131"><a href="#cb40-131" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\item</span> Calcule <span class="ss">$</span><span class="sc">\bar</span><span class="ss">{X}$</span>, <span class="ss">$</span><span class="sc">\bar</span><span class="ss">{Y}$</span>, <span class="ss">$S_{XX}$</span> y <span class="ss">$S_{XY}$</span>.</span>
+<span id="cb40-132"><a href="#cb40-132" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\item</span> Obtenga los estimadores MCO <span class="ss">$</span><span class="sc">\hat</span><span class="ss">{</span><span class="sc">\beta</span><span class="ss">}_0$</span> y <span class="ss">$</span><span class="sc">\hat</span><span class="ss">{</span><span class="sc">\beta</span><span class="ss">}_1$</span> usando las Ecuaciones~<span class="kw">\ref</span>{<span class="ex">eq:beta1</span>} y~<span class="kw">\ref</span>{<span class="ex">eq:beta0</span>}.</span>
+<span id="cb40-133"><a href="#cb40-133" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\item</span> Escriba la ecuación de la recta de regresión ajustada.</span>
+<span id="cb40-134"><a href="#cb40-134" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\item</span> Calcule el <span class="ss">$R^2$</span> del modelo mediante la Ecuación~<span class="kw">\ref</span>{<span class="ex">eq:r_cuadrado</span>} e interprete su valor.</span>
+<span id="cb40-135"><a href="#cb40-135" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\item</span> Estime la nota esperada de un estudiante que estudia 6.5 horas semanales.</span>
+<span id="cb40-136"><a href="#cb40-136" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">enumerate</span>}</span>
+<span id="cb40-137"><a href="#cb40-137" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">ejercicio</span>}</span>
+<span id="cb40-138"><a href="#cb40-138" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-139"><a href="#cb40-139" aria-hidden="true" tabindex="-1"></a><span class="fu">\vspace</span>{1em}</span>
+<span id="cb40-140"><a href="#cb40-140" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-141"><a href="#cb40-141" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">ejercicio</span>}</span>
+<span id="cb40-142"><a href="#cb40-142" aria-hidden="true" tabindex="-1"></a><span class="kw">\label</span>{<span class="ex">ej:supuestos</span>}</span>
+<span id="cb40-143"><a href="#cb40-143" aria-hidden="true" tabindex="-1"></a>Discuta brevemente las consecuencias de cada una de las siguientes violaciones a los supuestos del modelo de la Ecuación~<span class="kw">\ref</span>{<span class="ex">eq:modelo_regresion</span>}:</span>
+<span id="cb40-144"><a href="#cb40-144" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-145"><a href="#cb40-145" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">enumerate</span>}[label=(<span class="fu">\alph*</span>), noitemsep]</span>
+<span id="cb40-146"><a href="#cb40-146" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\item</span> Los errores <span class="ss">$</span><span class="sc">\varepsilon</span><span class="ss">_i$</span> no son independientes (autocorrelación).</span>
+<span id="cb40-147"><a href="#cb40-147" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\item</span> La varianza de los errores no es constante (heterocedasticidad).</span>
+<span id="cb40-148"><a href="#cb40-148" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\item</span> La relación entre <span class="ss">$X$</span> e <span class="ss">$Y$</span> no es lineal.</span>
+<span id="cb40-149"><a href="#cb40-149" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">enumerate</span>}</span>
+<span id="cb40-150"><a href="#cb40-150" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">ejercicio</span>}</span>
+<span id="cb40-151"><a href="#cb40-151" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-152"><a href="#cb40-152" aria-hidden="true" tabindex="-1"></a><span class="co">% ── Referencias ───────────────────────────────────────────────</span></span>
+<span id="cb40-153"><a href="#cb40-153" aria-hidden="true" tabindex="-1"></a><span class="fu">\newpage</span></span>
+<span id="cb40-154"><a href="#cb40-154" aria-hidden="true" tabindex="-1"></a><span class="bu">\bibliographystyle</span>{<span class="ex">apalike</span>}</span>
+<span id="cb40-155"><a href="#cb40-155" aria-hidden="true" tabindex="-1"></a><span class="bu">\bibliography</span>{<span class="ex">referencias</span>}</span>
+<span id="cb40-156"><a href="#cb40-156" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-157"><a href="#cb40-157" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">document</span>}</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+</section>
+<section id="referencias" class="level2">
+<h2 class="anchored" data-anchor-id="referencias">Referencias</h2>
+<ul>
+<li>Lamport, L. (1994). <em>LaTeX: A Document Preparation System</em> (2ª ed.). Addison-Wesley.</li>
+<li>Oetiker, T. et al.&nbsp;(2021). <em>The Not So Short Introduction to LaTeX 2ε</em>. Disponible en: <a href="https://tobi.oetiker.ch/lshort/lshort.pdf">tobi.oetiker.ch/lshort</a></li>
+<li>Overleaf Documentation. <em>Learn LaTeX in 30 minutes</em>. <a href="https://www.overleaf.com/learn/latex/Learn_LaTeX_in_30_minutes">overleaf.com/learn</a></li>
+<li>CTAN. <em>Comprehensive TeX Archive Network</em>. <a href="https://ctan.org">ctan.org</a> — documentación de todos los paquetes LaTeX.</li>
+<li>Tables Generator. <em>LaTeX Tables Generator</em>. <a href="https://www.tablesgenerator.com">tablesgenerator.com</a></li>
+<li>Zotero. <em>Reference Manager</em>. <a href="https://www.zotero.org">zotero.org</a></li>
+<li>Mathpix. <em>Convierte ecuaciones escritas a mano o en imágenes a LaTeX</em>. <a href="https://mathpix.com">mathpix.com</a></li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copiado");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copiado");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation column-page-right">
+  <div class="nav-page nav-page-previous">
+      <a href="../02_colab/colab_03_visualizacion.html" class="pagination-link" aria-label="Visualización de datos">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">Visualización de datos</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../03_latex/overleaf_03_plantillas.html" class="pagination-link" aria-label="Plantillas y producción de documentos">
+        <span class="nav-page-text"><span class="chapter-title">Plantillas y producción de documentos</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

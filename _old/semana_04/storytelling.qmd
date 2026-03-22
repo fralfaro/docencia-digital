@@ -1,0 +1,105 @@
+---
+title: "Fundamentos de Data Storytelling"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+---
+
+# ¿Qué es el Data Storytelling?
+
+**Data Storytelling** es el arte de comunicar datos de forma clara, persuasiva y memorable. No se trata solo de mostrar cifras o gráficos, sino de construir una **narrativa** que conecte la información con la audiencia y genere comprensión, interés y acción.
+
+Es el punto de encuentro entre:
+
+- **Análisis de datos** (ciencia)
+- **Visualización** (diseño)
+- **Narrativa** (comunicación)
+
+
+
+# ¿Por qué es importante?
+
+- Permite que **audiencias no técnicas** comprendan hallazgos complejos.
+- Da **contexto** a los datos: ¿qué significan?, ¿por qué importan?
+- Ayuda a **tomar decisiones** mejor informadas.
+- Transforma reportes pasivos en mensajes activos.
+
+
+
+# Elementos clave del Data Storytelling
+
+## 1. Audiencia
+
+Antes de contar una historia con datos, pregúntate:
+
+- ¿Quién la va a leer o ver?
+- ¿Qué nivel de conocimiento tienen?
+- ¿Qué necesitan saber?
+
+## 2. Mensaje
+
+Toda historia necesita un mensaje central. Algunos ejemplos:
+
+- “Los estudiantes con más participación tienen mejores resultados.”
+- “Las ventas bajan los lunes, pero suben al final del mes.”
+
+Evita mostrar gráficos sin propósito.
+
+## 3. Visualización
+
+Selecciona gráficos que **refuercen el mensaje**, no que lo oculten.
+
+- Usa `ggplot2` o `plotly` para claridad y estética.
+- Evita sobrecargar de colores, etiquetas o ejes innecesarios.
+- Usa títulos que expliquen lo que muestra el gráfico, no solo lo describan.
+
+## 4. Narrativa
+
+La narrativa debe tener un **inicio, desarrollo y cierre**:
+
+- Inicio: ¿qué problema se quiere entender?
+- Desarrollo: ¿qué muestran los datos?
+- Cierre: ¿qué conclusiones o recomendaciones surgen?
+
+
+
+# Buenas prácticas
+
+- Muestra **tendencias y contrastes**, no solo promedios.
+- Usa subtítulos y comentarios en los gráficos.
+- Limita la cantidad de variables mostradas por gráfico.
+- Considera el orden visual: lo más importante primero.
+- Piensa en qué **acción** quieres que tome quien ve tu análisis.
+
+
+
+# Ejemplo comparativo
+
+**Malo (sin narrativa):**
+
+> “Gráfico de barras con los ingresos por región.”
+
+**Mejor (con narrativa):**
+
+> “La región norte duplicó los ingresos del sur en el último trimestre, lo que evidencia un cambio en el comportamiento del mercado.”
+
+
+
+# Recursos
+
+- Cole Nussbaumer Knaflic, *Storytelling with Data*
+- Alberto Cairo, *The Functional Art*
+- [https://www.storytellingwithdata.com/](https://www.storytellingwithdata.com/)
+- [Data Viz Catalogue](https://datavizcatalogue.com/)
+
+
+
+# Actividad sugerida
+
+Toma uno de los gráficos que realizaste en semanas anteriores y:
+
+1. Redacta un **mensaje principal** para ese gráfico.
+2. Revisa si su diseño lo comunica con claridad.
+3. Ajusta colores, ejes, leyendas y título para enfocarlo en el mensaje.
+4. Inclúyelo con tu narrativa en tu entrega final.

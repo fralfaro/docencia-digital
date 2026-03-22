@@ -1,0 +1,825 @@
+---
+title: "Prompting efectivo para docentes"
+subtitle: "Cómo comunicarse con la IA para obtener resultados académicos de calidad"
+---
+
+La diferencia entre un docente que "prueba la IA" y uno que la integra productivamente en su flujo de trabajo no está en el modelo que usan — está en cómo formulan sus instrucciones.
+
+Un prompt mal construido produce un output genérico que hay que reescribir completo. Un prompt bien construido produce material que solo necesita revisión menor. La distancia entre ambos suele ser cuestión de agregar tres o cuatro líneas de contexto.
+
+Este capítulo cubre la estructura de prompts efectivos con ejemplos concretos y listos para usar en situaciones docentes reales.
+
+---
+
+## Anatomía de un buen prompt
+
+### Los cuatro elementos
+
+Un prompt docente efectivo tiene cuatro componentes. Ninguno es obligatorio en todo prompt, pero la ausencia de cualquiera de ellos reduce la calidad del output.
+
+```{mermaid}
+graph TD
+    P["🧩 Prompt efectivo"]
+
+    P --> R["🎭 ROL\n¿Quién eres?"]
+    P --> C["📋 CONTEXTO\n¿En qué situación estás?"]
+    P --> T["🎯 TAREA\n¿Qué necesitas exactamente?"]
+    P --> F["📐 FORMATO\n¿Cómo quieres el output?"]
+
+    R --> RE["'Actúa como docente experto\nen estadística universitaria'"]
+    C --> CE["'El curso es para estudiantes\nde tercer año de ingeniería\nque ya conocen cálculo'"]
+    T --> TE["'Genera 5 preguntas de\ndiscusión sobre regresión\nlogística'"]
+    F --> FE["'En formato de lista numerada.\nCada pregunta en máximo 2 líneas.\nDificultad creciente'"]
+```
+
+### Componente 1: Rol
+
+Darle un rol al modelo calibra el tono, la profundidad y el registro del output.
+
+```
+❌ Sin rol:
+"Explica qué es la regresión lineal"
+
+✅ Con rol:
+"Eres un profesor experto en estadística aplicada para ingeniería.
+Explica qué es la regresión lineal..."
+```
+
+Roles útiles para docencia:
+
+```
+"Eres un docente universitario de matemáticas con 15 años de experiencia..."
+"Actúa como diseñador instruccional especializado en educación STEM..."
+"Eres un experto en evaluación formativa para educación superior..."
+"Actúa como revisor académico experto en [disciplina]..."
+"Eres un tutor socrático — nunca das la respuesta directa, solo guías..."
+```
+
+### Componente 2: Contexto
+
+El contexto le da al modelo información que no puede inferir: quiénes son tus estudiantes, qué saben, en qué punto del semestre están.
+
+```
+❌ Sin contexto:
+"Crea una actividad sobre derivadas"
+
+✅ Con contexto:
+"El curso es MAT151 (Cálculo I) en la UTFSM. Los estudiantes son de primer año
+de ingeniería, acaban de aprender límites, y esta es su primera semana con
+derivadas. La mayoría viene de colegios técnicos y tiene poca experiencia previa
+con matemáticas abstractas. Crea una actividad sobre derivadas..."
+```
+
+Información de contexto relevante para prompts docentes:
+
+- Nombre y código del curso
+- Nivel de los estudiantes (año, carrera, conocimientos previos)
+- Punto del semestre (primera semana, antes del examen, etc.)
+- Recursos disponibles (acceso a computadores, internet, calculadora)
+- Limitaciones (tiempo de clase, idioma, requisitos institucionales)
+
+### Componente 3: Tarea
+
+La tarea debe ser específica y accionable. Verbos vagos producen outputs vagos.
+
+| Verbo vago | Verbo específico |
+|---|---|
+| "Ayúdame con..." | "Genera / Redacta / Diseña / Evalúa / Compara..." |
+| "Dime algo sobre..." | "Explica en 3 párrafos el concepto de X para un estudiante que ya sabe Y..." |
+| "Mejora esto..." | "Reescribe este párrafo para que sea más claro, reduciendo su extensión en un 30%..." |
+| "Crea material..." | "Crea una rúbrica de 4 criterios para evaluar un informe de laboratorio de datos..." |
+
+### Componente 4: Formato
+
+Especificar el formato del output evita tener que reformatear el resultado:
+
+```
+"Responde en formato Markdown con headers ##"
+"Organiza la respuesta como tabla con columnas: Criterio | Insuficiente | Básico | Competente | Destacado"
+"Máximo 200 palabras por pregunta"
+"Usa bullet points para cada elemento"
+"Incluye un ejemplo concreto en cada punto"
+"El output debe ser código LaTeX listo para compilar"
+"Formato de lista numerada, sin explicaciones adicionales entre items"
+```
+
+### El prompt completo: antes y después
+
+```
+❌ Prompt débil (30 segundos de escritura → output genérico):
+"Crea preguntas para un examen de regresión"
+
+✅ Prompt efectivo (3 minutos de escritura → output usable):
+"Actúa como profesor de estadística aplicada para ingeniería.
+
+Contexto:
+- Curso: MAT281, tercer año de Ingeniería Civil, UTFSM
+- Semana 5 del semestre — primera evaluación sobre regresión lineal
+- Los estudiantes conocen: álgebra lineal, cálculo, Python básico
+- Duración del examen: 90 minutos, sin computador
+
+Tarea: Genera 8 preguntas de examen sobre regresión lineal simple que:
+- Cubran: estimación MCO, interpretación de β₀ y β₁, R², diagnóstico de residuos
+- 4 preguntas de opción múltiple (4 alternativas, una correcta)
+- 3 preguntas de desarrollo corto (5-8 líneas de respuesta esperada)
+- 1 problema completo con datos numéricos dados
+
+Formato:
+- Sección 'Opción múltiple' con preguntas numeradas I-IV
+- Sección 'Desarrollo' con preguntas V-VII
+- Sección 'Problema' con la pregunta VIII
+- Para cada opción múltiple: indica la respuesta correcta con (*) al final
+- Dificultad creciente dentro de cada sección"
+```
+
+---
+
+## Prompting zero-shot vs few-shot
+
+### Zero-shot: sin ejemplos
+
+El modelo hace la tarea sin que le des ejemplos del output esperado. Funciona bien para tareas genéricas o cuando el formato es standard:
+
+```
+Zero-shot — directo a la tarea:
+"Genera 5 preguntas de discusión sobre el teorema de Bayes para
+un curso de probabilidades de tercer año de ingeniería."
+```
+
+### Few-shot: con ejemplos del output esperado
+
+Le das uno o más ejemplos del resultado que buscas. El modelo infiere el patrón y lo replica. Mucho más efectivo cuando el formato o estilo es específico:
+
+```
+Few-shot — con ejemplo de la estructura esperada:
+
+"Voy a generarte preguntas de examen en el siguiente formato.
+Aquí tienes un ejemplo de cómo deben ser:
+
+EJEMPLO:
+Pregunta: Una muestra de 30 estudiantes tiene media 5.2 y desviación 1.1.
+¿Cuál es el intervalo de confianza del 95% para la media poblacional?
+(A) [4.81, 5.59]  ✓
+(B) [4.97, 5.43]
+(C) [4.72, 5.68]
+(D) [5.02, 5.38]
+Justificación: Se usa z=1.96 para n=30. IC = 5.2 ± 1.96·(1.1/√30) = 5.2 ± 0.394.
+
+Ahora genera 5 preguntas con EXACTAMENTE ese formato sobre regresión lineal.
+Las preguntas deben involucrar cálculos numéricos con datos dados."
+```
+
+### Cuándo usar cada uno
+
+| Situación | Enfoque recomendado |
+|---|---|
+| Tarea estándar, formato conocido | Zero-shot |
+| Formato muy específico (tu plantilla de rúbrica) | Few-shot con 1-2 ejemplos |
+| Output consistente entre muchas items | Few-shot |
+| Estilo de escritura específico | Few-shot con ejemplo de tu prosa |
+| Estructura nueva que no existe en el modelo | Few-shot con template completo |
+
+### Few-shot con tu propio estilo
+
+```
+"A continuación te muestro cómo redacto mis objetivos de aprendizaje.
+Genera 4 objetivos adicionales con el mismo estilo y registro:
+
+EJEMPLO DE MIS OBJETIVOS:
+- Aplicar el teorema de Gauss-Markov para justificar el uso de MCO en
+  situaciones donde se verifican los supuestos clásicos.
+- Identificar violaciones de homocedasticidad mediante gráficos de residuos
+  e interpretar sus implicaciones para la inferencia.
+
+Ahora genera 4 objetivos del mismo estilo para la unidad de
+regresión logística."
+```
+
+---
+
+## Chain of thought: pedir razonamiento paso a paso
+
+### El problema con las respuestas directas
+
+Para tareas que requieren razonamiento complejo — evaluar la coherencia de un argumento, detectar errores conceptuales en una respuesta de estudiante, comparar dos enfoques pedagógicos — pedir la respuesta directamente produce outputs superficiales o incorrectos.
+
+La técnica **Chain of Thought (CoT)** le pide al modelo que muestre su razonamiento antes de concluir. Esto mejora significativamente la calidad del resultado.
+
+### Cómo activar CoT
+
+```
+Variaciones del trigger de CoT:
+- "Razona paso a paso antes de dar tu conclusión."
+- "Piensa en voz alta: explica tu proceso de razonamiento."
+- "Antes de responder, analiza los siguientes aspectos: [lista]"
+- "Primero identifica los criterios relevantes, luego aplícalos."
+- "Let's think step by step." (funciona también en inglés, el modelo lo entiende)
+```
+
+### Ejemplo 1: evaluar la respuesta de un estudiante
+
+```
+Sin CoT (respuesta superficial):
+"¿Está correcta esta respuesta sobre regresión? [pegar respuesta]"
+→ "La respuesta es parcialmente correcta."
+
+Con CoT (análisis útil):
+"Actúa como docente evaluando la respuesta de un estudiante.
+
+Pregunta del examen: 'Interpreta el coeficiente β₁ = 0.28 en el modelo
+Nota_final = 2.5 + 0.28 · Horas_estudio'
+
+Respuesta del estudiante: 'β₁ = 0.28 significa que la relación entre
+las horas de estudio y la nota es positiva y significativa.'
+
+Antes de dar tu evaluación, analiza paso a paso:
+1. ¿Es correcta la dirección de la relación mencionada?
+2. ¿Captura el estudiante el significado cuantitativo del coeficiente?
+3. ¿Menciona las unidades correctas?
+4. ¿Hay conceptos confundidos (ej: confundir magnitud con significancia)?
+
+Luego da: una evaluación (correcto/parcial/incorrecto con justificación)
+y retroalimentación específica de máximo 3 oraciones."
+```
+
+### Ejemplo 2: diseñar una secuencia didáctica
+
+```
+"Diseña una secuencia de 3 clases para enseñar regresión logística a
+estudiantes que ya conocen regresión lineal.
+
+Antes de proponer la secuencia, razona sobre:
+1. ¿Qué conceptos de regresión lineal son transferibles y cuáles
+   pueden generar confusión?
+2. ¿Cuál es el error conceptual más frecuente al aprender logística
+   después de lineal?
+3. ¿Qué analogía o puente conceptual facilita la transición?
+
+Luego, con base en ese análisis, diseña las 3 clases."
+```
+
+### Ejemplo 3: comparar dos versiones de un enunciado
+
+```
+"Tengo dos versiones del enunciado de la Tarea 2. Compara cuál es
+más adecuada para el nivel del curso.
+
+Versión A: [pegar enunciado A]
+Versión B: [pegar enunciado B]
+
+Analiza paso a paso:
+1. Claridad de las instrucciones (¿el estudiante sabe exactamente qué hacer?)
+2. Nivel de dificultad y alineación con el syllabus
+3. Ambigüedades que podrían generar preguntas en la ayudantía
+4. ¿Falta información necesaria para resolver?
+
+Con base en ese análisis, recomienda cuál usar y qué modificación menor
+haría al elegido."
+```
+
+---
+
+## Prompts para generar rúbricas de evaluación
+
+### Template de rúbrica analítica
+
+```
+Prompt para rúbrica de laboratorio:
+
+"Actúa como experto en evaluación formativa universitaria.
+
+Crea una rúbrica analítica para evaluar el Laboratorio 3 del curso
+MAT281 (regresión lineal simple con Python).
+
+Contexto del laboratorio:
+- Los estudiantes reciben un dataset y deben: (1) ajustar el modelo,
+  (2) interpretar los coeficientes, (3) evaluar el ajuste con R²,
+  (4) verificar supuestos con gráficos de residuos, (5) redactar
+  una conclusión.
+- Duración: trabajo individual, 1 semana
+- Entrega: notebook Jupyter (.ipynb)
+- Estudiantes: tercer año de Ingeniería Civil
+
+La rúbrica debe:
+- Tener exactamente 5 criterios (uno por cada componente del lab)
+- 4 niveles de desempeño: Insuficiente (1-3), Básico (4-4.9), Competente (5-6), Destacado (6.1-7)
+- Descriptores concretos y observables en cada nivel (no 'buen trabajo')
+- Ponderación por criterio (deben sumar 100%)
+- Una columna de puntaje y una de observaciones del evaluador
+
+Formato de salida: tabla Markdown con las columnas:
+Criterio | Ponderación | Insuficiente | Básico | Competente | Destacado"
+```
+
+### Rúbrica de presentación oral
+
+```
+"Genera una rúbrica para evaluar la presentación final del proyecto
+integrador en MAT281.
+
+La presentación es:
+- Grupal (3-4 estudiantes), 15 minutos + 5 de preguntas
+- Deben presentar un análisis de datos real con al menos: EDA,
+  modelo predictivo, interpretación y conclusiones
+- Audiencia: docente + compañeros de curso
+
+Criterios obligatorios: contenido técnico, claridad de la presentación,
+manejo de preguntas, trabajo colaborativo visible, calidad de visualizaciones.
+
+Formato: tabla con 4 niveles. Escala chilena (1-7). Incluye:
+- Peso de cada criterio
+- Nota de corte para aprobación
+- Instrucción de autoevaluación que el grupo completa antes de la presentación"
+```
+
+### Iterar sobre una rúbrica generada
+
+Una vez que tienes la rúbrica base, itera:
+
+```
+"La rúbrica que generaste está bien, pero el criterio 'Interpretación'
+es demasiado vago. El descriptor 'el estudiante interpreta correctamente'
+no me dice qué buscar.
+
+Reescribe solo ese criterio con descriptores más específicos que un
+ayudante sin experiencia pueda aplicar sin ambigüedad. Para el nivel
+Competente, especifica qué debe mencionar el estudiante sobre los
+coeficientes, el R² y los supuestos."
+```
+
+---
+
+## Prompts para retroalimentación personalizada
+
+### Template de retroalimentación de código
+
+```
+"Actúa como ayudante del curso MAT281 dando retroalimentación
+constructiva a un estudiante.
+
+RÚBRICA DEL LAB (relevante para esta retroalimentación):
+Criterio 1 — Ajuste del modelo (25%):
+  Competente: usa LinearRegression de sklearn correctamente, separa
+  X e y, llama .fit() con las dimensiones correctas.
+Criterio 3 — Interpretación (30%):
+  Competente: menciona el valor numérico de β₁ con unidades correctas
+  y el R² con su significado estadístico.
+
+CÓDIGO DEL ESTUDIANTE:
+[pegar código del estudiante]
+
+Genera retroalimentación que:
+1. Comienza reconociendo algo específicamente bien hecho
+2. Señala máximo 2 problemas prioritarios (los que más afectan la nota)
+3. Para cada problema: explica por qué es un error y da una pista
+   (no la solución) para corregirlo
+4. Cierra con una pregunta reflexiva sobre su propio proceso
+
+Tono: entre pares, directo, sin condescendencia.
+Extensión: 200-250 palabras."
+```
+
+### Retroalimentación de texto académico
+
+```
+"Actúa como tutor de escritura académica en ingeniería.
+
+Aquí está la sección 'Conclusiones' del informe de laboratorio
+de un estudiante:
+
+[pegar texto del estudiante]
+
+Evalúa y da retroalimentación sobre:
+1. ¿Responde la conclusión la pregunta que planteó la introducción?
+2. ¿Los resultados cuantitativos respaldan las afirmaciones?
+3. ¿Hay afirmaciones sin evidencia o demasiado fuertes?
+4. ¿El tono es apropiado para un informe técnico?
+
+Estructura tu retroalimentación así:
+- Primero: qué funciona bien (específico, no genérico)
+- Luego: 3 sugerencias de mejora numeradas, con la sección exacta a modificar
+- Finalmente: una versión mejorada del primer párrafo como ejemplo
+  (máximo 4 oraciones)"
+```
+
+### Retroalimentación masiva: plantilla para 30 entregas
+
+Cuando tienes muchas entregas similares, usa un template que el ayudante aplica con mínimas variaciones:
+
+```
+"Tengo 30 entregas del Lab 1 (estadística descriptiva con pandas).
+Crea una plantilla de retroalimentación con secciones marcadas [COMPLETAR]
+que un ayudante pueda llenar en 3-5 minutos por entrega.
+
+La plantilla debe:
+- Ser en español, tono formal pero cercano
+- Tener máximo 150 palabras en total
+- Incluir espacios para: nota por criterio, error específico detectado,
+  sugerencia concreta
+- Terminar con una frase de aliento genérica que el ayudante puede dejar tal cual
+
+Criterios del lab: exploración inicial (30%), limpieza (30%), análisis (40%)"
+```
+
+---
+
+## Prompts para planificación de clases y unidades
+
+### Planificación de una sesión de 90 minutos
+
+```
+"Actúa como diseñador instruccional para educación universitaria
+de ingeniería.
+
+Diseña una sesión completa de 90 minutos para enseñar
+'Diagnóstico de residuos en regresión lineal'.
+
+Información del curso:
+- MAT281, tercer año Ingeniería Civil, UTFSM
+- Clase presencial en sala con proyector y acceso a computadores
+- Los estudiantes ya saben: ajustar el modelo MCO, calcular R²
+- Esta es la sesión 3 de la unidad de regresión (de 4 sesiones)
+
+Objetivo de la sesión:
+Al finalizar, el estudiante será capaz de interpretar los 4 gráficos
+principales de diagnóstico de residuos e identificar qué supuesto
+se viola en cada caso.
+
+Estructura la sesión con:
+1. Activación del conocimiento previo (10 min)
+   - Qué actividad/pregunta usas para conectar con la clase anterior
+2. Desarrollo (60 min)
+   - Desglosado en bloques de no más de 20 min
+   - Para cada bloque: qué enseñas, qué hace el estudiante
+3. Cierre (20 min)
+   - Cómo verificas que lograron el objetivo
+   - Qué dejan para hacer antes de la próxima clase
+
+Incluye también:
+- 3 preguntas de verificación de comprensión para usar durante la clase
+- 1 señal de alerta: cómo saber si el grupo no está siguiendo"
+```
+
+### Planificación de una unidad completa (3-4 semanas)
+
+```
+"Diseña la planificación de la Unidad 3 'Aprendizaje supervisado' del
+curso MAT281. La unidad tiene 3 semanas, con 3h de teoría y 2h de
+laboratorio por semana.
+
+Restricciones:
+- Contenido mínimo: regresión logística, árboles de decisión,
+  validación cruzada, métricas de clasificación
+- Evaluación de la unidad: una tarea individual al final de la semana 3
+- Los estudiantes ya conocen regresión lineal y Python con scikit-learn
+
+Para cada semana, especifica:
+| Semana | Sesión | Contenido | Actividad lab | Evaluación formativa |
+
+Luego:
+- Secuencia de aprendizaje justificada: ¿por qué este orden?
+- 1 error conceptual frecuente por contenido y cómo prevenirlo
+- Criterios de la tarea final (para que el estudiante sepa desde el inicio)"
+```
+
+### Adaptación de material existente
+
+```
+"Tengo este apunte de regresión logística escrito para un público
+que sabe machine learning avanzado:
+[pegar sección del apunte]
+
+Reescríbelo para estudiantes de ingeniería de tercer año que:
+- Conocen regresión lineal y algebra lineal
+- No han visto machine learning antes
+- Su primera exposición a clasificación es esta unidad
+
+Mantén el rigor matemático pero:
+- Introduce la función sigmoide con una motivación intuitiva antes de la fórmula
+- Conecta explícitamente con la regresión lineal que ya conocen
+- Agrega un ejemplo concreto con números pequeños
+- Elimina referencias a técnicas avanzadas que no se verán en el curso
+
+Extensión final: similar a la original (no acortes el contenido, solo adáptalo)"
+```
+
+### Alinear contenido con la taxonomía de Bloom
+
+```
+"Tengo estos contenidos para la unidad de clustering:
+- K-means: algoritmo y convergencia
+- Selección del número de clusters (método del codo, silueta)
+- DBSCAN: parámetros eps y min_samples
+- Visualización de clusters con PCA
+
+Genera objetivos de aprendizaje alineados con la taxonomía de Bloom.
+Para cada contenido, un objetivo en cada uno de estos niveles:
+- Comprender (nivel 2): el estudiante puede explicar...
+- Aplicar (nivel 3): el estudiante puede usar...
+- Analizar (nivel 4): el estudiante puede comparar/evaluar...
+
+Formato: tabla con columnas Contenido | Nivel Bloom | Verbo | Objetivo completo"
+```
+
+---
+
+## Construcción de una biblioteca de prompts docentes
+
+### Por qué una biblioteca de prompts
+
+Un prompt efectivo es reutilizable. Si escribiste un buen prompt para generar preguntas de examen sobre regresión lineal, con mínimos cambios sirve para series de tiempo, clustering o cualquier otro tema.
+
+Invertir 20 minutos en construir y guardar un prompt bien estructurado te ahorra horas a lo largo del semestre.
+
+### Estructura recomendada
+
+Organiza tu biblioteca como un repositorio de archivos Markdown — uno por categoría, listo para copiar:
+
+```
+prompts/
+├── README.md                     ← índice de la biblioteca
+├── evaluacion/
+│   ├── rubrica_laboratorio.md
+│   ├── rubrica_presentacion.md
+│   ├── feedback_codigo.md
+│   ├── feedback_informe.md
+│   └── banco_preguntas.md
+├── planificacion/
+│   ├── sesion_90min.md
+│   ├── unidad_3semanas.md
+│   ├── objetivos_bloom.md
+│   └── adaptacion_nivel.md
+├── material/
+│   ├── ejemplos_concepto.md
+│   ├── ejercicios_graduados.md
+│   ├── glosario_tecnico.md
+│   └── latex_desde_descripcion.md
+└── comunicacion/
+    ├── anuncio_evaluacion.md
+    ├── respuesta_consulta.md
+    └── email_estudiante_riesgo.md
+```
+
+### Template de prompt en la biblioteca
+
+Cada archivo sigue este formato:
+
+````markdown
+# Prompt: Rúbrica de laboratorio
+
+## Metadatos
+- **Categoría:** Evaluación
+- **Modelos testados:** Claude 3.5, GPT-4o
+- **Última actualización:** Abril 2025
+- **Tiempo de uso:** ~3 minutos para personalizar
+
+## Cuándo usar
+Cuando necesites generar una rúbrica analítica para un laboratorio
+de ciencia de datos. Funciona para Python y R. Adaptar el criterio
+de 'entregable' según si es notebook, script o informe.
+
+## Variables a personalizar
+Marcadas con `[VARIABLE]` en el prompt.
+
+## El prompt
+
+```
+Actúa como experto en evaluación formativa universitaria.
+
+Crea una rúbrica analítica para evaluar [NOMBRE DEL LAB] del curso
+[NOMBRE DEL CURSO] ([NIVEL DE LOS ESTUDIANTES]).
+
+Contexto del laboratorio:
+- Los estudiantes deben: [LISTA DE TAREAS DEL LAB]
+- Entrega: [FORMATO DE ENTREGA]
+- Trabajo: [INDIVIDUAL / GRUPAL]
+
+La rúbrica debe:
+- Tener exactamente [N] criterios
+- 4 niveles: Insuficiente (1-3), Básico (4-4.9), Competente (5-6), Destacado (6.1-7)
+- Descriptores concretos y observables
+- Ponderación por criterio (suma 100%)
+
+Formato: tabla Markdown con columnas:
+Criterio | Ponderación | Insuficiente | Básico | Competente | Destacado
+```
+
+## Notas de uso
+- Para el nivel Insuficiente, pedir que la IA especifique el error
+  más frecuente que lleva a ese nivel
+- Si el resultado tiene descriptores vagos, pedir: "Reescribe el
+  nivel [X] del criterio [Y] con más especificidad — qué debe
+  aparecer textualmente en la entrega para asignar ese nivel"
+````
+
+### La biblioteca en práctica: 10 prompts esenciales
+
+Aquí los 10 prompts que vale la pena tener listos desde el primer día:
+
+---
+
+**Prompt 1 — Banco de preguntas (opción múltiple)**
+
+```
+Actúa como profesor de [DISCIPLINA] universitario.
+Genera [N] preguntas de opción múltiple sobre [TEMA] para estudiantes de
+[NIVEL/CARRERA] que ya conocen [CONOCIMIENTOS PREVIOS].
+
+Cada pregunta:
+- 4 alternativas (A-D), una correcta
+- Respuesta correcta marcada con ✓
+- Justificación de 2 líneas de por qué cada distractor es incorrecto
+- Nivel de dificultad: [FÁCIL/MEDIA/DIFÍCIL] (proporción [X/Y/Z])
+- Cubre el siguiente contenido: [LISTA DE SUBTEMAS]
+
+Formato: numerada, con la justificación al final de cada pregunta.
+```
+
+---
+
+**Prompt 2 — Preguntas de desarrollo**
+
+```
+Genera [N] preguntas de desarrollo para un examen de [TEMA].
+
+Nivel: [CARRERA, AÑO]
+Conocimientos previos relevantes: [LISTA]
+Tiempo esperado de respuesta: [X] minutos por pregunta
+
+Para cada pregunta incluye:
+- El enunciado (máximo 4 líneas)
+- Criterios de evaluación: qué debe contener una respuesta completa
+- Errores frecuentes que invalidan la respuesta
+- Nivel Bloom: [APLICAR / ANALIZAR / EVALUAR]
+```
+
+---
+
+**Prompt 3 — Retroalimentación de código**
+
+```
+Actúa como ayudante de [CURSO] dando retroalimentación a un estudiante.
+
+Rúbrica (criterios relevantes):
+[PEGAR CRITERIOS ESPECÍFICOS]
+
+Código del estudiante:
+[PEGAR CÓDIGO]
+
+Genera retroalimentación (200 palabras máximo) que:
+1. Reconoce algo específicamente bien hecho
+2. Señala 2 problemas prioritarios con pista (no solución)
+3. Termina con pregunta reflexiva
+
+Tono: directo, entre pares, sin condescendencia.
+```
+
+---
+
+**Prompt 4 — Explicación de concepto difícil**
+
+```
+Explica [CONCEPTO] para estudiantes de [NIVEL] que ya saben [PREREQUISITO].
+
+El concepto suele ser difícil porque [RAZÓN TÍPICA DEL ERROR].
+
+Incluye:
+1. Intuición: una analogía cotidiana que capture la esencia
+2. Definición formal precisa
+3. Ejemplo numérico simple paso a paso
+4. Contraejemplo: qué NO es este concepto
+5. Error conceptual más frecuente y cómo evitarlo
+
+Extensión: [N] palabras. Tono: [FORMAL/CONVERSACIONAL].
+```
+
+---
+
+**Prompt 5 — Objetivos de aprendizaje**
+
+```
+Genera objetivos de aprendizaje para la unidad de [TEMA] del curso [NOMBRE].
+
+Para cada uno de los siguientes subtemas: [LISTA]
+
+Por subtema, 3 objetivos en niveles Bloom distintos:
+- Nivel 2 (Comprender): El estudiante podrá explicar...
+- Nivel 3 (Aplicar): El estudiante podrá usar...
+- Nivel 4 (Analizar): El estudiante podrá comparar/evaluar...
+
+Formato: tabla con columnas Subtema | Nivel | Verbo | Objetivo completo.
+Los objetivos deben ser medibles y observables.
+```
+
+---
+
+**Prompt 6 — Actividad de laboratorio**
+
+```
+Diseña una actividad de laboratorio de [DURACIÓN] sobre [TEMA].
+
+Contexto:
+- Curso: [NOMBRE], [NIVEL]
+- Herramientas disponibles: [PYTHON/R/EXCEL + DATASET]
+- Prerequisitos: [LISTA]
+
+La actividad debe:
+- Tener un dataset real o realista (proporciona los datos o la fuente)
+- Preguntas graduadas: 2 básicas, 3 intermedias, 1 desafío
+- Instrucciones claras paso a paso hasta el punto donde el
+  estudiante debe tomar decisiones propias
+- Criterio de entrega y formato esperado
+
+Incluye también: 3 preguntas de reflexión para el informe final.
+```
+
+---
+
+**Prompt 7 — Email a estudiante en riesgo**
+
+```
+Redacta un email para enviar a un estudiante que lleva [SITUACIÓN:
+ej. 3 labs sin entregar, nota promedio 3.8, 80% de asistencia].
+
+El email debe:
+- Abrir reconociendo el esfuerzo visible (si hay asistencia)
+- Nombrar la situación concretamente sin dramatizar
+- Ofrecer recursos específicos: [LISTA DE RECURSOS DISPONIBLES]
+- Proponer un próximo paso concreto (reunión, horario de consulta)
+- Ser breve (máximo 150 palabras) y en tono cálido pero directo
+
+No usar: lenguaje condescendiente, amenazas implícitas, comparaciones
+con otros estudiantes.
+```
+
+---
+
+**Prompt 8 — Rúbrica de proyecto integrador**
+
+```
+Crea una rúbrica para el proyecto final del curso [NOMBRE].
+
+El proyecto consiste en: [DESCRIPCIÓN BREVE]
+Entregables: [INFORME / PRESENTACIÓN / CÓDIGO / etc.]
+Trabajo: [GRUPAL — N integrantes / INDIVIDUAL]
+
+Criterios requeridos: [LISTA]
+Escala: 1.0 a 7.0 (sistema chileno)
+Nota de aprobación: 4.0
+
+Para cada criterio:
+- 4 niveles de desempeño con descriptores específicos y observables
+- Ponderación
+- Indicador de excelencia: qué distingue un 7 de un 6
+
+Incluye al final: instrucciones de autoevaluación grupal previa a la entrega.
+```
+
+---
+
+**Prompt 9 — Glosario técnico**
+
+```
+Genera un glosario de los [N] términos más importantes de la unidad
+de [TEMA] para estudiantes de [NIVEL].
+
+Para cada término:
+- Nombre en español y en inglés (si difiere)
+- Definición en 2-3 oraciones, sin jerga innecesaria
+- Fórmula o notación (si aplica, en LaTeX)
+- Ejemplo de uso en 1 oración
+- Término relacionado que suele confundirse con este
+
+Ordena alfabéticamente. Formato: Markdown para incluir en el sitio del curso.
+```
+
+---
+
+**Prompt 10 — Caso de estudio con datos reales**
+
+```
+Diseña un caso de estudio para aplicar [TÉCNICA/MÉTODO] a un problema
+real de [ÁREA/INDUSTRIA] relevante para estudiantes de [CARRERA].
+
+El caso debe:
+- Tener un contexto narrativo motivador (3-4 oraciones que planteen el problema)
+- Incluir datos ficticios pero realistas (si son pocos datos: proporciona los valores)
+  o una fuente de datos reales disponible públicamente
+- Plantear 3-5 preguntas guiadas de menor a mayor complejidad
+- Tener una pregunta abierta de reflexión al final
+- Identificar la conexión con el syllabus (qué aprende específicamente)
+
+No usar: el dataset Iris, el Titanic, ni datos de mtcars
+(ya demasiado usados — usar algo con contexto latinoamericano si es posible).
+```
+
+---
+
+## Referencias
+
+- Mollick, E. & Mollick, L. (2023). *Assigning AI: Seven Approaches for Students*. SSRN. [ssrn.com/abstract=4475995](https://ssrn.com/abstract=4475995)
+- Wei, J. et al. (2022). *Chain-of-Thought Prompting Elicits Reasoning in Large Language Models*. NeurIPS 2022. [arxiv.org/abs/2201.11903](https://arxiv.org/abs/2201.11903)
+- Brown, T. et al. (2020). *Language Models are Few-Shot Learners* (GPT-3). NeurIPS 2020. [arxiv.org/abs/2005.14165](https://arxiv.org/abs/2005.14165)
+- Anthropic. *Prompt engineering guide*. [docs.anthropic.com/en/docs/build-with-claude/prompt-engineering](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview)
+- OpenAI. *Prompt engineering guide*. [platform.openai.com/docs/guides/prompt-engineering](https://platform.openai.com/docs/guides/prompt-engineering)
+- Bozkurt, A. et al. (2023). *Speculative Futures on ChatGPT and Generative Artificial Intelligence in Education*. Asian Journal of Distance Education.

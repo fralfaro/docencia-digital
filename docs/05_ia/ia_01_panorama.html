@@ -1,0 +1,1665 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.554">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Docencia Digital - Panorama de herramientas IA</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../05_ia/ia_02_prompting.html" rel="next">
+<link href="../04_quarto/quarto_06_flujo.html" rel="prev">
+<link href="../assets/img/brand/brand__usm.png" rel="icon" type="image/png">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Sin resultados",
+    "search-matching-documents-text": "documentos encontrados",
+    "search-copy-link-title": "Copiar el enlace en la búsqueda",
+    "search-hide-matches-text": "Ocultar resultados adicionales",
+    "search-more-match-text": "resultado adicional en este documento",
+    "search-more-matches-text": "resultados adicionales en este documento",
+    "search-clear-button-title": "Borrar",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Buscar"
+  }
+}</script>
+<script src="../site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="../site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
+
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../05_ia/ia_01_panorama.html">🤖 IA</a></li><li class="breadcrumb-item"><a href="../05_ia/ia_01_panorama.html"><span class="chapter-title">Panorama de herramientas IA</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Docencia Digital</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/fralfaro/docencia-digital" title="Ejecutar el código" class="quarto-navigation-tool px-1" aria-label="Ejecutar el código"><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo oscuro"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Buscar"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🏠 Home</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">🟪 Introducción</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../00_intro/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Bienvenida al Curso</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">🟩 GitHub</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../01_github/01_esencial.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Git y GitHub esencial</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../01_github/02_colaborativo.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Flujo colaborativo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../01_github/03_automatizacion.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Automatización y Pages</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">🟧 Google Colab</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../02_colab/colab_01_esencial.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Colab esencial</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../02_colab/colab_02_pandas.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Manipulación de datos con pandas</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../02_colab/colab_03_visualizacion.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Visualización de datos</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">🟥 LaTeX</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../03_latex/overleaf_01_esencial.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">LaTeX esencial</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../03_latex/overleaf_02_matematica.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Matemática y escritura científica</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../03_latex/overleaf_03_plantillas.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Plantillas y producción de documentos</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">🟦 Quarto</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../04_quarto/quarto_01_intro.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">QuÃ© es Quarto y por quÃ© usarlo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../04_quarto/quarto_02_documentos.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Documentos reproducibles</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../04_quarto/quarto_03_revealjs.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Presentaciones con RevealJS</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../04_quarto/quarto_04_sitios.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Sitios web y blogs docentes</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../04_quarto/quarto_05_pages.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Publicación con GitHub Pages</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../04_quarto/quarto_06_flujo.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Flujo docente completo con Quarto</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text">🤖 IA</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../05_ia/ia_01_panorama.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">Panorama de herramientas IA</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../05_ia/ia_02_prompting.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Prompting efectivo para docentes</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../05_ia/ia_03_notebooklm.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">NotebookLM en profundidad</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../05_ia/ia_04_pedagogico.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Diseño pedagógico con IA</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../05_ia/ia_05_rag.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Chatbots y RAG</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../05_ia/ia_06_agentes.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Agentes IA</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../05_ia/ia_07_copilot_studio.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Copilot Studio y plataformas institucionales</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../05_ia/ia_08_etica.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Ética y uso responsable de IA en el aula</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content column-page-right" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../05_ia/ia_01_panorama.html">🤖 IA</a></li><li class="breadcrumb-item"><a href="../05_ia/ia_01_panorama.html"><span class="chapter-title">Panorama de herramientas IA</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-title">Panorama de herramientas IA</span></h1>
+<p class="subtitle lead">ChatGPT, Gemini y Claude para el docente universitario</p>
+</div>
+
+
+
+<div class="quarto-title-meta column-page-right">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>En 2022, el lanzamiento de ChatGPT marcó un antes y un después. En menos de dos años, los modelos de lenguaje pasaron de ser objetos de investigación a herramientas de uso cotidiano para millones de personas — incluyendo docentes y estudiantes universitarios.</p>
+<p>Hoy el problema no es acceder a estas herramientas. Es saber cuál usar, para qué, con qué limitaciones, y qué nunca debería delegarse a ninguna de ellas. Este capítulo cubre exactamente eso.</p>
+<hr>
+<section id="el-ecosistema-actual-tres-grandes-plataformas" class="level2">
+<h2 class="anchored" data-anchor-id="el-ecosistema-actual-tres-grandes-plataformas">El ecosistema actual: tres grandes plataformas</h2>
+<p>Los tres modelos de lenguaje dominantes en uso docente en 2025 son <strong>ChatGPT</strong> (OpenAI), <strong>Claude</strong> (Anthropic) y <strong>Gemini</strong> (Google). Son complementarios, no intercambiables — cada uno tiene fortalezas reales en casos de uso distintos.</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">graph TD
+    IA["🤖 Modelos de lenguaje\npara docencia 2025"]
+
+    IA --&gt; CH["🟢 ChatGPT\nOpenAI\nGPT-4o / o1"]
+    IA --&gt; CL["🟤 Claude\nAnthropic\nClaude 3.5 / 3.7"]
+    IA --&gt; GE["🔵 Gemini\nGoogle\nGemini 2.0"]
+
+    CH --&gt; CH1["✅ Más conocido\n✅ GPTs personalizados\n✅ DALL-E integrado\n✅ Enorme comunidad"]
+    CL --&gt; CL1["✅ Documentos largos\n✅ Razonamiento preciso\n✅ Claude Projects\n✅ Menos alucinaciones"]
+    GE --&gt; GE1["✅ Google Workspace\n✅ NotebookLM\n✅ Búsqueda en tiempo real\n✅ YouTube / Drive"]
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="chatgpt-gemini-y-claude-comparativa-práctica" class="level2">
+<h2 class="anchored" data-anchor-id="chatgpt-gemini-y-claude-comparativa-práctica">ChatGPT, Gemini y Claude: comparativa práctica</h2>
+<section id="chatgpt-openai" class="level3">
+<h3 class="anchored" data-anchor-id="chatgpt-openai">ChatGPT (OpenAI)</h3>
+<p><strong>Modelo base:</strong> GPT-4o (texto, imagen, audio) y o1/o3 (razonamiento avanzado).</p>
+<p><strong>Fortalezas para docencia:</strong></p>
+<ul>
+<li><strong>Comunidad y recursos:</strong> es el modelo más usado en el mundo. Cualquier duda sobre cómo hacer algo con ChatGPT tiene respuesta en YouTube, Reddit o Twitter.</li>
+<li><strong>GPTs personalizados:</strong> puedes crear un asistente con instrucciones específicas y subirlo a la GPT Store. Caso de uso: un GPT tutor de tu curso que solo responde sobre los temas del syllabus.</li>
+<li><strong>Code Interpreter (análisis de datos):</strong> sube un CSV, pide gráficos, análisis estadístico, tablas — todo sin escribir una línea de código. Muy potente para demostraciones en clase.</li>
+<li><strong>DALL-E 3 integrado:</strong> generación de imágenes directamente desde el chat.</li>
+<li><strong>Memoria entre conversaciones:</strong> ChatGPT recuerda información de sesiones anteriores (configurable).</li>
+</ul>
+<p><strong>Limitaciones:</strong></p>
+<ul>
+<li>Versión gratuita tiene límites de uso frecuentes — los estudiantes los encuentran rápidamente.</li>
+<li>El modelo o1 (razonamiento) es lento: puede tardar 30-60 segundos por respuesta.</li>
+<li>Contexto de 128K tokens — menor que Claude (200K) para documentos muy largos.</li>
+</ul>
+<p><strong>Planes:</strong></p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Plan</th>
+<th>Precio</th>
+<th>Modelos disponibles</th>
+<th>Para docentes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Free</td>
+<td>Gratis</td>
+<td>GPT-4o mini (limitado)</td>
+<td>Exploración inicial</td>
+</tr>
+<tr class="even">
+<td>Plus</td>
+<td>USD 20/mes</td>
+<td>GPT-4o, o1, o3-mini</td>
+<td>Uso regular</td>
+</tr>
+<tr class="odd">
+<td>Team</td>
+<td>USD 25/usr/mes</td>
+<td>Todos + admin</td>
+<td>Equipos docentes</td>
+</tr>
+<tr class="even">
+<td>Education</td>
+<td>Contactar</td>
+<td>Todos + privacidad reforzada</td>
+<td>Institucional</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="claude-anthropic" class="level3">
+<h3 class="anchored" data-anchor-id="claude-anthropic">Claude (Anthropic)</h3>
+<p><strong>Modelo base:</strong> Claude Sonnet 4.6 (uso general) y Claude Opus 4.6 (razonamiento complejo).</p>
+<p><strong>Fortalezas para docencia:</strong></p>
+<ul>
+<li><strong>Ventana de contexto de 200K tokens:</strong> puedes subir un libro completo, el historial de un semestre de notas, múltiples papers — todo en una sola conversación. Equivale a aproximadamente 500 páginas de texto.</li>
+<li><strong>Razonamiento estructurado:</strong> produce respuestas con jerarquía lógica clara. Especialmente útil para material académico donde la estructura importa.</li>
+<li><strong>Claude Projects:</strong> espacio de trabajo persistente donde subes los documentos del curso (syllabus, rúbricas, apuntes) y el asistente los tiene como contexto en todas las conversaciones del proyecto.</li>
+<li><strong>Menor tasa de alucinaciones</strong> en benchmarks independientes (aunque no es cero — ningún modelo lo es).</li>
+<li><strong>Artifacts:</strong> genera contenido interactivo directamente en la interfaz — código ejecutable, HTML, visualizaciones, formularios.</li>
+<li><strong>Buena redacción en español:</strong> produce texto académico en castellano de alta calidad.</li>
+</ul>
+<p><strong>Limitaciones:</strong></p>
+<ul>
+<li>Sin generación de imágenes nativa (puede analizar imágenes, no crearlas).</li>
+<li>Sin acceso a internet por defecto (sin búsqueda en tiempo real).</li>
+<li>La versión gratuita tiene límites de mensajes diarios.</li>
+</ul>
+<p><strong>Planes:</strong></p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Plan</th>
+<th>Precio</th>
+<th>Contexto</th>
+<th>Para docentes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Free</td>
+<td>Gratis</td>
+<td>200K (limitado en mensajes)</td>
+<td>Exploración</td>
+</tr>
+<tr class="even">
+<td>Pro</td>
+<td>USD 20/mes</td>
+<td>200K ilimitado + Projects</td>
+<td>Uso regular intensivo</td>
+</tr>
+<tr class="odd">
+<td>Team</td>
+<td>USD 25/usr/mes</td>
+<td>200K + admin</td>
+<td>Equipos</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="gemini-google" class="level3">
+<h3 class="anchored" data-anchor-id="gemini-google">Gemini (Google)</h3>
+<p><strong>Modelo base:</strong> Gemini 2.0 Flash / Pro, con integración nativa en Google Workspace.</p>
+<p><strong>Fortalezas para docencia:</strong></p>
+<ul>
+<li><strong>Integración con Google Workspace:</strong> Gemini vive dentro de Docs, Sheets, Slides, Gmail, Meet y Classroom. Si tu institución usa Google Workspace for Education, el acceso puede ser inmediato.</li>
+<li><strong>Búsqueda en tiempo real:</strong> a diferencia de ChatGPT y Claude (con fecha de corte de entrenamiento), Gemini puede buscar en internet — útil para verificar datos actualizados.</li>
+<li><strong>NotebookLM:</strong> herramienta de Google específicamente para análisis documental. Sube papers, apuntes, videos de YouTube, y genera resúmenes, preguntas frecuentes y podcasts automáticos basados <em>exclusivamente</em> en tu material. Sin alucinaciones sobre contenido externo.</li>
+<li><strong>Contexto de 1 millón de tokens</strong> (Gemini 1.5 Pro): el más largo del mercado — permite subir horas de video o libros completos.</li>
+<li><strong>Gemini en Google Classroom:</strong> genera retroalimentación automática para entregas estudiantiles.</li>
+</ul>
+<p><strong>Limitaciones:</strong></p>
+<ul>
+<li>La integración con Workspace requiere licencia Google Workspace for Education Plus.</li>
+<li>La calidad de respuestas en español es buena pero no siempre al nivel de Claude o ChatGPT-4o.</li>
+<li>NotebookLM tiene límite de 50 fuentes por notebook.</li>
+</ul>
+<p><strong>Planes:</strong></p>
+<table class="table">
+<colgroup>
+<col style="width: 27%">
+<col style="width: 36%">
+<col style="width: 36%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Plan</th>
+<th>Precio</th>
+<th>Acceso</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Gemini Free</td>
+<td>Gratis</td>
+<td>Gemini 1.5 Flash</td>
+</tr>
+<tr class="even">
+<td>Google One AI Premium</td>
+<td>USD 19.99/mes</td>
+<td>Gemini Advanced + Workspace</td>
+</tr>
+<tr class="odd">
+<td>Workspace for Education Plus</td>
+<td>Institucional</td>
+<td>Gemini en todas las apps</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="comparativa-directa-para-casos-de-uso-docentes" class="level3">
+<h3 class="anchored" data-anchor-id="comparativa-directa-para-casos-de-uso-docentes">Comparativa directa para casos de uso docentes</h3>
+<table class="table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Tarea docente</th>
+<th>Mejor opción</th>
+<th>Por qué</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Generar preguntas de examen</td>
+<td>Claude o ChatGPT</td>
+<td>Ambos producen preguntas bien calibradas</td>
+</tr>
+<tr class="even">
+<td>Analizar un CSV con gráficos</td>
+<td>ChatGPT (Code Interpreter)</td>
+<td>La interfaz es la más amigable para no programadores</td>
+</tr>
+<tr class="odd">
+<td>Revisar un paper largo (50+ pág)</td>
+<td>Claude</td>
+<td>200K tokens, menos alucinaciones en documentos largos</td>
+</tr>
+<tr class="even">
+<td>Retroalimentación de código Python</td>
+<td>Claude o ChatGPT</td>
+<td>Calidad similar; preferir Claude para código complejo</td>
+</tr>
+<tr class="odd">
+<td>Crear resumen de múltiples papers</td>
+<td>NotebookLM</td>
+<td>Solo usa TU material, sin mezclar con conocimiento general</td>
+</tr>
+<tr class="even">
+<td>Redactar syllabus</td>
+<td>Claude</td>
+<td>Razonamiento estructurado, español académico de calidad</td>
+</tr>
+<tr class="odd">
+<td>Generar imagen explicativa</td>
+<td>ChatGPT (DALL-E 3)</td>
+<td>El único de los tres con generación de imágenes</td>
+</tr>
+<tr class="even">
+<td>Buscar información reciente (2025)</td>
+<td>Gemini</td>
+<td>Acceso a internet en tiempo real</td>
+</tr>
+<tr class="odd">
+<td>Armar asistente del ramo</td>
+<td>Claude Projects o GPT personalizado</td>
+<td>Contexto persistente con documentos del curso</td>
+</tr>
+<tr class="even">
+<td>Usar en Google Docs</td>
+<td>Gemini</td>
+<td>Integración nativa, no requiere copiar/pegar</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+</section>
+<section id="casos-de-uso-directos-en-docencia" class="level2">
+<h2 class="anchored" data-anchor-id="casos-de-uso-directos-en-docencia">Casos de uso directos en docencia</h2>
+<section id="planificación-curricular" class="level3">
+<h3 class="anchored" data-anchor-id="planificación-curricular">1. Planificación curricular</h3>
+<pre><code>Prompt (Claude):
+Tengo que diseñar una unidad de 3 semanas sobre regresión lineal
+para estudiantes de ingeniería de tercer año que ya conocen cálculo
+y álgebra lineal. Cada semana tiene 3h de teoría + 2h de laboratorio.
+
+Dame una secuencia de contenidos semana a semana, con:
+- Objetivos de aprendizaje alineados con Bloom (niveles 3-4)
+- Actividad de laboratorio concreta para cada semana
+- Una pregunta de evaluación formativa para cerrar cada semana</code></pre>
+</section>
+<section id="generación-de-material-explicativo" class="level3">
+<h3 class="anchored" data-anchor-id="generación-de-material-explicativo">2. Generación de material explicativo</h3>
+<pre><code>Prompt (cualquier modelo):
+Explica el concepto de p-valor para un estudiante de ingeniería
+que entiende probabilidad básica pero nunca ha tomado estadística
+inferencial. Usa una analogía con algo cotidiano. Extensión: 150 palabras.</code></pre>
+</section>
+<section id="banco-de-preguntas" class="level3">
+<h3 class="anchored" data-anchor-id="banco-de-preguntas">3. Banco de preguntas</h3>
+<pre><code>Prompt (Claude o ChatGPT):
+Crea 10 preguntas de opción múltiple sobre regresión lineal simple.
+Cada pregunta debe:
+- Tener 4 alternativas (A, B, C, D)
+- Solo una correcta
+- Incluir la respuesta correcta con justificación de 2-3 líneas
+- Cubrir distintos niveles de Bloom: 3 preguntas de aplicación,
+  4 de análisis, 3 de evaluación
+Nivel: tercer año de ingeniería.</code></pre>
+</section>
+<section id="retroalimentación-de-código" class="level3">
+<h3 class="anchored" data-anchor-id="retroalimentación-de-código">4. Retroalimentación de código</h3>
+<pre><code>Prompt (Claude):
+Aquí está el código de un estudiante para el Lab 3.
+La tarea era ajustar un modelo de regresión lineal y calcular el R².
+
+[pegar código del estudiante]
+
+La rúbrica evalúa:
+1. Correctitud del modelo (0-4 pts)
+2. Cálculo correcto del R² (0-3 pts)
+3. Interpretación de resultados (0-3 pts)
+
+Genera retroalimentación constructiva que:
+- Identifique qué hizo bien el estudiante
+- Señale los errores sin dar la solución directa
+- Sugiera cómo mejorar
+- Proponga una nota justificada
+Tono: directo pero respetuoso.</code></pre>
+</section>
+<section id="preparación-de-clases-con-material-propio-notebooklm" class="level3">
+<h3 class="anchored" data-anchor-id="preparación-de-clases-con-material-propio-notebooklm">5. Preparación de clases con material propio (NotebookLM)</h3>
+<ol type="1">
+<li>Subir el apunte de la semana, el paper base y el enunciado del lab.</li>
+<li>Pedir: “Genera 5 preguntas de discusión para la clase basadas en este material.”</li>
+<li>Pedir: “¿Qué conceptos del apunte son más difíciles para estudiantes de tercer año? ¿Cómo los explicarías con una analogía?”</li>
+<li>Pedir: “Genera una guía de estudio de 2 páginas para los estudiantes.”</li>
+</ol>
+<hr>
+</section>
+</section>
+<section id="limitaciones-alucinaciones-sesgos-desactualización" class="level2">
+<h2 class="anchored" data-anchor-id="limitaciones-alucinaciones-sesgos-desactualización">Limitaciones: alucinaciones, sesgos, desactualización</h2>
+<section id="alucinaciones" class="level3">
+<h3 class="anchored" data-anchor-id="alucinaciones">Alucinaciones</h3>
+<p>Un modelo de lenguaje genera texto prediciendo la siguiente palabra más probable — no “sabe” si lo que dice es verdad. Cuando no tiene información, inventa una respuesta que <em>suena</em> plausible.</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">graph LR
+    P["Prompt: ¿Cuál es el paper\nmás citado sobre\nregresión logística?"]
+    M["🤖 Modelo de lenguaje"]
+    R1["✅ Respuesta real:\nMcFadden (1974),\nHosmer &amp; Lemeshow (2000)"]
+    R2["❌ Alucinación:\n'García &amp; López (2019)\nJournal of Applied Statistics'\n(paper que no existe)"]
+
+    P --&gt; M
+    M --&gt; R1
+    M --&gt; R2
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<p><strong>En qué situaciones alucinan más:</strong></p>
+<ul>
+<li><strong>Citas bibliográficas:</strong> el riesgo más alto. Los modelos inventan autores, años, títulos y revistas con total confianza.</li>
+<li><strong>Estadísticas específicas:</strong> porcentajes, tasas, datos numéricos sin fuente.</li>
+<li><strong>Eventos recientes:</strong> nada posterior a su fecha de corte de entrenamiento.</li>
+<li><strong>Información técnica muy especializada:</strong> detalles de nicho que no estaban bien representados en el corpus.</li>
+<li><strong>Información local o regional:</strong> datos de Chile, UTFSM, o cualquier contexto específico poco representado en internet en inglés.</li>
+</ul>
+<p><strong>Cómo detectarlas:</strong></p>
+<pre><code>Señales de alarma:
+✗ Cita con formato perfecto de un autor que no reconoces
+✗ Estadística muy precisa ("el 73.4% de los docentes...")
+✗ Afirmación sobre eventos de los últimos 6-12 meses
+✗ Información muy específica sobre tu institución
+
+Protocolo de verificación:
+1. Para citas: buscar el paper en Google Scholar o Semantic Scholar
+2. Para estadísticas: pedir la fuente y verificarla directamente
+3. Para eventos recientes: usar Gemini (con internet) o buscar manualmente</code></pre>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Regla de oro: nunca publiques citas sin verificar
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Un apunte con una referencia bibliográfica inventada por IA daña tu credibilidad académica y puede inducir a error a los estudiantes. Usa la IA para generar el <em>formato</em> de la cita, pero verifica la existencia del paper antes de publicar.</p>
+</div>
+</div>
+</section>
+<section id="sesgos" class="level3">
+<h3 class="anchored" data-anchor-id="sesgos">Sesgos</h3>
+<p>Los modelos fueron entrenados principalmente con texto en inglés de internet. Esto genera sesgos sistemáticos:</p>
+<table class="table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Tipo de sesgo</th>
+<th>Manifestación</th>
+<th>Impacto en docencia</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Anglocentrismo</strong></td>
+<td>Perspectivas, ejemplos y contextos predominantemente estadounidenses o europeos</td>
+<td>Ejemplos que no resuenan con estudiantes chilenos</td>
+</tr>
+<tr class="even">
+<td><strong>Sesgo de género</strong></td>
+<td>Uso por defecto de pronombres masculinos en roles de autoridad</td>
+<td>Material que refuerza estereotipos</td>
+</tr>
+<tr class="odd">
+<td><strong>Sesgo de clase</strong></td>
+<td>Supone acceso a recursos que no todos tienen</td>
+<td>Actividades que asumen computadores propios, internet rápida</td>
+</tr>
+<tr class="even">
+<td><strong>Sesgo temporal</strong></td>
+<td>Sobrerrepresenta el período 2000-2022</td>
+<td>Invisibiliza desarrollo reciente latinoamericano</td>
+</tr>
+<tr class="odd">
+<td><strong>Sesgo idiomático</strong></td>
+<td>El español latinoamericano tiene menos representación que el inglés</td>
+<td>Calidad algo menor en respuestas en español</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Cómo mitigarlos:</strong></p>
+<pre><code>En el prompt:
+- "Usa ejemplos del contexto chileno / latinoamericano"
+- "Asume que los estudiantes tienen acceso limitado a recursos premium"
+- "Usa lenguaje inclusivo en género"
+- "Responde en español formal, evitando anglicismos innecesarios"</code></pre>
+</section>
+<section id="desactualización" class="level3">
+<h3 class="anchored" data-anchor-id="desactualización">Desactualización</h3>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Modelo</th>
+<th>Fecha de corte aproximada</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>GPT-4o</td>
+<td>Enero 2024</td>
+</tr>
+<tr class="even">
+<td>Claude 3.5 / 3.7</td>
+<td>Principios 2025</td>
+</tr>
+<tr class="odd">
+<td>Gemini 2.0</td>
+<td>Acceso en tiempo real</td>
+</tr>
+</tbody>
+</table>
+<p>Para información técnica que evoluciona rápido (versiones de librerías, nuevas APIs, papers recientes, estadísticas 2024-2025), los modelos sin acceso a internet son poco confiables.</p>
+<pre><code>Casos donde la desactualización importa:
+✗ "¿Cuál es la última versión de scikit-learn?"  → verificar en pypi.org
+✗ "¿Cuáles son las estadísticas de deserción universitaria en Chile 2024?"
+✗ "¿Qué papers recientes hay sobre LLMs en educación?"
+
+Casos donde NO importa:
+✓ "Explica qué es el gradiente descendente"  → concepto estable
+✓ "Genera preguntas sobre la ley de grandes números"
+✓ "Reescribe este párrafo con mayor claridad"</code></pre>
+<hr>
+</section>
+</section>
+<section id="qué-tareas-no-delegar-a-la-ia" class="level2">
+<h2 class="anchored" data-anchor-id="qué-tareas-no-delegar-a-la-ia">Qué tareas no delegar a la IA</h2>
+<section id="la-lista-de-lo-que-permanece-en-manos-del-docente" class="level3">
+<h3 class="anchored" data-anchor-id="la-lista-de-lo-que-permanece-en-manos-del-docente">La lista de lo que permanece en manos del docente</h3>
+<p>La IA es una herramienta de amplificación, no de reemplazo. Estas tareas requieren tu juicio, tu contexto y tu responsabilidad:</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Nunca delegues completamente estas decisiones
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>1. La nota final de un estudiante</strong> La IA puede generar retroalimentación y sugerir una nota, pero la decisión de calificar es tuya. Eres responsable legal y pedagógicamente de esa calificación. Usarla como primer borrador para revisar: bien. Usarla como decisión final sin leer el trabajo: no.</p>
+<p><strong>2. Detectar plagio o uso no declarado de IA</strong> Los detectores de IA (GPTZero, Turnitin IA) tienen tasas de falso positivo del 10-20%. Acusar a un estudiante de trampa basándote solo en un detector es una práctica que puede ser discriminatoria e injusta. El juicio pedagógico directo — hablar con el estudiante sobre su trabajo — es irreemplazable.</p>
+<p><strong>3. Diseñar la experiencia de aprendizaje completa</strong> La IA puede generar actividades, ejercicios y materiales. Pero decidir qué vale la pena aprender, en qué secuencia, con qué profundidad, adaptado a tus estudiantes específicos — eso requiere tu conocimiento del contexto que ningún modelo tiene.</p>
+<p><strong>4. Datos personales de estudiantes</strong> Nunca subas nombres, RUTs, correos, notas individuales ni cualquier dato personal a ninguna plataforma de IA externa. Además de ser una violación de privacidad potencialmente ilegal, viola la confianza del estudiante.</p>
+<p><strong>5. Contenido que defines como autoritativo</strong> Si publicas algo bajo tu nombre en un documento oficial del curso, tú eres el responsable de su exactitud. La IA puede ser un borrador; la versión final es tuya.</p>
+</div>
+</div>
+</section>
+<section id="el-criterio-de-delegación" class="level3">
+<h3 class="anchored" data-anchor-id="el-criterio-de-delegación">El criterio de delegación</h3>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">graph TD
+    T["¿Delego esta tarea a la IA?"]
+
+    T --&gt; Q1["¿Requiere conocer\na este estudiante específico?"]
+    Q1 --&gt;|Sí| NO1["❌ No delegar\nSolo tú tienes ese contexto"]
+    Q1 --&gt;|No| Q2["¿El error tendría\nconsecuencias graves?"]
+
+    Q2 --&gt;|Sí| Q3["¿Puedo verificar\nel output antes de usarlo?"]
+    Q2 --&gt;|No| SI1["✅ Delegar con revisión ligera"]
+
+    Q3 --&gt;|Sí| SI2["✅ Delegar con verificación"]
+    Q3 --&gt;|No| NO2["❌ No delegar o hacerlo\ncon extrema cautela"]
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="multimodalidad-imagen-voz-pdf-código" class="level2">
+<h2 class="anchored" data-anchor-id="multimodalidad-imagen-voz-pdf-código">Multimodalidad: imagen, voz, PDF, código</h2>
+<p>Los modelos actuales no solo procesan texto — trabajan con múltiples tipos de entrada y salida. Para docencia, esto cambia lo que es posible:</p>
+<section id="procesamiento-de-imágenes" class="level3">
+<h3 class="anchored" data-anchor-id="procesamiento-de-imágenes">Procesamiento de imágenes</h3>
+<p><strong>ChatGPT (GPT-4o) y Claude:</strong> pueden analizar imágenes subidas por el usuario.</p>
+<p>Casos de uso docentes:</p>
+<pre><code>📸 Foto de la pizarra después de clase:
+"Transcribe estas ecuaciones a LaTeX"
+
+📊 Gráfico de un paper:
+"Describe qué muestra este gráfico y qué conclusiones puedo extraer"
+
+📷 Foto de código escrito a mano:
+"Transcribe este pseudocódigo y conviértelo a Python"
+
+📐 Diagrama de flujo en papel:
+"Convierte este diagrama a código Mermaid"
+
+📝 Examen escaneado:
+"Identifica los errores conceptuales en esta respuesta estudiantil"</code></pre>
+<p><strong>ChatGPT (DALL-E 3):</strong> genera imágenes desde texto.</p>
+<pre><code>Casos de uso:
+- "Genera un diagrama conceptual de una red neuronal simple"
+- "Crea una ilustración para explicar el teorema de Bayes"
+- "Diseña un ícono simple para representar machine learning"</code></pre>
+</section>
+<section id="procesamiento-de-audio-y-voz" class="level3">
+<h3 class="anchored" data-anchor-id="procesamiento-de-audio-y-voz">Procesamiento de audio y voz</h3>
+<p><strong>ChatGPT (modo voz / Whisper):</strong> transcripción y conversación por voz.</p>
+<pre><code>Casos de uso:
+- Transcribir una clase grabada en audio a texto
+- Buscar en la transcripción conceptos específicos
+- Generar resumen automático de la clase</code></pre>
+<p><strong>ElevenLabs (externo):</strong> clona tu voz para narrar apuntes automáticamente.</p>
+<p><strong>NotebookLM Audio Overview:</strong> convierte cualquier documento en un podcast sintético de 15-20 minutos donde dos voces discuten el contenido.</p>
+</section>
+<section id="procesamiento-de-pdfs" class="level3">
+<h3 class="anchored" data-anchor-id="procesamiento-de-pdfs">Procesamiento de PDFs</h3>
+<p><strong>Claude (con 200K contexto):</strong></p>
+<pre><code>Sube 3 papers de 20 páginas cada uno + el apunte de la semana.
+
+Prompt: "Compara cómo estos tres papers abordan el problema de
+heterocedasticidad en regresión lineal. Resalta las diferencias
+metodológicas y qué perspectiva es más relevante para un curso
+de ingeniería de tercer año."</code></pre>
+<p><strong>NotebookLM:</strong></p>
+<pre><code>Sube el libro de texto del curso (PDF, 400 páginas).
+Pide: "Genera una guía de estudio para los capítulos 5-8"
+Pide: "¿Qué preguntas frecuentes tienen los estudiantes sobre
+estos capítulos según el material?"</code></pre>
+</section>
+<section id="ejecución-de-código" class="level3">
+<h3 class="anchored" data-anchor-id="ejecución-de-código">Ejecución de código</h3>
+<p><strong>ChatGPT (Code Interpreter / Advanced Data Analysis):</strong></p>
+<pre><code>Sube un CSV de notas del semestre.
+Prompt: "Calcula la distribución de notas por carrera, genera
+un boxplot, e identifica estudiantes en riesgo (nota &lt; 4.0 en
+más de 2 evaluaciones)"
+
+ChatGPT:
+1. Lee el CSV
+2. Ejecuta el análisis en Python interno
+3. Muestra los gráficos
+4. Presenta el análisis en lenguaje natural</code></pre>
+<p>Esto ocurre sin que el docente escriba una línea de código.</p>
+<hr>
+</section>
+</section>
+<section id="planes-gratuitos-y-acceso-institucional" class="level2">
+<h2 class="anchored" data-anchor-id="planes-gratuitos-y-acceso-institucional">Planes gratuitos y acceso institucional</h2>
+<section id="lo-que-puedes-hacer-gratis-hoy" class="level3">
+<h3 class="anchored" data-anchor-id="lo-que-puedes-hacer-gratis-hoy">Lo que puedes hacer gratis hoy</h3>
+<table class="table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Plataforma</th>
+<th>Plan gratuito</th>
+<th>Límites principales</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>ChatGPT</strong></td>
+<td>GPT-4o mini, GPT-4o (limitado)</td>
+<td>Número de mensajes/día con GPT-4o</td>
+</tr>
+<tr class="even">
+<td><strong>Claude</strong></td>
+<td>Claude Sonnet (limitado)</td>
+<td>Número de mensajes/día</td>
+</tr>
+<tr class="odd">
+<td><strong>Gemini</strong></td>
+<td>Gemini 1.5 Flash</td>
+<td>Sin límite estricto pero con throttling</td>
+</tr>
+<tr class="even">
+<td><strong>NotebookLM</strong></td>
+<td>Acceso completo</td>
+<td>50 fuentes / notebook</td>
+</tr>
+<tr class="odd">
+<td><strong>Perplexity</strong></td>
+<td>Búsqueda con IA</td>
+<td>Límite de Pro searches/día</td>
+</tr>
+<tr class="even">
+<td><strong>Microsoft Copilot</strong></td>
+<td>Acceso básico</td>
+<td>Sin límite estricto</td>
+</tr>
+</tbody>
+</table>
+<p>Para uso docente ocasional, los planes gratuitos son suficientes para explorar y hacer pruebas. Para uso regular e intensivo (generar material cada semana, retroalimentar tareas, armar proyectos), los planes de pago amortizan en pocas horas de trabajo ahorradas.</p>
+</section>
+<section id="acceso-institucional" class="level3">
+<h3 class="anchored" data-anchor-id="acceso-institucional">Acceso institucional</h3>
+<p><strong>GitHub Education (recomendado):</strong></p>
+<p>Con la cuenta institucional <code>@usm.cl</code> verificada en <a href="https://education.github.com/teachers">education.github.com</a>: - GitHub Copilot Pro gratis (asistente de código en VS Code) - GitHub Copilot para estudiantes también gratuito</p>
+<p><strong>Google Workspace for Education:</strong></p>
+<p>Si la UTFSM tiene licencia Workspace for Education Plus: - Gemini para Workspace incluido en todas las apps de Google - NotebookLM sin restricciones adicionales</p>
+<p><strong>Microsoft 365 Education:</strong></p>
+<p>Si la UTFSM tiene acuerdo con Microsoft: - Copilot en Word, PowerPoint, Excel, Teams - Acceso a modelos de Azure OpenAI en algunos planes</p>
+<p><strong>Cómo verificar:</strong></p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Preguntar en TI / DTD de UTFSM:</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co"># "¿Tenemos acceso institucional a Gemini for Workspace?"</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co"># "¿Hay licencias de Microsoft Copilot disponibles para docentes?"</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co"># "¿Podemos activar GitHub Education Organization para el departamento?"</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="calculadora-de-costo-beneficio" class="level3">
+<h3 class="anchored" data-anchor-id="calculadora-de-costo-beneficio">Calculadora de costo-beneficio</h3>
+<p>Antes de pagar un plan premium, estima si vale la pena:</p>
+<pre><code>Claude Pro — USD 20/mes
+¿Cuánto tiempo me ahorra mensualmente?
+
+Ejemplo:
+- Generar banco de preguntas para 2 evaluaciones: 3h → 30 min = 2.5h ahorradas
+- Retroalimentación inicial de 30 tareas: 5h → 1h = 4h ahorradas
+- Preparar material de 4 semanas: 8h → 3h = 5h ahorradas
+Total: ~11.5 horas/mes ahorradas
+
+Si tu hora vale USD 15+, el plan se paga solo.</code></pre>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Estrategia para equipos docentes pequeños
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>En lugar de que cada docente pague su plan individual, un equipo de 3-4 docentes puede compartir una cuenta Claude Team o ChatGPT Team (a USD 25/usuario/mes con facturación anual), con mayor seguridad de datos y panel de administración.</p>
+<p>Alternativamente, uno solo paga el plan individual y comparte sus templates de prompts con el resto del equipo — el conocimiento de cómo usar bien la herramienta vale tanto como el acceso premium.</p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="protocolo-de-elección-de-herramienta" class="level2">
+<h2 class="anchored" data-anchor-id="protocolo-de-elección-de-herramienta">Protocolo de elección de herramienta</h2>
+<p>Antes de abrir cualquier chatbot, responde estas tres preguntas:</p>
+<pre><code>1. ¿Qué tipo de input tengo?
+   → Texto simple: cualquier modelo
+   → PDF largo (&gt;30 páginas): Claude o NotebookLM
+   → CSV con datos: ChatGPT Code Interpreter
+   → Imagen/foto: ChatGPT o Claude
+   → Múltiples fuentes combinadas: NotebookLM
+
+2. ¿Necesito información actualizada?
+   → Sí (datos 2024-2025, versiones recientes): Gemini o Perplexity
+   → No (conceptos estables, generación de material): cualquier modelo
+
+3. ¿Qué haré con el output?
+   → Publicar directamente: verificar exhaustivamente antes
+   → Como borrador para revisar: cualquier modelo
+   → Como inspiración para mis propias ideas: cualquier modelo</code></pre>
+<hr>
+</section>
+<section id="referencias" class="level2">
+<h2 class="anchored" data-anchor-id="referencias">Referencias</h2>
+<ul>
+<li>OpenAI. <em>ChatGPT for Education</em>. <a href="https://openai.com/chatgpt/education">openai.com/chatgpt/education</a></li>
+<li>Anthropic. <em>Claude for education</em>. <a href="https://www.anthropic.com">anthropic.com</a></li>
+<li>Google. <em>Gemini for Google Workspace</em>. <a href="https://workspace.google.com/intl/es/products/gemini/">workspace.google.com/intl/es/products/gemini</a></li>
+<li>Google. <em>NotebookLM</em>. <a href="https://notebooklm.google.com">notebooklm.google.com</a></li>
+<li>Mollick, E. &amp; Mollick, L. (2023). <em>Assigning AI: Seven Approaches for Students</em>. SSRN. <a href="https://ssrn.com/abstract=4475995">ssrn.com/abstract=4475995</a></li>
+<li>Kasneci, E. et al.&nbsp;(2023). <em>ChatGPT for Good? On Opportunities and Challenges of Large Language Models for Education</em>. Learning and Individual Differences, 103. <a href="https://doi.org/10.1016/j.lindif.2023.102274">doi.org/10.1016/j.lindif.2023.102274</a></li>
+<li>Baidoo-Anu, D. &amp; Owusu Ansah, L. (2023). <em>Education in the Era of Generative Artificial Intelligence (AI)</em>. SSRN. <a href="https://ssrn.com/abstract=4337484">ssrn.com/abstract=4337484</a></li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copiado");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copiado");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation column-page-right">
+  <div class="nav-page nav-page-previous">
+      <a href="../04_quarto/quarto_06_flujo.html" class="pagination-link" aria-label="Flujo docente completo con Quarto">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">Flujo docente completo con Quarto</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../05_ia/ia_02_prompting.html" class="pagination-link" aria-label="Prompting efectivo para docentes">
+        <span class="nav-page-text"><span class="chapter-title">Prompting efectivo para docentes</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

@@ -1,0 +1,959 @@
+---
+title: "Matemática y escritura científica"
+subtitle: "Ecuaciones, teoremas y documentos técnicos en LaTeX"
+---
+
+LaTeX existe, en parte, porque Donald Knuth se frustró con la calidad tipográfica de las matemáticas en los procesadores de texto de los años 80. El resultado es un sistema que produce ecuaciones con una precisión y elegancia que ningún otro software iguala.
+
+Para un docente de ingeniería o matemáticas, dominar la escritura matemática en LaTeX no es una curiosidad técnica — es la diferencia entre material de clase que se ve amateur y material que se ve como un libro de texto publicado.
+
+---
+
+## Modo math inline y display
+
+### Dos contextos, dos sintaxis
+
+LaTeX tiene dos modos matemáticos fundamentales, con comportamientos distintos:
+
+**Modo inline** (`$...$`): ecuaciones dentro del flujo del texto. El tamaño y espaciado se ajustan para no interrumpir la línea:
+
+```latex
+Sea $f(x) = x^2 + 3x - 2$ una función cuadrática. Su derivada es
+$f'(x) = 2x + 3$, que se anula en $x = -3/2$.
+```
+
+Produce: Sea $f(x) = x^2 + 3x - 2$ una función cuadrática. Su derivada es $f'(x) = 2x + 3$, que se anula en $x = -3/2$.
+
+**Modo display** (`$$...$$` o `\[...\]`): ecuaciones en línea propia, centradas, con tamaño mayor:
+
+```latex
+La integral de Riemann se define como:
+$$\int_a^b f(x)\,dx = \lim_{n\to\infty} \sum_{i=1}^{n} f(x_i^*)\,\Delta x$$
+```
+
+::: {.callout-tip}
+## `$$...$$` vs `\[...\]`
+Ambos producen ecuaciones en display. La preferencia académica es `\[...\]` — es la forma estándar de LaTeX. `$$...$$` es herencia de TeX y tiene comportamientos sutilmente diferentes en algunos contextos. En Overleaf, `\[...\]` es más predecible.
+
+Para ecuaciones que necesitas referenciar (con número), usa el entorno `equation` en lugar de ambos.
+:::
+
+### Diferencias de tamaño en modo inline vs display
+
+Algunos operadores cambian de tamaño automáticamente:
+
+```latex
+% Inline: símbolos comprimidos
+La media es $\bar{x} = \frac{1}{n}\sum_{i=1}^n x_i$.
+
+% Display: símbolos en tamaño completo
+$$\bar{x} = \frac{1}{n}\sum_{i=1}^n x_i$$
+```
+
+Para forzar el tamaño completo inline (no recomendado en general):
+
+```latex
+La suma $\displaystyle\sum_{i=1}^n x_i$ con estilo display inline.
+La fracción $\displaystyle\frac{a}{b}$ en tamaño display inline.
+```
+
+---
+
+## Ecuaciones numeradas con `equation` y `align`
+
+### El entorno `equation`
+
+Para una ecuación numerada y referenciable:
+
+```latex
+La distribución normal estándar tiene la función de densidad:
+\begin{equation}
+    f(x) = \frac{1}{\sqrt{2\pi}} e^{-x^2/2}
+    \label{eq:normal_estandar}
+\end{equation}
+
+Como se ve en la ecuación~\eqref{eq:normal_estandar}...
+```
+
+Usa `\eqref{}` (no `\ref{}`) para referencias a ecuaciones — agrega los paréntesis automáticamente: (3.1) en lugar de solo 3.1.
+
+Para ecuaciones sin número (caso específico, no la regla):
+
+```latex
+\begin{equation*}
+    e^{i\pi} + 1 = 0
+\end{equation*}
+```
+
+### El entorno `align`: múltiples ecuaciones alineadas
+
+`align` es el entorno más versátil para escribir matemáticas en LaTeX. Alinea ecuaciones por el signo `&`:
+
+```latex
+\usepackage{amsmath}   % obligatorio para align
+
+% Alineación en el signo igual
+\begin{align}
+    f(x) &= (x+1)(x-2) \\
+         &= x^2 - x - 2 \\
+         &= x^2 - x - 2
+    \label{eq:expansion}
+\end{align}
+```
+
+Cada `\\` inicia una nueva línea. El `&` marca el punto de alineación — en este caso, el signo `=`.
+
+### Numeración selectiva en `align`
+
+```latex
+\begin{align}
+    \hat{\beta}_1 &= \frac{S_{XY}}{S_{XX}} \label{eq:beta1} \\
+    \hat{\beta}_0 &= \bar{Y} - \hat{\beta}_1\bar{X} \label{eq:beta0} \\
+    R^2 &= 1 - \frac{\text{SCR}}{\text{SCT}} \notag  % sin número
+\end{align}
+```
+
+`\notag` suprime el número en esa línea específica. También existe `align*` para suprimir todos los números:
+
+```latex
+\begin{align*}
+    (a + b)^2 &= a^2 + 2ab + b^2 \\
+    (a - b)^2 &= a^2 - 2ab + b^2 \\
+    (a+b)(a-b) &= a^2 - b^2
+\end{align*}
+```
+
+### `align` con múltiples columnas de alineación
+
+```latex
+% Dos grupos de ecuaciones en paralelo
+\begin{align}
+    x &= r\cos\theta  &  y &= r\sin\theta \\
+    r &= \sqrt{x^2+y^2} & \theta &= \arctan(y/x)
+\end{align}
+```
+
+Cada par `& ... &` crea una nueva columna. El espacio entre grupos es automático.
+
+### `alignat`: control preciso del espaciado entre columnas
+
+```latex
+\begin{alignat}{2}
+    \text{Maximizar:} \quad   & z = 5x_1 + 4x_2 \\
+    \text{Sujeto a:} \quad    & 6x_1 + 4x_2 &\leq 24 \\
+                               & x_1 + 2x_2 &\leq 6  \\
+                               & x_1, x_2   &\geq 0
+\end{alignat}
+```
+
+---
+
+## Casos con `cases` y sistemas de ecuaciones
+
+### El entorno `cases`
+
+Para funciones definidas por tramos (funciones a trozos):
+
+```latex
+La función valor absoluto:
+\begin{equation}
+    |x| = \begin{cases}
+        x  & \text{si } x \geq 0 \\
+        -x & \text{si } x < 0
+    \end{cases}
+\end{equation}
+```
+
+La función de Heaviside:
+
+```latex
+\begin{equation}
+    H(t) = \begin{cases}
+        0           & t < 0 \\
+        \frac{1}{2} & t = 0 \\
+        1           & t > 0
+    \end{cases}
+\end{equation}
+```
+
+El coeficiente binomial:
+
+```latex
+\begin{equation}
+    \binom{n}{k} = \begin{cases}
+        \dfrac{n!}{k!(n-k)!} & \text{si } 0 \leq k \leq n \\[10pt]
+        0                     & \text{en otro caso}
+    \end{cases}
+\end{equation}
+```
+
+`[10pt]` agrega espacio vertical entre las líneas cuando hay fracciones grandes.
+
+### Sistemas de ecuaciones
+
+Para sistemas de ecuaciones lineales o no lineales:
+
+```latex
+% Sistema 2×2
+\begin{equation}
+    \begin{cases}
+        2x + 3y = 7 \\
+        x - y = 1
+    \end{cases}
+\end{equation}
+
+% Sistema con parámetros
+\begin{equation}
+    \begin{cases}
+        \dot{x} = ax - bxy \\
+        \dot{y} = -cy + dxy
+    \end{cases}
+\end{equation}
+
+% Sistema con llaves en ambos lados (rcases, requiere mathtools)
+\usepackage{mathtools}
+
+\begin{equation}
+    \begin{rcases}
+        \nabla \times \mathbf{E} &= -\frac{\partial \mathbf{B}}{\partial t} \\
+        \nabla \times \mathbf{B} &= \mu_0\mathbf{J} + \mu_0\varepsilon_0\frac{\partial \mathbf{E}}{\partial t}
+    \end{rcases}
+    \text{Ecuaciones de Maxwell}
+\end{equation}
+```
+
+### Opciones de tamaño en `cases`
+
+```latex
+% Problema: fracciones dentro de cases salen pequeñas
+\begin{equation}
+    f(x) = \begin{cases}
+        \frac{x^2-1}{x-1} & x \neq 1 \\   % fracción pequeña en cases
+        2                  & x = 1
+    \end{cases}
+\end{equation}
+
+% Solución: usar \dfrac para fracciones en tamaño display
+\begin{equation}
+    f(x) = \begin{cases}
+        \dfrac{x^2-1}{x-1} & x \neq 1 \\[8pt]  % fracción grande
+        2                   & x = 1
+    \end{cases}
+\end{equation}
+```
+
+---
+
+## Matrices y vectores con `pmatrix`, `bmatrix`
+
+### Los entornos de matriz
+
+LaTeX ofrece varios entornos de matriz que difieren solo en los delimitadores:
+
+| Entorno | Delimitador | Uso típico |
+|---|---|---|
+| `matrix` | Sin delimitadores | Base para otros |
+| `pmatrix` | Paréntesis `( )` | Matrices en general |
+| `bmatrix` | Corchetes `[ ]` | Matrices, notación alternativa |
+| `Bmatrix` | Llaves `{ }` | Conjuntos, determinantes estilo llaves |
+| `vmatrix` | Barras `\| \|` | Determinantes |
+| `Vmatrix` | Doble barra `‖ ‖` | Norma matricial |
+
+```latex
+% La misma matriz en distintos delimitadores:
+\[
+\begin{pmatrix} a & b \\ c & d \end{pmatrix}  \quad
+\begin{bmatrix} a & b \\ c & d \end{bmatrix}  \quad
+\begin{vmatrix} a & b \\ c & d \end{vmatrix}
+\]
+```
+
+### Matrices típicas en ingeniería y matemáticas
+
+**Matriz de diseño (regresión lineal):**
+
+```latex
+\begin{equation}
+    \mathbf{X} = \begin{pmatrix}
+        1      & x_1    \\
+        1      & x_2    \\
+        \vdots & \vdots \\
+        1      & x_n
+    \end{pmatrix}, \quad
+    \boldsymbol{\beta} = \begin{pmatrix} \beta_0 \\ \beta_1 \end{pmatrix}, \quad
+    \mathbf{y} = \begin{pmatrix} y_1 \\ y_2 \\ \vdots \\ y_n \end{pmatrix}
+    \label{eq:diseño_regresion}
+\end{equation}
+```
+
+**Matriz de covarianza:**
+
+```latex
+\begin{equation}
+    \boldsymbol{\Sigma} = \begin{pmatrix}
+        \sigma_1^2     & \sigma_{12} & \cdots & \sigma_{1p} \\
+        \sigma_{21}    & \sigma_2^2  & \cdots & \sigma_{2p} \\
+        \vdots         & \vdots      & \ddots & \vdots      \\
+        \sigma_{p1}    & \sigma_{p2} & \cdots & \sigma_p^2
+    \end{pmatrix}
+\end{equation}
+```
+
+**Determinante:**
+
+```latex
+\begin{equation}
+    \det(A) = \begin{vmatrix}
+        a_{11} & a_{12} & a_{13} \\
+        a_{21} & a_{22} & a_{23} \\
+        a_{31} & a_{32} & a_{33}
+    \end{vmatrix}
+    = a_{11}(a_{22}a_{33} - a_{23}a_{32}) - \cdots
+\end{equation}
+```
+
+**Sistema lineal en forma matricial:**
+
+```latex
+\begin{equation}
+    \begin{bmatrix}
+        2 & -1 & 0 \\
+        -1 & 2 & -1 \\
+        0 & -1 & 2
+    \end{bmatrix}
+    \begin{pmatrix} x_1 \\ x_2 \\ x_3 \end{pmatrix}
+    =
+    \begin{pmatrix} 1 \\ 0 \\ 1 \end{pmatrix}
+\end{equation}
+```
+
+### Vectores: notación correcta
+
+```latex
+% Vectores en negrita (convención estándar en álgebra lineal)
+\usepackage{amsmath}
+
+% Con \mathbf (funciona para letras latinas)
+$\mathbf{v} = (v_1, v_2, v_3)^\top$
+
+% Con \boldsymbol (funciona también para griegas)
+$\boldsymbol{\mu} = (\mu_1, \mu_2, \ldots, \mu_p)^\top$
+
+% Con \bm del paquete bm (recomendado)
+\usepackage{bm}
+$\bm{v} = (v_1, v_2, v_3)^\top$
+
+% Vector columna explícito
+$\mathbf{v} = \begin{pmatrix} v_1 \\ v_2 \\ v_3 \end{pmatrix}$
+
+% Vector fila (transpuesto)
+$\mathbf{v}^\top = (v_1, v_2, v_3)$
+% o
+$\mathbf{v}^T = (v_1, v_2, v_3)$
+
+% Vectores unitarios (con sombrero)
+$\hat{\mathbf{e}}_1, \hat{\mathbf{e}}_2, \hat{\mathbf{e}}_3$
+```
+
+### Matrices con puntos suspensivos
+
+```latex
+\begin{equation}
+    A = \begin{pmatrix}
+        a_{11} & a_{12} & \cdots & a_{1n} \\
+        a_{21} & a_{22} & \cdots & a_{2n} \\
+        \vdots & \vdots & \ddots & \vdots \\
+        a_{m1} & a_{m2} & \cdots & a_{mn}
+    \end{pmatrix}
+\end{equation}
+```
+
+Los puntos suspensivos matemáticos:
+
+| Comando | Resultado | Uso |
+|---|---|---|
+| `\cdots` | $\cdots$ | Horizontal, centrado (entre operadores) |
+| `\ldots` | $\ldots$ | Horizontal, en base (en listas) |
+| `\vdots` | $\vdots$ | Vertical |
+| `\ddots` | $\ddots$ | Diagonal |
+
+---
+
+## Símbolos griegos, operadores y funciones especiales
+
+### Letras griegas completas
+
+```latex
+% Minúsculas
+\alpha \beta \gamma \delta \epsilon \varepsilon \zeta \eta
+\theta \vartheta \iota \kappa \lambda \mu \nu \xi
+\pi \varpi \rho \varrho \sigma \varsigma \tau \upsilon
+\phi \varphi \chi \psi \omega
+
+% Mayúsculas (las que difieren de latinas)
+\Gamma \Delta \Theta \Lambda \Xi \Pi \Sigma \Upsilon \Phi \Psi \Omega
+```
+
+Uso en ingeniería y estadística:
+
+```latex
+% Estadística
+$\mu$      % media poblacional
+$\sigma$   % desviación estándar
+$\sigma^2$ % varianza
+$\Sigma$   % matriz de covarianza
+$\rho$     % correlación
+$\chi^2$   % distribución chi-cuadrado
+$\alpha$   % nivel de significancia
+$\beta$    % error tipo II / coeficiente regresión
+$\varepsilon$ % error aleatorio
+
+% Cálculo y análisis
+$\delta$   % variación pequeña
+$\Delta$   % cambio finito
+$\nabla$   % gradiente
+$\partial$ % derivada parcial
+$\lambda$  % valor propio / parámetro de Poisson
+$\omega$   % frecuencia angular
+$\Omega$   % espacio muestral / dominio
+```
+
+### Operadores matemáticos
+
+```latex
+% Relaciones
+a = b, a \neq b, a < b, a \leq b, a > b, a \geq b
+a \approx b, a \equiv b, a \sim b, a \propto b
+
+% Lógica y conjuntos
+\forall, \exists, \nexists, \in, \notin, \subset, \subseteq
+\cup, \cap, \setminus, \emptyset, \varnothing
+
+% Operadores
+a \cdot b, a \times b, a \div b
+a \pm b, a \mp b
+a \oplus b, a \otimes b
+
+% Flechas
+\to, \gets, \leftrightarrow, \Rightarrow, \Leftarrow, \Leftrightarrow
+\implies, \iff
+\uparrow, \downarrow, \nearrow, \searrow
+
+% Puntos
+\cdot, \ldots, \cdots, \vdots, \ddots
+```
+
+### Funciones especiales
+
+LaTeX tiene comandos propios para funciones matemáticas — nunca escribir `sin`, `cos`, etc. sin el `\`:
+
+```latex
+% Trigonométricas
+$\sin(x), \cos(x), \tan(x), \cot(x), \sec(x), \csc(x)$
+$\arcsin(x), \arccos(x), \arctan(x)$
+$\sinh(x), \cosh(x), \tanh(x)$  % hiperbólicas
+
+% Logarítmicas y exponencial
+$\ln(x), \log(x), \log_2(x), \exp(x)$
+
+% Otras
+$\det(A), \text{tr}(A), \text{rank}(A)$
+$\max, \min, \sup, \inf, \lim_{x \to a}$
+$\gcd(a,b), \text{lcm}(a,b)$
+$\arg\max_{x} f(x), \arg\min_{x} f(x)$
+```
+
+Si la función que necesitas no está predefinida, defínela:
+
+```latex
+% En el preámbulo
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\E}{\mathbb{E}}
+\DeclareMathOperator{\Cov}{Cov}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator*{\argmax}{arg\,max}  % * coloca límites debajo
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+% Uso
+$\Var(X) = \E[X^2] - (\E[X])^2$
+$\Cov(X,Y) = \E[XY] - \E[X]\E[Y]$
+$\argmax_{x \in \mathcal{X}} f(x)$
+```
+
+### Delimitadores de tamaño automático
+
+```latex
+% Sin ajuste automático (delimitadores pequeños)
+$(\frac{1}{x})$     % el paréntesis queda muy pequeño
+
+% Con ajuste automático
+$\left(\frac{1}{x}\right)$    % paréntesis se ajustan a la altura
+
+% Más delimitadores que se ajustan
+$\left[\frac{d}{dx} f(x)\right]_{x=a}$
+$\left\{\frac{n!}{k!(n-k)!}\right\}$
+$\left\|\mathbf{v}\right\|_2$           % norma L2
+$\left|\frac{f(x)}{g(x)}\right|$        % valor absoluto
+
+% Delimitadores asimétricos
+$\left.\frac{d}{dx} f(x)\right|_{x=0}$  % barra de evaluación
+```
+
+### Espaciado en ecuaciones
+
+El espaciado automático de LaTeX es generalmente correcto, pero a veces se necesita ajuste manual:
+
+```latex
+% Espacios matemáticos (de menor a mayor)
+\!   % espacio negativo (-3/18 em)
+\,   % thin space (3/18 em) — para dx, separadores
+\:   % medium space (4/18 em)
+\;   % thick space (5/18 em)
+\quad  % 1 em
+\qquad % 2 em
+
+% Ejemplos de uso correcto
+$\int_0^1 f(x)\,dx$          % \, antes de dx
+$x,\, y,\, z$                 % \, en listas
+$f\colon X \to Y$             % \colon para función
+$P(A \mid B)$                 % \mid para probabilidad condicional
+```
+
+---
+
+## Definición de teoremas, lemas y demostraciones
+
+### Configurar entornos de teorema
+
+El paquete `amsthm` provee los entornos. La configuración va en el preámbulo:
+
+```latex
+\usepackage{amsmath, amsthm}
+
+% ── Estilos de presentación ────────────────────────────────────
+% plain: título en negrita, contenido en cursiva (para teoremas)
+% definition: título en negrita, contenido en romano (para defs)
+% remark: título en cursiva, contenido en romano (para notas)
+
+\theoremstyle{plain}
+\newtheorem{teorema}{Teorema}[section]     % numerado por sección
+\newtheorem{lema}[teorema]{Lema}           % comparte numeración con teorema
+\newtheorem{corolario}[teorema]{Corolario}
+\newtheorem{proposicion}[teorema]{Proposición}
+
+\theoremstyle{definition}
+\newtheorem{definicion}[teorema]{Definición}
+\newtheorem{ejemplo}[teorema]{Ejemplo}
+\newtheorem{ejercicio}{Ejercicio}          % numerado independientemente
+
+\theoremstyle{remark}
+\newtheorem*{nota}{Nota}           % * = sin número
+\newtheorem*{observacion}{Observación}
+\newtheorem{caso}{Caso}
+```
+
+### Usar los entornos
+
+```latex
+\begin{definicion}[Derivada de una función]
+Sea $f: \mathbb{R} \to \mathbb{R}$. La \emph{derivada} de $f$ en el punto $a$ es:
+\[
+    f'(a) = \lim_{h \to 0} \frac{f(a+h) - f(a)}{h}
+\]
+cuando este límite existe.
+\label{def:derivada}
+\end{definicion}
+
+\begin{teorema}[Regla de la cadena]
+\label{thm:cadena}
+Sea $g$ diferenciable en $a$ y $f$ diferenciable en $g(a)$.
+Entonces $f \circ g$ es diferenciable en $a$ y:
+\begin{equation}
+    (f \circ g)'(a) = f'(g(a)) \cdot g'(a)
+    \label{eq:cadena}
+\end{equation}
+\end{teorema}
+
+\begin{proof}
+Sea $h = f \circ g$. Por definición de derivada:
+\[
+    h'(a) = \lim_{x \to a} \frac{h(x) - h(a)}{x - a}
+          = \lim_{x \to a} \frac{f(g(x)) - f(g(a))}{x - a}
+\]
+Multiplicando y dividiendo por $g(x) - g(a)$ (cuando $g(x) \neq g(a)$):
+\[
+    h'(a) = \lim_{x \to a} \frac{f(g(x)) - f(g(a))}{g(x) - g(a)}
+            \cdot \frac{g(x) - g(a)}{x - a}
+          = f'(g(a)) \cdot g'(a) \qedhere
+\]
+\end{proof}
+```
+
+`\qedhere` coloca el cuadrado de fin de demostración (∎) al final de la última ecuación en lugar de en la línea siguiente.
+
+### Ejemplo con lema y corolario
+
+```latex
+\begin{lema}[Desigualdad de Cauchy-Schwarz]
+\label{lem:cauchy}
+Para vectores $\mathbf{u}, \mathbf{v} \in \mathbb{R}^n$:
+\[
+    |\langle \mathbf{u}, \mathbf{v} \rangle|^2 \leq
+    \|\mathbf{u}\|^2 \|\mathbf{v}\|^2
+\]
+La igualdad se cumple si y solo si $\mathbf{u}$ y $\mathbf{v}$
+son linealmente dependientes.
+\end{lema}
+
+\begin{corolario}
+La desigualdad triangular $\|\mathbf{u} + \mathbf{v}\| \leq
+\|\mathbf{u}\| + \|\mathbf{v}\|$ se sigue del Lema~\ref{lem:cauchy}.
+\end{corolario}
+```
+
+### Personalización visual de los entornos
+
+Para entornos con color de fondo (útil en apuntes de clase):
+
+```latex
+\usepackage{tcolorbox}
+\tcbuselibrary{most}
+
+% Entorno de teorema con caja azul
+\newtcolorbox{teorema_box}[2][]{
+  colback=blue!5!white,
+  colframe=blue!75!black,
+  fonttitle=\bfseries,
+  title={Teorema #2},
+  #1
+}
+
+% Entorno de definición con caja verde
+\newtcolorbox{definicion_box}[2][]{
+  colback=green!5!white,
+  colframe=green!50!black,
+  fonttitle=\bfseries,
+  title={Definición #2},
+  #1
+}
+
+% Uso
+\begin{teorema_box}{3.1 (Teorema de Bayes)}
+Para eventos $A$ y $B$ con $P(B) > 0$:
+\[
+    P(A|B) = \frac{P(B|A) \cdot P(A)}{P(B)}
+\]
+\end{teorema_box}
+```
+
+---
+
+## Diseño de guías de ejercicios y pruebas
+
+### Estructura de una guía de ejercicios
+
+```latex
+\documentclass[12pt, letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish, es-nodecimaldot]{babel}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{enumitem}   % control de listas
+\usepackage{fancyhdr}   % encabezados
+\usepackage{multicol}   % múltiples columnas
+\usepackage{booktabs}   % tablas
+\usepackage{tcolorbox}  % cajas con color
+
+% ── Encabezado ─────────────────────────────────────────────────
+\pagestyle{fancy}
+\lhead{\small MAT281 — Guía de Ejercicios N°4}
+\rhead{\small Regresión Lineal}
+\cfoot{\small Página \thepage}
+
+% ── Entornos de ejercicio ──────────────────────────────────────
+\newcounter{ejercicio}
+\setcounter{ejercicio}{0}
+
+\newenvironment{ejercicio}[1][]{%
+    \refstepcounter{ejercicio}%
+    \par\medskip\noindent%
+    \textbf{Ejercicio \theejercicio.}%
+    \ifx&#1&\else\ \textit{(#1 pts.)}\fi%
+    \quad
+}{%
+    \par\medskip
+}
+
+\newenvironment{solucion}{%
+    \par\noindent\textbf{Solución.\ }%
+}{%
+    \hfill$\square$\par\medskip
+}
+
+% ── Documento ─────────────────────────────────────────────────
+\begin{document}
+
+\begin{center}
+    {\Large\textbf{MAT281 — Guía de Ejercicios N°4}} \\[0.5em]
+    {\large Regresión Lineal Simple} \\[0.3em]
+    {\normalsize Primer Semestre 2025}
+\end{center}
+
+\hrule
+\vspace{0.5em}
+\noindent\textit{Instrucciones: Resuelva todos los ejercicios mostrando
+el procedimiento completo. Los resultados sin desarrollo no serán evaluados.}
+\vspace{0.5em}
+\hrule\vspace{1em}
+
+% Ejercicios en dos columnas
+\begin{multicols}{2}
+
+\begin{ejercicio}[3]
+Sea el modelo $Y_i = \beta_0 + \beta_1 X_i + \varepsilon_i$ con
+$\varepsilon_i \sim \mathcal{N}(0, \sigma^2)$. Demuestre que el
+estimador MCO $\hat{\beta}_1 = S_{XY}/S_{XX}$ es insesgado.
+\end{ejercicio}
+
+\begin{ejercicio}[4]
+Se tienen los siguientes datos:
+
+\begin{center}
+\begin{tabular}{@{}ccc@{}}
+\toprule
+$x_i$ & $y_i$ & $x_i y_i$ \\
+\midrule
+2 & 3.1 & 6.2 \\
+4 & 4.8 & 19.2 \\
+6 & 6.5 & 39.0 \\
+8 & 8.0 & 64.0 \\
+10 & 9.7 & 97.0 \\
+\midrule
+\textbf{30} & \textbf{32.1} & \textbf{225.4} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{enumerate}[label=(\alph*), noitemsep]
+    \item Calcule $\hat{\beta}_0$ y $\hat{\beta}_1$.
+    \item Calcule el $R^2$ del modelo.
+    \item Estime la respuesta esperada para $x = 7$.
+\end{enumerate}
+\end{ejercicio}
+
+\end{multicols}
+
+\end{document}
+```
+
+### Diseño de una prueba/examen
+
+```latex
+\documentclass[12pt, letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage[top=2cm, bottom=2.5cm, left=2.5cm, right=2.5cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{enumitem}
+\usepackage{array}      % para columnas de ancho fijo en tablas
+\usepackage{booktabs}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\small\textbf{MAT281} — Prueba 1}
+\chead{\small Primer Semestre 2025}
+\rhead{\small Página \thepage\ de \pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% Espacio para respuesta del estudiante
+\newcommand{\respuesta}[1]{%
+    \par\vspace{#1}\noindent\rule{\linewidth}{0.4pt}%
+}
+
+\begin{document}
+
+% ── Encabezado del estudiante ──────────────────────────────────
+\begin{tabular}{@{} p{10cm} p{4.5cm} @{}}
+    \textbf{Nombre:} \hrulefill & \textbf{Sección:} \hrulefill \\[0.6em]
+    \textbf{Carrera:} \hrulefill & \textbf{Nota:} \hrulefill
+\end{tabular}
+
+\vspace{0.5cm}
+\hrule
+\vspace{0.3cm}
+
+\begin{center}
+    {\Large\textbf{PRUEBA 1 — MAT281}} \\[0.3em]
+    {\normalsize Duración: 90 minutos $\cdot$ Material: calculadora, sin apuntes}
+\end{center}
+
+\hrule\vspace{0.5cm}
+
+% ── Tabla de puntajes ─────────────────────────────────────────
+\begin{center}
+\begin{tabular}{@{}cccc@{}}
+\toprule
+Pregunta & Puntaje máximo & Puntaje obtenido & Observaciones \\
+\midrule
+1 & 15 & & \\
+2 & 20 & & \\
+3 & 25 & & \\
+4 & 40 & & \\
+\midrule
+\textbf{Total} & \textbf{100} & & \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\vspace{0.5cm}\hrule\vspace{0.5cm}
+
+% ── Preguntas ────────────────────────────────────────────────
+
+\section*{Parte I: Conceptos (35 pts)}
+
+\subsection*{Pregunta 1 \hfill \normalfont\small (15 pts)}
+
+Dado el modelo de regresión lineal simple
+$Y_i = \beta_0 + \beta_1 X_i + \varepsilon_i$, donde
+$\varepsilon_i \sim \mathcal{N}(0, \sigma^2)$ i.i.d.:
+
+\begin{enumerate}[label=\textbf{\alph*)}, leftmargin=*, noitemsep]
+    \item \textbf{(5 pts)} Escriba la expresión de los estimadores MCO
+    $\hat{\beta}_0$ y $\hat{\beta}_1$.
+    
+    \respuesta{2.5cm}
+    
+    \item \textbf{(5 pts)} Defina el coeficiente de determinación $R^2$
+    e indique cómo se interpreta un valor $R^2 = 0.83$.
+    
+    \respuesta{3cm}
+    
+    \item \textbf{(5 pts)} Enuncie los 4 supuestos clásicos del modelo
+    de regresión lineal simple.
+    
+    \respuesta{3.5cm}
+\end{enumerate}
+
+\newpage
+
+\section*{Parte II: Desarrollo (65 pts)}
+
+\subsection*{Pregunta 4 \hfill \normalfont\small (40 pts)}
+
+Un ingeniero industrial quiere predecir el consumo de energía eléctrica
+$Y$ (kWh/mes) de una planta a partir de la temperatura promedio $X$
+(°C) del mes. Se dispone de $n=10$ observaciones con los siguientes
+estadísticos muestrales:
+
+\[
+    \bar{X} = 18.5, \quad \bar{Y} = 4200, \quad
+    S_{XX} = 312.5, \quad S_{XY} = 15625, \quad S_{YY} = 1562500
+\]
+
+\begin{enumerate}[label=\textbf{\alph*)}, leftmargin=*]
+    \item \textbf{(10 pts)} Calcule los estimadores MCO $\hat{\beta}_0$
+    y $\hat{\beta}_1$. Interprete $\hat{\beta}_1$ en el contexto del problema.
+    
+    \respuesta{4cm}
+    
+    \item \textbf{(10 pts)} Calcule el $R^2$ del modelo.
+    ¿El modelo tiene buen ajuste? Justifique.
+    
+    \respuesta{4cm}
+    
+    \item \textbf{(10 pts)} Estime el consumo esperado cuando la
+    temperatura promedio es $X = 25°C$.
+    ¿Es confiable esta estimación? Discuta.
+    
+    \respuesta{4cm}
+    
+    \item \textbf{(10 pts)} ¿Cuáles son los supuestos que necesita
+    verificar antes de confiar en las conclusiones del modelo?
+    Describa brevemente cómo verificaría cada uno.
+    
+    \respuesta{5cm}
+\end{enumerate}
+
+\end{document}
+```
+
+### Macros útiles para guías de matemáticas
+
+```latex
+% En el preámbulo — comandos reutilizables en guías y pruebas
+
+% Conjuntos de números
+\newcommand{\N}{\mathbb{N}}   % naturales
+\newcommand{\Z}{\mathbb{Z}}   % enteros
+\newcommand{\Q}{\mathbb{Q}}   % racionales
+\newcommand{\R}{\mathbb{R}}   % reales
+\newcommand{\C}{\mathbb{C}}   % complejos
+\newcommand{\F}{\mathbb{F}}   % campo genérico
+
+% Probabilidad y estadística
+\newcommand{\E}[1]{\mathbb{E}\left[#1\right]}
+\newcommand{\Var}[1]{\text{Var}\left(#1\right)}
+\newcommand{\Cov}[2]{\text{Cov}\left(#1, #2\right)}
+\newcommand{\iid}{\overset{\text{i.i.d.}}{\sim}}
+\newcommand{\Normal}[2]{\mathcal{N}\left(#1, #2\right)}
+\newcommand{\given}{\,\middle|\,}
+
+% Álgebra lineal
+\newcommand{\norm}[1]{\left\|#1\right\|}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\inner}[2]{\langle #1, #2 \rangle}
+\newcommand{\T}{^\top}        % transpuesta: \mathbf{A}\T
+
+% Cálculo
+\newcommand{\der}[2]{\frac{d#1}{d#2}}
+\newcommand{\pder}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\eval}[1]{\left.#1\right|}
+
+% Uso
+$X \iid \Normal{\mu}{\sigma^2}$
+$\E{X^2} = \Var{X} + (\E{X})^2$
+$\norm{\mathbf{A}\mathbf{x}} \leq \norm{\mathbf{A}} \norm{\mathbf{x}}$
+$\pder{f}{x}\eval_{x=0}$
+```
+
+### Tabla de referencia rápida de símbolos frecuentes
+
+```latex
+% Estadística inferencial
+$\hat{\theta}$           % estimador (sombrero)
+$\tilde{\theta}$         % estimador alternativo (tilde)
+$\overline{X}$           % media muestral (barra)
+$\chi^2_{(k)}$           % chi-cuadrado con k grados de libertad
+$t_{(n-1)}$              % t de Student
+$F_{(p, n-p-1)}$         % F de Fisher
+
+% Optimización
+$\nabla f(\mathbf{x})$              % gradiente
+$\nabla^2 f(\mathbf{x})$            % hessiana
+$\arg\min_{\theta \in \Theta} L(\theta)$   % argmin
+$\arg\max_{\theta} \ell(\theta)$           % argmax
+
+% Convergencia y límites
+$X_n \to X$ casi seguramente (c.s.)
+$X_n \xrightarrow{p} X$    % convergencia en probabilidad
+$X_n \xrightarrow{d} X$    % convergencia en distribución
+$X_n \xrightarrow{L^2} X$  % convergencia en cuadrática media
+$a_n = O(b_n)$             % gran-O
+$a_n = o(b_n)$             % pequeña-o
+```
+
+---
+
+## Referencias
+
+- Oetiker, T. et al. (2021). *The Not So Short Introduction to LaTeX 2ε*. [tobi.oetiker.ch/lshort](https://tobi.oetiker.ch/lshort/lshort.pdf)
+- American Mathematical Society. *AMS-LaTeX User's Guide*. [ams.org/tex/amslatex.html](https://www.ams.org/tex/amslatex.html)
+- Grätzer, G. (2016). *More Math into LaTeX* (5ª ed.). Springer.
+- Higham, N. J. (1998). *Handbook of Writing for the Mathematical Sciences* (2ª ed.). SIAM.
+- Mathpix Snip. *Convierte ecuaciones a LaTeX*. [mathpix.com](https://mathpix.com)
+- Detexify. *Buscar símbolo LaTeX dibujando*. [detexify.kirelabs.org](https://detexify.kirelabs.org/classify.html)
+- CTAN. *amsmath package documentation*. [ctan.org/pkg/amsmath](https://ctan.org/pkg/amsmath)

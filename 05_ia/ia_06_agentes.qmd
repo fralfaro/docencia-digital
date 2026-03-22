@@ -1,0 +1,772 @@
+---
+title: "Agentes IA"
+subtitle: "De chatbots reactivos a sistemas que razonan y actúan"
+---
+
+Un chatbot responde preguntas. Un agente resuelve problemas.
+
+La diferencia parece simple pero tiene consecuencias enormes para lo que es posible hacer con IA en docencia. Un chatbot puede explicarte cómo funciona el algoritmo de K-means. Un agente puede tomar el dataset del laboratorio, ejecutar K-means con distintos valores de k, evaluar los resultados con la métrica de silueta, detectar que el estudiante cometió un error en la normalización, y generar retroalimentación específica sobre ese error — todo en respuesta a "revisa mi laboratorio".
+
+Este capítulo explica qué hace esa diferencia posible, cómo funciona por dentro, y cómo construir agentes útiles para docencia con distintos niveles de complejidad técnica.
+
+---
+
+## Qué diferencia un agente de un chatbot simple
+
+### El chatbot: una función de entrada-salida
+
+Un chatbot convencional es esencialmente una función:
+
+```
+f(conversación) → respuesta de texto
+```
+
+Recibe texto, produce texto. No puede hacer nada más. Si le pides que "ejecute el código del estudiante y diga qué produce", no puede — solo puede describir qué *debería* producir.
+
+### El agente: un loop de razonamiento-acción
+
+Un agente tiene acceso a **herramientas** (tools) — funciones que puede llamar para interactuar con el mundo externo. Puede ejecutar código, buscar en internet, leer archivos, llamar APIs, escribir en bases de datos.
+
+Pero más importante que las herramientas es el **loop**: el agente no solo llama una herramienta y termina. Observa el resultado, razona sobre si lo logró, y decide si necesita hacer algo más.
+
+```{mermaid}
+graph TD
+    subgraph "Chatbot"
+        I1["Input:\nPregunta"] --> LLM1["LLM"] --> O1["Output:\nRespuesta de texto"]
+    end
+
+    subgraph "Agente"
+        I2["Input:\nTarea"] --> R["🧠 Razonar\n¿Qué necesito hacer?"]
+        R --> D{{"¿Necesito\nuna herramienta?"}}
+        D -->|Sí| T["🔧 Ejecutar herramienta\n(código, búsqueda, API...)"]
+        T --> OB["👁️ Observar resultado"]
+        OB --> R
+        D -->|No, tarea completa| O2["Output:\nRespuesta final"]
+    end
+```
+
+### Los componentes de un agente
+
+**1. LLM como "cerebro":** el modelo de lenguaje que razona, decide qué herramienta usar y cuándo terminar.
+
+**2. Herramientas (tools):** funciones que el agente puede invocar. Cada herramienta tiene un nombre, una descripción (el LLM la lee para saber cuándo usarla) y un esquema de parámetros.
+
+**3. Memoria:** lo que el agente recuerda entre pasos — el historial de acciones, los resultados previos.
+
+**4. Loop de razonamiento:** el mecanismo por el que el agente decide si continúa actuando o termina.
+
+**5. Criterio de parada:** cuándo el agente concluye que la tarea está resuelta.
+
+---
+
+## Loops de razonamiento: ReAct, tool use, planificación
+
+### ReAct: Reasoning + Acting
+
+ReAct (Yao et al., 2022) es el paradigma dominante en agentes de LLM. El agente alterna entre dos tipos de "pensamiento":
+
+- **Thought (Razonamiento):** el agente escribe en lenguaje natural qué está pensando y qué va a hacer.
+- **Action (Acción):** llama a una herramienta específica.
+- **Observation (Observación):** recibe el resultado de la herramienta.
+
+```{mermaid}
+sequenceDiagram
+    participant A as 🧠 Agente
+    participant T as 🔧 Herramientas
+
+    Note over A: Thought: El estudiante tiene un error en\nla normalización. Voy a ejecutar su\ncódigo para confirmarlo.
+    A->>T: Action: ejecutar_codigo(código_estudiante)
+    T->>A: Observation: ValueError: Input contains NaN
+
+    Note over A: Thought: El error es que no manejó los\nvalores nulos antes de normalizar.\nVoy a verificar qué columnas tienen NaN.
+    A->>T: Action: ejecutar_codigo("df.isnull().sum()")
+    T->>A: Observation: temperatura 3, humedad 0, presion 1
+
+    Note over A: Thought: Identificado el problema. Tengo\nsuficiente información para dar\nretroalimentación específica.
+    A->>A: Final Answer: [feedback detallado sobre el error]
+```
+
+### Tool use nativo en Claude y GPT
+
+Los modelos modernos (Claude 3+, GPT-4+) tienen soporte nativo para herramientas — no necesitan un framework externo para el caso básico:
+
+```python
+import anthropic
+import json
+
+client = anthropic.Anthropic()
+
+# ── Definir las herramientas ──────────────────────────────────
+tools = [
+    {
+        "name": "ejecutar_python",
+        "description": """Ejecuta código Python y retorna el output.
+        Úsala para: ejecutar código del estudiante, verificar resultados,
+        calcular métricas, generar visualizaciones.""",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "codigo": {
+                    "type": "string",
+                    "description": "El código Python a ejecutar"
+                },
+                "descripcion": {
+                    "type": "string",
+                    "description": "Qué hace este código (para el log)"
+                }
+            },
+            "required": ["codigo"]
+        }
+    },
+    {
+        "name": "leer_archivo",
+        "description": """Lee el contenido de un archivo del sistema.
+        Úsala para leer notebooks, scripts, datos CSV del estudiante.""",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "ruta": {
+                    "type": "string",
+                    "description": "Ruta al archivo a leer"
+                }
+            },
+            "required": ["ruta"]
+        }
+    }
+]
+
+# ── Implementar las herramientas ──────────────────────────────
+import subprocess
+import pathlib
+
+def ejecutar_python(codigo: str, descripcion: str = "") -> str:
+    """Ejecuta código Python en un subproceso aislado."""
+    try:
+        result = subprocess.run(
+            ["python", "-c", codigo],
+            capture_output=True,
+            text=True,
+            timeout=30,    # timeout de seguridad
+            cwd="/tmp"     # directorio seguro
+        )
+        output = result.stdout + result.stderr
+        return output if output else "(Sin output)"
+    except subprocess.TimeoutExpired:
+        return "Error: Timeout — el código tardó más de 30 segundos"
+    except Exception as e:
+        return f"Error al ejecutar: {str(e)}"
+
+def leer_archivo(ruta: str) -> str:
+    """Lee un archivo de texto."""
+    try:
+        return pathlib.Path(ruta).read_text(encoding='utf-8')
+    except FileNotFoundError:
+        return f"Error: Archivo no encontrado: {ruta}"
+    except Exception as e:
+        return f"Error al leer: {str(e)}"
+
+def despachar_herramienta(nombre: str, inputs: dict) -> str:
+    """Ejecuta la herramienta solicitada por el agente."""
+    if nombre == "ejecutar_python":
+        return ejecutar_python(**inputs)
+    elif nombre == "leer_archivo":
+        return leer_archivo(**inputs)
+    else:
+        return f"Error: Herramienta '{nombre}' no disponible"
+
+# ── Loop del agente ───────────────────────────────────────────
+def agente(tarea: str, sistema: str, max_pasos: int = 10) -> str:
+    """
+    Ejecuta el loop del agente hasta que resuelva la tarea
+    o alcance el máximo de pasos.
+    """
+    mensajes = [{"role": "user", "content": tarea}]
+    pasos = 0
+
+    while pasos < max_pasos:
+        pasos += 1
+        print(f"\n── Paso {pasos} ──────────────────────────────")
+
+        # Llamar al modelo
+        respuesta = client.messages.create(
+            model="claude-sonnet-4-20250514",
+            max_tokens=2000,
+            system=sistema,
+            tools=tools,
+            messages=mensajes
+        )
+
+        print(f"Stop reason: {respuesta.stop_reason}")
+
+        # Si el modelo terminó de razonar → respuesta final
+        if respuesta.stop_reason == "end_turn":
+            texto_final = next(
+                (b.text for b in respuesta.content if hasattr(b, 'text')),
+                "Sin respuesta de texto"
+            )
+            print(f"✅ Tarea completada en {pasos} pasos")
+            return texto_final
+
+        # Si el modelo quiere usar herramientas
+        if respuesta.stop_reason == "tool_use":
+            # Agregar respuesta del modelo al historial
+            mensajes.append({
+                "role": "assistant",
+                "content": respuesta.content
+            })
+
+            # Procesar cada llamada a herramienta
+            resultados_tools = []
+            for bloque in respuesta.content:
+                if bloque.type == "tool_use":
+                    nombre_tool = bloque.name
+                    inputs_tool = bloque.input
+                    print(f"🔧 Herramienta: {nombre_tool}({list(inputs_tool.keys())})")
+
+                    resultado = despachar_herramienta(nombre_tool, inputs_tool)
+                    print(f"   → {resultado[:100]}...")
+
+                    resultados_tools.append({
+                        "type": "tool_result",
+                        "tool_use_id": bloque.id,
+                        "content": resultado
+                    })
+
+            # Agregar resultados de herramientas al historial
+            mensajes.append({
+                "role": "user",
+                "content": resultados_tools
+            })
+
+    return f"Error: máximo de {max_pasos} pasos alcanzado sin completar la tarea"
+```
+
+---
+
+## Herramientas y acciones que puede ejecutar un agente
+
+### Catálogo de herramientas para agentes docentes
+
+```python
+# Herramientas útiles para un agente docente — descripción para el LLM
+
+TOOLS_DOCENTES = [
+    # ── Ejecución de código ────────────────────────────────────
+    {
+        "name": "ejecutar_python",
+        "description": "Ejecuta código Python y retorna stdout+stderr. "
+                       "Usa para verificar que el código del estudiante funciona, "
+                       "calcular métricas, probar casos borde."
+    },
+    {
+        "name": "ejecutar_tests",
+        "description": "Corre tests de pytest sobre el código del estudiante. "
+                       "Retorna qué tests pasan y cuáles fallan con el mensaje de error."
+    },
+
+    # ── Acceso a archivos ──────────────────────────────────────
+    {
+        "name": "leer_notebook",
+        "description": "Lee un notebook Jupyter (.ipynb) y retorna el código "
+                       "y los outputs de todas las celdas en formato legible."
+    },
+    {
+        "name": "leer_archivo",
+        "description": "Lee cualquier archivo de texto: .py, .csv, .md, .txt"
+    },
+    {
+        "name": "listar_archivos",
+        "description": "Lista los archivos en una carpeta. Útil para ver "
+                       "qué entregó el estudiante."
+    },
+
+    # ── Análisis ───────────────────────────────────────────────
+    {
+        "name": "analizar_dataset",
+        "description": "Carga un CSV y retorna: shape, tipos de datos, "
+                       "valores nulos, estadísticas básicas. "
+                       "Para verificar si el estudiante cargó los datos correctamente."
+    },
+    {
+        "name": "comparar_outputs",
+        "description": "Compara el output del estudiante con el output esperado "
+                       "y retorna las diferencias."
+    },
+
+    # ── Búsqueda ───────────────────────────────────────────────
+    {
+        "name": "buscar_en_material",
+        "description": "Busca en el material del curso (apuntes, guías). "
+                       "Retorna los fragmentos relevantes. "
+                       "Usa para verificar si el enfoque del estudiante es el correcto "
+                       "según los contenidos del curso."
+    },
+
+    # ── Generación de output ───────────────────────────────────
+    {
+        "name": "guardar_feedback",
+        "description": "Guarda el feedback generado en un archivo. "
+                       "Llama al final cuando el feedback está completo."
+    }
+]
+```
+
+### La importancia de las descripciones
+
+El LLM decide qué herramienta usar basándose en las descripciones. Una descripción vaga lleva a decisiones incorrectas:
+
+```python
+# ❌ Descripción vaga
+{
+    "name": "run_code",
+    "description": "Runs code."
+}
+# El modelo no sabe cuándo usarla ni para qué
+
+# ✅ Descripción específica
+{
+    "name": "ejecutar_python",
+    "description": """Ejecuta código Python en un entorno seguro y retorna el output.
+    CUÁNDO USARLA: cuando necesites verificar si el código del estudiante produce
+    el resultado esperado, calcular métricas, probar casos borde o detectar errores.
+    NO USAR para: código que requiera acceso a internet, archivos fuera de /tmp,
+    o librearías no instaladas (sklearn, pandas, matplotlib sí están disponibles)."""
+}
+```
+
+---
+
+## Agente tutor socrático para cursos de programación
+
+### El diseño pedagógico del agente
+
+El tutor socrático no da respuestas — hace preguntas que llevan al estudiante a descubrirlas. Para que esto funcione como agente (y no solo como chatbot), el agente necesita herramientas para:
+
+1. **Ejecutar el código del estudiante** y ver exactamente qué produce.
+2. **Comparar con el resultado esperado** para saber qué está mal.
+3. **Localizar el error específico** antes de hacer la pregunta.
+
+Sin estas capacidades, el tutor estaría adivinando dónde está el error. Con ellas, puede hacer preguntas quirúrgicamente precisas.
+
+```python
+# Sistema: agente tutor socrático
+SISTEMA_TUTOR = """Eres un tutor socrático del curso MAT281 de la UTFSM.
+
+Tu misión: ayudar al estudiante a entender su error sin decirle la solución.
+
+PROCESO OBLIGATORIO:
+1. PRIMERO ejecuta el código del estudiante para ver qué produce
+2. COMPARA el output con el esperado
+3. LOCALIZA el error específico (qué línea, qué operación)
+4. FORMULA una pregunta que lleve al estudiante hacia ese error
+
+REGLAS ESTRICTAS:
+- NUNCA muestres el código correcto
+- NUNCA digas "el error está en la línea X"
+- SÍ puedes hacer preguntas como:
+  "¿Qué esperas que produzca esta línea?"
+  "¿Qué hace `dropna()` con los valores nulos?"
+  "Si la media es 5.2 y el R² es 0.82, ¿qué significa eso?"
+- Si el estudiante dice "no sé nada", pregunta qué SÍ entiende
+- Máximo 2 preguntas por turno — no bombardees
+
+HERRAMIENTAS DISPONIBLES: úsalas siempre antes de responder."""
+
+# Ejemplo de conversación con el agente tutor
+def tutor_session(mensaje_estudiante: str, contexto_lab: str) -> str:
+    """
+    Inicia o continúa una sesión de tutoría socrática.
+
+    contexto_lab: descripción de qué debe hacer el laboratorio
+    """
+    tarea = f"""
+    El estudiante tiene un problema con su código del Lab 3 (regresión lineal).
+
+    Lo que debe hacer el lab:
+    {contexto_lab}
+
+    Mensaje del estudiante:
+    {mensaje_estudiante}
+
+    Sigue el proceso socrático. Primero ejecuta el código si está disponible,
+    luego haz UNA pregunta bien formulada.
+    """
+
+    return agente(
+        tarea=tarea,
+        sistema=SISTEMA_TUTOR,
+        max_pasos=8
+    )
+
+# Uso
+respuesta = tutor_session(
+    mensaje_estudiante="""Hola, mi código no funciona pero no entiendo por qué.
+    Aquí está:
+    ```python
+    from sklearn.linear_model import LinearRegression
+    X = df['horas']
+    y = df['nota']
+    modelo = LinearRegression()
+    modelo.fit(X, y)
+    print(modelo.coef_)
+    ```""",
+    contexto_lab="Ajustar un modelo de regresión lineal simple que prediga "
+                  "la nota final a partir de horas de estudio."
+)
+print(respuesta)
+```
+
+### Interacción típica del tutor socrático
+
+```
+Estudiante: "Mi código no funciona, da un error pero no entiendo qué dice"
+
+[El agente ejecuta el código del estudiante]
+Agente observa: ValueError: Expected 2D array, got 1D array instead.
+
+[El agente razona: el error es porque X es una Serie 1D, no un array 2D]
+[El agente NO dice eso — hace una pregunta]
+
+Agente: "Ejecuté tu código y veo un error sobre dimensiones.
+¿Qué forma (shape) crees que tiene tu variable X antes de
+pasarla al modelo? ¿Qué requiere `fit()` en cuanto a la
+forma del array X?"
+
+---
+
+Estudiante: "No sé, supongo que es una columna del dataframe"
+
+Agente: "Exacto, es una columna — una Serie de pandas.
+Haz esto en tu notebook y dime qué ves:
+```python
+print(X.shape)
+print(X.values.reshape(-1, 1).shape)
+```
+¿Qué diferencia ves entre los dos shapes?"
+
+---
+
+Estudiante: "El primero dice (50,) y el segundo (50, 1)"
+
+Agente: "Perfecto — esa es la clave. sklearn requiere que X tenga
+forma (n_samples, n_features) — el segundo formato.
+¿Cómo podrías modificar tu código para que X tenga esa forma
+antes de llamar a `fit()`?"
+```
+
+El estudiante llegó a la solución sin que el agente nunca dijera "usa `reshape(-1,1)`".
+
+---
+
+## Agente para corrección y retroalimentación de código
+
+### El agente evaluador
+
+A diferencia del tutor socrático (interactivo), el agente evaluador trabaja de forma autónoma: recibe el notebook del estudiante, lo evalúa contra la rúbrica, y genera un informe de retroalimentación sin intervención humana intermedia.
+
+```python
+# Sistema: agente evaluador de laboratorios
+SISTEMA_EVALUADOR = """Eres el evaluador del Lab 3 del curso MAT281 (UTFSM).
+
+RÚBRICA DEL LAB (usa para evaluar cada criterio):
+
+Criterio 1 — Carga correcta de datos (15%):
+  Destacado: carga el CSV con encoding='utf-8-sig', verifica shape y tipos
+  Competente: carga el CSV correctamente, sin verificación
+  Básico: carga con errores menores (no revisa nulos, tipos incorrectos)
+  Insuficiente: error en la carga o datos incorrectos
+
+Criterio 2 — Ajuste del modelo MCO (30%):
+  Destacado: reshape(-1,1) correcto, .coef_ y .intercept_ accesibles, R² calculado
+  Competente: modelo ajustado correctamente
+  Básico: modelo presente con errores no críticos
+  Insuficiente: error de ejecución o modelo ausente
+
+Criterio 3 — Interpretación de coeficientes (25%):
+  Destacado: interpreta β₀ y β₁ con unidades, menciona R² con significado
+  Competente: interpreta β₁ correctamente
+  Básico: interpretación vaga o sin unidades
+  Insuficiente: sin interpretación o incorrecta
+
+Criterio 4 — Diagnóstico de residuos (20%):
+  Destacado: 4 gráficos con interpretación de supuestos
+  Competente: scatter residuos vs ajustados con interpretación básica
+  Básico: gráfico presente sin interpretación
+  Insuficiente: sin gráficos de residuos
+
+Criterio 5 — Conclusiones (10%):
+  Destacado: responde la pregunta del lab con números y limitaciones
+  Competente: conclusión coherente con los resultados
+  Básico: conclusión vaga
+  Insuficiente: sin conclusión o contradice los resultados
+
+PROCESO DE EVALUACIÓN:
+1. Lee el notebook completo con leer_notebook
+2. Ejecuta el código de cada sección con ejecutar_python
+3. Evalúa cada criterio según la rúbrica
+4. Genera la retroalimentación estructurada
+5. Guarda el resultado con guardar_feedback
+
+OUTPUT REQUERIDO (formato exacto):
+---
+## Evaluación Lab 3 — [nombre del estudiante]
+
+### Criterio 1: [Nivel] — X/15 pts
+[Qué hizo bien y qué no, específico y observable]
+
+### Criterio 2: [Nivel] — X/30 pts
+[...]
+
+### Nota final: X.X/7.0
+
+### Resumen para el estudiante (200 palabras máx)
+[...]
+
+### Pregunta de reflexión
+[Una pregunta para que el estudiante piense sobre lo que hizo]
+---"""
+
+def evaluar_laboratorio(ruta_notebook: str, nombre_estudiante: str) -> str:
+    """Evalúa un notebook de laboratorio de forma autónoma."""
+    tarea = f"""
+    Evalúa el laboratorio de {nombre_estudiante}.
+    Notebook en: {ruta_notebook}
+
+    Sigue el proceso de evaluación completo según la rúbrica.
+    Al final, guarda el feedback con guardar_feedback.
+    """
+
+    return agente(
+        tarea=tarea,
+        sistema=SISTEMA_EVALUADOR,
+        max_pasos=15  # más pasos porque la evaluación es más compleja
+    )
+
+# Procesar todas las entregas de una carpeta
+def evaluar_batch(carpeta_entregas: str) -> None:
+    """Evalúa todos los notebooks en una carpeta."""
+    import pathlib
+
+    notebooks = sorted(pathlib.Path(carpeta_entregas).glob("*.ipynb"))
+    print(f"Evaluando {len(notebooks)} laboratorios...")
+
+    for nb in notebooks:
+        nombre = nb.stem.replace("lab03_", "").replace("_", " ").title()
+        print(f"\n  Evaluando: {nombre}...")
+
+        feedback = evaluar_laboratorio(str(nb), nombre)
+        print(f"  ✓ Feedback generado")
+
+    print(f"\n✅ Evaluación completa. Revisar borradores antes de enviar.")
+```
+
+### Validación antes de enviar al estudiante
+
+```python
+def revisar_feedback_batch(carpeta_feedbacks: str) -> None:
+    """
+    Abre cada archivo de feedback para revisión del docente.
+    El docente puede editar antes de confirmar el envío.
+    """
+    import pathlib
+    import subprocess
+
+    feedbacks = sorted(pathlib.Path(carpeta_feedbacks).glob("feedback_*.md"))
+
+    for feedback_path in feedbacks:
+        print(f"\n{'='*60}")
+        print(f"Revisando: {feedback_path.name}")
+        print('='*60)
+        print(feedback_path.read_text())
+
+        decision = input("\n¿Enviar este feedback? [s/n/e(ditar)]: ").lower()
+
+        if decision == 's':
+            print(f"✅ Marcado para envío: {feedback_path.name}")
+        elif decision == 'e':
+            subprocess.run(["code", str(feedback_path)])   # abrir en VS Code
+            input("Presiona Enter cuando termines de editar...")
+        elif decision == 'n':
+            print(f"⏭️  Omitido: {feedback_path.name}")
+```
+
+---
+
+## Claude Projects como agente simple sin infraestructura
+
+### Por qué Claude Projects es suficiente para la mayoría de los casos
+
+Los agentes con código (LangChain, tool use nativo) son poderosos pero requieren infraestructura: configuración, mantenimiento, costos de API. Para muchos casos de uso docente, **Claude Projects** ofrece el 80% de la funcionalidad con el 5% de la complejidad.
+
+Un Project de Claude es efectivamente un agente simple con:
+- **Memoria persistente:** los documentos del curso subidos se mantienen en todos los chats.
+- **Instrucciones de sistema:** defines el comportamiento del asistente una vez.
+- **Artifacts:** puede generar código, tablas, HTML interactivo en el chat.
+- **Análisis de archivos:** puede leer PDFs, notebooks, CSV subidos en la conversación.
+
+### Configurar un Claude Project como agente docente
+
+**Paso 1 — Crear el Project:**
+
+1. Claude.ai → **Projects** → **New project**
+2. Nombre: "Asistente Lab MAT281"
+3. Description: descripción breve del propósito
+
+**Paso 2 — Subir el material del curso:**
+
+```
+Archivos a subir:
+├── programa_mat281.pdf         ← syllabus y rúbricas
+├── apunte_regresion.pdf        ← apuntes de la unidad
+├── guia_lab03.pdf              ← enunciado del lab
+└── rubrica_lab03.pdf           ← rúbrica completa
+```
+
+**Paso 3 — Configurar las instrucciones del Project:**
+
+```
+Instrucciones del Project (System Prompt):
+
+Eres el asistente de MAT281 (Aplicaciones de la Matemática en Ingeniería).
+Tienes acceso al material oficial del curso: syllabus, apuntes y guías
+de laboratorio.
+
+COMPORTAMIENTO:
+- Para preguntas sobre el curso: responde con base en el material disponible
+  y cita de dónde sacaste la información
+- Para código del estudiante: analiza, identifica errores, da orientación
+  pero no des el código completo correcto
+- Para dudas conceptuales: explica desde el material del curso primero,
+  luego complementa si es necesario
+
+MODO TUTOR (cuando el estudiante pide ayuda con un ejercicio):
+1. Pide que te muestre qué intentó primero
+2. Identifica dónde está el bloqueo
+3. Haz una pregunta que lleve al siguiente paso
+4. Solo da la respuesta si el estudiante ha intentado al menos 2 veces
+
+LÍMITES:
+- No des soluciones completas a evaluaciones vigentes
+- No inventes información del curso — usa solo el material disponible
+- Si algo no está en el material, dilo explícitamente
+```
+
+### Usar el Project para retroalimentación de código
+
+Sin código adicional, el docente o el estudiante puede pegar el notebook directamente en el chat:
+
+```
+Docente en el Project: "Revisa este notebook del estudiante según la rúbrica
+del Lab 3 que está en el material del proyecto:
+
+[pegar el código del notebook]
+
+Genera el borrador de retroalimentación en el formato de la rúbrica."
+
+Claude: [Lee la rúbrica del material del Project]
+        [Analiza el código pegado]
+        [Genera feedback estructurado por criterio]
+```
+
+### Comparativa: Project vs agente con código
+
+| Característica | Claude Project | Agente con código |
+|---|---|---|
+| **Setup** | 10 minutos | Horas-días |
+| **Mantenimiento** | Actualizar archivos del Project | Mantener código en producción |
+| **Ejecución de código real** | ❌ Solo analiza, no ejecuta | ✅ Ejecuta y verifica |
+| **Procesamiento batch** | ❌ Manual (un chat por entrega) | ✅ Automático (30 entregas a la vez) |
+| **Costo** | Claude Pro (~USD 20/mes) | Claude Pro + costos de API adicionales |
+| **Disponibilidad para estudiantes** | ✅ Compartir link del Project | Requiere deploy de la app |
+| **Citas de fuente** | ✅ A veces | Depende de la implementación |
+| **Para docente individual** | ✅ Ideal | ⚠️ Sobredimensionado |
+| **Para investigación / escalado** | ⚠️ Limitado | ✅ Ideal |
+
+---
+
+## Casos educativos reales y limitaciones actuales
+
+### Casos donde los agentes agregan valor real
+
+**Caso 1: Corrección de código con tests**
+
+```
+Tarea: "Evalúa si el código del estudiante pasa los tests del Lab 3"
+
+Agente:
+1. Lee el notebook
+2. Ejecuta el código
+3. Corre los tests definidos por el docente
+4. Reporta: 5/7 tests pasan, 2 fallan — y por qué
+```
+
+Esto es imposible para un chatbot y trivial para un agente con herramientas.
+
+**Caso 2: Análisis de patrones de error en un grupo**
+
+```
+Tarea: "Analiza los 35 laboratorios del grupo y dime qué errores son más frecuentes"
+
+Agente:
+1. Lee los 35 notebooks
+2. Ejecuta el código de cada uno
+3. Categoriza los errores
+4. Genera un informe: "23/35 tienen error en normalización, 18/35 no interpretan el R²..."
+```
+
+**Caso 3: Tutor de revisión de examen**
+
+```
+Tarea: "Revisa la respuesta del estudiante a la pregunta 3 del examen"
+
+Agente:
+1. Lee la rúbrica de la pregunta 3
+2. Lee la respuesta del estudiante
+3. Compara los elementos esperados
+4. Genera feedback específico
+```
+
+### Limitaciones actuales (2025)
+
+```{mermaid}
+graph TD
+    L["⚠️ Limitaciones de los\nagentes IA en docencia"]
+
+    L --> L1["🎲 No determinismo\nEl mismo prompt puede producir\ndistintas evaluaciones en distintas\nejecuciones — problema para\nconsistencia de notas"]
+
+    L --> L2["🔢 Errores matemáticos\nLos LLMs son malos en aritmética\nprecisa — verificar siempre\ncálculos numéricos en el feedback"]
+
+    L --> L3["🔗 Contexto largo\nCon 35 notebooks en contexto\nel agente puede 'olvidar'\ninformación del principio"]
+
+    L --> L4["🛑 Loops infinitos\nSin criterio de parada claro\nel agente puede iterar indefinidamente\n(controlar con max_pasos)"]
+
+    L --> L5["⚖️ Calibración de la rúbrica\nEl agente puede interpretar\nla rúbrica diferente al docente —\nsiempre revisar los borradores"]
+
+    L --> L6["💸 Costo de API\nProcesar 35 notebooks con múltiples\nherramientas puede costar USD 5-15\npor ronda de evaluación"]
+```
+
+### Buenas prácticas para agentes en producción docente
+
+```
+✅ Usar temperatura 0 para evaluación (máxima consistencia)
+✅ Incluir ejemplos de output esperado en el sistema (few-shot)
+✅ Revisar SIEMPRE los borradores antes de enviar al estudiante
+✅ Guardar el log de cada ejecución del agente (qué herramientas usó, qué vio)
+✅ Probar con 3-5 entregas antes de procesar el batch completo
+✅ Tener un fallback manual para casos donde el agente falla
+✅ Informar a los estudiantes que el feedback inicial fue asistido por IA
+❌ No usar el agente como árbitro final en disputas de notas
+❌ No procesar datos personales sin anonimizar
+❌ No desplegar sin probar los casos borde (notebooks vacíos, código que no compila)
+```
+
+---
+
+## Referencias
+
+- Yao, S. et al. (2022). *ReAct: Synergizing Reasoning and Acting in Language Models*. ICLR 2023. [arxiv.org/abs/2210.03629](https://arxiv.org/abs/2210.03629)
+- Anthropic. *Tool use (function calling)*. [docs.anthropic.com/en/docs/build-with-claude/tool-use](https://docs.anthropic.com/en/docs/build-with-claude/tool-use)
+- Wang, L. et al. (2023). *A Survey on Large Language Model based Autonomous Agents*. Frontiers of Computer Science. [arxiv.org/abs/2308.11432](https://arxiv.org/abs/2308.11432)
+- Chase, H. (2022). *LangChain*. [python.langchain.com](https://python.langchain.com)
+- LlamaIndex. *Agentic workflows*. [docs.llamaindex.ai/en/stable/module_guides/deploying/agents](https://docs.llamaindex.ai/en/stable/module_guides/deploying/agents/)
+- Anthropic. *Claude Projects*. [claude.ai/projects](https://claude.ai/projects)

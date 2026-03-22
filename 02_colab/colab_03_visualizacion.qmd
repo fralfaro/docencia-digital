@@ -1,0 +1,1348 @@
+---
+title: "Visualización de datos"
+subtitle: "matplotlib, seaborn, plotly e ipywidgets en Google Colab"
+---
+
+Una visualización bien hecha hace en segundos lo que una tabla tarda minutos en comunicar. Para un docente, la diferencia entre un gráfico claro y uno confuso es la diferencia entre un estudiante que entiende el patrón y uno que se queda mirando números.
+
+Este capítulo cubre tres niveles de visualización en Python: **matplotlib** para control total sobre cada elemento, **seaborn** para gráficos estadísticos con mínimo código, y **plotly** para visualizaciones interactivas que los estudiantes pueden explorar en el navegador. Cierra con **ipywidgets** para construir dashboards simples directamente en el notebook.
+
+Todo el código corre directamente en Google Colab sin instalación adicional (excepto plotly, que requiere `!pip install plotly` en algunos entornos).
+
+---
+
+## Configuración inicial del entorno de visualización
+
+```python
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import matplotlib.ticker as ticker
+import seaborn as sns
+
+# Configuración global de matplotlib
+plt.rcParams.update({
+    'figure.figsize':    (10, 6),
+    'figure.dpi':         100,
+    'axes.grid':          True,
+    'grid.alpha':         0.3,
+    'grid.linestyle':     '--',
+    'axes.spines.top':    False,
+    'axes.spines.right':  False,
+    'font.size':          12,
+    'axes.titlesize':     14,
+    'axes.titleweight':   'bold',
+    'axes.labelsize':     12,
+    'xtick.labelsize':    10,
+    'ytick.labelsize':    10,
+    'legend.fontsize':    10,
+    'legend.framealpha':  0.8,
+})
+
+# Tema seaborn
+sns.set_theme(style='whitegrid', palette='husl', font_scale=1.1)
+
+# Dataset base para todo el capítulo
+rng = np.random.default_rng(seed=2025)
+n = 300
+
+carreras = ['Ing. Civil', 'Ing. Industrial', 'Ing. Eléctrica', 'Matemáticas']
+semestres = ['2022-1', '2022-2', '2023-1', '2023-2', '2024-1', '2024-2']
+
+df = pd.DataFrame({
+    'carrera':      rng.choice(carreras, n, p=[0.35, 0.30, 0.20, 0.15]),
+    'semestre':     rng.choice(semestres, n),
+    'nota_final':   rng.normal(5.1, 1.1, n).clip(1, 7).round(1),
+    'asistencia':   rng.beta(8, 2, n).round(2),
+    'horas_estudio':rng.exponential(6, n).clip(0, 30).round(1),
+    'aprobado':     None,  # se calcula abajo
+    'genero':       rng.choice(['F', 'M'], n, p=[0.45, 0.55]),
+})
+df['aprobado'] = df['nota_final'] >= 4.0
+
+print("✅ Entorno configurado. Dataset listo.")
+print(df.head())
+```
+
+---
+
+## matplotlib: gráficos básicos
+
+matplotlib es la base de toda la visualización en Python. Prácticamente todas las otras librerías (seaborn, pandas plot) construyen sobre ella. Entender su modelo de objetos te da control total sobre cualquier gráfico.
+
+### El modelo de objetos: Figure y Axes
+
+```{mermaid}
+graph TD
+    F["🖼️ Figure\n(el lienzo completo)"]
+    A1["📊 Axes\n(un gráfico)"]
+    A2["📊 Axes\n(otro gráfico)"]
+    X1["📏 Axis X"]
+    Y1["📏 Axis Y"]
+    TI["🏷️ Title"]
+    LI["📋 Lines/Patches"]
+    LE["📌 Legend"]
+
+    F --> A1
+    F --> A2
+    A1 --> X1
+    A1 --> Y1
+    A1 --> TI
+    A1 --> LI
+    A1 --> LE
+```
+
+```python
+# Forma explícita (recomendada — da control total)
+fig, ax = plt.subplots(figsize=(10, 6))
+
+# Forma implícita (más corta, menos control)
+plt.figure(figsize=(10, 6))
+plt.plot(...)  # trabaja sobre el "axes actual"
+```
+
+La forma explícita con `fig, ax = plt.subplots()` es la correcta para cualquier uso serio: sabes exactamente sobre qué `Axes` estás trabajando.
+
+### Gráfico de línea
+
+```python
+# Evolución temporal de nota promedio por semestre
+evolucion = df.groupby('semestre')['nota_final'].mean().reset_index()
+
+fig, ax = plt.subplots(figsize=(10, 5))
+
+ax.plot(
+    evolucion['semestre'],
+    evolucion['nota_final'],
+    marker='o',          # marcador en cada punto
+    markersize=8,
+    linewidth=2,
+    color='#2196F3',
+    label='Nota promedio'
+)
+
+# Línea de referencia
+ax.axhline(y=4.0, color='red', linestyle='--',
+           linewidth=1.5, alpha=0.7, label='Nota mínima aprobación')
+
+# Anotar cada punto con su valor
+for _, row in evolucion.iterrows():
+    ax.annotate(
+        f"{row['nota_final']:.2f}",
+        xy=(row['semestre'], row['nota_final']),
+        xytext=(0, 12), textcoords='offset points',
+        ha='center', fontsize=10, fontweight='bold'
+    )
+
+# Decorar
+ax.set_title('Evolución del promedio de nota final por semestre')
+ax.set_xlabel('Semestre')
+ax.set_ylabel('Nota promedio')
+ax.set_ylim(1, 7.5)
+ax.legend()
+ax.tick_params(axis='x', rotation=30)
+
+plt.tight_layout()
+plt.savefig('evolucion_notas.png', dpi=150, bbox_inches='tight')
+plt.show()
+```
+
+### Múltiples líneas en el mismo gráfico
+
+```python
+fig, ax = plt.subplots(figsize=(12, 6))
+
+colores = {'Ing. Civil': '#2196F3', 'Ing. Industrial': '#4CAF50',
+           'Ing. Eléctrica': '#FF9800', 'Matemáticas': '#9C27B0'}
+
+for carrera, grupo in df.groupby('carrera'):
+    ev = grupo.groupby('semestre')['nota_final'].mean().reset_index()
+    ax.plot(
+        ev['semestre'], ev['nota_final'],
+        marker='o', linewidth=2, markersize=7,
+        label=carrera, color=colores[carrera]
+    )
+
+ax.axhline(y=4.0, color='gray', linestyle=':', linewidth=1.5, alpha=0.6)
+ax.set_title('Evolución de nota promedio por carrera y semestre')
+ax.set_xlabel('Semestre')
+ax.set_ylabel('Nota promedio')
+ax.set_ylim(3, 7.5)
+ax.legend(title='Carrera', loc='lower right')
+ax.tick_params(axis='x', rotation=30)
+
+plt.tight_layout()
+plt.show()
+```
+
+### Gráfico de barras
+
+```python
+# Barras simples
+resumen = df.groupby('carrera')['nota_final'].mean().sort_values(ascending=False)
+
+fig, ax = plt.subplots(figsize=(10, 6))
+
+barras = ax.bar(
+    resumen.index,
+    resumen.values,
+    color=['#2196F3', '#4CAF50', '#FF9800', '#9C27B0'],
+    edgecolor='white',
+    linewidth=0.8,
+    alpha=0.85
+)
+
+# Etiquetas encima de cada barra
+for barra in barras:
+    ax.text(
+        barra.get_x() + barra.get_width() / 2,
+        barra.get_height() + 0.05,
+        f'{barra.get_height():.2f}',
+        ha='center', va='bottom',
+        fontweight='bold', fontsize=11
+    )
+
+ax.axhline(y=4.0, color='red', linestyle='--', linewidth=1.5,
+           alpha=0.7, label='Nota mínima (4.0)')
+ax.set_title('Nota promedio final por carrera')
+ax.set_xlabel('')
+ax.set_ylabel('Nota promedio')
+ax.set_ylim(0, 7.5)
+ax.legend()
+
+plt.tight_layout()
+plt.show()
+```
+
+### Barras agrupadas
+
+```python
+# Tasa de aprobación por carrera y género
+pivot = df.groupby(['carrera', 'genero'])['aprobado'].mean().unstack() * 100
+
+fig, ax = plt.subplots(figsize=(12, 6))
+
+x = np.arange(len(pivot.index))
+ancho = 0.35
+
+barras_f = ax.bar(x - ancho/2, pivot['F'], ancho, label='Femenino',
+                  color='#E91E63', alpha=0.85, edgecolor='white')
+barras_m = ax.bar(x + ancho/2, pivot['M'], ancho, label='Masculino',
+                  color='#2196F3', alpha=0.85, edgecolor='white')
+
+for barras in [barras_f, barras_m]:
+    for barra in barras:
+        ax.text(
+            barra.get_x() + barra.get_width() / 2,
+            barra.get_height() + 0.5,
+            f'{barra.get_height():.1f}%',
+            ha='center', va='bottom', fontsize=9
+        )
+
+ax.set_title('Tasa de aprobación por carrera y género')
+ax.set_xticks(x)
+ax.set_xticklabels(pivot.index, rotation=15, ha='right')
+ax.set_ylabel('Tasa de aprobación (%)')
+ax.set_ylim(0, 110)
+ax.legend(title='Género')
+
+plt.tight_layout()
+plt.show()
+```
+
+### Gráfico de dispersión (scatter)
+
+```python
+fig, ax = plt.subplots(figsize=(10, 7))
+
+colores_carrera = {c: plt.cm.tab10(i)
+                   for i, c in enumerate(df['carrera'].unique())}
+
+for carrera, grupo in df.groupby('carrera'):
+    ax.scatter(
+        grupo['asistencia'],
+        grupo['nota_final'],
+        label=carrera,
+        color=colores_carrera[carrera],
+        alpha=0.6,
+        s=50,              # tamaño del marcador
+        edgecolors='white',
+        linewidths=0.5
+    )
+
+# Línea de tendencia (regresión lineal simple)
+z = np.polyfit(df['asistencia'], df['nota_final'], 1)
+p = np.poly1d(z)
+x_line = np.linspace(df['asistencia'].min(), df['asistencia'].max(), 100)
+ax.plot(x_line, p(x_line), 'k--', linewidth=1.5,
+        alpha=0.7, label=f'Tendencia: y={z[0]:.1f}x+{z[1]:.1f}')
+
+# Líneas de referencia
+ax.axhline(y=4.0, color='red', linestyle=':', linewidth=1.5,
+           alpha=0.6, label='Nota mínima')
+
+ax.set_title('Relación entre asistencia y nota final')
+ax.set_xlabel('Asistencia (proporción)')
+ax.set_ylabel('Nota final')
+ax.legend(loc='upper left', fontsize=9)
+
+# Formatear eje x como porcentaje
+ax.xaxis.set_major_formatter(ticker.PercentFormatter(xmax=1))
+
+plt.tight_layout()
+plt.show()
+```
+
+### Subplots: múltiples gráficos en una figura
+
+```python
+fig, axes = plt.subplots(2, 2, figsize=(14, 10))
+fig.suptitle('Panel de análisis — Rendimiento académico',
+             fontsize=15, fontweight='bold', y=1.01)
+
+# (0,0): Histograma
+axes[0, 0].hist(df['nota_final'], bins=20, color='#2196F3',
+                edgecolor='white', alpha=0.8)
+axes[0, 0].axvline(df['nota_final'].mean(), color='red',
+                   linestyle='--', label=f'Media: {df["nota_final"].mean():.2f}')
+axes[0, 0].axvline(4.0, color='orange', linestyle=':',
+                   label='Nota mínima: 4.0')
+axes[0, 0].set_title('Distribución de nota final')
+axes[0, 0].set_xlabel('Nota')
+axes[0, 0].set_ylabel('Frecuencia')
+axes[0, 0].legend(fontsize=9)
+
+# (0,1): Tasa aprobación por carrera (barras horizontales)
+tasa = df.groupby('carrera')['aprobado'].mean().sort_values() * 100
+axes[0, 1].barh(tasa.index, tasa.values, color='#4CAF50', alpha=0.8)
+axes[0, 1].axvline(x=70, color='red', linestyle='--', alpha=0.7,
+                   label='Meta 70%')
+for i, (v, idx) in enumerate(zip(tasa.values, tasa.index)):
+    axes[0, 1].text(v + 0.5, i, f'{v:.1f}%', va='center', fontsize=9)
+axes[0, 1].set_title('Tasa de aprobación por carrera')
+axes[0, 1].set_xlabel('Porcentaje aprobados (%)')
+axes[0, 1].legend(fontsize=9)
+
+# (1,0): Boxplot
+datos_box = [df[df['carrera'] == c]['nota_final'].values
+             for c in sorted(df['carrera'].unique())]
+bp = axes[1, 0].boxplot(datos_box, patch_artist=True,
+                         labels=sorted(df['carrera'].unique()))
+colores_box = ['#2196F3', '#4CAF50', '#FF9800', '#9C27B0']
+for patch, color in zip(bp['boxes'], colores_box):
+    patch.set_facecolor(color)
+    patch.set_alpha(0.7)
+axes[1, 0].axhline(y=4.0, color='red', linestyle='--', alpha=0.7)
+axes[1, 0].set_title('Distribución de notas por carrera')
+axes[1, 0].set_ylabel('Nota final')
+axes[1, 0].tick_params(axis='x', rotation=20)
+
+# (1,1): Scatter asistencia vs nota
+scatter = axes[1, 1].scatter(
+    df['asistencia'], df['nota_final'],
+    c=df['aprobado'].astype(int), cmap='RdYlGn',
+    alpha=0.5, s=30
+)
+axes[1, 1].axhline(y=4.0, color='red', linestyle=':', alpha=0.7)
+axes[1, 1].set_title('Asistencia vs Nota final')
+axes[1, 1].set_xlabel('Asistencia')
+axes[1, 1].set_ylabel('Nota final')
+plt.colorbar(scatter, ax=axes[1, 1], label='Aprobado')
+
+plt.tight_layout()
+plt.savefig('panel_analisis.png', dpi=150, bbox_inches='tight')
+plt.show()
+```
+
+---
+
+## seaborn: gráficos estadísticos con pocas líneas
+
+seaborn está construido sobre matplotlib y agrega dos cosas fundamentales: integración directa con DataFrames y gráficos estadísticos complejos con una línea de código.
+
+> 🖼️ **Asset:** `assets/img/chart/chart__boxplot.png` — ejemplo de boxplot para contextualizar la sección.
+
+### Distribuciones
+
+```python
+fig, axes = plt.subplots(1, 3, figsize=(16, 5))
+
+# Histograma con KDE
+sns.histplot(data=df, x='nota_final', kde=True,
+             bins=20, color='#2196F3', ax=axes[0])
+axes[0].axvline(x=4.0, color='red', linestyle='--', alpha=0.8)
+axes[0].set_title('Distribución de nota final')
+
+# KDE por grupos
+sns.kdeplot(data=df, x='nota_final', hue='carrera',
+            fill=True, alpha=0.3, ax=axes[1])
+axes[1].axvline(x=4.0, color='red', linestyle='--', alpha=0.8)
+axes[1].set_title('Distribución por carrera')
+
+# ECDF (Función de distribución acumulada empírica)
+sns.ecdfplot(data=df, x='nota_final', hue='carrera', ax=axes[2])
+axes[2].axvline(x=4.0, color='red', linestyle='--', alpha=0.6)
+axes[2].axhline(y=0.5, color='gray', linestyle=':', alpha=0.6)
+axes[2].set_title('Distribución acumulada por carrera')
+
+plt.suptitle('Distribuciones de nota final', fontweight='bold', y=1.02)
+plt.tight_layout()
+plt.show()
+```
+
+### Relaciones entre variables
+
+```python
+fig, axes = plt.subplots(1, 3, figsize=(16, 5))
+
+# Scatter con regresión
+sns.regplot(data=df, x='asistencia', y='nota_final',
+            scatter_kws={'alpha': 0.4, 's': 30},
+            line_kws={'color': 'red', 'linewidth': 2},
+            ax=axes[0])
+axes[0].set_title('Asistencia vs Nota (con regresión)')
+
+# Scatter con hue (color por categoría)
+sns.scatterplot(data=df, x='horas_estudio', y='nota_final',
+                hue='carrera', size='asistencia',
+                sizes=(20, 150), alpha=0.6, ax=axes[1])
+axes[1].set_title('Horas de estudio vs Nota final')
+axes[1].legend(bbox_to_anchor=(1, 1), fontsize=8)
+
+# Scatter con múltiples dimensiones
+sns.scatterplot(data=df, x='asistencia', y='nota_final',
+                hue='aprobado', style='genero',
+                palette={True: '#4CAF50', False: '#F44336'},
+                alpha=0.6, ax=axes[2])
+axes[2].set_title('Asistencia vs Nota (aprobado/género)')
+
+plt.tight_layout()
+plt.show()
+```
+
+### Comparaciones entre categorías
+
+```python
+fig, axes = plt.subplots(2, 3, figsize=(16, 10))
+
+# Boxplot
+sns.boxplot(data=df, x='carrera', y='nota_final',
+            hue='genero', palette={'F': '#E91E63', 'M': '#2196F3'},
+            ax=axes[0, 0])
+axes[0, 0].set_title('Boxplot: nota por carrera y género')
+axes[0, 0].tick_params(axis='x', rotation=20)
+
+# Violinplot
+sns.violinplot(data=df, x='carrera', y='nota_final',
+               palette='husl', inner='box', ax=axes[0, 1])
+axes[0, 1].set_title('Violinplot: distribución por carrera')
+axes[0, 1].tick_params(axis='x', rotation=20)
+
+# Strip + box combinado
+sns.boxplot(data=df, x='carrera', y='nota_final',
+            palette='husl', width=0.5, ax=axes[0, 2])
+sns.stripplot(data=df, x='carrera', y='nota_final',
+              color='black', alpha=0.2, size=3, jitter=True, ax=axes[0, 2])
+axes[0, 2].set_title('Box + strip (datos individuales)')
+axes[0, 2].tick_params(axis='x', rotation=20)
+
+# Barplot (media + intervalo de confianza 95%)
+sns.barplot(data=df, x='carrera', y='nota_final',
+            palette='husl', capsize=0.1,
+            errorbar=('ci', 95), ax=axes[1, 0])
+axes[1, 0].set_title('Media ± IC 95% por carrera')
+axes[1, 0].tick_params(axis='x', rotation=20)
+
+# Pointplot: medias con líneas conectoras
+sns.pointplot(data=df, x='semestre', y='nota_final',
+              hue='carrera', palette='husl',
+              markers=['o', 's', '^', 'D'],
+              linestyles=['-', '--', '-.', ':'],
+              ax=axes[1, 1])
+axes[1, 1].set_title('Evolución por semestre y carrera')
+axes[1, 1].tick_params(axis='x', rotation=30)
+axes[1, 1].legend(fontsize=8)
+
+# Countplot: conteo de observaciones
+sns.countplot(data=df, x='carrera', hue='aprobado',
+              palette={True: '#4CAF50', False: '#F44336'},
+              ax=axes[1, 2])
+axes[1, 2].set_title('Conteo aprobados/reprobados por carrera')
+axes[1, 2].tick_params(axis='x', rotation=20)
+axes[1, 2].legend(title='Aprobado', labels=['Reprobado', 'Aprobado'])
+
+plt.suptitle('Comparaciones entre categorías con seaborn',
+             fontweight='bold', fontsize=14, y=1.01)
+plt.tight_layout()
+plt.show()
+```
+
+### Mapas de calor (heatmap)
+
+```python
+fig, axes = plt.subplots(1, 2, figsize=(16, 6))
+
+# Heatmap de correlaciones numéricas
+cols_numericas = ['nota_final', 'asistencia', 'horas_estudio',
+                  'nota_final']  # en un caso real incluir más columnas
+corr = df[['nota_final', 'asistencia', 'horas_estudio']].corr()
+
+sns.heatmap(
+    corr,
+    annot=True,          # mostrar valores en cada celda
+    fmt='.2f',           # 2 decimales
+    cmap='coolwarm',     # paleta divergente (negativo=azul, positivo=rojo)
+    center=0,            # centrar la escala de color en 0
+    vmin=-1, vmax=1,
+    square=True,
+    linewidths=0.5,
+    ax=axes[0]
+)
+axes[0].set_title('Mapa de correlaciones')
+
+# Heatmap de tasa de aprobación (pivot)
+pivot = df.pivot_table(
+    index='carrera', columns='semestre',
+    values='aprobado', aggfunc='mean'
+) * 100
+
+sns.heatmap(
+    pivot,
+    annot=True, fmt='.1f',
+    cmap='RdYlGn',       # rojo=bajo, amarillo=medio, verde=alto
+    vmin=50, vmax=100,
+    linewidths=0.5,
+    cbar_kws={'label': 'Tasa aprobación (%)'},
+    ax=axes[1]
+)
+axes[1].set_title('Tasa de aprobación (%) — Carrera × Semestre')
+axes[1].tick_params(axis='x', rotation=30)
+
+plt.tight_layout()
+plt.show()
+```
+
+> 🖼️ **Asset:** `assets/img/chart/chart__heatmap.png` — ejemplo de mapa de calor para ilustrar el concepto.
+
+### `pairplot` y `FacetGrid`
+
+```python
+# Pairplot: todas las relaciones entre variables numéricas
+g = sns.pairplot(
+    df[['nota_final', 'asistencia', 'horas_estudio', 'carrera']],
+    hue='carrera',
+    plot_kws={'alpha': 0.5, 's': 30},
+    diag_kind='kde',
+    palette='husl'
+)
+g.fig.suptitle('Relaciones entre variables numéricas', y=1.01, fontweight='bold')
+plt.show()
+```
+
+```python
+# FacetGrid: el mismo gráfico repetido por subgrupos
+g = sns.FacetGrid(df, col='carrera', col_wrap=2,
+                  height=4, aspect=1.3, sharey=True)
+g.map_dataframe(sns.histplot, x='nota_final', bins=15,
+                kde=True, color='#2196F3')
+g.map(lambda **kw: plt.axvline(x=4.0, color='red',
+                                linestyle='--', alpha=0.7))
+g.set_axis_labels('Nota final', 'Frecuencia')
+g.set_titles(col_template='{col_name}')
+g.add_legend()
+g.fig.suptitle('Distribución de notas por carrera', y=1.02, fontweight='bold')
+plt.show()
+```
+
+---
+
+## plotly: visualizaciones interactivas para la web
+
+plotly genera gráficos interactivos en HTML: zoom, hover, filtros por leyenda, descarga como PNG. Perfectos para incluir en sitios Quarto o para que los estudiantes exploren los datos.
+
+```python
+!pip install -q plotly
+import plotly.express as px
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
+```
+
+### plotly express: gráficos en una línea
+
+```python
+# Scatter interactivo
+fig = px.scatter(
+    df,
+    x='asistencia', y='nota_final',
+    color='carrera',
+    size='horas_estudio',
+    hover_data=['genero', 'semestre'],
+    title='Asistencia vs Nota final',
+    labels={
+        'asistencia': 'Asistencia (%)',
+        'nota_final': 'Nota final',
+        'carrera': 'Carrera',
+        'horas_estudio': 'Horas de estudio'
+    },
+    opacity=0.7,
+    template='plotly_white'
+)
+fig.add_hline(y=4.0, line_dash='dash', line_color='red',
+              annotation_text='Nota mínima (4.0)')
+fig.show()
+```
+
+```python
+# Box plot interactivo
+fig = px.box(
+    df, x='carrera', y='nota_final',
+    color='genero',
+    notched=True,          # muesca para IC de la mediana
+    points='outliers',     # mostrar solo outliers (o 'all' para todos los puntos)
+    color_discrete_map={'F': '#E91E63', 'M': '#2196F3'},
+    title='Distribución de nota final por carrera y género',
+    template='plotly_white'
+)
+fig.add_hline(y=4.0, line_dash='dot', line_color='gray', opacity=0.6)
+fig.update_layout(boxmode='group')
+fig.show()
+```
+
+```python
+# Histograma animado por semestre
+fig = px.histogram(
+    df.sort_values('semestre'),
+    x='nota_final',
+    animation_frame='semestre',
+    color='carrera',
+    nbins=20,
+    range_x=[1, 7],
+    title='Evolución de la distribución de notas por semestre',
+    template='plotly_white'
+)
+fig.update_layout(bargap=0.1)
+fig.show()
+```
+
+```python
+# Mapa de calor interactivo
+pivot_heatmap = df.pivot_table(
+    index='carrera', columns='semestre',
+    values='nota_final', aggfunc='mean'
+).round(2)
+
+fig = px.imshow(
+    pivot_heatmap,
+    text_auto=True,
+    color_continuous_scale='RdYlGn',
+    zmin=3.5, zmax=7,
+    title='Nota promedio por carrera y semestre',
+    aspect='auto'
+)
+fig.show()
+```
+
+### plotly graph_objects: control total
+
+```python
+# Figura con múltiples trazas y subplots
+fig = make_subplots(
+    rows=2, cols=2,
+    subplot_titles=['Nota por carrera', 'Evolución temporal',
+                    'Asistencia vs Nota', 'Tasa de aprobación'],
+    vertical_spacing=0.15,
+    horizontal_spacing=0.12
+)
+
+colores = px.colors.qualitative.Set2
+
+# (1,1): Barras por carrera
+promedio = df.groupby('carrera')['nota_final'].mean().reset_index()
+fig.add_trace(
+    go.Bar(x=promedio['carrera'], y=promedio['nota_final'],
+           marker_color=colores[:len(promedio)],
+           showlegend=False,
+           text=promedio['nota_final'].round(2),
+           textposition='outside'),
+    row=1, col=1
+)
+
+# (1,2): Líneas temporales
+for i, carrera in enumerate(df['carrera'].unique()):
+    ev = df[df['carrera'] == carrera].groupby('semestre')['nota_final'].mean().reset_index()
+    fig.add_trace(
+        go.Scatter(x=ev['semestre'], y=ev['nota_final'],
+                   mode='lines+markers', name=carrera,
+                   line=dict(color=colores[i], width=2),
+                   marker=dict(size=8)),
+        row=1, col=2
+    )
+
+# (2,1): Scatter
+for i, carrera in enumerate(df['carrera'].unique()):
+    sub = df[df['carrera'] == carrera]
+    fig.add_trace(
+        go.Scatter(x=sub['asistencia'], y=sub['nota_final'],
+                   mode='markers', name=carrera,
+                   marker=dict(color=colores[i], opacity=0.5, size=6),
+                   showlegend=False),
+        row=2, col=1
+    )
+
+# (2,2): Tasa de aprobación (pie)
+tasa = df.groupby('carrera')['aprobado'].mean().reset_index()
+fig.add_trace(
+    go.Bar(x=tasa['carrera'],
+           y=(tasa['aprobado'] * 100).round(1),
+           marker_color=colores[:len(tasa)],
+           showlegend=False,
+           text=(tasa['aprobado'] * 100).round(1).astype(str) + '%',
+           textposition='outside'),
+    row=2, col=2
+)
+
+fig.update_layout(
+    title='Dashboard de rendimiento académico',
+    height=700,
+    template='plotly_white'
+)
+fig.show()
+```
+
+### Exportar gráficos plotly
+
+```python
+# HTML interactivo (se puede abrir en cualquier navegador)
+fig.write_html('/content/drive/MyDrive/mat281-2025-1/graficos/dashboard.html')
+
+# PNG estático (requiere kaleido)
+!pip install -q kaleido
+fig.write_image('dashboard.png', width=1200, height=700, scale=2)
+
+print("✅ Exportados: dashboard.html y dashboard.png")
+```
+
+---
+
+## Tipos de gráfico y cuándo usar cada uno
+
+La pregunta más importante en visualización no es "¿cómo hago este gráfico?" sino "¿qué gráfico debo usar?".
+
+```{mermaid}
+graph TD
+    P["¿Qué quieres mostrar?"]
+
+    P --> D["Distribución\nde una variable"]
+    P --> R["Relación entre\ndos variables"]
+    P --> C["Comparación\nentre categorías"]
+    P --> T["Evolución\nen el tiempo"]
+    P --> CO["Composición\nde un todo"]
+
+    D --> D1["Histograma\n(continua)"]
+    D --> D2["Boxplot\n(por grupos)"]
+    D --> D3["Violinplot\n(distribución completa)"]
+    D --> D4["KDE\n(densidad suavizada)"]
+
+    R --> R1["Scatter\n(dos numéricas)"]
+    R --> R2["Heatmap\n(correlaciones)"]
+    R --> R3["Scatter + regresión\n(relación lineal)"]
+
+    C --> C1["Barras verticales\n(pocas categorías)"]
+    C --> C2["Barras horizontales\n(muchas categorías)"]
+    C --> C3["Lollipop\n(ranking)"]
+
+    T --> T1["Línea\n(continuo)"]
+    T --> T2["Área apilada\n(partes del total)"]
+    T --> T3["Barras\n(períodos discretos)"]
+
+    CO --> CO1["Barras apiladas %\n(composición)"]
+    CO --> CO2["Pie/Donut\n(pocas categorías)"]
+    CO --> CO3["Treemap\n(jerarquías)"]
+```
+
+### Tabla de referencia rápida
+
+| Objetivo | Gráfico recomendado | Evitar |
+|---|---|---|
+| Ver distribución de una variable | Histograma + KDE | Pie chart |
+| Comparar distribuciones entre grupos | Boxplot o Violinplot | Barras de media sola |
+| Mostrar relación entre 2 numéricas | Scatter | Línea (si no hay orden natural) |
+| Comparar promedios entre categorías | Barras con IC | Pie chart |
+| Evolución temporal | Línea | Barras (si son muchos períodos) |
+| Correlaciones entre muchas variables | Heatmap | Múltiples scatter individuales |
+| Composición de un todo | Barras apiladas % | Pie con muchas categorías |
+| Ranking | Barras horizontales | Barras verticales (difícil leer etiquetas largas) |
+
+::: {.callout-warning}
+## Errores visuales frecuentes en docencia
+- **Eje Y que no empieza en 0** en gráficos de barras — exagera las diferencias visualmente.
+- **Pie charts con más de 5 categorías** — imposibles de leer. Usa barras.
+- **Colores sin significado** — usar rojo/verde para variables que no son bueno/malo.
+- **Gráfico 3D** — casi siempre confunde más que aclara.
+- **Sin título, sin etiquetas de ejes** — nunca publiques un gráfico sin contexto.
+- **Demasiada información en un solo gráfico** — divide en subplots si necesitas mostrar muchas cosas.
+:::
+
+---
+
+## Estilos, paletas de colores y personalización
+
+### Estilos de matplotlib
+
+```python
+# Ver todos los estilos disponibles
+print(plt.style.available)
+
+# Estilos recomendados para documentos académicos
+estilos_prueba = ['seaborn-v0_8-whitegrid', 'seaborn-v0_8-paper',
+                  'ggplot', 'bmh', 'tableau-colorblind10']
+
+fig, axes = plt.subplots(1, len(estilos_prueba),
+                          figsize=(20, 4))
+
+for ax, estilo in zip(axes, estilos_prueba):
+    with plt.style.context(estilo):
+        ax.bar(['A', 'B', 'C'], [3, 7, 5])
+        ax.set_title(estilo.replace('seaborn-v0_8-', ''),
+                     fontsize=9)
+
+plt.suptitle('Comparación de estilos', fontweight='bold')
+plt.tight_layout()
+plt.show()
+```
+
+### Temas de seaborn
+
+```python
+# Estilos seaborn: whitegrid, darkgrid, white, dark, ticks
+# Contextos: paper, notebook, talk, poster
+
+# Para presentaciones (fuentes más grandes)
+sns.set_context('talk')
+sns.set_style('whitegrid')
+
+# Para papers (fuentes más pequeñas, limpio)
+sns.set_context('paper', font_scale=1.2)
+sns.set_style('white')
+
+# Para posters
+sns.set_context('poster')
+```
+
+### Paletas de colores
+
+```python
+# Ver paletas disponibles
+fig, axes = plt.subplots(6, 1, figsize=(12, 8))
+
+paletas = {
+    'Cualitativa (categorías)': ['husl', 'Set2', 'tab10', 'Paired'],
+    'Secuencial (magnitud)':    ['Blues', 'viridis', 'YlOrRd', 'plasma'],
+    'Divergente (centro=0)':    ['RdBu', 'coolwarm', 'PiYG', 'seismic'],
+}
+
+for i, (tipo, lista_paletas) in enumerate(paletas.items()):
+    for j, pal in enumerate(lista_paletas):
+        colores = sns.color_palette(pal, 8)
+        for k, c in enumerate(colores):
+            axes[i*2 + j//2].add_patch(
+                plt.Rectangle((j*9+k, 0), 1, 1, color=c)
+            )
+        axes[i*2 + j//2].text(j*9+4, -0.3, pal, ha='center', fontsize=8)
+
+# Paletas recomendadas por caso de uso
+print("""
+Categorías (variables nominales):     palette='husl' o 'Set2'
+Valores positivos (magnitud):          palette='Blues' o 'viridis'
+Divergente (bueno/malo, arriba/abajo): palette='RdYlGn' o 'RdBu'
+Daltónicos:                            palette='colorblind'
+Blanco y negro (para impresión):       use hatching en barras
+""")
+```
+
+### Paletas accesibles para daltónicos
+
+```python
+# Paleta OK8 (diseñada para accesibilidad)
+OK8 = ['#E69F00', '#56B4E9', '#009E73', '#F0E442',
+       '#0072B2', '#D55E00', '#CC79A7', '#000000']
+
+# Paleta colorblind de seaborn
+sns.set_palette('colorblind')
+
+# Verificar accesibilidad visual con matplotlib
+fig, ax = plt.subplots(figsize=(10, 4))
+for i, (color, nombre) in enumerate(zip(OK8, ['Naranja', 'Azul cielo', 'Verde',
+                                               'Amarillo', 'Azul', 'Rojo', 'Rosa', 'Negro'])):
+    ax.bar(i, np.random.uniform(3, 7), color=color, label=nombre,
+           edgecolor='white', linewidth=0.8)
+
+ax.set_title('Paleta accesible para daltónicos (OK8)')
+ax.legend(bbox_to_anchor=(1, 1), fontsize=9)
+ax.set_xticks([])
+plt.tight_layout()
+plt.show()
+```
+
+### Fuentes y tipografía
+
+```python
+# Fuentes disponibles en el sistema
+import matplotlib.font_manager as fm
+fuentes_disponibles = [f.name for f in fm.fontManager.ttflist]
+fuentes_interesantes = [f for f in fuentes_disponibles
+                        if any(k in f for k in ['Serif', 'Sans', 'Mono', 'Times'])]
+print(sorted(set(fuentes_interesantes))[:20])
+
+# Cambiar fuente para todo el proyecto
+plt.rcParams['font.family'] = 'DejaVu Serif'   # más académica
+# plt.rcParams['font.family'] = 'DejaVu Sans'  # más limpia
+
+# Instalar fuentes adicionales en Colab
+!apt-get install -y fonts-liberation > /dev/null 2>&1
+!fc-cache -fv > /dev/null 2>&1
+import matplotlib
+matplotlib.font_manager._load_fontmanager(try_read_cache=False)
+plt.rcParams['font.family'] = 'Liberation Sans'
+```
+
+---
+
+## Exportar imágenes en alta resolución
+
+### Formatos y resoluciones
+
+```python
+fig, ax = plt.subplots(figsize=(10, 6))
+ax.plot([1, 2, 3, 4], [5.2, 5.5, 5.8, 6.1], marker='o')
+ax.set_title('Ejemplo de exportación')
+
+# PNG: para web y documentos generales
+fig.savefig('grafico.png',
+            dpi=150,              # 150 dpi para pantalla, 300 dpi para impresión
+            bbox_inches='tight',  # recorta espacios en blanco
+            facecolor='white')    # fondo blanco explícito
+
+# PDF: para documentos LaTeX/Quarto (vectorial, escala sin perder calidad)
+fig.savefig('grafico.pdf',
+            bbox_inches='tight',
+            format='pdf')
+
+# SVG: vectorial para web
+fig.savefig('grafico.svg',
+            bbox_inches='tight',
+            format='svg')
+
+# EPS: para revistas científicas (algunos journals lo piden)
+fig.savefig('grafico.eps',
+            bbox_inches='tight',
+            format='eps')
+
+print("Archivos exportados: .png, .pdf, .svg, .eps")
+```
+
+### Función de guardado estándar para el curso
+
+```python
+from pathlib import Path
+
+def guardar_figura(fig, nombre, carpeta='graficos', formatos=('png', 'pdf')):
+    """
+    Guarda una figura en múltiples formatos en la carpeta de Drive del curso.
+
+    Args:
+        fig: objeto Figure de matplotlib
+        nombre: nombre del archivo sin extensión
+        carpeta: subcarpeta dentro del directorio del curso en Drive
+        formatos: tupla de extensiones a exportar
+    """
+    CURSO = Path('/content/drive/MyDrive/mat281-2025-1')
+    dir_salida = CURSO / carpeta
+    dir_salida.mkdir(parents=True, exist_ok=True)
+
+    for fmt in formatos:
+        ruta = dir_salida / f"{nombre}.{fmt}"
+        fig.savefig(
+            ruta,
+            dpi=300 if fmt == 'png' else None,
+            bbox_inches='tight',
+            facecolor='white' if fmt == 'png' else 'auto',
+            format=fmt
+        )
+        print(f"✅ Guardado: {ruta}")
+
+# Uso
+fig, ax = plt.subplots(figsize=(10, 6))
+ax.plot([1, 2, 3], [4, 5, 6])
+guardar_figura(fig, 'evolucion_notas_semana3')
+```
+
+### Resolución correcta según el destino
+
+| Destino | DPI recomendado | Formato |
+|---|---|---|
+| Pantalla (sitio web, Colab) | 96-150 dpi | PNG |
+| Presentación (PowerPoint, Beamer) | 150-200 dpi | PNG o PDF |
+| Documento Word/Google Docs | 150-300 dpi | PNG |
+| Informe académico / paper | 300 dpi mínimo | PDF o EPS |
+| Póster impreso (A0) | 300 dpi a tamaño final | PDF |
+
+---
+
+## Dashboard simple con ipywidgets
+
+ipywidgets permite agregar controles interactivos (sliders, dropdowns, checkboxes) directamente en el notebook de Colab. El gráfico se actualiza en tiempo real cuando el usuario mueve un slider o cambia una selección.
+
+```python
+import ipywidgets as widgets
+from IPython.display import display, clear_output
+
+print(f"ipywidgets: {widgets.__version__}")
+```
+
+### Slider para filtrar datos
+
+```python
+# Slider de nota mínima: filtra el scatter en tiempo real
+slider_nota = widgets.FloatSlider(
+    value=4.0,
+    min=1.0, max=7.0, step=0.1,
+    description='Nota mínima:',
+    style={'description_width': 'initial'},
+    layout=widgets.Layout(width='500px')
+)
+
+output = widgets.Output()
+
+def actualizar_scatter(change):
+    nota_min = change['new']
+    with output:
+        clear_output(wait=True)
+
+        fig, ax = plt.subplots(figsize=(10, 6))
+
+        df_filtrado = df[df['nota_final'] >= nota_min]
+        df_excluido = df[df['nota_final'] < nota_min]
+
+        ax.scatter(df_excluido['asistencia'], df_excluido['nota_final'],
+                   color='lightgray', alpha=0.3, s=30, label='Excluidos')
+        ax.scatter(df_filtrado['asistencia'], df_filtrado['nota_final'],
+                   c=df_filtrado['nota_final'], cmap='RdYlGn',
+                   vmin=1, vmax=7, alpha=0.7, s=50, label='Incluidos')
+
+        ax.axhline(y=nota_min, color='red', linestyle='--', linewidth=2,
+                   label=f'Corte: {nota_min:.1f}')
+
+        ax.set_title(f'Asistencia vs Nota final '
+                     f'(mostrando notas ≥ {nota_min:.1f}) — '
+                     f'N={len(df_filtrado):,}')
+        ax.set_xlabel('Asistencia')
+        ax.set_ylabel('Nota final')
+        ax.legend(fontsize=9)
+        plt.tight_layout()
+        plt.show()
+
+slider_nota.observe(actualizar_scatter, names='value')
+display(widgets.VBox([slider_nota, output]))
+actualizar_scatter({'new': slider_nota.value})  # render inicial
+```
+
+### Dashboard completo con múltiples controles
+
+```python
+# Controles
+dropdown_carrera = widgets.SelectMultiple(
+    options=['Todas'] + sorted(df['carrera'].unique().tolist()),
+    value=['Todas'],
+    description='Carrera:',
+    layout=widgets.Layout(height='120px', width='220px'),
+    style={'description_width': 'initial'}
+)
+
+dropdown_semestre = widgets.SelectMultiple(
+    options=['Todos'] + sorted(df['semestre'].unique().tolist()),
+    value=['Todos'],
+    description='Semestre:',
+    layout=widgets.Layout(height='120px', width='220px'),
+    style={'description_width': 'initial'}
+)
+
+radio_variable = widgets.RadioButtons(
+    options=['nota_final', 'asistencia', 'horas_estudio'],
+    value='nota_final',
+    description='Variable:',
+    style={'description_width': 'initial'}
+)
+
+toggle_genero = widgets.ToggleButtons(
+    options=['Todos', 'Solo F', 'Solo M'],
+    value='Todos',
+    description='Género:',
+    button_style='',
+    style={'description_width': 'initial'}
+)
+
+output_dashboard = widgets.Output()
+
+def actualizar_dashboard(change=None):
+    # Aplicar filtros
+    df_filtrado = df.copy()
+
+    if 'Todas' not in dropdown_carrera.value:
+        df_filtrado = df_filtrado[df_filtrado['carrera'].isin(dropdown_carrera.value)]
+
+    if 'Todos' not in dropdown_semestre.value:
+        df_filtrado = df_filtrado[df_filtrado['semestre'].isin(dropdown_semestre.value)]
+
+    if toggle_genero.value == 'Solo F':
+        df_filtrado = df_filtrado[df_filtrado['genero'] == 'F']
+    elif toggle_genero.value == 'Solo M':
+        df_filtrado = df_filtrado[df_filtrado['genero'] == 'M']
+
+    variable = radio_variable.value
+
+    with output_dashboard:
+        clear_output(wait=True)
+
+        if len(df_filtrado) == 0:
+            print("⚠️ Sin datos para los filtros seleccionados.")
+            return
+
+        fig, axes = plt.subplots(1, 3, figsize=(16, 5))
+        fig.suptitle(
+            f'Dashboard — {variable} | N={len(df_filtrado):,} registros',
+            fontweight='bold', y=1.01
+        )
+
+        # Distribución
+        sns.histplot(data=df_filtrado, x=variable, kde=True,
+                     bins=20, color='#2196F3', ax=axes[0])
+        axes[0].axvline(df_filtrado[variable].mean(), color='red',
+                        linestyle='--', label=f'Media: {df_filtrado[variable].mean():.2f}')
+        axes[0].set_title(f'Distribución de {variable}')
+        axes[0].legend(fontsize=9)
+
+        # Por carrera
+        sns.boxplot(data=df_filtrado, x='carrera', y=variable,
+                    palette='husl', ax=axes[1])
+        axes[1].set_title(f'{variable} por carrera')
+        axes[1].tick_params(axis='x', rotation=20)
+
+        # Scatter vs asistencia (o nota si la variable es asistencia)
+        otro = 'asistencia' if variable != 'asistencia' else 'nota_final'
+        sns.scatterplot(data=df_filtrado, x=otro, y=variable,
+                        hue='carrera', palette='husl', alpha=0.6, s=40,
+                        ax=axes[2])
+        axes[2].set_title(f'{variable} vs {otro}')
+        axes[2].legend(fontsize=7, bbox_to_anchor=(1, 1))
+
+        plt.tight_layout()
+        plt.show()
+
+        # Resumen estadístico
+        print(f"\n📊 Resumen de {variable} por carrera:")
+        print(df_filtrado.groupby('carrera')[variable]
+              .agg(['mean', 'median', 'std', 'count'])
+              .round(2).to_string())
+
+# Conectar controles
+for control in [dropdown_carrera, dropdown_semestre,
+                radio_variable, toggle_genero]:
+    control.observe(actualizar_dashboard, names='value')
+
+# Layout del dashboard
+controles = widgets.VBox([
+    widgets.HTML('<b>🎛️ Filtros del dashboard</b>'),
+    widgets.HBox([dropdown_carrera, dropdown_semestre]),
+    widgets.HBox([radio_variable, toggle_genero])
+], layout=widgets.Layout(border='1px solid #ddd', padding='10px',
+                         border_radius='5px'))
+
+display(widgets.VBox([controles, output_dashboard]))
+actualizar_dashboard()  # render inicial
+```
+
+::: {.callout-tip}
+## ipywidgets en GitHub Pages / Quarto
+Los widgets de ipywidgets funcionan en Colab pero **no se renderizan** en un sitio estático de GitHub Pages generado con Quarto. Para visualizaciones interactivas en el sitio del curso, usa **plotly** (genera HTML autocontenido) en lugar de ipywidgets.
+
+Para dashboards más completos que se puedan publicar, considera **Streamlit** o **Panel** — ambos permiten aplicaciones web completas desde Python.
+:::
+
+---
+
+## Caso de cierre: reporte visual de datos del curso
+
+### El objetivo
+
+Construir un reporte visual completo de rendimiento académico que pueda entregarse a la jefatura de carrera: 4 visualizaciones en un panel, exportado en PNG de alta resolución y en PDF para el informe.
+
+```python
+# ══════════════════════════════════════════════════════════════
+# REPORTE VISUAL — Rendimiento Académico MAT281
+# Semestres 2022-1 a 2024-2
+# ══════════════════════════════════════════════════════════════
+
+# Configuración de estilo para el reporte
+plt.rcParams.update({
+    'font.family':      'DejaVu Sans',
+    'font.size':        11,
+    'axes.titlesize':   13,
+    'axes.titleweight': 'bold',
+    'axes.labelsize':   11,
+    'axes.spines.top':  False,
+    'axes.spines.right':False,
+    'figure.dpi':       100,
+})
+
+AZUL_UTFSM  = '#003087'
+ROJO_UTFSM  = '#D00000'
+VERDE       = '#2E7D32'
+GRIS        = '#9E9E9E'
+
+fig = plt.figure(figsize=(16, 12))
+fig.patch.set_facecolor('white')
+
+# Título principal
+fig.text(0.5, 0.97,
+         'Reporte de Rendimiento Académico — MAT281',
+         ha='center', fontsize=18, fontweight='bold', color=AZUL_UTFSM)
+fig.text(0.5, 0.94,
+         f'Semestres 2022-1 a 2024-2  |  N = {len(df):,} registros  |  '
+         f'{df["carrera"].nunique()} carreras',
+         ha='center', fontsize=11, color=GRIS)
+
+# Línea separadora
+fig.add_artist(plt.Line2D([0.05, 0.95], [0.92, 0.92],
+               transform=fig.transFigure,
+               color=AZUL_UTFSM, linewidth=1.5))
+
+# ── Gráfico 1: Evolución temporal (fila superior izquierda) ──
+ax1 = fig.add_axes([0.05, 0.54, 0.42, 0.34])
+
+for i, carrera in enumerate(sorted(df['carrera'].unique())):
+    ev = df[df['carrera'] == carrera].groupby('semestre')['nota_final'].mean().reset_index()
+    color = plt.cm.Set2(i / len(df['carrera'].unique()))
+    ax1.plot(ev['semestre'], ev['nota_final'],
+             marker='o', linewidth=2, markersize=7,
+             label=carrera, color=color)
+
+ax1.axhline(y=4.0, color=ROJO_UTFSM, linestyle='--',
+            linewidth=1.5, alpha=0.7, label='Nota mínima')
+ax1.set_title('Evolución de nota promedio por semestre', pad=10)
+ax1.set_ylabel('Nota promedio')
+ax1.set_ylim(3.0, 7.5)
+ax1.tick_params(axis='x', rotation=30, labelsize=9)
+ax1.legend(fontsize=8, loc='upper left')
+ax1.yaxis.set_major_formatter(ticker.FormatStrFormatter('%.1f'))
+
+# ── Gráfico 2: Boxplot por carrera (fila superior derecha) ──
+ax2 = fig.add_axes([0.55, 0.54, 0.42, 0.34])
+
+carreras_ordenadas = df.groupby('carrera')['nota_final'].median().sort_values(ascending=True).index
+datos_box = [df[df['carrera'] == c]['nota_final'].values for c in carreras_ordenadas]
+
+bp = ax2.boxplot(datos_box, vert=False, patch_artist=True,
+                 labels=carreras_ordenadas,
+                 medianprops={'color': 'white', 'linewidth': 2})
+
+for i, patch in enumerate(bp['boxes']):
+    patch.set_facecolor(plt.cm.Set2(i / len(carreras_ordenadas)))
+    patch.set_alpha(0.8)
+
+ax2.axvline(x=4.0, color=ROJO_UTFSM, linestyle='--',
+            linewidth=1.5, alpha=0.7, label='Nota mínima')
+ax2.set_title('Distribución de notas por carrera', pad=10)
+ax2.set_xlabel('Nota final')
+ax2.legend(fontsize=9, loc='lower right')
+ax2.set_xlim(1, 7.5)
+
+# ── Gráfico 3: Tasa de aprobación (fila inferior izquierda) ──
+ax3 = fig.add_axes([0.05, 0.10, 0.42, 0.34])
+
+tasa_pivot = df.pivot_table(
+    index='carrera', columns='semestre',
+    values='aprobado', aggfunc='mean'
+) * 100
+
+im = ax3.imshow(tasa_pivot.values, cmap='RdYlGn',
+                vmin=50, vmax=100, aspect='auto')
+
+ax3.set_xticks(range(len(tasa_pivot.columns)))
+ax3.set_xticklabels(tasa_pivot.columns, rotation=30, ha='right', fontsize=9)
+ax3.set_yticks(range(len(tasa_pivot.index)))
+ax3.set_yticklabels(tasa_pivot.index, fontsize=9)
+ax3.set_title('Tasa de aprobación (%) — Carrera × Semestre', pad=10)
+
+for i in range(tasa_pivot.shape[0]):
+    for j in range(tasa_pivot.shape[1]):
+        val = tasa_pivot.values[i, j]
+        color_texto = 'white' if val < 65 else 'black'
+        ax3.text(j, i, f'{val:.1f}%', ha='center', va='center',
+                 fontsize=9, fontweight='bold', color=color_texto)
+
+plt.colorbar(im, ax=ax3, label='Tasa (%)', shrink=0.8)
+
+# ── Gráfico 4: Scatter asistencia vs nota (fila inferior derecha) ──
+ax4 = fig.add_axes([0.55, 0.10, 0.42, 0.34])
+
+scatter = ax4.scatter(
+    df['asistencia'], df['nota_final'],
+    c=df['aprobado'].astype(int),
+    cmap='RdYlGn', vmin=0, vmax=1,
+    alpha=0.5, s=30, edgecolors='none'
+)
+
+# Regresión lineal
+z = np.polyfit(df['asistencia'], df['nota_final'], 1)
+p = np.poly1d(z)
+x_reg = np.linspace(df['asistencia'].min(), df['asistencia'].max(), 100)
+ax4.plot(x_reg, p(x_reg), color=AZUL_UTFSM, linewidth=2,
+         linestyle='-', label=f'Tendencia: y={z[0]:.1f}x+{z[1]:.1f}')
+
+ax4.axhline(y=4.0, color=ROJO_UTFSM, linestyle='--',
+            linewidth=1.5, alpha=0.7, label='Nota mínima')
+ax4.set_title('Asistencia vs Nota final', pad=10)
+ax4.set_xlabel('Asistencia (proporción)')
+ax4.set_ylabel('Nota final')
+ax4.xaxis.set_major_formatter(ticker.PercentFormatter(xmax=1))
+ax4.legend(fontsize=9)
+
+plt.colorbar(scatter, ax=ax4, label='Aprobado',
+             ticks=[0, 1]).set_ticklabels(['No', 'Sí'])
+
+# ── Pie de página ──────────────────────────────────────────────
+fig.add_artist(plt.Line2D([0.05, 0.95], [0.07, 0.07],
+               transform=fig.transFigure,
+               color=GRIS, linewidth=0.5))
+fig.text(0.05, 0.03,
+         'Universidad Técnica Federico Santa María · Dirección de Transformación Digital',
+         fontsize=9, color=GRIS)
+fig.text(0.95, 0.03,
+         'Generado con Python + matplotlib  |  2025',
+         fontsize=9, color=GRIS, ha='right')
+
+# ── Exportar ───────────────────────────────────────────────────
+ruta_png = '/content/drive/MyDrive/mat281-2025-1/graficos/reporte_rendimiento.png'
+ruta_pdf = '/content/drive/MyDrive/mat281-2025-1/graficos/reporte_rendimiento.pdf'
+
+fig.savefig(ruta_png, dpi=300, bbox_inches='tight', facecolor='white')
+fig.savefig(ruta_pdf, bbox_inches='tight', facecolor='white')
+plt.show()
+
+print("✅ Reporte exportado:")
+print(f"   PNG: {ruta_png}")
+print(f"   PDF: {ruta_pdf}")
+```
+
+---
+
+## Referencias
+
+- Hunter, J. D. (2007). *Matplotlib: A 2D Graphics Environment*. Computing in Science & Engineering. [matplotlib.org](https://matplotlib.org)
+- Waskom, M. (2021). *seaborn: statistical data visualization*. JOSS. [seaborn.pydata.org](https://seaborn.pydata.org)
+- Plotly Technologies Inc. *Plotly Python Open Source Graphing Library*. [plotly.com/python](https://plotly.com/python/)
+- Kluyver, T. et al. *Jupyter Notebooks — a publishing format for reproducible computational workflows*. [ipywidgets.readthedocs.io](https://ipywidgets.readthedocs.io)
+- Knaflic, C. N. (2015). *Storytelling with Data: A Data Visualization Guide for Business Professionals*. Wiley.
+- Healy, K. (2018). *Data Visualization: A Practical Introduction*. Princeton University Press. [socviz.co](https://socviz.co)
+- Wilke, C. O. (2019). *Fundamentals of Data Visualization*. O'Reilly. [clauswilke.com/dataviz](https://clauswilke.com/dataviz/)

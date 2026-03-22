@@ -1,0 +1,143 @@
+---
+title: "Tipos de Gráficos"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    code-fold: true
+---
+
+# Introducción
+
+En estadística, un gráfico es una representación visual de datos que permite resumir, analizar y comunicar información de manera efectiva. Los gráficos se utilizan ampliamente en estadística para mostrar patrones, tendencias, distribuciones y relaciones entre variables.
+
+A continuación, revisamos los tipos de gráficos más comunes utilizando **ggplot2** en R.
+
+
+
+## Gráfico de Línea
+
+Un gráfico de líneas muestra cómo cambia una variable continua a lo largo del tiempo o del eje x.
+
+```r
+library(ggplot2)
+
+df <- data.frame(
+  x = 1:5,
+  y = c(10, 12, 15, 20, 22)
+)
+
+ggplot(df, aes(x = x, y = y)) +
+  geom_line() +
+  geom_point() +
+  labs(title = "Gráfico de líneas", x = "Eje x", y = "Eje y")
+````
+
+
+
+## Gráfico de Dispersión
+
+Se utiliza para mostrar la relación entre dos variables numéricas.
+
+```r
+df <- data.frame(
+  x = 1:5,
+  y = c(10, 12, 15, 20, 22)
+)
+
+ggplot(df, aes(x = x, y = y)) +
+  geom_point(size = 3) +
+  labs(title = "Diagrama de dispersión", x = "Eje x", y = "Eje y")
+```
+
+
+
+## Gráfico de Barras
+
+Ideal para comparar cantidades entre categorías.
+
+```r
+df <- data.frame(
+  producto = c("A", "B", "C", "D", "E"),
+  ventas = c(100, 200, 150, 300, 250)
+)
+
+ggplot(df, aes(x = producto, y = ventas)) +
+  geom_bar(stat = "identity", fill = "steelblue") +
+  labs(title = "Ventas por producto", x = "Producto", y = "Cantidad vendida")
+```
+
+
+
+## Histograma
+
+Representa la distribución de una variable continua dividiendo los datos en intervalos.
+
+```r
+set.seed(123)
+datos <- data.frame(valores = rnorm(10000))
+
+ggplot(datos, aes(x = valores)) +
+  geom_histogram(bins = 20, fill = "darkgreen", color = "black") +
+  labs(title = "Histograma de valores aleatorios", x = "Valores", y = "Frecuencia")
+```
+
+
+
+## Heatmap (Mapa de calor)
+
+Visualiza valores de una matriz mediante colores.
+
+```r
+library(reshape2)
+
+set.seed(123)
+matriz <- matrix(runif(25), nrow = 5)
+df <- melt(matriz)
+
+ggplot(df, aes(x = Var2, y = Var1, fill = value)) +
+  geom_tile() +
+  scale_fill_gradient(low = "white", high = "blue") +
+  labs(title = "Heatmap de una matriz aleatoria", x = "Columnas", y = "Filas") +
+  theme_minimal()
+```
+
+
+
+## Boxplot
+
+Muestra la distribución de un conjunto de datos numéricos a través de sus cuartiles y outliers.
+
+```r
+set.seed(123)
+df <- data.frame(valor = rnorm(1000))
+
+ggplot(df, aes(y = valor)) +
+  geom_boxplot(fill = "lightgray") +
+  labs(title = "Boxplot de un conjunto de datos aleatorios", y = "Valores")
+```
+
+### Boxplot combinado con Histograma
+
+```r
+library(patchwork)
+
+set.seed(123)
+df <- data.frame(valor = rnorm(1000))
+
+g_box <- ggplot(df, aes(x = valor)) +
+  geom_boxplot(fill = "lightblue") +
+  theme_minimal() +
+  labs(x = "Variable X", y = NULL)
+
+g_hist <- ggplot(df, aes(x = valor)) +
+  geom_histogram(bins = 10, fill = "gray", color = "black") +
+  labs(x = "Variable X", y = "Frecuencia") +
+  theme_minimal()
+
+g_box / g_hist + plot_layout(heights = c(1, 4)) +
+  plot_annotation(title = "Boxplot con Histograma")
+```
+
+
+

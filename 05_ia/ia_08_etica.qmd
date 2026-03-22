@@ -1,0 +1,745 @@
+---
+title: "Ética y uso responsable de IA en el aula"
+subtitle: "Sesgos, propiedad intelectual, privacidad y políticas para la docencia universitaria"
+---
+
+Este capítulo es el más incómodo del curso — y probablemente el más importante. No hay respuestas definitivas aquí. La ética del uso de IA en educación es un territorio en construcción, donde las decisiones que tomamos hoy como docentes están configurando normas que todavía no existen formalmente.
+
+Lo que sí hay son marcos para pensar, preguntas que hacerse antes de actuar, y algunas malas prácticas ya claramente identificadas. Este capítulo los organiza.
+
+---
+
+## Sesgos en modelos de lenguaje y sus efectos en educación
+
+### Qué son los sesgos en LLMs
+
+Los modelos de lenguaje aprenden de texto humano. El texto humano refleja las estructuras de poder, las inequidades y los prejuicios de las sociedades que lo producen. Un modelo entrenado con texto de internet no es neutral — reproduce los sesgos presentes en ese corpus.
+
+```{mermaid}
+graph TD
+    C["📚 Corpus de entrenamiento\n(texto de internet, libros, código)"]
+    C --> B1["🌐 Sesgo de idioma\n90%+ en inglés → perspectivas\nanglosajones sobrerrepresentadas"]
+    C --> B2["👤 Sesgo de género\nRoles de autoridad asociados\nmayoritariamente con masculino"]
+    C --> B3["🌍 Sesgo cultural\nContextos OCDE sobrerepresentados\nAmérica Latina, África: menor cobertura"]
+    C --> B4["📅 Sesgo temporal\nInformación 2015-2022 más representada\nEventos recientes: menor cobertura"]
+    C --> B5["💰 Sesgo socioeconómico\nPerspectivas de clase media-alta\ntecnológica sobrerrepresentadas"]
+```
+
+### Manifestaciones concretas en el aula
+
+**Sesgo de idioma y contexto cultural:**
+
+```
+Prompt: "Dame un ejemplo de un problema de estadística aplicada"
+
+Respuesta típica de GPT-4 sin contexto: escenario con datos de 
+salarios en USD, empresas tech de Silicon Valley, o datos de 
+béisbol americano — irrelevante para un estudiante de ingeniería 
+en Valparaíso.
+
+Cómo mitigarlo:
+"Dame un ejemplo de problema de estadística aplicada al contexto 
+chileno / latinoamericano. Usa datos realistas de la región."
+```
+
+**Sesgo de género en roles:**
+
+```
+Prompt: "Escribe un caso de estudio sobre un ingeniero que..."
+
+Respuesta sin instrucción: "El ingeniero Juan tomó la decisión..."
+— masculino por defecto.
+
+Cómo mitigarlo:
+"Usa lenguaje inclusivo en género. Alterna entre ejemplos con 
+nombres femeninos y masculinos."
+```
+
+**Sesgo en la representación de disciplinas:**
+
+Los modelos tienen mucho más entrenamiento en matemáticas y ciencias de la computación (en inglés) que en, por ejemplo, ingeniería civil latinoamericana, regulaciones de construcción chilenas, o normativa ambiental nacional. Cuando el modelo "sabe" sobre un tema con mucha representación en su corpus, puede ser muy preciso. Cuando el tema es poco representado, el riesgo de alucinación y sesgo es mayor.
+
+### Impacto en evaluaciones asistidas por IA
+
+Este es el riesgo más operativo: si usas IA para generar preguntas de examen o retroalimentación, los sesgos del modelo pueden afectar qué se evalúa y cómo:
+
+```
+Riesgos específicos:
+
+1. Calibración de dificultad sesgada
+   Un modelo que sobrerepresenta estudiantes de universidades 
+   de élite angloparlantes puede generar preguntas demasiado 
+   difíciles para el nivel promedio de tus estudiantes.
+
+2. Contextos de ejemplo desconectados
+   Ejercicios sobre empresas, productos o fenómenos que los 
+   estudiantes no conocen — dificultad artificial por falta 
+   de contexto cultural.
+
+3. Retroalimentación que penaliza formas de razonamiento válidas
+   Si el modelo fue entrenado principalmente con respuestas 
+   "tipo A", puede evaluar como incorrectas respuestas 
+   igualmente válidas que siguen otro camino.
+
+4. Lenguaje que asume recursos no disponibles
+   "Descarga los datos desde esta URL premium" o "usa esta 
+   librería de pago" en un ejercicio.
+```
+
+### Estrategias de mitigación
+
+```markdown
+**En la generación de material:**
+- Especificar el contexto regional y cultural en el prompt
+- Revisar que los ejemplos sean accesibles para tus estudiantes específicos
+- Pedir explícitamente variedad de géneros, nombres y contextos
+- Verificar que no asume recursos que los estudiantes no tienen
+
+**En la evaluación asistida:**
+- Nunca usar el output de IA como evaluación final sin revisión
+- Verificar que la calibración de dificultad es coherente con el semestre
+- Tener criterios de evaluación propios, no solo los generados por IA
+
+**En el diseño de actividades:**
+- Preguntar: ¿este ejercicio funciona igualmente para un estudiante
+  de primera generación universitaria que para uno de colegio particular?
+- Usar datasets con contexto local cuando sea posible
+```
+
+---
+
+## Propiedad intelectual y derechos de autor del contenido generado
+
+### El panorama legal (cambiante y no definitivo)
+
+La situación legal de la propiedad intelectual en contenido generado por IA es genuinamente incierta en 2025. Lo que está razonablemente claro:
+
+**En la mayoría de jurisdicciones (incluyendo Chile):**
+
+- El contenido generado 100% por IA no tiene titular de derechos de autor reconocido — no hay "autor" en el sentido legal.
+- El contenido donde hay una contribución humana significativa (diseño del prompt, edición, estructuración) puede tener derechos de autor del humano que contribuyó.
+- "Significativa" no está definida legalmente — es terreno gris.
+
+**Lo que dice la Ley de Propiedad Intelectual chilena (Ley 17.336):**
+
+La ley protege "obras del ingenio" creadas por personas naturales. No hace referencia explícita a IA. La interpretación predominante en Chile (aún sin jurisprudencia consolidada) es que la IA por sí sola no puede ser titular de derechos.
+
+### Implicaciones prácticas para docentes
+
+```{mermaid}
+graph TD
+    E["❓ ¿Puedo hacer esto\ncon contenido generado por IA?"]
+
+    E --> P1["Publicar apuntes del curso\ngenerados con asistencia de IA"]
+    E --> P2["Subir material al repositorio\npúblico del curso"]
+    E --> P3["Presentar en conferencia\nmaterial asistido por IA"]
+    E --> P4["Publicar en revista académica\npaper con secciones asistidas"]
+    E --> P5["Solicitar que los estudiantes\nentreguen trabajo con IA declarada"]
+
+    P1 --> R1["✅ Generalmente sí,\ncon declaración de uso"]
+    P2 --> R2["✅ Sí, bajo licencia\nCC BY o MIT como siempre"]
+    P3 --> R3["⚠️ Depende de las\npolíticas del evento"]
+    P4 --> R4["⚠️ Depende de las\npolíticas del journal —\nverificar antes"]
+    P5 --> R5["✅ Sí, con declaración\nde uso explícita"]
+```
+
+### El problema del contenido de entrenamiento
+
+Los modelos de lenguaje fueron entrenados con texto de internet, que incluye libros, papers, código y artículos con derechos de autor. Cuando el modelo reproduce fragmentos extensos de ese material, puede haber infracción.
+
+Para docentes, los riesgos más relevantes:
+
+```
+Riesgo 1: Fragmentos de libros de texto
+Si pides a la IA "resume el capítulo 5 del libro de Wickham sobre
+R for Data Science", puede reproducir fragmentos protegidos.
+→ Usar para inspiración y luego parafrasear en tus propias palabras.
+
+Riesgo 2: Código con licencias restrictivas
+El código generado por IA puede replicar código con licencias
+GPL, LGPL u otras que imponen restricciones sobre el uso derivado.
+→ Para código en el material del curso, usar licencia MIT y verificar.
+
+Riesgo 3: Imágenes generadas
+Las imágenes generadas por DALL-E, Midjourney o Firefly tienen
+distintas políticas de uso según la plataforma:
+- Adobe Firefly: garantiza uso comercial/educativo
+- Midjourney: política varía según el plan
+- DALL-E (ChatGPT Plus): OpenAI otorga derechos al usuario del output
+→ Revisar los términos de servicio de cada herramienta.
+```
+
+### Posición práctica recomendada
+
+```
+Para material docente con asistencia de IA:
+
+1. Tratar el output de IA como un borrador tuyo
+   — revisarlo, editarlo, hacerlo tuyo antes de publicar
+
+2. Declarar el uso de IA en el material
+   — no por obligación legal (aún no clara), sino por transparencia
+   académica y modelo de comportamiento para los estudiantes
+
+3. No reproducir fragmentos extensos del output sin editar
+   — parafraseando reduces el riesgo de reproducir contenido protegido
+
+4. Para publicaciones formales (revistas, libros)
+   — verificar la política específica antes de enviar
+   — la mayoría de journals de alta calidad ya tienen políticas sobre IA
+```
+
+---
+
+## Privacidad y protección de datos de estudiantes
+
+### El marco legal en Chile
+
+**Ley 19.628 (Protección de la Vida Privada):**
+- Define datos personales como cualquier información sobre una persona natural identificada o identificable.
+- Require consentimiento para recopilar, tratar o transferir datos personales.
+- Las notas, registros académicos, datos de salud y situación socioeconómica de los estudiantes son datos personales protegidos.
+
+**GDPR (aplicable si la herramienta es europea o procesa datos de ciudadanos UE):**
+- Estándar más estricto que la ley chilena en varios aspectos.
+- Relevante cuando usas herramientas de empresas europeas.
+
+### Lo que nunca debe subirse a plataformas de IA externas
+
+```
+NUNCA subir a ChatGPT, Claude, Gemini u otras plataformas externas:
+
+❌ Listas de estudiantes con nombres y notas
+❌ Trabajos estudiantiles con nombres identificables
+❌ Correos de estudiantes (incluso si son consultas académicas)
+❌ Datos de asistencia con nombres
+❌ Información de situación socioeconómica de becados
+❌ Datos de salud o necesidades de apoyo académico especial
+❌ Fotografías de estudiantes
+❌ RUTs o números de identificación
+❌ Evaluaciones con nombres del estudiante escrito
+```
+
+### Cómo anonimizar correctamente antes de usar IA
+
+```python
+# Antes de subir información a una plataforma de IA, anonimizar:
+
+import pandas as pd
+import hashlib
+
+def anonimizar_dataset_notas(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Anonimiza un dataset de notas para uso con IA.
+    Reemplaza información identificable con hashes o etiquetas neutras.
+    """
+    df_anon = df.copy()
+
+    # Reemplazar nombres con etiquetas
+    if 'nombre' in df_anon.columns:
+        df_anon['estudiante'] = [f"E{i:03d}" for i in range(len(df_anon))]
+        df_anon = df_anon.drop(columns=['nombre'])
+
+    # Reemplazar RUTs con hashes
+    if 'rut' in df_anon.columns:
+        df_anon['id_hash'] = df_anon['rut'].apply(
+            lambda x: hashlib.sha256(str(x).encode()).hexdigest()[:8]
+        )
+        df_anon = df_anon.drop(columns=['rut'])
+
+    # Reemplazar emails
+    if 'email' in df_anon.columns:
+        df_anon = df_anon.drop(columns=['email'])
+
+    # Generalizar carreras si hay pocas personas por grupo
+    if 'carrera' in df_anon.columns:
+        conteo = df_anon['carrera'].value_counts()
+        carreras_chicas = conteo[conteo < 5].index
+        df_anon.loc[df_anon['carrera'].isin(carreras_chicas), 'carrera'] = 'Otra'
+
+    return df_anon
+
+# Uso
+df_original = pd.read_csv('notas_con_datos_personales.csv')
+df_anonimizado = anonimizar_dataset_notas(df_original)
+
+# Solo subir df_anonimizado a la IA
+print(df_anonimizado.head())
+```
+
+### Retención de datos en plataformas de IA
+
+Qué pasa con los datos que subes:
+
+| Plataforma | Retención por defecto | Cómo cambiar |
+|---|---|---|
+| **ChatGPT (web)** | Almacenado, puede usarse para entrenamiento | Settings → Data Controls → desactivar "Improve the model" |
+| **ChatGPT (API)** | No retenido para entrenamiento | Por defecto seguro |
+| **Claude (web)** | Anthropic declara no entrenar con conversaciones | No requiere acción |
+| **Claude (API)** | No retenido | Por defecto seguro |
+| **Gemini (web)** | Hasta 18 meses por defecto | myactivity.google.com |
+| **Gemini (Workspace)** | Controlado por el admin institucional | Configuración del admin |
+| **Copilot Studio (M365)** | Dentro del tenant institucional | Políticas del tenant |
+| **NotebookLM** | Datos en la cuenta Google del usuario | No se usan para entrenamiento |
+
+::: {.callout-important}
+## La regla más segura
+Cuando trabajes con material del curso (apuntes, rúbricas, material sin datos personales): cualquier plataforma funciona.
+
+Cuando trabajas con información que identifica a estudiantes: usa solo la API directa (donde la retención está documentada y controlada) o herramientas dentro del ecosistema institucional (Microsoft M365 con tenant propio).
+
+En caso de duda: anonimiza primero, siempre.
+:::
+
+---
+
+## Políticas institucionales: lineamientos UTFSM sobre IA
+
+### El estado actual (2025)
+
+Las instituciones de educación superior en Chile están en proceso de desarrollar políticas formales sobre uso de IA. La UTFSM, como la mayoría de las universidades chilenas, tiene en 2025 lineamientos en construcción más que políticas definitivas.
+
+Lo que suele estar disponible a nivel institucional:
+
+- **Declaraciones de principios** (honestidad académica, uso responsable de tecnología).
+- **Guías no vinculantes** para docentes sobre cómo abordar la IA en evaluaciones.
+- **Procesos de revisión** para casos de uso problemático.
+
+**Cómo mantenerte actualizado:**
+
+```
+Fuentes a revisar antes de cada semestre:
+
+1. Dirección de Docencia UTFSM
+   → Circulares sobre herramientas digitales en el aula
+
+2. Vicerrectoría Académica
+   → Actualizaciones al Reglamento Estudiantil
+
+3. Comité de Ética / Comisión de Integridad Académica
+   → Pronunciamientos sobre IA y plagio
+
+4. Departamento propio
+   → Acuerdos del consejo de carrera sobre evaluación
+
+5. DTD (Dirección de Transformación Digital)
+   → Guías institucionales de uso de IA (este curso)
+```
+
+### Principios que guían las políticas institucionales emergentes
+
+Aunque no haya política definitiva, los principios que la mayoría de las instituciones están adoptando son:
+
+**1. Transparencia:** el uso de IA en cualquier trabajo académico debe declararse explícitamente.
+
+**2. Responsabilidad:** quien entrega un trabajo es responsable de su contenido, independientemente de qué herramientas usó para producirlo.
+
+**3. Aprendizaje primero:** el objetivo de las evaluaciones es evidenciar el aprendizaje del estudiante — si la IA sustituye ese aprendizaje, la evaluación pierde su propósito.
+
+**4. Coherencia:** la política de IA debe ser coherente con los objetivos del curso y comunicada claramente desde el primer día.
+
+**5. No discriminación:** las políticas no pueden crear inequidades basadas en el acceso a herramientas de pago.
+
+### Qué hacer cuando no hay política institucional
+
+En ausencia de política formal, el docente tiene autonomía para definir la política de su curso. Esta autonomía viene con responsabilidad:
+
+```
+Principios para definir tu política en ausencia de norma institucional:
+
+1. Coherencia con los objetivos de aprendizaje
+   La política debe servir al aprendizaje, no ser una reacción
+   de miedo a la tecnología.
+
+2. Claridad desde el primer día
+   Los estudiantes deben saber exactamente qué pueden y no pueden
+   hacer, con ejemplos concretos.
+
+3. Aplicabilidad
+   Solo prohíbes lo que puedes verificar razonablemente. Una
+   prohibición total no verificable es peor que una política
+   parcial honesta.
+
+4. Equidad
+   Si requieres uso de IA, garantiza acceso equitativo.
+   Si prohíbes ciertas herramientas, que no creen ventaja para
+   quienes tienen acceso premium.
+
+5. Revisabilidad
+   La política puede cambiar entre semestres. Documenta por qué
+   tomaste cada decisión.
+```
+
+---
+
+## Declaración de uso de IA en trabajos académicos
+
+### Por qué la declaración es clave
+
+La declaración de uso de IA no es una sanción — es una práctica de integridad académica equivalente a citar fuentes. Cuando un estudiante usa una idea de un libro, la cita. Cuando usa IA para desarrollar una idea, lo declara.
+
+La declaración cumple tres funciones:
+1. **Trazabilidad:** si hay preguntas sobre el origen del trabajo, hay un registro.
+2. **Formación en práctica profesional:** el mundo laboral ya requiere declarar el uso de IA en entornos regulados.
+3. **Conversación pedagógica:** un estudiante que declara cómo usó la IA abre la conversación sobre qué aprendió en el proceso.
+
+### Formatos de declaración
+
+**Declaración mínima (para trabajos cortos):**
+
+```
+Nota al pie o al final del documento:
+
+"Este trabajo fue desarrollado con asistencia de [herramienta, ej: Claude 3.5].
+La IA se utilizó para [propósito específico: estructurar el argumento /
+revisar la gramática / explorar enfoques alternativos / generar el código base].
+El análisis, las conclusiones y la redacción final son propios."
+```
+
+**Declaración detallada (para trabajos de mayor peso):**
+
+```markdown
+## Declaración de uso de herramientas de IA
+
+**Herramientas utilizadas:** Claude 3.5 Sonnet (Anthropic), GitHub Copilot
+
+**Descripción del uso:**
+
+*Claude:* Se utilizó para (1) generar una estructura inicial del análisis
+exploratorio, que fue revisada y modificada sustancialmente; (2) revisar
+la redacción de las conclusiones para mejorar la claridad; (3) sugerir
+visualizaciones alternativas que fueron consideradas pero no todas implementadas.
+
+*GitHub Copilot:* Asistió en el autocompletado de código Python para las
+funciones de limpieza de datos. Todo el código fue revisado, probado y
+adaptado al contexto específico del análisis.
+
+**Lo que NO fue generado por IA:** el diseño del análisis, la selección
+de variables, la interpretación de resultados, las conclusiones principales
+y la revisión crítica de los outputs de la IA.
+
+**Verificación:** todos los resultados numéricos y estadísticos fueron
+verificados manualmente contra los datos originales.
+
+Fecha: [fecha de entrega]
+```
+
+**Declaración en código:**
+
+```python
+# ── Declaración de uso de IA ──────────────────────────────────
+# Este notebook fue desarrollado con asistencia de GitHub Copilot
+# para el autocompletado de código y Claude 3.5 para la estructuración
+# del análisis. Todo el código fue revisado y probado manualmente.
+# La interpretación de resultados es propia.
+# ─────────────────────────────────────────────────────────────
+
+import pandas as pd
+# ... resto del código
+```
+
+### Plantilla de declaración para el curso
+
+Incluir en el syllabus y en cada enunciado de tarea una plantilla que los estudiantes completan:
+
+```markdown
+---
+**DECLARACIÓN DE USO DE IA** (completar antes de entregar)
+
+Herramientas de IA utilizadas en este trabajo:
+☐ No usé herramientas de IA
+☐ Usé _____________ para: _________________________________
+☐ Usé _____________ para: _________________________________
+
+Confirmo que:
+☐ El trabajo refleja mi comprensión propia del contenido
+☐ He verificado la exactitud de cualquier información generada por IA
+☐ La declaración de uso es completa y honesta
+
+Firma: _______________ Fecha: _______________
+---
+```
+
+---
+
+## Criterios para definir la política de IA en el propio curso
+
+### El árbol de decisión del docente
+
+```{mermaid}
+graph TD
+    START["🎯 ¿Cómo defino la\npolítica de IA para mi curso?"]
+
+    START --> Q1["¿El objetivo de aprendizaje\nrequiere que el estudiante\ndesarrolle la habilidad SIN asistencia?"]
+
+    Q1 -->|"Sí (ej: escribir código\ndesde cero, demostración matemática,\nrazonamiento argumentativo propio)"| POL1["📋 Política restrictiva\nProhibir IA en esa evaluación específica\n(no en el curso entero)"]
+
+    Q1 -->|"No (el objetivo es el resultado\no la habilidad de usar herramientas)"| Q2["¿La IA puede resolver completamente\nla evaluación sin que el estudiante\ndemostre comprensión?"]
+
+    Q2 -->|"Sí"| POL2["🔄 Rediseñar la evaluación\nAgregar: defensa oral, proceso documentado,\ncontexto específico no accesible a la IA"]
+
+    Q2 -->|"No (o parcialmente)"| Q3["¿Tienes forma de verificar\nque el estudiante contribuyó?"]
+
+    Q3 -->|"Sí"| POL3["✅ Política permisiva con declaración\nUso permitido con declaración explícita\ny criterios de evaluación que incluyen\nla contribución propia"]
+
+    Q3 -->|"No"| POL4["⚠️ Política con verificación\nUso permitido, pero con componente\npresencial para verificar comprensión\n(defensa, pregunta adicional en clase)"]
+```
+
+### Los tres modelos de política
+
+**Modelo 1: Prohibición fundamentada**
+
+```
+Cuándo usar: cuando la habilidad a desarrollar es específicamente la
+que la IA sustituye.
+
+Ejemplo válido:
+"En este curso de escritura argumentativa, el objetivo es desarrollar
+tu capacidad de construir argumentos propios. El uso de IA para
+redactar o estructurar los trabajos no está permitido porque elimina
+el proceso de aprendizaje que el curso busca."
+
+Ejemplo inválido:
+"No se permite IA porque podría hacer trampa." (prohibición reactiva
+sin fundamento pedagógico)
+
+Requisitos para que funcione:
+- Explicar la razón pedagógica a los estudiantes
+- Diseñar evaluaciones que hagan la prohibición verificable
+- Aceptar que algunos estudiantes la usarán de todas formas y diseñar
+  mecanismos de verificación (defensa oral, proceso documentado)
+```
+
+**Modelo 2: Uso permitido con declaración**
+
+```
+Cuándo usar: cursos técnicos donde la IA es una herramienta legítima
+del campo (ingeniería de software, ciencia de datos, diseño).
+
+Política:
+"Puedes usar IA como herramienta en este curso, con las siguientes
+condiciones:
+(1) Declara exactamente qué herramienta usaste y para qué
+(2) El trabajo final es tuyo: análisis, decisiones, conclusiones
+(3) Puedes ser preguntado en clase sobre tu trabajo
+
+La nota evalúa TU comprensión del problema, no la calidad del output
+de la IA."
+
+Requiere:
+- Rúbricas que evalúen la comprensión, no solo el producto
+- Componente de evaluación presencial o verbal periódica
+```
+
+**Modelo 3: IA como objeto de estudio**
+
+```
+Cuándo usar: cursos donde el uso crítico de IA es parte del contenido.
+
+Política:
+"En este curso vamos a usar IA deliberadamente y a evaluarla
+críticamente. Las actividades incluyen usar IA, evaluar sus
+outputs, y reflexionar sobre las implicaciones.
+
+No puedes 'no usar IA' en algunas actividades — es parte del
+aprendizaje. Lo que se evalúa es tu criterio sobre cómo y cuándo
+usarla."
+
+Ejemplo de actividad:
+"Usa ChatGPT para generar una explicación de regresión logística.
+Evalúa críticamente la explicación: ¿qué está correcto? ¿qué está
+incompleto o incorrecto? ¿qué agregarías o cambiarías? ¿A qué tipo
+de estudiante le sirve esta explicación y a cuál no?"
+```
+
+### Lista de verificación para la política de IA del curso
+
+```
+Antes de comunicar la política a los estudiantes, verificar:
+
+☐ La política tiene fundamento pedagógico explícito (no solo miedo)
+☐ Es coherente en todos los instrumentos del curso
+   (no prohibida en tareas pero permitida en labs)
+☐ Los estudiantes tienen acceso equitativo a las herramientas
+   que se permiten o se requieren
+☐ Hay mecanismo de verificación para lo que se prohíbe
+☐ Los casos grises están anticipados con ejemplos concretos
+☐ El proceso de declaración es claro y simple
+☐ Las consecuencias de no declarar están definidas
+☐ La política es revisable semestre a semestre
+```
+
+---
+
+## Marco de evaluación en contextos donde los estudiantes usan IA
+
+### El problema de las métricas tradicionales
+
+Las evaluaciones diseñadas para un mundo sin IA miden la capacidad de producir texto o código — exactamente lo que la IA hace bien. Cuando el estudiante usa IA para producir el output y el docente evalúa ese output, la evaluación mide la calidad de la IA, no el aprendizaje del estudiante.
+
+```{mermaid}
+graph LR
+    subgraph "Evaluación tradicional"
+        S1["👨‍🎓 Estudiante\nproduce output"]
+        D1["👨‍🏫 Docente\nevalúa output"]
+        S1 --> D1
+        D1 --> N1["Nota: refleja\nla calidad del output"]
+    end
+
+    subgraph "Con IA sin ajuste"
+        S2["👨‍🎓 Estudiante\n+IA produce output"]
+        D2["👨‍🏫 Docente\nevalúa output\n(no sabe qué es del estudiante)"]
+        S2 --> D2
+        D2 --> N2["Nota: refleja\nla calidad de la IA"]
+    end
+
+    subgraph "Evaluación adaptada"
+        S3["👨‍🎓 Estudiante\nusa IA como herramienta"]
+        D3["👨‍🏫 Docente evalúa\nel PROCESO y CRITERIO\ndel estudiante"]
+        S3 --> D3
+        D3 --> N3["Nota: refleja\nla comprensión real"]
+    end
+```
+
+### Tipos de evaluación resistentes al uso irresponsable de IA
+
+**1. Evaluaciones de proceso (no solo de producto):**
+
+```
+En lugar de: "Entrega el análisis de regresión"
+
+Con proceso:
+"Entrega el análisis de regresión INCLUYENDO:
+(1) Tu análisis exploratorio inicial antes de ajustar el modelo
+(2) El razonamiento por el que elegiste ese enfoque
+(3) Al menos una decisión que tomaste y una alternativa que consideraste
+(4) Qué te sorprendió o fue diferente a lo esperado
+(5) Qué usarías diferente la próxima vez"
+
+Las preguntas de proceso son difíciles de responder con IA porque
+requieren experiencia real en el análisis específico.
+```
+
+**2. Evaluaciones con datos propios del curso:**
+
+```
+Dataset institucional de la UTFSM con años de actividad real:
+- La IA no tiene esos datos
+- El estudiante debe trabajar con ese contexto específico
+- Las conclusiones tienen que interpretarse en ese contexto real
+
+Ejemplo: "Analiza los datos de deserción estudiantil de la UTFSM
+2018-2024 que están en el repositorio del curso. Identifica los
+factores más asociados con deserción en las carreras de ingeniería."
+
+La IA no puede hacer este análisis sin que el estudiante le proporcione
+los datos — y si el estudiante los proporciona, aún tiene que interpretar
+en el contexto específico de la UTFSM.
+```
+
+**3. Componente de defensa oral o verificación en clase:**
+
+```
+Evaluación en dos partes:
+- Parte escrita (asistida o no con IA, declarado): 70%
+- Verificación en clase (5 minutos): 30%
+
+En la verificación:
+- El docente hace 2-3 preguntas sobre el trabajo entregado
+- El estudiante debe poder explicar sus decisiones
+- Si no puede explicar el trabajo, la nota de verificación es 0
+- La nota final promedia ambas partes
+
+Este formato evalúa la comprensión real con mínimo tiempo adicional.
+```
+
+**4. Rúbricas que evalúan criterio, no solo output:**
+
+```
+Para un análisis de datos con IA permitida:
+
+Criterio: Justificación de decisiones (25%)
+  Destacado: El estudiante justifica cada decisión técnica (qué modelo,
+  qué hiperparámetros, qué métrica) con argumentos que demuestran
+  comprensión de las implicaciones
+  
+  Competente: Justifica las decisiones principales correctamente
+  
+  Básico: Describe las decisiones pero sin justificación clara
+  
+  Insuficiente: No hay justificación o las justificaciones son incorrectas
+
+[Este criterio no puede ser respondido correctamente por IA sin comprensión real]
+```
+
+**5. Reflexión metacognitiva:**
+
+```
+Pregunta de cierre en cualquier evaluación (sin importar si se usó IA):
+"¿Qué fue lo más difícil de este trabajo? ¿Cómo lo resolviste?
+¿Qué harías diferente?"
+
+Criterio de evaluación:
+- La respuesta debe ser específica al trabajo entregado
+- Debe reflejar experiencia real con el análisis
+- Una respuesta genérica o que no se relaciona con el trabajo específico
+  recibe puntaje mínimo en este criterio
+```
+
+### Detección de uso no declarado
+
+::: {.callout-warning}
+## Los detectores de IA no son confiables — y pueden ser dañinos
+GPTZero, Turnitin IA, y herramientas similares tienen tasas de falso positivo del 10-20% en español. Esto significa que 1 de cada 5-10 textos marcados como "generado por IA" puede ser escritura humana genuina — especialmente de hablantes no nativos de inglés (prácticamente todos los estudiantes latinoamericanos) o de estudiantes con estilos de escritura formales.
+
+Acusar a un estudiante de trampa basándose solo en un detector de IA sin evidencia adicional es una práctica que puede ser discriminatoria y que daña gravemente la relación docente-estudiante.
+
+**Qué hacer en cambio:**
+- Si sospechas de un trabajo, pide al estudiante que te lo explique en persona
+- La conversación directa es mucho más efectiva que cualquier detector
+- Si el estudiante puede explicar el trabajo, el proceso de aprendizaje ocurrió
+:::
+
+El enfoque más efectivo para "detectar" uso problemático de IA es indirecto: diseñar evaluaciones donde el uso irresponsable de IA produzca un output claramente inferior al de un estudiante que trabajó honestamente — porque el trabajo requiere contexto, proceso o razonamiento que la IA no puede proporcionar sin el estudiante.
+
+---
+
+## Síntesis: el docente como referente ético
+
+El capítulo termina donde empezó: no hay respuestas definitivas. Hay un territorio en construcción donde las decisiones de los docentes de hoy están configurando las normas de mañana.
+
+Lo que sí es claro:
+
+```
+Lo que el docente puede controlar:
+✅ Su propia transparencia sobre cómo usa IA en su trabajo docente
+✅ El diseño de evaluaciones que miden comprensión real
+✅ La política de su curso, fundamentada pedagógicamente
+✅ Cómo modela el uso ético de IA frente a sus estudiantes
+✅ Su actitud ante los errores — propios y de los estudiantes
+
+Lo que el docente no puede controlar:
+→ Qué herramientas usarán los estudiantes fuera del aula
+→ La velocidad del avance tecnológico
+→ La ambigüedad legal actual sobre derechos de autor en IA
+→ Que la política institucional cambie entre semestres
+
+La postura más sostenible:
+Diseñar evaluaciones donde la comprensión real del estudiante importe,
+comunicar con transparencia, y tratar el uso de IA como lo que es —
+una herramienta con potencial y con riesgos — en lugar de como
+una amenaza que hay que erradicar o un atajo que hay que bloquear.
+```
+
+---
+
+## Referencias
+
+- Bender, E. M. et al. (2021). *On the Dangers of Stochastic Parrots: Can Language Models Be Too Big?* FAccT 2021. [doi.org/10.1145/3442188.3445922](https://doi.org/10.1145/3442188.3445922)
+- UNESCO. (2023). *Guidance for Generative AI in Education and Research*. UNESCO Publishing. [unesdoc.unesco.org/ark:/48223/pf0000386693](https://unesdoc.unesco.org/ark:/48223/pf0000386693)
+- Mollick, E. & Mollick, L. (2023). *Assigning AI: Seven Approaches for Students, with Prompts*. SSRN. [ssrn.com/abstract=4475995](https://ssrn.com/abstract=4475995)
+- Ministerio de Ciencia, Tecnología, Conocimiento e Innovación de Chile. (2024). *Política Nacional de Inteligencia Artificial*. [minciencia.gob.cl](https://www.minciencia.gob.cl/areas-de-trabajo/transformacion-digital/politica-nacional-de-inteligencia-artificial/)
+- Ley 19.628 (Chile). *Protección de la Vida Privada*. [bcn.cl/leychile/navegar?idNorma=141599](https://www.bcn.cl/leychile/navegar?idNorma=141599)
+- Floridi, L. et al. (2018). *AI4People — An Ethical Framework for a Good AI Society*. Minds and Machines, 28(4), 689–707. [doi.org/10.1007/s11023-018-9482-5](https://doi.org/10.1007/s11023-018-9482-5)
+- Zawacki-Richter, O. et al. (2019). *Systematic review of research on artificial intelligence applications in higher education*. International Journal of Educational Technology in Higher Education, 16(1). [doi.org/10.1186/s41239-019-0171-0](https://doi.org/10.1186/s41239-019-0171-0)
+- Cotton, D.R.E. et al. (2024). *Chatting and Cheating: Ensuring Academic Integrity in the Era of ChatGPT*. Innovations in Education and Teaching International, 61(2). [doi.org/10.1080/14703297.2023.2190148](https://doi.org/10.1080/14703297.2023.2190148)

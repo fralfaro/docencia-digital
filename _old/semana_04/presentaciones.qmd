@@ -1,0 +1,105 @@
+---
+title: "Guía para Presentaciones Finales"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+---
+
+# Introducción
+
+Una buena presentación de datos no solo muestra resultados, sino que los comunica de forma clara, visual y persuasiva. Esta guía está pensada para ayudarte a organizar, diseñar y exponer tu **proyecto final** utilizando `Quarto` (como presentación o informe) o `Shiny`.
+
+
+
+# Objetivos de una presentación efectiva
+
+- Comunicar claramente el **problema**, el **análisis** y los **hallazgos**.
+- Utilizar visualizaciones que refuercen el mensaje.
+- Adaptar el lenguaje y nivel técnico a la audiencia.
+- Generar impacto sin sobrecargar de información.
+
+
+
+# Estructura recomendada
+
+## 1. Introducción
+
+- ¿Cuál es el problema o pregunta que quieres responder?
+- Breve contexto o motivación.
+- ¿Qué datos utilizaste?
+
+## 2. Exploración y análisis
+
+- Estadísticas descriptivas clave.
+- Visualizaciones explicativas.
+- Comparaciones relevantes entre grupos, variables o momentos.
+
+## 3. Hallazgos
+
+- ¿Qué descubriste?
+- ¿Qué patrones relevantes identificaste?
+- ¿Qué insights surgen del análisis?
+
+## 4. Conclusiones y recomendaciones
+
+- Resumen breve de los hallazgos clave.
+- Sugerencias de acción, mejora o próximos pasos.
+- Si aplica: limitaciones del análisis.
+
+
+
+# Formatos posibles
+
+## Opción 1: Presentación con `Quarto` y `revealjs`
+
+- Ideal para exponer en vivo.
+- Puedes usar código embebido, gráficos y elementos interactivos.
+
+```yaml
+format: 
+  revealjs:
+    slide-number: true
+    transition: fade
+    theme: default
+````
+
+## Opción 2: Informe en Quarto (`.qmd` → HTML/PDF)
+
+* Ideal para compartir luego o dejar como entrega final.
+* Puedes incluir más detalle, citas, bibliografía, apéndices, etc.
+
+## Opción 3: Dashboard en `Shiny`
+
+* Ideal si el proyecto requiere exploración dinámica o filtros.
+* Acompaña la app con una breve guía de uso.
+
+
+
+# Recomendaciones para exponer
+
+* Usa títulos que **expliquen** el gráfico, no que lo describan.
+* No sobrecargues las slides con texto: enfócate en los mensajes clave.
+* Practica la exposición: claridad > cantidad.
+* Si usas código, muestra solo lo esencial o los resultados.
+* Finaliza con una **conclusión clara y memorable**.
+
+
+
+# Checklist de revisión
+
+* [ ] ¿Tu narrativa tiene un hilo conductor?
+* [ ] ¿Tus visualizaciones apoyan tus conclusiones?
+* [ ] ¿Tus resultados están explicados, no solo mostrados?
+* [ ] ¿El formato elegido es claro, profesional y funcional?
+* [ ] ¿Ensayaste la exposición (si corresponde)?
+
+
+
+# Recursos útiles
+
+* Guía `Quarto Revealjs`: [https://quarto.org/docs/presentations/revealjs/](https://quarto.org/docs/presentations/revealjs/)
+* Libro *Storytelling with Data*: [https://www.storytellingwithdata.com/](https://www.storytellingwithdata.com/)
+* Presentaciones efectivas: [https://www.duarte.com/presentation-skills-resources/](https://www.duarte.com/presentation-skills-resources/)
+
+

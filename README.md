@@ -1,5 +1,5 @@
 ﻿<img
-  src="images/logo2.png"
+  src="assets\img\brand\brand__usm2.png"
   alt="Universidad Tecnica Federico Santa Maria"
   style="height: 70px;"
   align="right">

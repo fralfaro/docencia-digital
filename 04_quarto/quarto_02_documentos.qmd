@@ -1,0 +1,1312 @@
+---
+title: "Documentos reproducibles"
+subtitle: "Chunks, callouts, referencias cruzadas y salida multiformat"
+---
+
+Un documento reproducible es aquel que cualquier persona puede tomar, ejecutar, y obtener exactamente el mismo resultado que el autor. No "similar" — exactamente el mismo. Cada figura, cada tabla, cada estadística se genera desde el código que está en el documento. No hay pasos manuales ocultos, no hay "copié el número del Excel", no hay inconsistencias entre el texto y las figuras.
+
+Para un docente, esto significa algo concreto: el apunte de la semana 5 que dice "la media de la muestra es 5.23" y tiene un histograma mostrando esa distribución — ambos salen del mismo código, en el mismo momento, con los mismos datos. Si los datos cambian, cambian ambos automáticamente.
+
+Este capítulo cubre los elementos que hacen de Quarto una herramienta de documentación reproducible real: chunks de código, opciones de ejecución, figuras y tablas generadas desde código, callouts pedagógicos, y referencias cruzadas automáticas.
+
+---
+
+## Chunks de código Python y R: sintaxis y opciones
+
+### Qué es un chunk
+
+Un **chunk** es un bloque de código ejecutable embebido en el documento Markdown. Se delimita con tres backticks y el nombre del motor entre llaves:
+
+````markdown
+```python
+# código Python aquí
+import pandas as pd
+df = pd.DataFrame({'x': [1, 2, 3]})
+print(df)
+```
+````
+
+````markdown
+```{r}
+# código R aquí
+x <- c(1, 2, 3)
+mean(x)
+```
+````
+
+El output (texto impreso, figuras, tablas) aparece inmediatamente debajo del chunk en el documento renderizado.
+
+### Motores de ejecución disponibles
+
+```{mermaid}
+graph LR
+    QMD[".qmd"]
+    QMD --> PY["```python\nMotor: Jupyter\nVersiones: 3.8+"]
+    QMD --> R["```{r}\nMotor: Knitr\nVersiones: 4.0+"]
+    QMD --> JU["```{julia}\nMotor: IJulia\nVersiones: 1.6+"]
+    QMD --> OB["```{ojs}\nObservable JS\n(solo HTML)"]
+    QMD --> BA["```{bash}\nShell commands\n(sin output interactivo)"]
+    QMD --> MA["```{mermaid}\nDiagramas\n(sin ejecución)"]
+    QMD --> DT["```{dot}\nGraphviz\n(sin ejecución)"]
+```
+
+Para docencia en ingeniería y matemáticas, los motores más relevantes son `python` y `r`. Pueden coexistir en el mismo documento:
+
+```yaml
+# En _quarto.yml o en el frontmatter
+execute:
+  freeze: auto
+```
+
+```python
+# El motor se activa chunk por chunk
+# No hay conflicto entre usar Python y R en el mismo .qmd
+```
+
+### Variables compartidas entre chunks
+
+Dentro del mismo motor, todas las variables son compartidas — exactamente como en Jupyter:
+
+````markdown
+```python
+# Chunk 1: definir datos
+import numpy as np
+datos = np.array([4.5, 5.2, 5.8, 4.9, 6.5, 5.5, 3.8, 6.1])
+n = len(datos)
+```
+
+```python
+# Chunk 2: usar los datos del chunk 1 (misma sesión Python)
+media = np.mean(datos)
+print(f"n = {n}, media = {media:.3f}")
+```
+````
+
+::: {.callout-warning}
+## El orden de ejecución importa
+Los chunks se ejecutan de arriba a abajo en el orden en que aparecen en el documento. Si defines una variable en el chunk 5 y la usas en el chunk 3, el documento fallará al renderizar — aunque funcione en modo interactivo si ejecutaste el chunk 5 primero.
+
+Antes de publicar cualquier notebook o documento Quarto:
+1. Abre una sesión nueva (reinicia el kernel)
+2. Ejecuta el documento de arriba a abajo
+3. Verifica que todo funciona sin errores
+:::
+
+### Sintaxis de opciones con `#|`
+
+Las opciones de un chunk se declaran al principio con el prefijo `#|` (para Python/R) — un estilo consistente que no depende del lenguaje:
+
+````python
+```python
+#| echo: true          # mostrar el código
+#| eval: true          # ejecutar el código
+#| warning: false      # ocultar warnings
+#| message: false      # ocultar mensajes de carga
+#| label: fig-scatter  # etiqueta para referencias cruzadas
+#| fig-cap: "Scatter de asistencia vs nota."
+#| fig-width: 8
+#| fig-height: 5
+
+import pandas as pd
+import seaborn as sns
+
+df = pd.DataFrame({
+    'asistencia': [62, 68, 71, 75, 80, 84, 88, 91, 95, 98],
+    'nota_final': [3.6, 3.9, 4.1, 4.5, 4.8, 5.2, 5.5, 5.8, 6.1, 6.4]
+})
+
+sns.scatterplot(data=df, x='asistencia', y='nota_final')
+```
+````
+
+El estilo alternativo (heredado de R Markdown) pone las opciones dentro de la llave, pero se desaconseja en Quarto:
+
+````python
+```{python, echo=TRUE, warning=FALSE}
+# Estilo antiguo — funciona pero no recomendado en Quarto
+```
+````
+
+---
+
+## Opciones de chunk: echo, eval, fig-cap, warning
+
+### Tabla completa de opciones
+
+| Opción | Tipo | Defecto | Descripción |
+|---|---|---|---|
+| `echo` | bool / `"fenced"` | `true` | Mostrar el código fuente |
+| `eval` | bool | `true` | Ejecutar el código |
+| `output` | bool / `"asis"` | `true` | Mostrar el output |
+| `include` | bool | `true` | Incluir código y output |
+| `warning` | bool | `true` | Mostrar warnings |
+| `error` | bool | `false` | Detener en error o continuar |
+| `message` | bool | `true` | Mostrar mensajes |
+| `cache` | bool | `false` | Cachear este chunk individual |
+| `freeze` | `auto` / bool | heredado | Freeze del chunk |
+| `label` | string | — | Etiqueta única (requerida para cross-refs) |
+| `fig-cap` | string | — | Caption de la figura |
+| `fig-subcap` | lista | — | Captions de subfiguras |
+| `fig-width` | número | `7` | Ancho en pulgadas |
+| `fig-height` | número | `5` | Alto en pulgadas |
+| `fig-align` | `left/center/right` | `center` | Alineación |
+| `fig-format` | `png/svg/pdf` | `png` | Formato de la imagen |
+| `fig-dpi` | número | `96` | Resolución en puntos por pulgada |
+| `tbl-cap` | string | — | Caption de la tabla |
+| `code-fold` | bool | heredado | Colapsar código en HTML |
+| `code-summary` | string | `"Show the code"` | Texto del botón de fold |
+
+### `echo`: controlar la visibilidad del código
+
+```python
+#| echo: true          # default — muestra el código
+```
+
+```python
+#| echo: false         # oculta el código, muestra solo el output
+#                      # útil para figuras finales donde el código es distractor
+```
+
+```python
+#| echo: "fenced"      # muestra el código SIN ejecutarlo
+#                      # útil para documentar cómo se usa una función
+```
+
+**Uso pedagógico de `echo: false`:**
+
+En una guía de laboratorio, puedes tener la configuración inicial (cargar datos, imports) con `echo: false` para que el estudiante no se distraiga con el boilerplate, y los chunks del análisis con `echo: true` para que vea el código relevante:
+
+````python
+```python
+#| echo: false
+#| message: false
+# Configuración silenciosa
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+plt.rcParams['figure.dpi'] = 120
+sns.set_theme(style='whitegrid')
+df = pd.read_csv('datos.csv')
+```
+
+```python
+#| echo: true
+# Estadísticas descriptivas — el estudiante ve este código
+df.describe().round(2)
+```
+````
+
+### `eval`: ejecutar o no el código
+
+```python
+#| eval: true          # default — ejecuta el código
+```
+
+```python
+#| eval: false         # no ejecuta, solo muestra el código
+#                      # útil para mostrar ejemplos de sintaxis sin correr
+```
+
+```python
+#| echo: false
+#| eval: true          # ejecuta sin mostrar el código
+#                      # útil para setup silencioso
+```
+
+Combinaciones útiles para docencia:
+
+| `echo` | `eval` | Efecto | Cuándo usarlo |
+|---|---|---|---|
+| `true` | `true` | Muestra código + output | Análisis que el estudiante debe seguir |
+| `true` | `false` | Muestra código sin output | Documentar sintaxis, mostrar ejemplos sin correr |
+| `false` | `true` | Output sin código | Figuras finales, tablas de resumen |
+| `false` | `false` | Nada visible | Nunca — usa `include: false` |
+| `include: false` | — | Código ejecutado, nada visible | Setup oculto que define variables |
+
+### `warning` y `message`
+
+```python
+#| warning: false      # oculta warnings de Python/R
+#| message: false      # oculta mensajes (ej: "Loading required package: ggplot2")
+```
+
+Para documentos docentes, casi siempre quieres ambos en `false` globalmente y solo activarlos cuando el warning es pedagógicamente relevante:
+
+```yaml
+# En _quarto.yml — aplicar globalmente
+execute:
+  warning: false
+  message: false
+```
+
+```python
+#| warning: true   # sobreescribe para este chunk específico
+# Aquí mostramos el warning de convergencia intencionalmente
+from sklearn.linear_model import LogisticRegression
+modelo = LogisticRegression(max_iter=10)  # pocas iteraciones → warning intencional
+modelo.fit(X, y)
+```
+
+### Opciones de figuras en detalle
+
+````python
+```python
+#| label: fig-evolucion          # debe empezar con "fig-" para cross-refs de figuras
+#| fig-cap: |                    # caption multilínea con |
+#|   Evolución de la nota promedio por semestre y carrera.
+#|   Las líneas punteadas indican la nota mínima de aprobación (4.0).
+#| fig-width: 10
+#| fig-height: 6
+#| fig-align: center
+#| fig-dpi: 150                  # mayor resolución para PDF
+
+import matplotlib.pyplot as plt
+# código del gráfico...
+plt.show()
+```
+````
+
+### Subfiguras con `fig-subcap`
+
+````python
+```python
+#| label: fig-panel
+#| fig-cap: "Análisis descriptivo del dataset."
+#| fig-subcap:
+#|   - "Distribución de nota final"
+#|   - "Asistencia vs nota por carrera"
+#| layout-ncol: 2           # dos subfiguras en una fila
+#| fig-width: 5
+#| fig-height: 4
+
+import matplotlib.pyplot as plt
+
+# Figura (a)
+fig1, ax1 = plt.subplots()
+ax1.hist(df['nota_final'], bins=20)
+ax1.set_title('Distribución de nota final')
+plt.tight_layout()
+plt.show()
+
+# Figura (b)
+fig2, ax2 = plt.subplots()
+for carrera, g in df.groupby('carrera'):
+    ax2.scatter(g['asistencia'], g['nota_final'], label=carrera, alpha=0.6)
+ax2.legend(fontsize=8)
+ax2.set_title('Asistencia vs nota')
+plt.tight_layout()
+plt.show()
+```
+````
+
+Esto genera dos figuras numeradas como (a) y (b) dentro de un mismo bloque, con captions individuales y una caption general.
+
+---
+
+## Tablas y figuras generadas desde código
+
+### Tablas desde pandas
+
+Pandas DataFrames se muestran automáticamente como tablas HTML en formato HTML:
+
+```python
+import pandas as pd
+
+# DataFrame simple → tabla HTML automática
+df.head(5)            # la última expresión se renderiza como tabla
+```
+
+Para más control sobre el formato:
+
+````python
+```python
+#| label: tbl-estadisticas
+#| tbl-cap: "Estadísticas descriptivas del dataset de notas."
+
+import pandas as pd
+from IPython.display import display
+
+resumen = df.groupby('carrera').agg(
+    N=('nota_final', 'count'),
+    Media=('nota_final', 'mean'),
+    Mediana=('nota_final', 'median'),
+    DE=('nota_final', 'std'),
+    Min=('nota_final', 'min'),
+    Max=('nota_final', 'max')
+).round(2)
+
+display(resumen)
+```
+````
+
+### Tablas con formato con `gt` (Python) o `kable` (R)
+
+Para tablas con más control visual en HTML y PDF:
+
+````python
+```python
+#| label: tbl-resultado
+#| tbl-cap: "Comparación de modelos de clasificación."
+
+# Con pandas Styler
+import pandas as pd
+
+resultados = pd.DataFrame({
+    'Modelo':     ['Logistic Reg.', 'Random Forest', 'XGBoost'],
+    'AUC':        [0.71, 0.79, 0.84],
+    'Precision':  [0.68, 0.75, 0.80],
+    'Recall':     [0.73, 0.81, 0.87],
+    'F1-Score':   [0.70, 0.78, 0.83]
+})
+
+# Resaltar la fila con el mejor AUC
+styled = (
+    resultados.style
+    .highlight_max(subset=['AUC', 'Precision', 'Recall', 'F1-Score'],
+                   color='#c8f7c5')    # verde claro para máximos
+    .format({'AUC': '{:.2f}', 'Precision': '{:.2f}',
+             'Recall': '{:.2f}', 'F1-Score': '{:.2f}'})
+    .set_properties(**{'text-align': 'center'})
+    .set_table_styles([
+        {'selector': 'th', 'props': [('text-align', 'center'),
+                                      ('font-weight', 'bold')]}
+    ])
+    .hide(axis='index')
+)
+styled
+```
+````
+
+````r
+```{r}
+#| label: tbl-kable
+#| tbl-cap: "Resultados del modelo por carrera."
+
+library(knitr)
+library(kableExtra)
+
+resultados <- data.frame(
+  Carrera  = c("Ing. Civil", "Ing. Industrial", "Ing. Eléctrica"),
+  Media    = c(5.21, 5.08, 4.95),
+  Tasa_apr = c(0.72, 0.68, 0.61)
+)
+
+kable(resultados,
+      col.names = c("Carrera", "Media", "Tasa aprobación"),
+      align = c("l", "r", "r"),
+      digits = 2) |>
+  kable_styling(bootstrap_options = c("striped", "hover"),
+                full_width = FALSE) |>
+  row_spec(which.max(resultados$Media),
+           bold = TRUE, color = "white", background = "#2E7D32")
+```
+````
+
+### Tablas en Markdown puro (sin código)
+
+Para tablas estáticas que no vienen de datos:
+
+```markdown
+| Semana | Tema | Evaluación | Ponderación |
+|:------:|------|:----------:|:-----------:|
+| 1 | Estadística descriptiva | Quiz 1 | 5% |
+| 2 | Visualización | Lab 1 | 10% |
+| 3 | Regresión lineal | Lab 2 | 10% |
+| 4 | Regresión logística | Tarea 1 | 15% |
+| 8 | Todos los anteriores | Prueba 1 | 25% |
+
+: Calendario de evaluaciones MAT281 — 2025-1 {#tbl-calendario}
+```
+
+El `: Título {#tbl-id}` al final crea el caption y la etiqueta para cross-references.
+
+### Figuras con caption desde Markdown
+
+```markdown
+![Esquema del pipeline de aprendizaje automático.](assets/img/pipeline.png){#fig-pipeline
+  width="80%" fig-align="center"}
+```
+
+Equivalente en HTML con más opciones:
+
+```markdown
+::: {#fig-arquitectura}
+![](assets/img/arquitectura.png){width=70%}
+
+Arquitectura del Sistema de Alerta Temprana Estudiantil (SAT-E).
+Los colores indican el estado de riesgo: verde (bajo), amarillo (medio), rojo (alto).
+:::
+```
+
+---
+
+## Callouts y cajas pedagógicas
+
+Los callouts son bloques destacados con color e ícono para llamar la atención sobre información específica. Son una de las funcionalidades más usadas en material docente.
+
+### Los cinco tipos de callout
+
+````markdown
+::: {.callout-note}
+## Título opcional
+Información adicional o contexto que complementa el texto principal.
+Ícono: ℹ️ · Color: azul
+:::
+
+::: {.callout-tip}
+## Título opcional
+Consejo práctico, atajo o mejor práctica.
+Ícono: 💡 · Color: verde
+:::
+
+::: {.callout-warning}
+## Título opcional
+Advertencia sobre errores comunes o consecuencias importantes.
+Ícono: ⚠️ · Color: naranja/amarillo
+:::
+
+::: {.callout-important}
+## Título opcional
+Información crítica que no debe pasarse por alto.
+Ícono: ❗ · Color: rojo
+:::
+
+::: {.callout-caution}
+## Título opcional
+Precaución ante un procedimiento que requiere cuidado especial.
+Ícono: 🔥 · Color: naranja oscuro
+:::
+````
+
+### Apariencias de callout
+
+```yaml
+# En el frontmatter o _quarto.yml
+callout-appearance: default   # completo con color, ícono y título
+callout-appearance: simple    # más compacto, sin color de fondo
+callout-appearance: minimal   # solo el ícono a la izquierda, sin borde
+
+# Colapsar callouts por defecto (el usuario puede expandirlos)
+callout-collapse: true
+```
+
+```markdown
+::: {.callout-tip collapse="true"}
+## Pista para el ejercicio 3 (clic para ver)
+La solución requiere aplicar la regla de Bayes. Piensa en cuál es
+el evento condicionante y cuál es el evento observado.
+:::
+```
+
+### Callouts sin título
+
+```markdown
+::: {.callout-note appearance="simple"}
+Esta propiedad se demuestra en el Apéndice A.
+:::
+```
+
+### Uso pedagógico de callouts en docencia
+
+```markdown
+::: {.callout-note}
+## Contexto histórico
+La regresión lineal fue desarrollada por Francis Galton en 1886
+para estudiar la herencia de la estatura en humanos. El término
+"regresión" viene de su observación de que los hijos de padres
+muy altos tendían a tener estatura más *cercana a la media*.
+:::
+
+::: {.callout-tip}
+## Verificación rápida
+Antes de interpretar $R^2$, verifica que el diagrama de residuos
+no muestre ningún patrón sistemático. Un $R^2$ alto con residuos
+con patrón indica un modelo mal especificado.
+:::
+
+::: {.callout-warning}
+## Error frecuente
+Confundir la pendiente $\hat{\beta}_1$ con el coeficiente de
+correlación $r$. Ambos miden dirección de la relación, pero tienen
+escalas e interpretaciones distintas:
+- $r \in [-1, 1]$: adimensional
+- $\hat{\beta}_1$: en unidades de $Y$ por unidad de $X$
+:::
+
+::: {.callout-important}
+## Para el examen
+Los supuestos de la regresión lineal (linealidad, homocedasticidad,
+normalidad, independencia) **se verifican con gráficos de residuos**,
+no con pruebas de hipótesis sobre los datos crudos.
+:::
+```
+
+### Paneles con tabs (pestañas)
+
+Los paneles con tabs permiten mostrar contenido alternativo — muy útil para mostrar la misma solución en Python y en R, o comparar dos enfoques:
+
+````markdown
+::: {.panel-tabset}
+
+## Python
+
+```python
+from sklearn.linear_model import LinearRegression
+import numpy as np
+
+X = np.array([[4], [6], [8], [5], [10]])
+y = np.array([4.5, 5.2, 5.8, 4.9, 6.5])
+
+modelo = LinearRegression()
+modelo.fit(X, y)
+print(f"β₀ = {modelo.intercept_:.4f}")
+print(f"β₁ = {modelo.coef_[0]:.4f}")
+print(f"R² = {modelo.score(X, y):.4f}")
+```
+
+## R
+
+```{r}
+X <- c(4, 6, 8, 5, 10)
+y <- c(4.5, 5.2, 5.8, 4.9, 6.5)
+
+modelo <- lm(y ~ X)
+summary(modelo)
+```
+
+## Desde cero (sin librerías)
+
+```python
+import numpy as np
+
+X = np.array([4, 6, 8, 5, 10])
+y = np.array([4.5, 5.2, 5.8, 4.9, 6.5])
+
+X_bar, y_bar = X.mean(), y.mean()
+S_XY = np.sum((X - X_bar) * (y - y_bar))
+S_XX = np.sum((X - X_bar)**2)
+
+beta_1 = S_XY / S_XX
+beta_0 = y_bar - beta_1 * X_bar
+
+print(f"β₀ = {beta_0:.4f}")
+print(f"β₁ = {beta_1:.4f}")
+```
+
+:::
+````
+
+### Columnas con `columns` div
+
+````markdown
+::: {.columns}
+
+::: {.column width="55%"}
+**Texto explicativo:**
+
+La figura muestra la distribución de notas finales
+para las cuatro carreras del estudio. Se observa que
+Matemáticas tiene la mediana más alta (5.80) y menor
+dispersión (D.E. = 0.87).
+:::
+
+::: {.column width="45%"}
+```python
+#| echo: false
+#| fig-width: 5
+#| fig-height: 4
+
+import seaborn as sns
+sns.boxplot(data=df, x='nota_final', y='carrera', palette='husl')
+```
+:::
+
+:::
+````
+
+---
+
+## Cross-references: figuras, tablas, secciones
+
+### El sistema de referencias cruzadas
+
+Quarto genera automáticamente números para figuras, tablas y ecuaciones, y permite referenciarlas desde cualquier parte del documento. Si insertas una figura nueva antes de otra, todos los números se actualizan automáticamente.
+
+```{mermaid}
+graph LR
+    L["Etiqueta\n#fig-histograma\n#tbl-resultados\n#eq-media\n#sec-metodologia"]
+    R["Referencia\n@fig-histograma\n@tbl-resultados\n@eq-media\n@sec-metodologia"]
+    O["Output\nFigura 3.1\nTabla 2.1\nEcuación (4)\nSección 3.2"]
+
+    L --> O
+    R --> O
+```
+
+### Convenciones de prefijos para etiquetas
+
+| Tipo | Prefijo en etiqueta | Referencia | Output |
+|---|---|---|---|
+| Figura (chunk) | `fig-` | `@fig-nombre` | Figura 3.1 |
+| Figura (Markdown) | `fig-` | `@fig-nombre` | Figura 3.1 |
+| Tabla (chunk) | `tbl-` | `@tbl-nombre` | Tabla 2.1 |
+| Tabla (Markdown) | `tbl-` | `@tbl-nombre` | Tabla 2.1 |
+| Ecuación | `eq-` | `@eq-nombre` | Ecuación (4) |
+| Sección | `sec-` | `@sec-nombre` | Sección 3.2 |
+| Teorema | `thm-` | `@thm-nombre` | Teorema 2.1 |
+| Proposición | `prp-` | `@prp-nombre` | Proposición 1.3 |
+
+### Etiquetar y referenciar figuras
+
+````markdown
+Primero definimos el chunk con `label: fig-algo`:
+
+```python
+#| label: fig-distribucion
+#| fig-cap: "Distribución de nota final por carrera. La línea roja indica la nota mínima de aprobación."
+
+import seaborn as sns
+sns.boxplot(data=df, x='nota_final', y='carrera')
+```
+
+Luego la referenciamos en el texto con `@fig-distribucion`:
+
+Como muestra la @fig-distribucion, la distribución de Matemáticas
+es la más concentrada, con menor dispersión que las carreras de ingeniería.
+````
+
+El output renderizado dice automáticamente: "Como muestra la **Figura 3.1**, la distribución..."
+
+### Etiquetar y referenciar tablas
+
+````markdown
+```python
+#| label: tbl-resumen-carrera
+#| tbl-cap: "Estadísticas de rendimiento académico por carrera, semestre 2025-1."
+
+import pandas as pd
+resumen = df.groupby('carrera').agg(
+    N=('nota_final', 'count'),
+    Media=('nota_final', lambda x: round(x.mean(), 2)),
+    Tasa_Aprobacion=('aprobado', lambda x: f"{x.mean()*100:.1f}%")
+).reset_index()
+display(resumen)
+```
+
+Los resultados completos se muestran en la @tbl-resumen-carrera.
+::::
+
+El output: "Los resultados completos se muestran en la **Tabla 2.1**."
+````
+
+### Etiquetar y referenciar ecuaciones
+
+En Quarto, las ecuaciones se etiquetan con `{#eq-nombre}` dentro del bloque de ecuación:
+
+```markdown
+La media aritmética se define como:
+
+$$
+\bar{x} = \frac{1}{n} \sum_{i=1}^{n} x_i
+$$ {#eq-media}
+
+Y la varianza muestral como:
+
+$$
+s^2 = \frac{1}{n-1} \sum_{i=1}^{n} (x_i - \bar{x})^2
+$$ {#eq-varianza}
+
+Usando la @eq-media y la @eq-varianza, podemos calcular el
+coeficiente de variación como $CV = s / \bar{x}$.
+```
+
+Output: "Usando la **Ecuación (1)** y la **Ecuación (2)**..."
+
+### Etiquetar y referenciar secciones
+
+```markdown
+## Metodología {#sec-metodologia}
+
+### Datos utilizados {#sec-datos}
+
+El dataset se describe en la @sec-datos dentro del capítulo de @sec-metodologia.
+```
+
+Para que las referencias a secciones funcionen, el documento debe tener `number-sections: true` en el frontmatter.
+
+### Configurar el idioma de las referencias
+
+```yaml
+# En el frontmatter o _quarto.yml
+lang: es
+
+crossref:
+  fig-title: "Figura"      # "Figure" por defecto
+  tbl-title: "Tabla"
+  eq-title: "Ecuación"
+  fig-prefix: "fig."       # abreviatura usada en el texto
+  tbl-prefix: "tbl."
+  eq-prefix: "ec."
+  sec-prefix: "sec."
+  thm-title: "Teorema"
+  prp-title: "Proposición"
+```
+
+### Entornos matemáticos con referencias (teoremas, lemas)
+
+Quarto soporta entornos de theorem nativos:
+
+```markdown
+::: {#thm-bayes}
+## Teorema de Bayes
+
+Para eventos $A$ y $B$ con $P(B) > 0$:
+
+$$P(A|B) = \frac{P(B|A) \cdot P(A)}{P(B)}$$
+:::
+
+::: {#prp-mco}
+## Propiedades de los estimadores MCO
+
+Bajo los supuestos de Gauss-Markov, los estimadores MCO son MELI
+(Mejores Estimadores Lineales Insesgados).
+:::
+
+El @thm-bayes y la @prp-mco son resultados fundamentales para la
+inferencia estadística.
+```
+
+---
+
+## Salida multiformat desde un mismo `.qmd`
+
+### Definir múltiples formatos en el frontmatter
+
+```yaml
+---
+title: "Guía de Laboratorio 3: Regresión Lineal"
+author: "Juan Pérez"
+date: "2025-04-15"
+lang: es
+
+format:
+  html:
+    toc: true
+    code-fold: false
+    number-sections: true
+    theme: cosmo
+
+  pdf:
+    documentclass: article
+    toc: true
+    number-sections: true
+    geometry: "margin=2.5cm"
+    colorlinks: true
+
+  docx:
+    toc: true
+    number-sections: false
+    reference-doc: plantilla_utfsm.docx
+
+execute:
+  echo: true
+  warning: false
+  freeze: auto
+---
+```
+
+```bash
+# Renderizar todos los formatos a la vez
+quarto render lab03_regresion.qmd
+
+# Solo HTML
+quarto render lab03_regresion.qmd --to html
+
+# Solo PDF
+quarto render lab03_regresion.qmd --to pdf
+```
+
+### Contenido condicional por formato
+
+A veces necesitas contenido diferente según el formato. Por ejemplo, un aviso de interactividad que solo tiene sentido en HTML, o un salto de página que solo necesitas en PDF:
+
+````markdown
+::: {.content-visible when-format="html"}
+> 💡 **Versión interactiva:** Puedes ejecutar todo el código en Google Colab
+> haciendo clic en el botón de arriba.
+:::
+
+::: {.content-visible when-format="pdf"}
+\newpage
+:::
+
+::: {.content-hidden when-format="revealjs"}
+Esta sección se oculta en las slides — es solo para el apunte.
+:::
+````
+
+### Figuras condicionales por formato
+
+```yaml
+# Tamaños de figura distintos según el formato
+format:
+  html:
+    fig-width: 9
+    fig-height: 5
+  pdf:
+    fig-width: 6.5    # más estrecho para el ancho del texto en PDF
+    fig-height: 4
+  revealjs:
+    fig-width: 10
+    fig-height: 6
+```
+
+También puedes sobreescribir por chunk:
+
+````python
+```python
+#| fig-width: !expr "if (quarto.doc.is_format('html')) 9 else 6"
+```
+````
+
+### Configuración por formato en `_quarto.yml`
+
+```yaml
+format:
+  html:
+    execute:
+      echo: true          # HTML: mostrar código (estudiante aprende)
+  pdf:
+    execute:
+      echo: false         # PDF para imprimir: solo resultados
+  revealjs:
+    execute:
+      echo: true          # Slides: mostrar código para la clase
+```
+
+---
+
+## Caso de cierre: guía de laboratorio reproducible
+
+### El objetivo
+
+Construir una guía de laboratorio completa que:
+
+1. Se publique como HTML en el sitio del curso (con código visible).
+2. Se imprima como PDF para los estudiantes que prefieren papel (sin código, solo outputs).
+3. Tenga referencias cruzadas automáticas a figuras, tablas y ecuaciones.
+4. Use callouts para destacar instrucciones, advertencias y pistas.
+5. Sea completamente reproducible: todos los resultados salen del código.
+
+### El archivo: `labs/lab03/enunciado.qmd`
+
+````markdown
+---
+title: "Laboratorio 3: Regresión Lineal Simple"
+subtitle: "MAT281 — Aplicaciones de la Matemática en Ingeniería"
+author:
+  - name: "Prof. Juan Pérez"
+    email: "juan.perez@usm.cl"
+date: "2025-04-15"
+lang: es
+
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    toc-title: "Contenidos"
+    code-fold: false
+    code-tools: true
+    code-copy: true
+    number-sections: true
+    theme: [cosmo, ../../assets/scss/light.scss]
+    fig-align: center
+    fig-width: 9
+    fig-height: 5
+
+  pdf:
+    documentclass: article
+    toc: true
+    number-sections: true
+    geometry: "top=2.5cm, bottom=2.5cm, left=3cm, right=2.5cm"
+    colorlinks: true
+    linkcolor: NavyBlue
+    fig-width: 6.5
+    fig-height: 4
+    execute:
+      echo: false        # PDF sin código — solo los resultados
+
+execute:
+  echo: true
+  warning: false
+  message: false
+  freeze: auto
+
+crossref:
+  fig-title: "Figura"
+  tbl-title: "Tabla"
+  eq-title: "Ecuación"
+
+bibliography: ../../assets/bib/referencias.bib
+---
+
+## Objetivos de aprendizaje {#sec-objetivos}
+
+Al finalizar este laboratorio, el o la estudiante será capaz de:
+
+1. Estimar los parámetros de un modelo de regresión lineal simple por mínimos cuadrados.
+2. Evaluar la calidad del ajuste usando el coeficiente de determinación $R^2$.
+3. Verificar los supuestos del modelo mediante gráficos de diagnóstico.
+4. Interpretar los resultados en el contexto del problema.
+
+---
+
+## Datos del laboratorio {#sec-datos}
+
+```python
+#| echo: false
+#| message: false
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.ticker as ticker
+import seaborn as sns
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import r2_score
+
+plt.rcParams.update({
+    'figure.dpi': 120,
+    'axes.grid': True,
+    'grid.alpha': 0.3,
+    'axes.spines.top': False,
+    'axes.spines.right': False,
+})
+sns.set_theme(style='whitegrid')
+
+# Dataset: horas de estudio vs nota final
+np.random.seed(42)
+n = 50
+horas = np.random.uniform(2, 14, n)
+nota  = 2.5 + 0.28 * horas + np.random.normal(0, 0.5, n)
+nota  = np.clip(nota, 1.0, 7.0)
+
+df = pd.DataFrame({'horas_estudio': horas, 'nota_final': nota}).round(2)
+```
+
+El laboratorio usa un dataset de **`len(df)`** estudiantes que
+registraron sus horas de estudio semanales y su nota final en el curso.
+
+La @tbl-muestra muestra las primeras filas del dataset.
+
+```python
+#| label: tbl-muestra
+#| tbl-cap: "Primeras 8 observaciones del dataset de horas de estudio y nota final."
+
+display(df.head(8))
+```
+
+::: {.callout-note}
+## Sobre los datos
+Este dataset fue generado sintéticamente para el laboratorio, pero refleja
+patrones observados en datos institucionales reales de la UTFSM. En la
+práctica, la relación entre horas de estudio y rendimiento es más compleja
+y depende de la calidad del estudio, no solo la cantidad.
+:::
+
+### Exploración inicial
+
+```python
+#| label: fig-exploracion
+#| fig-cap: "Exploración inicial del dataset. (a) Distribución de horas de estudio. (b) Distribución de nota final. (c) Diagrama de dispersión con línea de tendencia."
+#| fig-subcap:
+#|   - "Horas de estudio"
+#|   - "Nota final"
+#|   - "Relación entre variables"
+#| layout-ncol: 3
+
+# (a) Distribución horas
+fig1, ax1 = plt.subplots(figsize=(4, 4))
+ax1.hist(df['horas_estudio'], bins=12, color='#2196F3',
+         edgecolor='white', alpha=0.8)
+ax1.set_xlabel('Horas de estudio')
+ax1.set_ylabel('Frecuencia')
+ax1.set_title('Distribución de horas')
+plt.tight_layout(); plt.show()
+
+# (b) Distribución nota
+fig2, ax2 = plt.subplots(figsize=(4, 4))
+ax2.hist(df['nota_final'], bins=12, color='#4CAF50',
+         edgecolor='white', alpha=0.8)
+ax2.axvline(x=4.0, color='red', linestyle='--', linewidth=1.5,
+            label='Nota mínima')
+ax2.set_xlabel('Nota final')
+ax2.set_ylabel('Frecuencia')
+ax2.set_title('Distribución de nota')
+ax2.legend(fontsize=9)
+plt.tight_layout(); plt.show()
+
+# (c) Scatter
+fig3, ax3 = plt.subplots(figsize=(4, 4))
+ax3.scatter(df['horas_estudio'], df['nota_final'],
+            alpha=0.6, s=50, color='#9C27B0', edgecolors='white')
+ax3.set_xlabel('Horas de estudio')
+ax3.set_ylabel('Nota final')
+ax3.set_title('Dispersión')
+plt.tight_layout(); plt.show()
+```
+
+---
+
+## Marco teórico {#sec-teoria}
+
+### El modelo de regresión lineal simple
+
+El modelo de regresión lineal simple establece que la variable respuesta
+$Y_i$ (nota final) se relaciona linealmente con la variable predictora
+$X_i$ (horas de estudio) mediante:
+
+$$
+Y_i = \beta_0 + \beta_1 X_i + \varepsilon_i, \quad i = 1, \ldots, n
+$$ {#eq-modelo}
+
+donde:
+
+- $\beta_0$: **ordenada al origen** — valor esperado de $Y$ cuando $X = 0$
+- $\beta_1$: **pendiente** — cambio esperado en $Y$ por una unidad adicional de $X$
+- $\varepsilon_i \sim \mathcal{N}(0, \sigma^2)$ i.i.d.: errores aleatorios
+
+### Estimación por mínimos cuadrados
+
+Los estimadores MCO minimizan la suma de cuadrados residuales:
+
+$$
+\text{SCR} = \sum_{i=1}^{n}(Y_i - \hat{Y}_i)^2
+             = \sum_{i=1}^{n}(Y_i - \hat{\beta}_0 - \hat{\beta}_1 X_i)^2
+$$ {#eq-scr}
+
+La solución analítica de la @eq-scr es:
+
+$$
+\hat{\beta}_1 = \frac{S_{XY}}{S_{XX}}, \qquad
+\hat{\beta}_0 = \bar{Y} - \hat{\beta}_1\bar{X}
+$$ {#eq-estimadores}
+
+donde $S_{XY} = \sum(X_i - \bar{X})(Y_i - \bar{Y})$ y
+$S_{XX} = \sum(X_i - \bar{X})^2$.
+
+---
+
+## Ejercicios {#sec-ejercicios}
+
+### Ejercicio 1: estimación de parámetros {#sec-ej1}
+
+::: {.callout-important}
+## Instrucciones
+Calcule manualmente los estimadores MCO usando las fórmulas de la @eq-estimadores.
+Luego verifique su resultado usando `LinearRegression` de scikit-learn.
+:::
+
+**Parte A: cálculo manual**
+
+```python
+#| label: tbl-calculo-manual
+#| tbl-cap: "Cantidades necesarias para el cálculo de los estimadores MCO."
+
+X = df['horas_estudio'].values
+y = df['nota_final'].values
+
+X_bar = X.mean()
+y_bar = y.mean()
+S_XY  = np.sum((X - X_bar) * (y - y_bar))
+S_XX  = np.sum((X - X_bar)**2)
+
+calculo = pd.DataFrame({
+    'Cantidad': ['$\\bar{X}$', '$\\bar{Y}$', '$S_{XY}$', '$S_{XX}$'],
+    'Valor':    [f'{X_bar:.4f}', f'{y_bar:.4f}',
+                 f'{S_XY:.4f}', f'{S_XX:.4f}']
+})
+display(calculo.style.hide(axis='index'))
+```
+
+```python
+beta_1 = S_XY / S_XX
+beta_0 = y_bar - beta_1 * X_bar
+
+print(f"β̂₁ = S_XY / S_XX = {S_XY:.4f} / {S_XX:.4f} = {beta_1:.4f}")
+print(f"β̂₀ = Ȳ - β̂₁·X̄ = {y_bar:.4f} - {beta_1:.4f}·{X_bar:.4f} = {beta_0:.4f}")
+print(f"\nModelo ajustado: Ŷ = {beta_0:.4f} + {beta_1:.4f}·X")
+```
+
+**Parte B: verificación con scikit-learn**
+
+```python
+modelo = LinearRegression()
+modelo.fit(X.reshape(-1, 1), y)
+
+print(f"β̂₀ (sklearn) = {modelo.intercept_:.4f}")
+print(f"β̂₁ (sklearn) = {modelo.coef_[0]:.4f}")
+
+assert abs(beta_0 - modelo.intercept_) < 1e-6, "β₀ no coincide"
+assert abs(beta_1 - modelo.coef_[0]) < 1e-6, "β₁ no coincide"
+print("\n✅ Los valores coinciden con el cálculo manual.")
+```
+
+::: {.callout-tip}
+## Interpretación de los parámetros
+- $\hat{\beta}_0 =$ `f"{beta_0:.4f}"`: nota esperada de un estudiante
+  con 0 horas de estudio (extrapolación fuera del rango de datos — interpretar con cautela).
+- $\hat{\beta}_1 =$ `f"{beta_1:.4f}"`: por cada hora adicional de estudio
+  semanal, la nota final aumenta en promedio `f"{beta_1:.4f}"` puntos.
+:::
+
+### Ejercicio 2: bondad de ajuste {#sec-ej2}
+
+```python
+#| label: fig-ajuste
+#| fig-cap: "Modelo de regresión ajustado sobre los datos observados. La banda sombreada representa el intervalo de confianza del 95% para la media."
+
+y_pred = modelo.predict(X.reshape(-1, 1))
+r2 = r2_score(y, y_pred)
+
+fig, ax = plt.subplots(figsize=(9, 5))
+
+# Datos observados
+ax.scatter(X, y, color='#2196F3', alpha=0.6, s=60,
+           edgecolors='white', label='Observaciones')
+
+# Línea de regresión
+x_line = np.linspace(X.min(), X.max(), 100)
+y_line = beta_0 + beta_1 * x_line
+ax.plot(x_line, y_line, color='#D32F2F', linewidth=2.5,
+        label=f'Å¶ = {beta_0:.2f} + {beta_1:.2f}X')
+
+# Intervalo de confianza (aproximación)
+n_obs = len(X)
+s2 = np.sum((y - y_pred)**2) / (n_obs - 2)
+se_line = np.sqrt(s2 * (1/n_obs + (x_line - X_bar)**2 / S_XX))
+ax.fill_between(x_line,
+                y_line - 1.96 * se_line,
+                y_line + 1.96 * se_line,
+                alpha=0.15, color='#D32F2F', label='IC 95% para E[Y|X]')
+
+ax.axhline(y=4.0, color='gray', linestyle=':', linewidth=1.5, alpha=0.7)
+ax.set_xlabel('Horas de estudio semanales')
+ax.set_ylabel('Nota final')
+ax.set_title(f'Regresión lineal ajustada  |  $R^2$ = {r2:.4f}')
+ax.legend(fontsize=10)
+plt.tight_layout()
+plt.show()
+```
+
+El $R^2 =$ `f"{r2:.4f}"` indica que el modelo de regresión lineal
+explica el `f"{r2*100:.1f}"`% de la variabilidad en la nota final
+a través de las horas de estudio.
+
+### Ejercicio 3: diagnóstico de residuos {#sec-ej3}
+
+::: {.callout-warning}
+## Por qué analizar los residuos
+Un $R^2$ alto **no garantiza** que el modelo sea válido. Es posible tener
+$R^2 = 0.95$ con violaciones graves de los supuestos (por ejemplo,
+heterocedasticidad o relación no lineal). Los gráficos de diagnóstico
+son la única forma confiable de verificar los supuestos.
+:::
+
+```python
+#| label: fig-residuos
+#| fig-cap: "Gráficos de diagnóstico de residuos. (a) Residuos vs valores ajustados. (b) Q-Q plot de residuos (normalidad). (c) Histograma de residuos."
+#| fig-subcap:
+#|   - "Residuos vs ajustados"
+#|   - "Q-Q plot"
+#|   - "Histograma de residuos"
+#| layout-ncol: 3
+
+from scipy import stats
+
+residuos = y - y_pred
+
+# (a) Residuos vs ajustados
+fig1, ax1 = plt.subplots(figsize=(4, 4))
+ax1.scatter(y_pred, residuos, alpha=0.6, s=40, color='#FF9800')
+ax1.axhline(y=0, color='red', linestyle='--', linewidth=1.5)
+ax1.set_xlabel('Valores ajustados (Å¶)')
+ax1.set_ylabel('Residuos (Y - Å¶)')
+ax1.set_title('Residuos vs ajustados')
+plt.tight_layout(); plt.show()
+
+# (b) Q-Q plot
+fig2, ax2 = plt.subplots(figsize=(4, 4))
+stats.probplot(residuos, dist='norm', plot=ax2)
+ax2.set_title('Q-Q plot de residuos')
+ax2.get_lines()[0].set(marker='o', markersize=5, alpha=0.6, color='#9C27B0')
+ax2.get_lines()[1].set(color='red', linewidth=1.5)
+plt.tight_layout(); plt.show()
+
+# (c) Histograma
+fig3, ax3 = plt.subplots(figsize=(4, 4))
+ax3.hist(residuos, bins=12, color='#4CAF50', edgecolor='white', alpha=0.8)
+ax3.axvline(x=0, color='red', linestyle='--', linewidth=1.5)
+ax3.set_xlabel('Residuo')
+ax3.set_ylabel('Frecuencia')
+ax3.set_title('Distribución de residuos')
+plt.tight_layout(); plt.show()
+```
+
+---
+
+## Resumen de resultados {#sec-resumen}
+
+```python
+#| label: tbl-resumen-final
+#| tbl-cap: "Resumen del modelo de regresión lineal ajustado."
+#| echo: false
+
+sct = np.sum((y - y_bar)**2)
+scr = np.sum(residuos**2)
+sce = sct - scr
+s2  = scr / (n_obs - 2)
+
+resumen = pd.DataFrame({
+    'Parámetro': [
+        'Ordenada al origen ($\\hat{\\beta}_0$)',
+        'Pendiente ($\\hat{\\beta}_1$)',
+        'Error estándar residual ($\\hat{\\sigma}$)',
+        'Coef. de determinación ($R^2$)',
+        'N° observaciones'
+    ],
+    'Valor': [
+        f'{beta_0:.4f}',
+        f'{beta_1:.4f}',
+        f'{np.sqrt(s2):.4f}',
+        f'{r2:.4f}',
+        str(n_obs)
+    ]
+})
+display(resumen.style.hide(axis='index'))
+```
+
+::: {.callout-note}
+## Conclusión
+El modelo `f"Å¶ = {beta_0:.2f} + {beta_1:.2f}X"` explica el
+`f"{r2*100:.1f}"`% de la variabilidad en la nota final.
+Los gráficos de residuos en la @fig-residuos sugieren que los supuestos
+de linealidad, homocedasticidad y normalidad se satisfacen razonablemente.
+:::
+
+---
+
+## Referencias
+
+::: {#refs}
+:::
+````
+
+---
+
+## Referencias del capítulo
+
+- Allaire, J.J. et al. (2022). *Quarto documentation: Authoring*. [quarto.org/docs/authoring](https://quarto.org/docs/authoring/)
+- Quarto Docs. *Cross references*. [quarto.org/docs/authoring/cross-references.html](https://quarto.org/docs/authoring/cross-references.html)
+- Quarto Docs. *Callout blocks*. [quarto.org/docs/authoring/callouts.html](https://quarto.org/docs/authoring/callouts.html)
+- Quarto Docs. *Code chunks*. [quarto.org/docs/computations/execution-options.html](https://quarto.org/docs/computations/execution-options.html)
+- Quarto Docs. *Output formats*. [quarto.org/docs/output-formats/all-formats.html](https://quarto.org/docs/output-formats/all-formats.html)
+- Xie, Y. (2023). *knitr: A General-Purpose Package for Dynamic Report Generation in R*. [yihui.org/knitr](https://yihui.org/knitr/)

@@ -1,0 +1,152 @@
+---
+title: "Estadística Descriptiva en R"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    code-fold: true
+---
+
+En estadística, la estadística descriptiva se encarga de **resumir y describir** las características más importantes de un conjunto de datos. A través de medidas numéricas y representaciones gráficas, permite obtener una visión general de la distribución, tendencia central y dispersión de los datos.
+
+A continuación, se presentan los principales conceptos y funciones utilizadas en R para realizar un análisis estadístico descriptivo.
+
+## Cargar datos de ejemplo
+
+Usaremos el conjunto de datos `mtcars`, incorporado en R.
+
+```{r}
+data(mtcars)
+head(mtcars)
+```
+
+## Medidas de Tendencia Central
+
+### Media
+
+La **media** o promedio es el valor central obtenido al sumar todos los valores y dividirlos por el número total de observaciones.
+
+```r
+mean(mtcars$mpg)
+```
+
+### Mediana
+
+La **mediana** es el valor que se encuentra en el centro de los datos ordenados. Es resistente a valores extremos.
+
+```r
+median(mtcars$mpg)
+```
+
+### Moda
+
+R no tiene una función directa para calcular la moda. Podemos definir una función personalizada:
+
+```r
+moda <- function(x) {
+  ux <- unique(x)
+  ux[which.max(tabulate(match(x, ux)))]
+}
+
+moda(mtcars$cyl)
+```
+
+## Medidas de Dispersión
+
+### Rango
+
+El **rango** es la diferencia entre el valor máximo y mínimo del conjunto de datos.
+
+```r
+range(mtcars$hp)
+diff(range(mtcars$hp))
+```
+
+### Varianza y Desviación Estándar
+
+La **varianza** mide la dispersión de los datos respecto a la media. La **desviación estándar** es la raíz cuadrada de la varianza.
+
+```r
+var(mtcars$wt)
+sd(mtcars$wt)
+```
+
+### Coeficiente de Variación
+
+Relación entre la desviación estándar y la media, expresado como porcentaje.
+
+```r
+cv <- sd(mtcars$wt) / mean(mtcars$wt)
+cv
+```
+
+## Medidas de Posición
+
+### Cuartiles y Percentiles
+
+Dividen los datos en partes iguales.
+
+```r
+quantile(mtcars$mpg)
+quantile(mtcars$mpg, probs = c(0.25, 0.5, 0.75))
+```
+
+## Tabla de Frecuencia
+
+Para variables categóricas o discretas.
+
+```r
+table(mtcars$cyl)
+prop.table(table(mtcars$cyl))
+```
+
+## Resumen General
+
+La función `summary()` entrega un resumen estadístico para cada variable numérica.
+
+```r
+summary(mtcars)
+```
+
+## Visualizaciones Básicas
+
+### Histograma
+
+```r
+hist(mtcars$mpg,
+     main = "Histograma de mpg",
+     xlab = "Millas por galón",
+     col = "lightblue",
+     border = "black")
+```
+
+### Boxplot
+
+```r
+boxplot(mtcars$mpg,
+        main = "Boxplot de mpg",
+        ylab = "Millas por galón",
+        col = "salmon")
+```
+
+### Diagrama de Dispersión
+
+```r
+plot(mtcars$wt, mtcars$mpg,
+     main = "mpg vs peso del vehículo",
+     xlab = "Peso (1000 lbs)",
+     ylab = "Millas por galón",
+     pch = 19,
+     col = "darkgreen")
+```
+
+## Bonus: Paquete `psych` para descripción extendida
+
+```r
+# install.packages("psych")  # descomenta si no lo tienes instalado
+library(psych)
+describe(mtcars)
+```
+
+
+

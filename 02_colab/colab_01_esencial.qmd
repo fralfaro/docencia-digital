@@ -1,0 +1,865 @@
+---
+title: "Colab esencial"
+subtitle: "Notebooks en la nube para docencia práctica"
+---
+
+Google Colab resuelve uno de los problemas más frustrantes de enseñar programación: la heterogeneidad de entornos. Un estudiante tiene Mac, otro Windows, otro Linux. Uno tiene Python 3.10, otro 3.12. Uno tiene instalado pandas, otro no. Las primeras dos horas de una clase práctica se van en "a mí no me funciona".
+
+Google Colab elimina ese problema: todos ejecutan el mismo código en el mismo entorno, desde el navegador, sin instalar nada. El docente sube un notebook, los estudiantes abren el link y trabajan. Así de simple.
+
+Este capítulo cubre Colab desde la lógica fundamental — qué es un notebook, cómo funciona — hasta los aspectos que importan en docencia: acceso a datos, colaboración y conexión con GitHub.
+
+---
+
+## Qué es un notebook y la lógica de celdas
+
+### El modelo mental del notebook
+
+Un notebook es un documento que mezcla **código ejecutable** y **texto formateado** en una secuencia de bloques llamados celdas. A diferencia de un script Python (que es solo código) o un documento Word (que es solo texto), un notebook permite intercalar explicación y ejecución: una celda explica el concepto, la siguiente lo demuestra con código, la siguiente muestra el resultado.
+
+```{mermaid}
+graph TD
+    N["📓 Notebook"]
+    N --> C1["📝 Celda Markdown\n## Regresión lineal\nLa regresión lineal modela..."]
+    N --> C2["💻 Celda de código\nfrom sklearn.linear_model import...\nmodelo = LinearRegression()"]
+    N --> C3["📊 Output\nCoeficiente: 2.34\n[gráfico]"]
+    N --> C4["📝 Celda Markdown\n### Interpretación\nEl coeficiente de 2.34..."]
+    N --> C5["💻 Celda de código\nprint(modelo.score(X_test, y_test))"]
+    N --> C6["📊 Output\n0.847"]
+```
+
+Esta estructura es ideal para docencia porque el material es a la vez la explicación y el código ejecutable. No hay separación entre "el apunte" y "el código de la clase".
+
+### La lógica de ejecución: el kernel
+
+El código en un notebook no corre de forma aislada celda por celda — comparte un **kernel**: un proceso Python que mantiene el estado entre ejecuciones.
+
+Esto significa que si en la celda 3 defines `x = 10`, en la celda 7 puedes usar `x` y su valor será `10`. El orden de ejecución importa, no la posición en el notebook.
+
+```{mermaid}
+graph LR
+    K["🧠 Kernel Python\n(estado compartido)"]
+    C1["Celda 1\nx = 10"] --> K
+    C2["Celda 2\ny = x * 2"] --> K
+    C3["Celda 5\nprint(x + y)"] --> K
+    K --> O["Output: 30"]
+```
+
+::: {.callout-warning}
+## El error más común en notebooks para docentes
+Ejecutar celdas fuera de orden en clase. Si defines una variable en la celda 8 y la usas en la celda 3, funciona si ejecutas 8 antes de 3. Pero cuando un estudiante corre el notebook desde el principio (`Entorno de ejecución → Reiniciar y ejecutar todo`), falla. 
+
+**Regla de oro:** antes de publicar un notebook, siempre haz `Reiniciar sesión de ejecución → Ejecutar todo` y verifica que corre de arriba a abajo sin errores.
+:::
+
+### Google Colab como entorno de notebooks
+
+Google Colab es un servicio de notebooks hospedado por Google. Lo que obtienes:
+
+- **Entorno Python preconfigurado:** pandas, numpy, matplotlib, scikit-learn y decenas de librerías ya instaladas.
+- **Almacenamiento en Google Drive:** los notebooks se guardan automáticamente en tu Drive.
+- **Acceso desde cualquier dispositivo:** solo necesitas un navegador y una cuenta Google.
+- **Recursos de cómputo gratuitos:** CPU, RAM y opcionalmente GPU/TPU en la nube.
+- **Colaboración en tiempo real:** funciona como Google Docs para notebooks.
+
+> 🖼️ **Asset:** `assets/img/tool/tool__google-colab.png` — logo de Google Colab para encabezar la sección.
+
+Para abrir Colab: [colab.research.google.com](https://colab.research.google.com)
+
+---
+
+## Celdas de código vs celdas de texto (Markdown)
+
+### Celdas de código
+
+Las celdas de código contienen Python (o R con extensiones). Para ejecutarlas:
+
+- **Shift+Enter** — ejecuta la celda y mueve el cursor a la siguiente
+- **Ctrl+Enter** (Cmd+Enter en Mac) — ejecuta la celda y permanece en ella
+- **Alt+Enter** — ejecuta la celda y crea una nueva debajo
+- Clic en el botón ▶ a la izquierda de la celda
+
+El output de la celda (lo que imprime, los gráficos que genera, los DataFrames que muestra) aparece inmediatamente debajo.
+
+```python
+# Celda de código: cálculo simple
+import numpy as np
+
+datos = [23, 45, 12, 67, 34, 89, 21]
+media = np.mean(datos)
+desv = np.std(datos)
+
+print(f"Media: {media:.2f}")
+print(f"Desviación estándar: {desv:.2f}")
+```
+
+```
+Media: 41.57
+Desviación estándar: 25.27
+```
+
+**Mostrar el valor de la última expresión:** si la última línea de una celda es una expresión (no un `print`), Colab la muestra automáticamente. Muy útil para DataFrames:
+
+```python
+import pandas as pd
+df = pd.read_csv("datos.csv")
+df.head()        # no necesita print() — se muestra como tabla formateada
+```
+
+**Número de ejecución:** cada celda muestra `[n]` a su izquierda, donde `n` es el orden en que fue ejecutada. `[1]` fue la primera en correr, `[7]` la séptima. Esto te permite saber si una celda fue ejecutada y en qué orden.
+
+### Celdas de texto (Markdown)
+
+Las celdas de texto usan **Markdown** — un lenguaje de marcado simple que se renderiza como HTML formateado. Son el corazón de la parte explicativa del notebook.
+
+Para agregar una celda de texto: `+ Texto` en la barra superior, o presiona `Esc` y luego `M` sobre una celda seleccionada.
+
+Para editar: doble clic en la celda. Para renderizar: Shift+Enter o clic fuera.
+
+**Sintaxis Markdown esencial:**
+
+```markdown
+# Título principal (H1)
+## Sección (H2)
+### Subsección (H3)
+
+Párrafo normal. **Negrita**, *cursiva*, `código inline`.
+
+Lista no ordenada:
+- Elemento 1
+- Elemento 2
+  - Subelemento
+
+Lista numerada:
+1. Primero
+2. Segundo
+
+> Cita o nota importante
+
+---   (línea horizontal)
+
+[Texto del link](https://url.com)
+
+![Descripción imagen](url_imagen.png)
+```
+
+**Matemáticas con LaTeX en celdas Markdown:**
+
+Colab renderiza LaTeX directamente en celdas de texto. Esto es especialmente valioso para cursos de matemáticas, estadística e ingeniería:
+
+```markdown
+La ecuación de la recta de regresión es:
+
+$$\hat{y} = \beta_0 + \beta_1 x$$
+
+donde $\beta_0$ es la ordenada al origen y $\beta_1$ es la pendiente.
+
+Los coeficientes se estiman minimizando la suma de cuadrados residuales:
+
+$$\text{SCR} = \sum_{i=1}^{n} (y_i - \hat{y}_i)^2$$
+```
+
+Se renderiza como:
+
+> La ecuación de la recta de regresión es: $\hat{y} = \beta_0 + \beta_1 x$
+>
+> Los coeficientes se estiman minimizando: $\text{SCR} = \sum_{i=1}^{n} (y_i - \hat{y}_i)^2$
+
+::: {.callout-tip}
+## Atajos de teclado esenciales en Colab
+
+| Atajo | Acción |
+|---|---|
+| `Shift+Enter` | Ejecutar celda y pasar a la siguiente |
+| `Ctrl+Enter` | Ejecutar celda sin moverse |
+| `Ctrl+M B` | Insertar celda de código debajo |
+| `Ctrl+M A` | Insertar celda de código arriba |
+| `Ctrl+M M` | Convertir celda a Markdown |
+| `Ctrl+M Y` | Convertir celda a código |
+| `Ctrl+M D` | Eliminar celda |
+| `Ctrl+M Z` | Deshacer |
+| `Ctrl+/` | Comentar/descomentar código seleccionado |
+| `Ctrl+Shift+P` | Paleta de comandos (busca cualquier acción) |
+
+En Mac, reemplaza `Ctrl` por `Cmd`.
+:::
+
+### Estructura recomendada de un notebook docente
+
+Un notebook bien estructurado para una clase sigue este patrón:
+
+```
+📓 semana03_regresion_lineal.ipynb
+
+├── 📝 [Markdown] Encabezado
+│     Título, curso, semana, objetivos de la sesión
+│
+├── 📝 [Markdown] 0. Configuración
+│     Qué librerías se usan y por qué
+├── 💻 [Código] Imports y configuración global
+│
+├── 📝 [Markdown] 1. Contexto y motivación
+│     El problema que vamos a resolver, datos de ejemplo
+├── 💻 [Código] Cargar y explorar datos
+│
+├── 📝 [Markdown] 2. Concepto central
+│     Explicación con LaTeX si aplica
+├── 💻 [Código] Implementación paso a paso
+├── 📊 [Output] Resultados y gráficos
+│
+├── 📝 [Markdown] 3. Interpretación
+│     Qué significan los resultados
+├── 💻 [Código] Variaciones y casos borde
+│
+├── 📝 [Markdown] 4. Ejercicios
+│     Instrucciones claras, espacio para respuestas
+├── 💻 [Código] # Tu solución aquí
+│
+└── 📝 [Markdown] 5. Resumen
+      Puntos clave, links a material adicional
+```
+
+---
+
+## Runtime, tipos de hardware y GPU gratuita
+
+### Qué es el runtime
+
+El **runtime** (o sesión de ejecución) es la instancia de computación que corre tu notebook. Cuando abres Colab y ejecutas una celda, se inicia un runtime: una máquina virtual en los servidores de Google con Python instalado, memoria RAM y acceso a disco.
+
+El runtime tiene un tiempo de vida limitado:
+
+| Condición | Tiempo hasta desconexión |
+|---|---|
+| Notebook inactivo (sin ejecutar celdas) | ~90 minutos |
+| Sesión activa continua | ~12 horas (plan gratuito) |
+| Navegador cerrado | ~90 minutos |
+
+Cuando el runtime se desconecta, **se pierde todo lo que estaba en memoria**: variables, resultados, archivos descargados. Los notebooks guardados en Drive no se pierden, pero hay que volver a ejecutar el código.
+
+::: {.callout-warning}
+## Guarda los resultados en Drive, no en el runtime
+Si tu notebook genera un archivo de resultados (modelo entrenado, dataset procesado, gráfico), guárdalo explícitamente en Google Drive dentro del notebook. No confíes en que el archivo estará en el sistema de archivos del runtime la próxima vez que abras el notebook.
+
+```python
+# Guardar en Drive (después de montarlo)
+df_resultados.to_csv('/content/drive/MyDrive/mat281/resultados.csv', index=False)
+```
+:::
+
+### Tipos de hardware disponibles
+
+Colab ofrece tres tipos de acelerador de hardware para el runtime:
+
+| Acelerador | Para qué sirve | Disponibilidad |
+|---|---|---|
+| **CPU** | Código Python general, pandas, sklearn, análisis de datos | Siempre disponible, gratuito |
+| **GPU (T4)** | Redes neuronales, deep learning, procesamiento de matrices grandes | Gratuito (con límites de uso) |
+| **TPU** | Entrenamiento de modelos grandes con TensorFlow/JAX | Gratuito (más restrictivo) |
+
+Para cursos de ciencia de datos y análisis estadístico, **CPU es suficiente**. Solo necesitas GPU si tu curso incluye deep learning o procesas imágenes/texto a escala.
+
+**Cambiar el tipo de hardware:**
+
+`Entorno de ejecución → Cambiar tipo de entorno de ejecución → Acelerador de hardware`
+
+::: {.callout-note}
+## GPU gratuita: cómo usarla responsablemente en clase
+La GPU gratuita de Colab tiene límites de uso que Google ajusta según la demanda. Si 40 estudiantes de tu curso intentan usar GPU al mismo tiempo en una clase práctica, algunos pueden no obtenerla. Para clases de deep learning, considera:
+
+- Asignar la tarea con GPU para trabajo individual fuera del horario de clase.
+- Usar datasets pequeños que corran razonablemente en CPU.
+- Evaluar Colab Pro+ o Google Cloud para clases con uso intensivo de GPU.
+:::
+
+### Verificar el hardware asignado
+
+```python
+# Verificar GPU disponible
+import subprocess
+result = subprocess.run(['nvidia-smi'], capture_output=True, text=True)
+if result.returncode == 0:
+    print(result.stdout)
+else:
+    print("No hay GPU disponible en este runtime")
+
+# Alternativa con torch
+import torch
+print(f"CUDA disponible: {torch.cuda.is_available()}")
+if torch.cuda.is_available():
+    print(f"GPU: {torch.cuda.get_device_name(0)}")
+    print(f"Memoria GPU: {torch.cuda.get_device_properties(0).total_memory / 1e9:.1f} GB")
+```
+
+### Reconectar al runtime
+
+Cuando el runtime se desconecta (o decides reiniciarlo), tienes estas opciones:
+
+- **Entorno de ejecución → Reiniciar sesión:** mantiene los archivos del runtime, pero limpia la memoria (variables y módulos importados).
+- **Entorno de ejecución → Reiniciar sesión y ejecutar todo:** reinicia y corre todas las celdas de arriba a abajo. El estado del notebook ideal.
+- **Entorno de ejecución → Desconectar y eliminar el entorno de ejecución:** libera la máquina virtual completamente.
+
+Para reconectar automáticamente cuando el navegador está inactivo, algunos usuarios usan este snippet (aunque Google lo desaconseja para no desperdiciar recursos):
+
+```javascript
+// Ejecutar en la consola del navegador (F12 → Console)
+// Solo para sesiones propias, no para clases con estudiantes
+function KeepAlive() {
+  document.querySelector("#top-toolbar > colab-connect-button").shadowRoot
+    .querySelector("#connect").click();
+}
+setInterval(KeepAlive, 60000);
+```
+
+---
+
+## Montar Google Drive para acceder a archivos
+
+### Por qué montar Drive
+
+El runtime de Colab tiene su propio sistema de archivos (`/content/`), pero es temporal — desaparece cuando el runtime se desconecta. Google Drive es el almacenamiento persistente: los archivos que guardas ahí permanecen entre sesiones.
+
+Montar Drive conecta `/content/drive/` en el runtime con tu Google Drive real. A partir de ese momento, leer y escribir archivos en esa ruta es exactamente lo mismo que leer y escribir en tu Drive.
+
+### Montar Drive con código
+
+```python
+from google.colab import drive
+drive.mount('/content/drive')
+```
+
+Al ejecutar esta celda, Colab muestra un link de autorización. Haz clic, selecciona tu cuenta Google, copia el código de autorización y pégalo en el campo que aparece en el notebook.
+
+Después del montaje:
+
+```python
+import os
+
+# Verificar que Drive está montado
+print(os.listdir('/content/drive/MyDrive'))
+
+# Navegar a una carpeta del curso
+ruta_curso = '/content/drive/MyDrive/mat281-2025-1'
+os.makedirs(ruta_curso, exist_ok=True)  # crea la carpeta si no existe
+print(os.listdir(ruta_curso))
+```
+
+### Leer archivos desde Drive
+
+```python
+import pandas as pd
+
+# Leer un CSV desde una carpeta del curso en Drive
+df = pd.read_csv('/content/drive/MyDrive/mat281-2025-1/datasets/datos.csv')
+df.head()
+```
+
+```python
+# Leer un Excel
+df = pd.read_excel('/content/drive/MyDrive/mat281-2025-1/datasets/datos.xlsx',
+                   sheet_name='Hoja1')
+```
+
+```python
+# Leer múltiples archivos CSV desde una carpeta
+import pathlib
+
+carpeta = pathlib.Path('/content/drive/MyDrive/mat281-2025-1/datasets/raw')
+dataframes = []
+for archivo in carpeta.glob('*.csv'):
+    df_temp = pd.read_csv(archivo)
+    df_temp['archivo_origen'] = archivo.name
+    dataframes.append(df_temp)
+
+df_combinado = pd.concat(dataframes, ignore_index=True)
+print(f"Total de filas: {len(df_combinado)}")
+```
+
+### Guardar archivos en Drive
+
+```python
+# Guardar DataFrame como CSV
+df_resultados.to_csv(
+    '/content/drive/MyDrive/mat281-2025-1/resultados/semana03_resultados.csv',
+    index=False,
+    encoding='utf-8-sig'    # encoding correcto para caracteres en español
+)
+
+# Guardar un modelo de scikit-learn
+import joblib
+joblib.dump(modelo, '/content/drive/MyDrive/mat281-2025-1/modelos/modelo_reg.pkl')
+
+# Guardar un gráfico
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots(figsize=(10, 6))
+ax.scatter(X, y, alpha=0.5)
+ax.set_xlabel('Variable predictora')
+ax.set_ylabel('Variable respuesta')
+fig.savefig(
+    '/content/drive/MyDrive/mat281-2025-1/graficos/dispersion_semana03.png',
+    dpi=150,
+    bbox_inches='tight'
+)
+```
+
+### Estructura de carpetas recomendada en Drive para un curso
+
+```
+Google Drive/
+└── mat281-2025-1/
+    ├── notebooks/           # notebooks del curso (o enlazados desde GitHub)
+    ├── datasets/
+    │   ├── raw/             # datos originales sin modificar
+    │   └── processed/       # datos procesados
+    ├── resultados/          # outputs de análisis
+    ├── modelos/             # modelos entrenados
+    ├── graficos/            # visualizaciones guardadas
+    └── entregas/            # trabajos de estudiantes (si usas Drive para esto)
+```
+
+::: {.callout-tip}
+## Función de configuración inicial para notebooks del curso
+Crea una celda de configuración estándar que todos los notebooks del curso usen al inicio. Esto garantiza que todos los estudiantes montan Drive y configuran las rutas de la misma manera:
+
+```python
+# ── Configuración inicial del curso ─────────────────────────
+from google.colab import drive
+import os, pathlib
+
+drive.mount('/content/drive')
+
+# Rutas base del curso
+DRIVE_ROOT = pathlib.Path('/content/drive/MyDrive/mat281-2025-1')
+DIR_DATOS  = DRIVE_ROOT / 'datasets'
+DIR_GRAFICOS = DRIVE_ROOT / 'graficos'
+
+# Crear carpetas si no existen
+for d in [DIR_DATOS, DIR_GRAFICOS]:
+    d.mkdir(parents=True, exist_ok=True)
+
+print(f"✅ Drive montado. Curso en: {DRIVE_ROOT}")
+# ─────────────────────────────────────────────────────────────
+```
+:::
+
+### Alternativa: subir archivos directamente al runtime
+
+Para archivos pequeños y de uso temporal (no necesitas persistencia):
+
+```python
+from google.colab import files
+
+# Subir archivo desde tu computador
+subido = files.upload()
+# → abre un diálogo de selección de archivos
+
+# El archivo queda en /content/
+import io
+df = pd.read_csv(io.BytesIO(subido['datos.csv']))
+```
+
+```python
+# Descargar un archivo desde el runtime a tu computador
+files.download('/content/resultados.csv')
+```
+
+---
+
+## Instalar librerías con pip
+
+### Las librerías preinstaladas en Colab
+
+Colab incluye de fábrica la mayoría de las librerías que necesitas para ciencia de datos e ingeniería:
+
+```python
+# Verificar versiones de las librerías principales preinstaladas
+import pandas, numpy, matplotlib, seaborn, sklearn, scipy
+
+for lib in [pandas, numpy, matplotlib, seaborn, sklearn, scipy]:
+    print(f"{lib.__name__}: {lib.__version__}")
+```
+
+Librerías notables que vienen preinstaladas: `pandas`, `numpy`, `matplotlib`, `seaborn`, `scikit-learn`, `scipy`, `tensorflow`, `torch`, `transformers`, `statsmodels`, `plotly`, `opencv`.
+
+### Instalar librerías adicionales
+
+Para librerías que no están preinstaladas, usa `pip` directamente en una celda de código con el prefijo `!`:
+
+```python
+# Instalación básica
+!pip install nombre-libreria
+
+# Instalar versión específica (importante para reproducibilidad)
+!pip install pandas==2.1.0
+
+# Instalar múltiples librerías
+!pip install missingno ydata-profiling sweetviz
+
+# Instalar desde GitHub (versión de desarrollo)
+!pip install git+https://github.com/autor/libreria.git
+
+# Instalar en modo silencioso (sin mostrar todo el output)
+!pip install -q libreria-grande
+```
+
+::: {.callout-warning}
+## Las instalaciones no persisten entre sesiones
+Cuando el runtime se desconecta y reconectas, las librerías instaladas con `pip` desaparecen. Debes instalarlas de nuevo al comenzar cada sesión.
+
+La solución práctica: pon todas las instalaciones de librerías no-estándar en la primera celda del notebook, claramente marcada:
+
+```python
+# ── Instalación de librerías no preinstaladas ────────────────
+!pip install -q missingno ydata-profiling
+# ─────────────────────────────────────────────────────────────
+```
+
+Los estudiantes saben que deben ejecutar esa celda antes de continuar.
+:::
+
+### Ejemplo de celda de configuración completa para un laboratorio
+
+```python
+# ══════════════════════════════════════════════════════════════
+# LAB 3 — Regresión Lineal
+# MAT281 — 2025-1
+# Ejecuta esta celda primero (puede tardar 1-2 minutos)
+# ══════════════════════════════════════════════════════════════
+
+# Librerías adicionales
+!pip install -q missingno pingouin
+
+# Importaciones estándar
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.linear_model import LinearRegression
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_squared_error, r2_score
+
+# Configuración de visualización
+plt.rcParams['figure.figsize'] = (10, 6)
+plt.rcParams['axes.grid'] = True
+plt.rcParams['grid.alpha'] = 0.3
+sns.set_theme(style='whitegrid', palette='husl')
+
+# Google Drive
+from google.colab import drive
+drive.mount('/content/drive')
+
+import pathlib
+CURSO = pathlib.Path('/content/drive/MyDrive/mat281-2025-1')
+
+print("✅ Entorno configurado correctamente")
+print(f"   NumPy:      {np.__version__}")
+print(f"   Pandas:     {pd.__version__}")
+print(f"   Matplotlib: {plt.matplotlib.__version__}")
+print(f"   Sklearn:    {sklearn.__version__}")
+```
+
+### Verificar si una librería está instalada antes de instalar
+
+```python
+import importlib.util
+
+def verificar_o_instalar(nombre_paquete, nombre_import=None):
+    """Instala el paquete solo si no está disponible."""
+    if nombre_import is None:
+        nombre_import = nombre_paquete
+
+    if importlib.util.find_spec(nombre_import) is None:
+        print(f"Instalando {nombre_paquete}...")
+        import subprocess
+        subprocess.run(['pip', 'install', '-q', nombre_paquete], check=True)
+        print(f"✅ {nombre_paquete} instalado")
+    else:
+        print(f"✅ {nombre_paquete} ya disponible")
+
+verificar_o_instalar('missingno')
+verificar_o_instalar('ydata-profiling', 'ydata_profiling')
+```
+
+---
+
+## Compartir notebooks y gestionar permisos
+
+### Opciones de compartición
+
+Un notebook de Colab es un archivo `.ipynb` guardado en Google Drive. Se comparte exactamente igual que cualquier archivo de Drive, con las mismas opciones de permisos.
+
+**Opciones de acceso:**
+
+| Tipo de acceso | Cuándo usarlo en docencia |
+|---|---|
+| **Restringido** (solo personas específicas) | Soluciones, material privado, notebooks con datos sensibles |
+| **Cualquier persona con el link — Solo lectura** | Material de clase para que los estudiantes vean y copien |
+| **Cualquier persona con el link — Comentarista** | Para que los estudiantes puedan anotar sin modificar el original |
+| **Cualquier persona con el link — Editor** | Colaboración activa (peligroso: cualquiera puede modificar) |
+
+**Para compartir el material de una clase:** usa **Solo lectura**. Los estudiantes pueden abrir el notebook, hacer una copia en su propio Drive (`Archivo → Guardar una copia en Drive`) y trabajar en su copia sin afectar el original.
+
+::: {.callout-tip}
+## El flujo ideal para distribuir notebooks en clase
+1. El docente crea el notebook en su Drive y lo comparte con "Cualquier persona con el link — Solo lectura".
+2. Publica el link en el LMS del curso o en el README del repositorio de GitHub.
+3. El estudiante abre el link, ve el notebook.
+4. El estudiante hace `Archivo → Guardar una copia en Drive` — crea su propia copia editable.
+5. El estudiante trabaja en su copia. El original del docente no se ve afectado.
+
+Este flujo evita el problema de que un estudiante modifique accidentalmente (o intencionalmente) el notebook original del docente.
+:::
+
+### Colaboración en tiempo real
+
+Si compartes con permisos de **Editor**, múltiples personas pueden editar el notebook simultáneamente — como Google Docs. Colab muestra los cursores de los colaboradores en tiempo real.
+
+Esto es útil para:
+- **Sesiones de pair programming** entre estudiantes.
+- **Revisión conjunta** de código en clase (docente proyecta, estudiante edita desde su computador).
+- **Ayudantías remotas** donde el ayudante puede ver y modificar el código del estudiante.
+
+Para colaboración docente-ayudante en el material del curso, es mejor trabajar en repositorios de GitHub y abrir desde ahí, en lugar de colaborar directamente en el archivo de Drive.
+
+### Abrir notebooks desde URLs externas
+
+Colab puede abrir notebooks directamente desde varias fuentes:
+
+```python
+# Estructura de URL para abrir desde GitHub:
+# https://colab.research.google.com/github/usuario/repo/blob/main/ruta/al/notebook.ipynb
+
+# Ejemplo:
+# https://colab.research.google.com/github/fralfaro/mat281/blob/main/lectures/semana03/notebook.ipynb
+```
+
+Esto significa que puedes publicar el link a "Abrir en Colab" directamente en tu README de GitHub:
+
+```markdown
+[![Abrir en Colab](https://colab.research.google.com/assets/colab-badge.svg)](
+https://colab.research.google.com/github/tu-username/mat281/blob/main/lectures/semana03/notebook.ipynb)
+```
+
+> 🖼️ **Asset sugerido (no en assets):** badge azul "Open in Colab" que aparece en los READMEs de GitHub — es el ícono estándar reconocido por cualquier usuario de Colab.
+
+### Configurar permisos desde Python
+
+```python
+from google.colab import drive
+# No es posible configurar permisos de Drive desde código en Colab.
+# Los permisos se gestionan desde la interfaz de Drive o desde la API de Google Drive
+# (requiere autenticación OAuth, más avanzado).
+```
+
+Para gestión masiva de permisos (por ejemplo, dar acceso a todos los estudiantes del curso a una carpeta), usa la interfaz web de Google Drive o Google Workspace Admin si tu institución lo tiene.
+
+---
+
+## Conectar Colab con un repositorio de GitHub
+
+### Por qué conectar Colab con GitHub
+
+La conexión Colab-GitHub cierra el ciclo de trabajo profesional:
+
+- El código fuente vive en GitHub (versionado, colaborativo, publicado en Pages).
+- La ejecución ocurre en Colab (sin instalación, con GPU si es necesario).
+- Los cambios se persisten de vuelta en GitHub (no en Drive).
+
+Para un curso, esto significa que el flujo de trabajo es: editas el notebook en Colab, guardas de vuelta en GitHub, y el sitio del curso en GitHub Pages se actualiza automáticamente.
+
+```{mermaid}
+graph LR
+    GH["🐙 GitHub\nRepositorio del curso"]
+    CO["💻 Google Colab\nEjecución"]
+    GD["💾 Google Drive\n(opcional, para datos)"]
+
+    GH -- "Abrir desde GitHub\ncolab.research.google.com/github/..." --> CO
+    CO -- "git push (guardar cambios)" --> GH
+    GD -- "mount Drive (datos grandes)" --> CO
+```
+
+### Opción A: Clonar el repositorio en el runtime
+
+El método más robusto para trabajar con el repositorio completo:
+
+```python
+# 1. Clonar el repositorio en el runtime
+!git clone https://github.com/tu-username/mat281-2025-1.git
+
+# 2. Cambiar al directorio del repositorio
+import os
+os.chdir('/content/mat281-2025-1')
+
+# 3. Verificar
+!ls -la
+!git log --oneline -5
+```
+
+Para clonar un repositorio privado, necesitas autenticación:
+
+```python
+# Con token personal (lo guardas en un Secret de Colab)
+from google.colab import userdata
+token = userdata.get('GITHUB_TOKEN')   # se configura en Colab → Secrets (🔑)
+
+!git clone https://{token}@github.com/tu-username/mat281-privado.git
+```
+
+Para configurar el Secret en Colab: menú izquierdo → ícono 🔑 (Secrets) → **Agregar nuevo secret** → `GITHUB_TOKEN`.
+
+### Hacer commits y push desde Colab
+
+```python
+# Configurar identidad para los commits
+!git config user.email "juan.perez@usm.cl"
+!git config user.name "Juan Pérez"
+
+# Ver qué cambió
+!git status
+
+# Agregar cambios
+!git add lectures/semana03/notebook.ipynb
+
+# Commit
+!git commit -m "feat: completo ejercicios semana 3 en Colab"
+
+# Push al repositorio remoto
+# Requiere autenticación configurada (token o SSH)
+from google.colab import userdata
+token = userdata.get('GITHUB_TOKEN')
+
+!git remote set-url origin https://{token}@github.com/tu-username/mat281-2025-1.git
+!git push origin main
+```
+
+::: {.callout-tip}
+## Función auxiliar para push desde Colab
+Para no repetir el código de autenticación en cada notebook, crea una función de utilidad:
+
+```python
+def git_push(mensaje_commit, branch='main'):
+    """Hace commit y push al repositorio con autenticación via token."""
+    from google.colab import userdata
+    import subprocess
+
+    token = userdata.get('GITHUB_TOKEN')
+
+    commands = [
+        'git add -A',
+        f'git commit -m "{mensaje_commit}"',
+        f'git remote set-url origin https://{token}@github.com/tu-username/mat281-2025-1.git',
+        f'git push origin {branch}'
+    ]
+
+    for cmd in commands:
+        result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
+        if result.returncode != 0:
+            print(f"❌ Error en: {cmd}")
+            print(result.stderr)
+            return False
+
+    print(f"✅ Push exitoso: {mensaje_commit}")
+    return True
+
+# Uso:
+git_push("feat: agrego solución ejercicio 3")
+```
+:::
+
+### Opción B: Integración nativa GitHub ↔ Colab
+
+Colab tiene integración nativa con GitHub desde la interfaz:
+
+**Abrir desde GitHub:**
+1. `Archivo → Abrir notebook → GitHub`
+2. Busca el repositorio o pega la URL
+3. Selecciona el notebook
+
+**Guardar en GitHub:**
+1. `Archivo → Guardar una copia en GitHub`
+2. Selecciona repositorio y branch
+3. Escribe el mensaje de commit
+4. Colab hace el commit directamente
+
+Esta opción es más amigable para usuarios no técnicos, pero tiene menos control que el método de clonar y usar git desde terminal.
+
+### Opción C: Abrir notebooks de GitHub con un clic
+
+Para los estudiantes, la forma más sencilla de acceder a los notebooks del curso es con el badge de Colab en el README:
+
+```markdown
+# README.md del curso
+
+## Material de clases
+
+| Semana | Tema | Colab | GitHub |
+|--------|------|-------|--------|
+| 1 | Estadística descriptiva | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tu-username/mat281/blob/main/lectures/semana01/notebook.ipynb) | [Ver](lectures/semana01/) |
+| 2 | Visualización | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tu-username/mat281/blob/main/lectures/semana02/notebook.ipynb) | [Ver](lectures/semana02/) |
+```
+
+El estudiante hace clic en el badge, se abre el notebook en Colab directamente desde GitHub, hace una copia en su Drive y trabaja. Sin clonar, sin instalar, sin configurar.
+
+---
+
+## Resumen: el flujo docente con Colab
+
+```{mermaid}
+sequenceDiagram
+    participant D as 💻 Docente
+    participant C as ☁️ Google Colab
+    participant GD as 💾 Google Drive
+    participant GH as 🐙 GitHub
+
+    D->>GH: push notebook semana 4
+    D->>D: comparte link "Abrir en Colab" con estudiantes
+
+    Note over D,C: Preparación de clase
+
+    D->>C: abre notebook desde GitHub
+    C->>GD: mount Drive (datos del curso)
+    D->>C: ejecuta y ajusta el notebook
+    D->>GH: Archivo → Guardar copia en GitHub
+
+    Note over C,GH: Clase práctica
+
+    participant E as 👨‍🎓 Estudiante
+    E->>C: clic en badge "Abrir en Colab"
+    C->>GD: mount Drive propio
+    E->>C: ejecuta celdas, completa ejercicios
+    E->>GD: guarda resultados en su Drive
+```
+
+### Checklist para un notebook de clase listo para distribuir
+
+```
+Estructura:
+☐ Celda de título con: nombre del notebook, curso, semana, fecha
+☐ Celda de objetivos: qué aprenderá el estudiante
+☐ Celda de configuración: instalaciones pip + imports + mount Drive
+☐ Secciones numeradas con celdas Markdown explicativas
+☐ Celdas de ejercicios con instrucciones claras ("# Tu código aquí")
+☐ Celda de resumen final con puntos clave
+
+Calidad:
+☐ Ejecutado de arriba a abajo sin errores (Reiniciar → Ejecutar todo)
+☐ Outputs visibles en las celdas (no ejecutar sin guardar outputs)
+☐ LaTeX renderizado correctamente en celdas de texto
+☐ Gráficos con títulos, etiquetas de ejes y leyendas
+
+Distribución:
+☐ Notebook en GitHub con badge "Abrir en Colab" en el README
+☐ Permisos de Drive: Solo lectura para el original
+☐ Link publicado en el LMS del curso antes de la clase
+☐ Probado desde una cuenta distinta a la del docente
+```
+
+---
+
+## Referencias
+
+- Google. *Bienvenido a Colaboratory*. [colab.research.google.com](https://colab.research.google.com/notebooks/intro.ipynb)
+- Google. *Colab FAQ*. [research.google.com/colaboratory/faq.html](https://research.google.com/colaboratory/faq.html)
+- Géron, A. (2022). *Hands-On Machine Learning* (3ª ed.). O'Reilly. Todos los notebooks disponibles en Colab.
+- Vanderplas, J. (2023). *Python Data Science Handbook*. O'Reilly. [jakevdp.github.io/PythonDataScienceHandbook](https://jakevdp.github.io/PythonDataScienceHandbook/)
+- Google Colab Tips. *Advanced features*. [colab.research.google.com/notebooks/basic_features_overview.ipynb](https://colab.research.google.com/notebooks/basic_features_overview.ipynb)

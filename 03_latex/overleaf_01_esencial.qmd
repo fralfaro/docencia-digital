@@ -1,0 +1,1191 @@
+---
+title: "LaTeX esencial"
+subtitle: "El estándar de publicación académica desde cero"
+---
+
+Si alguna vez has intentado escribir una ecuación compleja en Word y pasado diez minutos ajustando el formato para que no se vea horrible, ya entiendes por qué existe LaTeX. Si alguna vez has enviado un documento a una revista científica y te han pedido que lo reformates en su plantilla, ya entiendes por qué LaTeX es el estándar.
+
+LaTeX no es un procesador de texto — es un sistema de composición tipográfica. Tú describes la *estructura* del documento (esto es una sección, esto es una ecuación, esto es una figura), y LaTeX decide cómo se ve. El resultado es tipografía de calidad profesional, matemáticas perfectas, referencias cruzadas automáticas y bibliografías que se actualizan solas.
+
+Este capítulo cubre lo esencial para que un docente universitario pueda producir guías de ejercicios, apuntes, evaluaciones e informes con LaTeX desde cero.
+
+---
+
+## Por qué LaTeX es el estándar en publicación académica
+
+### La realidad de la publicación científica
+
+Más del 90% de las revistas de matemáticas, física, ingeniería y ciencias de la computación aceptan o requieren LaTeX. La razón es simple: ningún otro sistema produce ecuaciones matemáticas de esa calidad tipográfica. Cuando ves una fórmula bien compuesta en un paper, casi con certeza fue hecha en LaTeX.
+
+```{mermaid}
+graph LR
+    W["📝 Word/Google Docs"]
+    L["⚙️ LaTeX"]
+    Q["📄 Quarto (.qmd)"]
+
+    W -->|"WYSIWYG\nves el resultado mientras escribes"| O1["❌ Ecuaciones limitadas\n❌ Numeración manual\n❌ Referencias frágiles\n✅ Curva de entrada baja"]
+    L -->|"Markup\ndescribes la estructura"| O2["✅ Ecuaciones perfectas\n✅ Numeración automática\n✅ Referencias robustas\n❌ Curva de entrada alta"]
+    Q -->|"Markdown + LaTeX\nhíbrido"| O3["✅ Ecuaciones LaTeX\n✅ Código ejecutable\n✅ Publicación web/PDF\n✅ Curva de entrada media"]
+```
+
+### Ventajas concretas para docentes
+
+**Consistencia tipográfica total.** LaTeX aplica las mismas reglas en todo el documento. Nunca vas a tener una ecuación más grande que otra porque alguien cambió el tamaño de fuente manualmente.
+
+**Numeración automática.** Secciones, ecuaciones, figuras, tablas, teoremas — todo se numera solo. Si insertas una figura nueva en el medio del documento, todas las referencias se actualizan.
+
+**Separación de contenido y formato.** Cambiar el formato de todo el documento (para ajustarlo a la plantilla de una revista) es cambiar una línea en el preámbulo. En Word requeriría revisar cada párrafo manualmente.
+
+**Estabilidad a largo plazo.** Un archivo `.tex` de 1990 compila igual hoy. Un archivo `.docx` de 2010 puede verse distorsionado en Word 2024.
+
+**Colaboración con control de versiones.** Al ser texto plano, los archivos `.tex` funcionan perfectamente con Git — puedes ver exactamente qué línea cambió en cada commit.
+
+### Cuándo NO usar LaTeX
+
+LaTeX no siempre es la herramienta correcta:
+
+- **Documentos administrativos simples** (actas, circulares, formularios): usa Word o Google Docs.
+- **Material que necesitas editar rápidamente con colaboradores no técnicos**: Overleaf ayuda, pero sigue siendo LaTeX.
+- **Documentos con muchas imágenes flotantes y diseño visual complejo**: InDesign es mejor.
+- **Sitios web y material interactivo**: Quarto es superior (y puede usar LaTeX para ecuaciones).
+
+::: {.callout-tip}
+## LaTeX y Quarto: herramientas complementarias
+En este curso usamos ambas. LaTeX en Overleaf para documentos formales: guías de ejercicios, exámenes, informes técnicos, tesis. Quarto para material del curso en web: apuntes, notebooks, sitios. Quarto usa la sintaxis de LaTeX para ecuaciones, así que aprender LaTeX acá tiene doble beneficio.
+:::
+
+---
+
+## Estructura de un documento: preámbulo, cuerpo, paquetes
+
+### El modelo mental de un documento LaTeX
+
+Un archivo LaTeX (`.tex`) tiene exactamente dos partes:
+
+```latex
+% ── PREÁMBULO ──────────────────────────────────────────────────
+\documentclass[opciones]{clase}   % tipo de documento
+\usepackage{paquete}              % cargar extensiones
+
+% configuraciones, macros propias, metadata
+
+% ── CUERPO ─────────────────────────────────────────────────────
+\begin{document}
+
+El contenido del documento va aquí.
+
+\end{document}
+```
+
+Todo lo que está antes de `\begin{document}` es el **preámbulo**. Todo lo que está entre `\begin{document}` y `\end{document}` es el **cuerpo**.
+
+### Clases de documento
+
+La clase define el tipo de documento y sus parámetros por defecto:
+
+```latex
+\documentclass[12pt, letterpaper, spanish]{article}
+%              ↑     ↑             ↑
+%              tamaño papel        idioma
+%              de fuente
+```
+
+| Clase | Para qué | Uso en docencia |
+|---|---|---|
+| `article` | Artículos, guías, apuntes cortos | Guías de ejercicios, informes |
+| `report` | Documentos más largos con capítulos | Informes de laboratorio, tesis cortas |
+| `book` | Libros con partes y capítulos | Apuntes completos del curso |
+| `beamer` | Presentaciones | Slides de clase (equivalente a RevealJS) |
+| `IEEEtran` | Estilo IEEE | Papers de ingeniería y computación |
+
+Opciones de clase más comunes:
+
+```latex
+\documentclass[
+  12pt,          % tamaño de fuente (10pt, 11pt, 12pt)
+  letterpaper,   % tamaño de papel (a4paper, letterpaper)
+  twoside,       % impresión a doble cara
+  spanish        % idioma (afecta guiones, fechas, "Índice" vs "Contents")
+]{article}
+```
+
+### Paquetes esenciales
+
+Los paquetes extienden las capacidades de LaTeX. Este es el conjunto mínimo para un documento en español con matemáticas:
+
+```latex
+% ── Idioma y codificación ──────────────────────────────────────
+\usepackage[utf8]{inputenc}          % codificación del archivo (UTF-8)
+\usepackage[T1]{fontenc}             % codificación de fuente (tildes correctas)
+\usepackage[spanish, es-nodecimaldot]{babel}  % español sin punto decimal
+\usepackage{csquotes}                % comillas tipográficas correctas
+
+% ── Márgenes y geometría ───────────────────────────────────────
+\usepackage[
+  top=2.5cm, bottom=2.5cm,
+  left=2.5cm, right=2.5cm
+]{geometry}
+
+% ── Matemáticas ────────────────────────────────────────────────
+\usepackage{amsmath}                 % entornos matemáticos avanzados
+\usepackage{amssymb}                 % símbolos matemáticos adicionales
+\usepackage{amsthm}                  % teoremas, lemas, demostraciones
+\usepackage{mathtools}               % extensiones de amsmath
+
+% ── Figuras ────────────────────────────────────────────────────
+\usepackage{graphicx}                % incluir imágenes
+\usepackage{float}                   % control de posicionamiento [H]
+\usepackage{caption}                 % personalización de pies de figura
+\usepackage{subcaption}              % subfiguras (a), (b), (c)
+
+% ── Tablas ─────────────────────────────────────────────────────
+\usepackage{booktabs}                % tablas de publicación académica
+\usepackage{array}                   % columnas con ancho fijo
+\usepackage{longtable}               % tablas que se extienden a varias páginas
+\usepackage{multirow}                % celdas que ocupan varias filas
+
+% ── Hipervínculos y referencias ────────────────────────────────
+\usepackage[colorlinks=true,
+            linkcolor=blue,
+            citecolor=blue,
+            urlcolor=blue]{hyperref} % links clicables (siempre el último paquete)
+
+% ── Código fuente ──────────────────────────────────────────────
+\usepackage{listings}                % bloques de código
+\usepackage{xcolor}                  % colores para syntax highlighting
+
+% ── Tipografía ─────────────────────────────────────────────────
+\usepackage{microtype}               % mejoras tipográficas sutiles (justificación)
+\usepackage{parskip}                 % párrafos separados por espacio, sin sangría
+```
+
+### Documento mínimo funcional
+
+```latex
+\documentclass[12pt, letterpaper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage[top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage[colorlinks=true, linkcolor=blue, citecolor=blue]{hyperref}
+
+% ── Metadata ───────────────────────────────────────────────────
+\title{Guía de Ejercicios N°3\\
+       \large Regresión Lineal y Mínimos Cuadrados}
+\author{Juan Pérez\\
+        \small Departamento de Matemáticas\\
+        \small Universidad Técnica Federico Santa María}
+\date{Primer semestre 2025}
+
+\begin{document}
+
+\maketitle                          % genera título, autor y fecha
+
+\tableofcontents                    % índice automático
+\newpage
+
+\section{Introducción}
+Texto de la sección...
+
+\end{document}
+```
+
+::: {.callout-note}
+## Compilación: del `.tex` al `.pdf`
+LaTeX no genera PDF directamente desde el archivo `.tex` — necesita compilarse. En Overleaf esto ocurre automáticamente al hacer clic en "Recompilar". Localmente, el comando es:
+
+```bash
+pdflatex documento.tex    # primera pasada
+bibtex documento          # procesar bibliografía (si la hay)
+pdflatex documento.tex    # segunda pasada (referencias)
+pdflatex documento.tex    # tercera pasada (índice, cross-refs)
+```
+
+Las múltiples pasadas existen porque LaTeX resuelve referencias cruzadas en dos fases: primero registra las etiquetas, luego las usa. Overleaf hace esto automáticamente.
+:::
+
+---
+
+## Secciones, párrafos y listas
+
+### Jerarquía de secciones
+
+```latex
+\part{Parte I: Álgebra Lineal}           % solo en book/report
+\chapter{Vectores y matrices}             % solo en book/report
+\section{Definiciones fundamentales}
+\subsection{Vectores en $\mathbb{R}^n$}
+\subsubsection{Norma de un vector}
+\paragraph{Norma Euclidiana.}             % sin número
+\subparagraph{Caso especial.}             % sin número
+```
+
+LaTeX numera automáticamente hasta `subsubsection`. Para suprimir la numeración de una sección específica, usa el asterisco:
+
+```latex
+\section*{Introducción}     % sin número, y NO aparece en el índice
+```
+
+Para que aparezca en el índice pero sin número:
+
+```latex
+\section*{Introducción}
+\addcontentsline{toc}{section}{Introducción}
+```
+
+### Párrafos y saltos de línea
+
+```latex
+Este es el primer párrafo. En LaTeX, los párrafos se separan
+con una línea en blanco, no con Enter.
+
+Este es el segundo párrafo. LaTeX maneja el espaciado
+automáticamente — nunca uses \\ para separar párrafos.
+
+% Salto de línea forzado (solo dentro de entornos, no para párrafos)
+Primera línea \\
+Segunda línea
+
+% Salto de página explícito
+\newpage
+\clearpage    % además vacía todos los floats pendientes (figuras)
+```
+
+### Énfasis y formato de texto
+
+```latex
+Texto \textbf{en negrita} para conceptos clave.
+Texto \textit{en cursiva} para términos nuevos o títulos de obras.
+Texto \texttt{en monoespaciado} para código: \texttt{df.head()}.
+Texto \underline{subrayado} (úsalo con moderación).
+Texto \emph{enfatizado} — cursiva por defecto, negrita si ya estás en cursiva.
+
+% Tamaños de fuente (relativo al \documentclass)
+{\tiny texto muy pequeño}
+{\footnotesize texto de nota al pie}
+{\small texto pequeño}
+{\normalsize texto normal}
+{\large texto grande}
+{\Large texto más grande}
+{\LARGE texto aún más grande}
+{\huge texto enorme}
+```
+
+### Listas
+
+```latex
+% Lista no ordenada
+\begin{itemize}
+    \item Primer elemento
+    \item Segundo elemento
+    \item[$\bullet$] Elemento con bullet personalizado
+    \item[$\checkmark$] Elemento con checkmark
+\end{itemize}
+
+% Lista numerada
+\begin{enumerate}
+    \item Primer paso
+    \item Segundo paso
+        \begin{enumerate}
+            \item[a)] Subpaso a (con etiqueta personalizada)
+            \item[b)] Subpaso b
+        \end{enumerate}
+    \item Tercer paso
+\end{enumerate}
+
+% Lista de definiciones
+\begin{description}
+    \item[Media aritmética] Suma de valores dividida por el total de observaciones.
+    \item[Mediana] Valor central de un conjunto ordenado de datos.
+    \item[Moda] Valor que aparece con mayor frecuencia.
+\end{description}
+```
+
+Para personalizar las listas con más control, usa el paquete `enumitem`:
+
+```latex
+\usepackage{enumitem}
+
+% Lista con espaciado reducido (ideal para guías de ejercicios)
+\begin{enumerate}[noitemsep, label=\textbf{\arabic*.}]
+    \item Calcula la media y mediana del siguiente conjunto de datos.
+    \item Determina si la distribución es simétrica.
+    \item Grafica el histograma con 5 intervalos.
+\end{enumerate}
+
+% Lista con letras
+\begin{enumerate}[label=(\alph*)]
+    \item Primera alternativa
+    \item Segunda alternativa
+    \item Tercera alternativa
+\end{enumerate}
+```
+
+---
+
+## Figuras: incluir imágenes y configurar tamaño
+
+### El entorno `figure`
+
+Las figuras en LaTeX son **objetos flotantes**: LaTeX decide dónde ubicarlas para optimizar la distribución de la página. No siempre quedan exactamente donde las pusiste en el código.
+
+```latex
+\begin{figure}[htbp]
+%              ^^^^
+%              h = here (aquí, si cabe)
+%              t = top (al inicio de la página)
+%              b = bottom (al final de la página)
+%              p = page (en una página dedicada a floats)
+%              Orden de preferencia: LaTeX prueba en ese orden
+
+    \centering                              % centrar la imagen
+    \includegraphics[width=0.7\textwidth]{mi_grafico.png}
+    \caption{Distribución de notas finales por carrera, semestre 2025-1.}
+    \label{fig:distribucion_notas}          % etiqueta para referencia cruzada
+
+\end{figure}
+```
+
+Para referenciar la figura en el texto:
+
+```latex
+Como se observa en la Figura~\ref{fig:distribucion_notas}, la distribución
+de Ingeniería Civil presenta mayor dispersión.
+```
+
+El `~` evita que el número quede en una línea diferente a "Figura".
+
+### Opciones de tamaño de `\includegraphics`
+
+```latex
+% Por ancho (relativo al texto)
+\includegraphics[width=0.8\textwidth]{imagen.png}      % 80% del ancho del texto
+\includegraphics[width=0.5\linewidth]{imagen.png}      % 50% del ancho de la línea
+
+% Por alto (respeta la proporción)
+\includegraphics[height=6cm]{imagen.png}
+
+% Tamaño absoluto
+\includegraphics[width=8cm, height=5cm]{imagen.png}    % puede distorsionar
+
+% Escala relativa al tamaño original
+\includegraphics[scale=0.5]{imagen.png}                % mitad del tamaño original
+
+% Rotar
+\includegraphics[width=0.5\textwidth, angle=90]{imagen.png}
+```
+
+### Rutas de imágenes
+
+```latex
+% En el preámbulo: definir carpeta base de imágenes
+\graphicspath{{imagenes/}{figuras/}{../assets/}}
+
+% Formatos soportados (pdflatex): PNG, JPG, PDF, EPS
+% Preferir PDF para gráficos vectoriales (no pixela al escalar)
+% Preferir PNG para capturas de pantalla y gráficos rasterizados
+
+\includegraphics[width=0.6\textwidth]{graficos/distribucion}  % sin extensión: busca automáticamente
+```
+
+### Subfiguras lado a lado
+
+```latex
+\usepackage{subcaption}
+
+\begin{figure}[htbp]
+    \centering
+
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{histograma_civil.png}
+        \caption{Ingeniería Civil}
+        \label{fig:hist_civil}
+    \end{subfigure}
+    \hfill                                  % espacio horizontal entre subfiguras
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{histograma_industrial.png}
+        \caption{Ingeniería Industrial}
+        \label{fig:hist_industrial}
+    \end{subfigure}
+
+    \caption{Distribución de notas por carrera. (a) Ingeniería Civil presenta
+             mayor dispersión. (b) Ingeniería Industrial muestra distribución
+             más concentrada alrededor de la media.}
+    \label{fig:histogramas_comparacion}
+\end{figure}
+```
+
+Referencia: "En la Figura~\ref{fig:histogramas_comparacion}(a)..." o directamente "Figura~\ref{fig:hist_civil}".
+
+### Forzar la posición con `[H]`
+
+```latex
+\usepackage{float}
+
+\begin{figure}[H]               % exactamente aquí, sin flotación
+    \centering
+    \includegraphics[width=0.7\textwidth]{ejemplo.png}
+    \caption{Esta figura no se moverá de este lugar.}
+    \label{fig:fija}
+\end{figure}
+```
+
+::: {.callout-warning}
+## `[H]` puede causar espacios en blanco grandes
+Usar `[H]` en todas las figuras puede crear páginas con mucho espacio en blanco porque LaTeX no puede redistribuir el contenido. Úsalo con criterio — especialmente en documentos cortos (guías de ejercicios). Para documentos largos, confía en los especificadores `[htbp]` o al menos `[tp]`.
+:::
+
+---
+
+## Tablas: `tabular` y paquete `booktabs`
+
+### Tablas básicas con `tabular`
+
+```latex
+\begin{table}[htbp]
+    \centering
+    \caption{Estadísticas descriptivas de la nota final por carrera.}
+    \label{tab:estadisticas_notas}
+
+    \begin{tabular}{l r r r r}
+    %              ^ ^ ^ ^ ^
+    %              l = alineado a la izquierda
+    %              c = centrado
+    %              r = alineado a la derecha
+    %              | = línea vertical (evitar con booktabs)
+
+        \hline
+        Carrera & $n$ & Media & Mediana & D.E. \\
+        \hline
+        Ing. Civil       & 89  & 5.21 & 5.50 & 1.12 \\
+        Ing. Industrial  & 73  & 5.08 & 5.20 & 0.98 \\
+        Ing. Eléctrica   & 61  & 4.95 & 5.00 & 1.23 \\
+        Matemáticas      & 42  & 5.67 & 5.80 & 0.87 \\
+        \hline
+        Total            & 265 & 5.18 & 5.30 & 1.08 \\
+        \hline
+    \end{tabular}
+
+\end{table}
+```
+
+### Tablas de publicación con `booktabs`
+
+`booktabs` produce tablas con tipografía de nivel de publicación académica: líneas horizontales de distinto grosor, sin líneas verticales, con espaciado correcto.
+
+```latex
+\usepackage{booktabs}
+
+\begin{table}[htbp]
+    \centering
+    \caption{Estadísticas descriptivas de la nota final por carrera.}
+    \label{tab:estadisticas_notas_booktabs}
+
+    \begin{tabular}{@{}l r r r r@{}}
+    %              @{} elimina el espacio extra en los bordes laterales
+
+        \toprule
+        Carrera & $n$ & Media & Mediana & D.E. \\
+        \midrule
+        Ing. Civil       & 89  & 5.21 & 5.50 & 1.12 \\
+        Ing. Industrial  & 73  & 5.08 & 5.20 & 0.98 \\
+        Ing. Eléctrica   & 61  & 4.95 & 5.00 & 1.23 \\
+        Matemáticas      & 42  & 5.67 & 5.80 & 0.87 \\
+        \midrule
+        \textbf{Total}   & \textbf{265} & \textbf{5.18} & \textbf{5.30} & \textbf{1.08} \\
+        \bottomrule
+    \end{tabular}
+
+\end{table}
+```
+
+Las tres reglas de `booktabs`:
+
+| Comando | Grosor | Posición |
+|---|---|---|
+| `\toprule` | Más grueso | Encima del encabezado |
+| `\midrule` | Normal | Entre secciones de la tabla |
+| `\bottomrule` | Más grueso | Debajo de la última fila |
+
+### Columnas con ancho fijo y texto largo
+
+```latex
+\usepackage{array}
+
+\begin{tabular}{@{} p{4cm} p{8cm} r @{}}
+%                   ↑       ↑
+%                   p{ancho} = columna con ancho fijo y texto que hace wrap
+    \toprule
+    Herramienta & Descripción & Costo \\
+    \midrule
+    GitHub & Plataforma de control de versiones y colaboración para proyectos de software y materiales docentes. & Gratuito \\
+    Overleaf & Editor colaborativo de LaTeX en línea, con compilación automática y plantillas. & Gratuito / Pro \\
+    \bottomrule
+\end{tabular}
+```
+
+### Celdas que abarcan múltiples columnas: `\multicolumn`
+
+```latex
+\usepackage{multirow}
+
+\begin{tabular}{@{} l c c c c c @{}}
+    \toprule
+    & \multicolumn{2}{c}{Semestre 2024-1} & \multicolumn{2}{c}{Semestre 2024-2} \\
+    %  ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ abarca 2 columnas, centrado
+    \cmidrule(lr){2-3} \cmidrule(lr){4-5}
+    %                                   ^ línea parcial entre columnas
+    Carrera & Media & Tasa apro. & Media & Tasa apro. \\
+    \midrule
+    Ing. Civil      & 5.21 & 72\% & 5.35 & 75\% \\
+    Ing. Industrial & 5.08 & 68\% & 5.18 & 71\% \\
+    \bottomrule
+\end{tabular}
+```
+
+### Celdas que abarcan múltiples filas: `\multirow`
+
+```latex
+\begin{tabular}{@{} l l r @{}}
+    \toprule
+    Departamento & Carrera & Estudiantes \\
+    \midrule
+    \multirow{3}{*}{Matemáticas} & Matemáticas & 142 \\
+                                  & Estadística & 89  \\
+                                  & Actuaría    & 63  \\
+    \midrule
+    \multirow{2}{*}{Ingeniería}  & Civil       & 412 \\
+                                  & Industrial  & 378 \\
+    \bottomrule
+\end{tabular}
+```
+
+### Tabla generada desde Python (pandas → LaTeX)
+
+```python
+# En Google Colab, generar el código LaTeX de una tabla pandas:
+import pandas as pd
+
+resumen = df.groupby('carrera').agg(
+    n=('nota_final', 'count'),
+    media=('nota_final', 'mean'),
+    mediana=('nota_final', 'median'),
+    std=('nota_final', 'std')
+).round(2).reset_index()
+
+latex_tabla = resumen.to_latex(
+    index=False,
+    caption='Estadísticas de nota final por carrera',
+    label='tab:estadisticas',
+    column_format='@{}lrrrr@{}',
+    escape=False,     # permite LaTeX en las celdas
+    float_format='%.2f'
+)
+print(latex_tabla)
+```
+
+::: {.callout-tip}
+## Generadores de tablas LaTeX online
+Si tienes una tabla en Excel o Google Sheets, convierte a LaTeX en [tablesgenerator.com](https://www.tablesgenerator.com). Pega los datos, elige el estilo `booktabs` y copia el código generado. Ahorra el tiempo de escribir la tabla a mano.
+:::
+
+---
+
+## Referencias cruzadas con `\label` y `\ref`
+
+### El sistema de etiquetas
+
+Las referencias cruzadas son una de las grandes ventajas de LaTeX: las figuras, tablas, ecuaciones y secciones se numeran automáticamente, y puedes referenciarlas por nombre sin preocuparte por el número actual.
+
+```latex
+% 1. Definir la etiqueta (donde está el elemento)
+\section{Resultados}
+\label{sec:resultados}
+
+\begin{equation}
+    \bar{x} = \frac{1}{n}\sum_{i=1}^{n} x_i
+    \label{eq:media_aritmetica}
+\end{equation}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.7\textwidth]{histograma.png}
+    \caption{Histograma de notas.}
+    \label{fig:histograma_notas}
+\end{figure}
+
+\begin{table}[htbp]
+    \centering
+    \caption{Estadísticas descriptivas.}
+    \label{tab:estadisticas}
+    ...
+\end{table}
+```
+
+```latex
+% 2. Referenciar desde cualquier parte del documento
+En la Sección~\ref{sec:resultados} se presentan los análisis.
+La media aritmética se define en la Ecuación~\ref{eq:media_aritmetica}.
+El histograma (Figura~\ref{fig:histograma_notas}) muestra...
+Los datos completos están en la Tabla~\ref{tab:estadisticas}.
+```
+
+### Convenciones de nombres de etiquetas
+
+```latex
+% Prefijos convencionales (facilitan la lectura del código)
+\label{fig:nombre}       % figuras
+\label{tab:nombre}       % tablas
+\label{eq:nombre}        % ecuaciones
+\label{sec:nombre}       % secciones
+\label{thm:nombre}       % teoremas
+\label{def:nombre}       % definiciones
+\label{lem:nombre}       % lemas
+\label{prop:nombre}      % proposiciones
+\label{ex:nombre}        % ejemplos
+```
+
+### El paquete `cleveref` para referencias más inteligentes
+
+```latex
+\usepackage{cleveref}   % cargar DESPUÉS de hyperref
+
+% En lugar de escribir "Figura~\ref{...}" explícitamente:
+\cref{fig:histograma_notas}    % → "figura 3.1"
+\Cref{fig:histograma_notas}    % → "Figura 3.1" (mayúscula)
+
+% Múltiples referencias de una vez
+\cref{fig:hist_civil,fig:hist_industrial}  % → "figuras 3.1 y 3.2"
+
+% Rangos
+\cref{eq:media,eq:varianza,eq:std}  % → "ecuaciones 2.1 a 2.3"
+```
+
+### Páginas y referencias especiales
+
+```latex
+% Página donde está el elemento
+en la página~\pageref{fig:histograma_notas}
+
+% En documentos largos: combinación de ref y pageref
+Ver Figura~\ref{fig:histograma_notas} (p.~\pageref{fig:histograma_notas}).
+
+% Referencia a la última página (para saber cuántas páginas tiene el doc)
+\usepackage{lastpage}
+Total de páginas: \pageref{LastPage}
+```
+
+---
+
+## Bibliografía con BibTeX y `\cite`
+
+### El sistema de bibliografía en LaTeX
+
+LaTeX tiene un sistema bibliográfico de dos partes:
+
+1. **Base de datos bibliográfica** (`.bib`): archivo de texto con las referencias en formato BibTeX.
+2. **Citas en el documento** (`\cite`): referencias a las entradas del `.bib`.
+
+El procesador BibTeX genera automáticamente la sección de bibliografía con el formato correcto.
+
+```{mermaid}
+graph LR
+    A["📄 documento.tex\n\\cite{wickham2016}"] --> B["⚙️ BibTeX\n(procesador)"]
+    C["📚 referencias.bib\n@book{wickham2016...}"] --> B
+    B --> D["📄 Bibliografía formateada\nWickham, H. (2016).\nR for Data Science..."]
+```
+
+### El archivo `.bib`: tipos de entrada
+
+Cada entrada en el `.bib` tiene un tipo (`@book`, `@article`, etc.) y campos obligatorios y opcionales.
+
+```bibtex
+% Libro
+@book{wickham2016,
+  author    = {Wickham, Hadley and Grolemund, Garrett},
+  title     = {R for Data Science},
+  subtitle  = {Import, Tidy, Transform, Visualize, and Model Data},
+  publisher = {O'Reilly Media},
+  year      = {2016},
+  edition   = {1},
+  isbn      = {978-1491910399},
+  url       = {https://r4ds.hadley.nz}
+}
+
+% Artículo de revista
+@article{hunter2007,
+  author   = {Hunter, John D.},
+  title    = {Matplotlib: A 2D Graphics Environment},
+  journal  = {Computing in Science \& Engineering},
+  volume   = {9},
+  number   = {3},
+  pages    = {90--95},
+  year     = {2007},
+  doi      = {10.1109/MCSE.2007.55}
+}
+
+% Artículo de conferencia
+@inproceedings{chen2016xgboost,
+  author    = {Chen, Tianqi and Guestrin, Carlos},
+  title     = {{XGBoost}: A Scalable Tree Boosting System},
+  booktitle = {Proceedings of the 22nd ACM SIGKDD International Conference
+               on Knowledge Discovery and Data Mining},
+  year      = {2016},
+  pages     = {785--794},
+  doi       = {10.1145/2939672.2939785}
+}
+
+% Tesis
+@phdthesis{perez2023,
+  author = {Pérez, Juan},
+  title  = {Modelos predictivos de deserción estudiantil en educación superior chilena},
+  school = {Universidad Técnica Federico Santa María},
+  year   = {2023},
+  type   = {Tesis de Doctorado}
+}
+
+% Sitio web / recurso en línea
+@misc{quarto2022,
+  author       = {{Allaire, J.J. and others}},
+  title        = {Quarto},
+  year         = {2022},
+  howpublished = {\url{https://quarto.org}},
+  note         = {Versión 1.5}
+}
+
+% Informe técnico
+@techreport{usm2025,
+  author      = {{Dirección de Transformación Digital}},
+  title       = {Estudio de Madurez Digital Institucional},
+  institution = {Universidad Técnica Federico Santa María},
+  year        = {2025},
+  type        = {Informe técnico}
+}
+```
+
+### Usar las citas en el documento
+
+```latex
+\begin{document}
+
+% Cita básica (número o autor-año según el estilo)
+Como señala \cite{wickham2016}, el análisis exploratorio es el primer paso.
+
+% Cita con página específica
+El concepto de gramática de gráficos \cite[p.~42]{wickham2016} fue adaptado de Wilkinson.
+
+% Cita entre paréntesis (autor, año)
+Los datos fueron analizados con XGBoost \cite{chen2016xgboost}.
+
+% Múltiples citas
+Varios autores abordan este tema \cite{wickham2016, hunter2007, chen2016xgboost}.
+
+% Solo el año (con natbib)
+\citeyear{wickham2016}   % → 2016
+
+% Solo el autor (con natbib)
+\citeauthor{wickham2016} % → Wickham and Grolemund
+
+% Cita en texto natural (con natbib)
+\citet{wickham2016} demuestran que...  % → Wickham and Grolemund (2016) demuestran que...
+\citep{wickham2016}                     % → (Wickham and Grolemund, 2016)
+
+\end{document}
+```
+
+### Configurar el estilo bibliográfico
+
+Al final del documento, antes de `\end{document}`:
+
+```latex
+% Estilo numérico (IEEE, ingeniería)
+\bibliographystyle{ieeetr}
+\bibliography{referencias}   % archivo referencias.bib (sin extensión)
+
+% Estilo autor-año (APA, ciencias sociales)
+\usepackage{natbib}
+\bibliographystyle{apalike}
+\bibliography{referencias}
+
+% Estilo alfabético con natbib
+\bibliographystyle{plainnat}
+\bibliography{referencias}
+```
+
+Estilos más comunes:
+
+| Estilo | Cita en texto | Bibliografía | Usado en |
+|---|---|---|---|
+| `ieeetr` | [1], [2] | Ordenada por orden de aparición | Ingeniería, IEEE |
+| `apalike` | (Apellido, Año) | Alfabética por apellido | Ciencias sociales |
+| `plainnat` | (Apellido, Año) | Alfabética | General académico |
+| `plain` | [1], [2] | Alfabética por apellido | General |
+| `alpha` | [Wick16] | Alfabética | Matemáticas |
+
+### BibTeX moderno: biblatex + biber
+
+Para proyectos más complejos, `biblatex` con `biber` ofrece más control:
+
+```latex
+\usepackage[
+  style=apa,        % apa, ieee, authoryear, numeric, etc.
+  backend=biber,    % más potente que bibtex
+  sorting=nyt,      % nombre-año-título
+  language=spanish
+]{biblatex}
+
+\addbibresource{referencias.bib}
+
+% En el cuerpo
+\cite{wickham2016}
+\parencite{wickham2016}    % con paréntesis: (Wickham, 2016)
+\textcite{wickham2016}     % en texto: Wickham (2016)
+
+% Al final del documento (en lugar de \bibliography)
+\printbibliography[title={Referencias}]
+```
+
+::: {.callout-tip}
+## Gestores de bibliografía: Zotero y Mendeley
+No escribas el `.bib` a mano. Usa un gestor de referencias:
+
+- **Zotero** (gratuito, open source, recomendado): instala el plugin de Chrome/Firefox, captura referencias desde cualquier web con un clic, exporta directamente a `.bib`.
+- **Mendeley** (gratuito, propiedad de Elsevier): interfaz más visual, pero con limitaciones en la versión gratuita.
+
+Ambos se integran con Overleaf directamente.
+:::
+
+---
+
+## Overleaf: edición colaborativa en la nube
+
+### Qué es Overleaf
+
+**Overleaf** es un editor de LaTeX en la nube que elimina la necesidad de instalar LaTeX localmente. Compila en tiempo real, incluye plantillas de miles de revistas y universidades, y permite colaboración en tiempo real como Google Docs.
+
+> 🖼️ **Asset:** `assets/img/tool/tool__overleaf.png` — logo de Overleaf.
+
+**Ventajas concretas para docencia:**
+- Cero instalación para el docente y los estudiantes.
+- Compilación inmediata con feedback de errores.
+- Plantillas institucionales preconfiguradas.
+- Historial de versiones (similar a Git).
+- Compartición por link con distintos niveles de acceso.
+
+### Crear y configurar un proyecto
+
+1. Ve a [overleaf.com](https://www.overleaf.com) → **Register** con tu email institucional.
+2. **New Project** → elige una plantilla o **Blank Project**.
+3. Escribe el nombre del proyecto: `MAT281-Guia3-RegresionLineal`.
+
+La interfaz tiene tres paneles:
+
+```
+┌──────────────────┬────────────────────┬──────────────────────┐
+│   Árbol de       │  Editor de código  │  Vista previa PDF    │
+│   archivos       │  (.tex, .bib, img) │  (compilada en vivo) │
+│                  │                    │                       │
+│ main.tex         │ \documentclass{...}│ [PDF renderizado]     │
+│ referencias.bib  │ \usepackage{...}   │                       │
+│ imagenes/        │ \begin{document}   │                       │
+│   fig1.png       │   ...              │                       │
+└──────────────────┴────────────────────┴──────────────────────┘
+```
+
+### Atajos de teclado en Overleaf
+
+| Atajo | Acción |
+|---|---|
+| `Ctrl+Enter` | Compilar (recompilar el PDF) |
+| `Ctrl+/` | Comentar/descomentar la línea |
+| `Ctrl+F` | Buscar en el documento |
+| `Ctrl+H` | Buscar y reemplazar |
+| `Ctrl+Z` | Deshacer |
+| `Ctrl+Shift+F` | Buscar en todos los archivos del proyecto |
+| Clic en PDF | Ir al código fuente correspondiente (SyncTeX) |
+| `Ctrl+Clic` código | Ir al PDF correspondiente (SyncTeX inverso) |
+
+### Colaboración en Overleaf
+
+**Compartir un proyecto:**
+1. Menú **Share** (arriba a la derecha)
+2. **Link sharing** → activar y copiar el link
+3. Niveles: **Can edit** (co-autor) o **Can view** (solo lectura)
+
+**Invitar por email:**
+1. **Share** → **Invite people**
+2. Ingresar email del colaborador
+3. Nivel de acceso: **Editor** o **Viewer**
+
+Los colaboradores ven los cursores en tiempo real — exactamente como Google Docs.
+
+**Modo de revisión:**
+Overleaf Pro tiene **Track Changes** (Control de cambios). En la versión gratuita, usa comentarios:
+
+```latex
+% TODO: revisar esta sección — los datos son del 2023, actualizar
+\section{Resultados}
+
+% NOTA para el ayudante: agregar gráfico de dispersión aquí
+```
+
+### Historial de versiones
+
+Overleaf guarda el historial de cambios:
+
+- **Versión gratuita:** historial de las últimas 24 horas.
+- **Versión Pro (o Education):** historial ilimitado con posibilidad de etiquetar versiones (como `git tag`).
+
+Para ver el historial: ícono del reloj (History) en el menú superior.
+
+Para crear un punto de referencia (Pro): **History** → **Label this version** → `"Versión enviada a revisión"`.
+
+### Sincronización con GitHub
+
+Overleaf Pro permite sincronizar proyectos con repositorios de GitHub bidireccional: editas en Overleaf, haces pull en GitHub y viceversa.
+
+```
+Overleaf <── push/pull ──> GitHub
+   ↑                            ↑
+Edición visual             Control de versiones
+colaborativa               y CI/CD
+```
+
+Configurar: **Menu (☰)** → **GitHub** → **Create a GitHub repository** o **Link to existing repository**.
+
+::: {.callout-note}
+## Overleaf Education: acceso Pro gratuito
+Muchas universidades tienen licencias institucionales de Overleaf Pro. Verifica si la UTFSM tiene un acuerdo — si es así, todos los usuarios con email `@usm.cl` tienen acceso a Pro gratuitamente. Si no, [education.overleaf.com](https://www.overleaf.com/edu) tiene beneficios para docentes verificados.
+:::
+
+### Plantillas recomendadas para docencia
+
+Overleaf tiene una galería de plantillas en [overleaf.com/gallery](https://www.overleaf.com/gallery). Búsquedas útiles:
+
+- **"exam"** → plantillas de pruebas y evaluaciones con espacios de respuesta.
+- **"lecture notes"** → apuntes de clase con formato de libro.
+- **"problem set"** → guías de ejercicios.
+- **"IEEE"** → artículos para publicación en revistas de ingeniería.
+- **"beamer"** → presentaciones en LaTeX.
+
+Para un punto de partida, esta es la estructura de proyecto recomendada en Overleaf para un curso:
+
+```
+mat281-guia3/
+├── main.tex              # documento principal
+├── referencias.bib       # base de datos bibliográfica
+├── preambulo.tex         # paquetes y configuraciones (incluido con \input)
+├── secciones/
+│   ├── introduccion.tex
+│   ├── teoria.tex
+│   ├── ejercicios.tex
+│   └── soluciones.tex
+└── imagenes/
+    ├── histograma.png
+    ├── scatter.png
+    └── diagrama.pdf
+```
+
+Con `\input` para modularizar el documento:
+
+```latex
+% main.tex
+\documentclass[12pt]{article}
+\input{preambulo}                    % carga todos los paquetes
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\input{secciones/introduccion}
+\input{secciones/teoria}
+\input{secciones/ejercicios}
+% \input{secciones/soluciones}      % comentar para la versión del estudiante
+
+\bibliography{referencias}
+\end{document}
+```
+
+---
+
+## Documento completo de ejemplo: Guía de Ejercicios
+
+El siguiente ejemplo integra todo lo cubierto en este capítulo — listo para compilar en Overleaf:
+
+```latex
+\documentclass[12pt, letterpaper]{article}
+
+% ── Paquetes esenciales ────────────────────────────────────────
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish, es-nodecimaldot]{babel}
+\usepackage[top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm]{geometry}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage{parskip}
+\usepackage[colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue]{hyperref}
+
+% ── Entornos para ejercicios ───────────────────────────────────
+\newtheorem{ejercicio}{Ejercicio}
+\newtheorem{problema}{Problema}
+\newenvironment{solucion}{\textbf{Solución.}}{}
+
+% ── Comandos propios ───────────────────────────────────────────
+\newcommand{\E}[1]{\mathbb{E}\left[#1\right]}     % valor esperado
+\newcommand{\Var}[1]{\text{Var}\left(#1\right)}   % varianza
+\newcommand{\R}{\mathbb{R}}                        % reales
+
+% ── Encabezado y pie de página ─────────────────────────────────
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\small MAT281 — Aplicaciones de la Matemática en Ingeniería}
+\rhead{\small Guía N°3: Regresión Lineal}
+\cfoot{\small Página \thepage}
+
+% ── Metadata ───────────────────────────────────────────────────
+\title{
+    \vspace{-1cm}
+    {\Large MAT281 — Aplicaciones de la Matemática en Ingeniería}\\[0.5em]
+    {\huge Guía de Ejercicios N°3}\\[0.3em]
+    {\large Regresión Lineal Simple y Mínimos Cuadrados}
+}
+\author{
+    Prof. Juan Pérez\\
+    {\small Departamento de Matemáticas · UTFSM}\\[0.3em]
+    {\small \href{mailto:juan.perez@usm.cl}{juan.perez@usm.cl}}
+}
+\date{Primer semestre 2025 \quad|\quad Entrega: 15 de abril}
+
+% ══════════════════════════════════════════════════════════════
+\begin{document}
+% ══════════════════════════════════════════════════════════════
+
+\maketitle
+\thispagestyle{empty}
+
+\hrule
+\vspace{0.3cm}
+\noindent\textbf{Instrucciones:} Resuelva cada ejercicio mostrando el procedimiento completo. Las respuestas sin desarrollo no serán evaluadas. Puede usar calculadora y material de consulta, pero no herramientas computacionales (Python, R, Excel) salvo que el enunciado lo indique explícitamente.
+\vspace{0.3cm}
+\hrule
+\vspace{1cm}
+
+% ── Sección 1: Teoría ─────────────────────────────────────────
+\section{Fundamentos de Regresión Lineal}
+\label{sec:teoria}
+
+La regresión lineal simple modela la relación entre una variable respuesta $Y$ y una variable predictora $X$ mediante:
+
+\begin{equation}
+    Y_i = \beta_0 + \beta_1 X_i + \varepsilon_i, \quad i = 1, \ldots, n
+    \label{eq:modelo_regresion}
+\end{equation}
+
+donde $\varepsilon_i \sim \mathcal{N}(0, \sigma^2)$ son los errores aleatorios independientes.
+
+Los estimadores de mínimos cuadrados ordinarios (MCO) para los parámetros $\beta_0$ y $\beta_1$ son:
+
+\begin{align}
+    \hat{\beta}_1 &= \frac{\sum_{i=1}^{n}(X_i - \bar{X})(Y_i - \bar{Y})}
+                          {\sum_{i=1}^{n}(X_i - \bar{X})^2}
+                 = \frac{S_{XY}}{S_{XX}}
+    \label{eq:beta1} \\[0.5em]
+    \hat{\beta}_0 &= \bar{Y} - \hat{\beta}_1 \bar{X}
+    \label{eq:beta0}
+\end{align}
+
+donde $\bar{X}$ e $\bar{Y}$ son las medias muestrales.
+
+\subsection{Bondad de ajuste}
+\label{subsec:bondad}
+
+El coeficiente de determinación $R^2$ mide la proporción de variabilidad de $Y$ explicada por el modelo:
+
+\begin{equation}
+    R^2 = 1 - \frac{\text{SCR}}{\text{SCT}} = 1 - \frac{\sum_{i=1}^{n}(Y_i - \hat{Y}_i)^2}
+                                                        {\sum_{i=1}^{n}(Y_i - \bar{Y})^2}
+    \label{eq:r_cuadrado}
+\end{equation}
+
+Un $R^2$ cercano a 1 indica un ajuste casi perfecto del modelo a los datos.
+
+% ── Sección 2: Ejercicios ─────────────────────────────────────
+\section{Ejercicios}
+\label{sec:ejercicios}
+
+\begin{ejercicio}
+\label{ej:estimadores}
+Se registró el número de horas de estudio semanales ($X$) y la nota final en el curso ($Y$) para una muestra de 8 estudiantes. Los resultados se muestran en la Tabla~\ref{tab:datos_ejercicio}.
+
+\begin{table}[H]
+    \centering
+    \caption{Horas de estudio y nota final de 8 estudiantes.}
+    \label{tab:datos_ejercicio}
+    \begin{tabular}{@{} c r r @{}}
+        \toprule
+        Estudiante & Horas de estudio ($X$) & Nota final ($Y$) \\
+        \midrule
+        1 & 4  & 4.5 \\
+        2 & 6  & 5.2 \\
+        3 & 8  & 5.8 \\
+        4 & 5  & 4.9 \\
+        5 & 10 & 6.5 \\
+        6 & 7  & 5.5 \\
+        7 & 3  & 3.8 \\
+        8 & 9  & 6.1 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\begin{enumerate}[label=(\alph*), noitemsep]
+    \item Calcule $\bar{X}$, $\bar{Y}$, $S_{XX}$ y $S_{XY}$.
+    \item Obtenga los estimadores MCO $\hat{\beta}_0$ y $\hat{\beta}_1$ usando las Ecuaciones~\ref{eq:beta1} y~\ref{eq:beta0}.
+    \item Escriba la ecuación de la recta de regresión ajustada.
+    \item Calcule el $R^2$ del modelo mediante la Ecuación~\ref{eq:r_cuadrado} e interprete su valor.
+    \item Estime la nota esperada de un estudiante que estudia 6.5 horas semanales.
+\end{enumerate}
+\end{ejercicio}
+
+\vspace{1em}
+
+\begin{ejercicio}
+\label{ej:supuestos}
+Discuta brevemente las consecuencias de cada una de las siguientes violaciones a los supuestos del modelo de la Ecuación~\ref{eq:modelo_regresion}:
+
+\begin{enumerate}[label=(\alph*), noitemsep]
+    \item Los errores $\varepsilon_i$ no son independientes (autocorrelación).
+    \item La varianza de los errores no es constante (heterocedasticidad).
+    \item La relación entre $X$ e $Y$ no es lineal.
+\end{enumerate}
+\end{ejercicio}
+
+% ── Referencias ───────────────────────────────────────────────
+\newpage
+\bibliographystyle{apalike}
+\bibliography{referencias}
+
+\end{document}
+```
+
+---
+
+## Referencias
+
+- Lamport, L. (1994). *LaTeX: A Document Preparation System* (2ª ed.). Addison-Wesley.
+- Oetiker, T. et al. (2021). *The Not So Short Introduction to LaTeX 2ε*. Disponible en: [tobi.oetiker.ch/lshort](https://tobi.oetiker.ch/lshort/lshort.pdf)
+- Overleaf Documentation. *Learn LaTeX in 30 minutes*. [overleaf.com/learn](https://www.overleaf.com/learn/latex/Learn_LaTeX_in_30_minutes)
+- CTAN. *Comprehensive TeX Archive Network*. [ctan.org](https://ctan.org) — documentación de todos los paquetes LaTeX.
+- Tables Generator. *LaTeX Tables Generator*. [tablesgenerator.com](https://www.tablesgenerator.com)
+- Zotero. *Reference Manager*. [zotero.org](https://www.zotero.org)
+- Mathpix. *Convierte ecuaciones escritas a mano o en imágenes a LaTeX*. [mathpix.com](https://mathpix.com)

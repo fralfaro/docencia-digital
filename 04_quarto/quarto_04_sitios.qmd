@@ -1,0 +1,1151 @@
+---
+title: "Sitios web y blogs docentes"
+subtitle: "Publicar el curso completo como sitio web con Quarto"
+---
+
+Un sitio web del curso no es un lujo — es una decisión de diseño pedagógico. Cuando los estudiantes pueden navegar el material en cualquier dispositivo, buscar un concepto dentro del apunte, ver el código y sus resultados en el mismo lugar, y acceder a todo sin descargar nada, el acceso al conocimiento se democratiza de forma concreta.
+
+Quarto produce sitios web profesionales directamente desde archivos `.qmd`. No necesitas saber HTML, CSS ni JavaScript. El resultado es un sitio navegable, con búsqueda integrada, modo oscuro/claro, y que se despliega en GitHub Pages en minutos.
+
+Este capítulo cubre cómo crear y configurar un sitio de curso completo.
+
+---
+
+## `quarto create project website`: estructura generada
+
+### Crear el proyecto desde la terminal
+
+```bash
+# Crear un proyecto website nuevo
+quarto create project website mat281-sitio
+
+# Alternativamente, con estructura de libro
+quarto create project book mat281-apuntes
+```
+
+Quarto genera esta estructura mínima:
+
+```
+mat281-sitio/
+├── _quarto.yml          ← configuración central
+├── index.qmd            ← página de inicio
+├── about.qmd            ← página "Sobre el curso"
+└── styles.css           ← estilos CSS base (vacío por defecto)
+```
+
+### Expandir la estructura para un curso real
+
+A partir de esa base, organizamos el proyecto completo:
+
+```
+mat281-sitio/
+├── _quarto.yml
+├── index.qmd                    ← home del curso
+│
+├── programa/
+│   └── index.qmd                ← syllabus y calendario
+│
+├── lectures/
+│   ├── index.qmd                ← página de listado (catálogo de clases)
+│   ├── semana01/
+│   │   ├── index.qmd            ← apunte de la semana
+│   │   └── slides.qmd           ← diapositivas RevealJS
+│   ├── semana02/
+│   │   ├── index.qmd
+│   │   └── slides.qmd
+│   └── ...
+│
+├── labs/
+│   ├── index.qmd                ← listado de laboratorios
+│   ├── lab01/
+│   │   ├── enunciado.qmd
+│   │   └── datos.csv
+│   └── lab02/
+│
+├── assignments/
+│   ├── index.qmd
+│   ├── tarea01.qmd
+│   └── tarea02.qmd
+│
+├── recursos/
+│   └── index.qmd                ← catálogo de recursos externos
+│
+├── assets/
+│   ├── img/
+│   │   └── brand/
+│   │       ├── brand__usm.png
+│   │       └── brand__usm2.png
+│   ├── scss/
+│   │   ├── light.scss
+│   │   └── dark.scss
+│   └── bib/
+│       └── referencias.bib
+│
+├── _freeze/                     ← cache de ejecución (commiteado)
+│
+└── .github/
+    └── workflows/
+        └── deploy.yml
+```
+
+---
+
+## `_quarto.yml`: navegación, tema y opciones globales
+
+El archivo `_quarto.yml` es el cerebro del sitio. Define todo lo que aplica a todas las páginas: la barra de navegación, el sidebar, el tema visual, las opciones de ejecución, y los metadatos globales.
+
+### `_quarto.yml` completo para un sitio de curso
+
+```yaml
+# ══════════════════════════════════════════════════════════════
+# _quarto.yml — Sitio de curso MAT281
+# ══════════════════════════════════════════════════════════════
+
+project:
+  type: website
+  output-dir: _site             # carpeta donde se genera el sitio
+
+# ── Metadatos del sitio ────────────────────────────────────────
+website:
+  title: "MAT281"
+  description: "Aplicaciones de la Matemática en Ingeniería — UTFSM 2025-1"
+  site-url: "https://fralfaro.github.io/mat281"
+  repo-url: "https://github.com/fralfaro/mat281"
+  repo-actions: [edit, issue, source]  # botones por página
+  favicon: "assets/img/brand/brand__usm.png"
+  open-graph: true              # metadata para redes sociales
+  twitter-card: true            # card para Twitter/X
+
+  # ── Anuncios ─────────────────────────────────────────────────
+  announcement:
+    icon: info-circle
+    dismissable: true
+    content: "**Semana 5:** Material de regresión lineal disponible. Tarea 2 se entrega el viernes 18/04."
+    type: info                  # info | warning | danger | success
+
+  # ── Barra de navegación superior ─────────────────────────────
+  navbar:
+    logo: "assets/img/brand/brand__usm.png"
+    logo-alt: "Logo UTFSM"
+    title: "MAT281"
+    background: primary         # light | dark | primary | secondary | custom
+
+    left:
+      - text: "Inicio"
+        href: index.qmd
+
+      - text: "Programa"
+        href: programa/index.qmd
+
+      - text: "Clases"
+        href: lectures/index.qmd
+
+      - text: "Laboratorios"
+        href: labs/index.qmd
+
+      - text: "Tareas"
+        href: assignments/index.qmd
+
+      - text: "Recursos"
+        href: recursos/index.qmd
+
+    right:
+      - icon: github
+        href: "https://github.com/fralfaro/mat281"
+        aria-label: GitHub
+
+      - icon: search
+        aria-label: Buscar
+
+      - text: "Colab"
+        icon: journal-code
+        href: "https://colab.research.google.com/github/fralfaro/mat281/blob/main/"
+
+  # ── Sidebar (menú lateral) ────────────────────────────────────
+  sidebar:
+    - id: lectures
+      title: "Clases"
+      style: floating           # floating | docked
+      search: true
+      collapse-level: 2         # nivel de colapso por defecto
+      contents:
+        - text: "Todas las clases"
+          href: lectures/index.qmd
+        - section: "Módulo 1: Estadística Descriptiva"
+          contents:
+            - lectures/semana01/index.qmd
+            - lectures/semana02/index.qmd
+        - section: "Módulo 2: Regresión"
+          contents:
+            - lectures/semana03/index.qmd
+            - lectures/semana04/index.qmd
+            - lectures/semana05/index.qmd
+        - section: "Módulo 3: Clasificación"
+          contents:
+            - lectures/semana06/index.qmd
+            - lectures/semana07/index.qmd
+
+    - id: labs
+      title: "Laboratorios"
+      style: floating
+      contents:
+        - text: "Todos los labs"
+          href: labs/index.qmd
+        - labs/lab01/enunciado.qmd
+        - labs/lab02/enunciado.qmd
+        - labs/lab03/enunciado.qmd
+
+  # ── Pie de página ─────────────────────────────────────────────
+  page-footer:
+    left: |
+      © 2025 Juan Pérez · Universidad Técnica Federico Santa María
+    center: |
+      Licencia [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+    right: |
+      Hecho con [Quarto](https://quarto.org)
+
+  # ── Herramientas por página ───────────────────────────────────
+  page-navigation: true         # botones "Anterior / Siguiente"
+  back-to-top-navigation: true  # botón volver arriba
+
+# ── Formato HTML global ────────────────────────────────────────
+format:
+  html:
+    # Tema visual
+    theme:
+      light: [cosmo, assets/scss/light.scss]
+      dark:  [darkly, assets/scss/dark.scss]
+
+    # Tabla de contenidos
+    toc: true
+    toc-depth: 3
+    toc-title: "En esta página"
+
+    # Código
+    code-fold: false
+    code-tools: true
+    code-copy: true
+    highlight-style: github
+
+    # Figuras
+    fig-align: center
+    fig-width: 9
+    fig-height: 5
+
+    # Tipografía y layout
+    number-sections: false
+    smooth-scroll: true
+    link-external-icon: true
+    link-external-newwindow: true
+    citations-hover: true
+    footnotes-hover: true
+
+# ── Ejecución global ───────────────────────────────────────────
+execute:
+  freeze: auto
+  echo: true
+  warning: false
+  message: false
+
+# ── Idioma ────────────────────────────────────────────────────
+lang: es
+
+# ── Bibliografía global ────────────────────────────────────────
+bibliography: assets/bib/referencias.bib
+csl: assets/bib/apa-es.csl
+
+# ── Cross-references en español ───────────────────────────────
+crossref:
+  fig-title:  "Figura"
+  tbl-title:  "Tabla"
+  eq-title:   "Ecuación"
+  fig-prefix: "fig."
+  tbl-prefix: "tbl."
+  eq-prefix:  "ec."
+  sec-prefix: "sec."
+```
+
+### Navegación avanzada: menús desplegables
+
+```yaml
+navbar:
+  left:
+    - text: "Clases"
+      menu:
+        - text: "Semana 1: Estadística descriptiva"
+          href: lectures/semana01/index.qmd
+        - text: "Semana 2: Visualización"
+          href: lectures/semana02/index.qmd
+        - "---"                           # separador visual
+        - text: "Ver todas las clases →"
+          href: lectures/index.qmd
+
+    - text: "Evaluaciones"
+      menu:
+        - text: "🔬 Laboratorios"
+          href: labs/index.qmd
+        - text: "📝 Tareas"
+          href: assignments/index.qmd
+        - text: "📊 Exámenes"
+          href: examenes/index.qmd
+```
+
+### Configuración del sidebar por sección
+
+Quarto permite asignar sidebars diferentes a diferentes secciones del sitio:
+
+```yaml
+website:
+  sidebar:
+    - id: lectures-sidebar
+      title: "Clases"
+      contents:
+        - lectures/index.qmd
+        - section: "Módulo 1"
+          contents:
+            - lectures/semana01/index.qmd
+
+    - id: labs-sidebar
+      title: "Labs"
+      contents:
+        - labs/index.qmd
+        - labs/lab01/enunciado.qmd
+```
+
+En cada página, especificas qué sidebar usar:
+
+```yaml
+# En lectures/semana01/index.qmd
+---
+sidebar: lectures-sidebar
+---
+```
+
+---
+
+## Listing pages: blog, portafolio, catálogo de recursos
+
+Las **páginas de listado** muestran automáticamente una colección de documentos como tarjetas, tabla o grilla. Son perfectas para:
+
+- Catálogo de clases (una tarjeta por semana)
+- Listado de laboratorios con su estado (entregado/pendiente)
+- Blog del curso con anuncios y novedades
+- Portafolio de proyectos estudiantiles
+
+### Listing básico de clases
+
+```yaml
+# lectures/index.qmd
+---
+title: "Clases"
+listing:
+  type: grid             # default | table | grid
+  contents: "semana*"    # glob para incluir carpetas que empiecen con "semana"
+  sort: "date asc"       # ordenar por fecha ascendente
+  fields: [date, title, description, categories]
+  image-height: 200px
+  grid-columns: 3
+  filter-ui: true        # selector de filtro
+  sort-ui: true          # selector de ordenamiento
+---
+```
+
+Cada documento en `semana*/index.qmd` necesita estos campos en su frontmatter:
+
+```yaml
+# lectures/semana03/index.qmd
+---
+title: "Semana 3: Regresión Lineal Simple"
+date: "2025-04-08"
+description: "Estimación MCO, $R^2$, diagnóstico de residuos."
+categories: [regresión, estadística, python]
+image: "preview.png"
+---
+```
+
+### Tipos de listing
+
+**`type: default`** — Lista vertical con imagen a la izquierda:
+
+```yaml
+listing:
+  type: default
+  contents: "semana*"
+  fields: [date, title, description, author]
+  sort: "date desc"
+```
+
+**`type: grid`** — Tarjetas en cuadrícula:
+
+```yaml
+listing:
+  type: grid
+  contents: "semana*"
+  grid-columns: 3
+  image-height: 180px
+  fields: [date, title, description, categories, image]
+```
+
+**`type: table`** — Tabla con columnas configurables:
+
+```yaml
+listing:
+  type: table
+  contents: "semana*"
+  fields: [date, title, categories, reading-time]
+  date-format: "DD/MM/YYYY"
+  field-display-names:
+    date: "Fecha"
+    title: "Tema"
+    categories: "Módulo"
+    reading-time: "Tiempo estimado"
+```
+
+### Listing con múltiples fuentes
+
+```yaml
+# recursos/index.qmd
+---
+title: "Recursos del curso"
+listing:
+  - id: libros
+    type: grid
+    contents: "libros/*.qmd"
+    title: "Libros recomendados"
+    grid-columns: 2
+
+  - id: tutoriales
+    type: table
+    contents: "tutoriales/*.qmd"
+    title: "Tutoriales en línea"
+    fields: [title, description, categories]
+
+  - id: datasets
+    type: default
+    contents: "datasets/*.qmd"
+    title: "Datasets del curso"
+---
+
+## Libros recomendados
+
+::: {#libros}
+:::
+
+## Tutoriales en línea
+
+::: {#tutoriales}
+:::
+
+## Datasets
+
+::: {#datasets}
+:::
+```
+
+### Listing como blog del curso
+
+Para anuncios y novedades del curso:
+
+```yaml
+# noticias/index.qmd
+---
+title: "Novedades del curso"
+listing:
+  type: default
+  contents: "posts"
+  sort: "date desc"
+  fields: [date, title, description, categories]
+  feed: true             # genera feed RSS
+  categories: true       # muestra filtro por categorías
+  date-format: "DD MMMM YYYY"
+---
+```
+
+Cada anuncio es un `.qmd` en `noticias/posts/`:
+
+```yaml
+# noticias/posts/tarea2-disponible.qmd
+---
+title: "Tarea 2 ya disponible"
+date: "2025-04-15"
+categories: [evaluaciones, tarea]
+description: "El enunciado de la Tarea 2 está disponible en el repositorio."
+---
+
+La Tarea 2 cubre regresión lineal simple y múltiple. Fecha de entrega: **viernes 25 de abril**.
+
+[Ver enunciado →](../../assignments/tarea02.qmd)
+```
+
+---
+
+## Temas Quarto y personalización visual
+
+### Los temas base
+
+Quarto usa [Bootstrap 5](https://getbootstrap.com/) como base. Los temas son variaciones de Bootstrap:
+
+```{mermaid}
+graph TD
+    B["Bootstrap 5\n(base)"]
+    B --> CL["Temas claros"]
+    B --> DA["Temas oscuros"]
+
+    CL --> T1["cosmo\nLimpio, moderno"]
+    CL --> T2["flatly\nColores planos"]
+    CL --> T3["litera\nTipografía editorial"]
+    CL --> T4["minty\nVerde suave"]
+    CL --> T5["lumen\nSencillo"]
+    CL --> T6["sandstone\nArenoso, cálido"]
+    CL --> T7["journal\nEstilo revista"]
+    CL --> T8["united\nRojo y gris"]
+
+    DA --> T9["darkly\nOscuro elegante"]
+    DA --> T10["cyborg\nNegro con cyan"]
+    DA --> T11["vapor\nPúrpura oscuro"]
+    DA --> T12["slate\nGris oscuro"]
+    DA --> T13["solar\nOscuro cálido"]
+    DA --> T14["superhero\nNegro y azul"]
+```
+
+Para activar modo dual (claro + oscuro con selector):
+
+```yaml
+format:
+  html:
+    theme:
+      light: cosmo
+      dark: darkly
+```
+
+### SCSS personalizado para el tema claro
+
+```scss
+// assets/scss/light.scss
+
+/*-- scss:defaults --*/
+
+// ── Paleta de colores ─────────────────────────────────────────
+$usm-azul:        #003087;
+$usm-azul-medio:  #1a4fa0;
+$usm-azul-claro:  #e8f0fd;
+$usm-rojo:        #D00000;
+$usm-gris-texto:  #2d2d2d;
+$usm-gris-fondo:  #f8f8f8;
+
+// ── Variables Bootstrap que sobreescribimos ───────────────────
+$primary:          $usm-azul;
+$link-color:       $usm-azul-medio;
+$body-color:       $usm-gris-texto;
+$body-bg:          #ffffff;
+$headings-color:   $usm-azul;
+$border-color:     #dee2e6;
+
+// ── Tipografía ────────────────────────────────────────────────
+$font-family-sans-serif: 'Source Sans 3', 'Lato', 'Helvetica Neue', sans-serif;
+$font-family-monospace:  'Fira Code', 'Source Code Pro', 'JetBrains Mono', monospace;
+$font-size-base:   1rem;          // 16px
+$line-height-base: 1.65;
+$headings-font-weight: 600;
+$h1-font-size:     2rem;
+$h2-font-size:     1.5rem;
+$h3-font-size:     1.2rem;
+
+/*-- scss:rules --*/
+
+// ── Navbar ────────────────────────────────────────────────────
+.navbar {
+  border-bottom: 3px solid $usm-rojo;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+
+  .navbar-brand {
+    font-weight: 700;
+    color: $usm-azul !important;
+    letter-spacing: -0.02em;
+  }
+
+  .nav-link {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: $usm-gris-texto !important;
+    transition: color 0.2s;
+
+    &:hover {
+      color: $usm-azul !important;
+    }
+
+    &.active {
+      color: $usm-azul !important;
+      font-weight: 600;
+    }
+  }
+}
+
+// ── Títulos de sección ────────────────────────────────────────
+h2 {
+  border-bottom: 2px solid $usm-azul-claro;
+  padding-bottom: 0.4rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+h3 {
+  color: $usm-azul;
+  margin-top: 1.5rem;
+}
+
+// ── Callouts ─────────────────────────────────────────────────
+.callout {
+  border-radius: 6px;
+  border-left-width: 4px;
+  margin: 1.5rem 0;
+
+  &.callout-note    { border-left-color: $usm-azul; }
+  &.callout-tip     { border-left-color: #2E7D32; }
+  &.callout-warning { border-left-color: #F57C00; }
+  &.callout-important { border-left-color: $usm-rojo; }
+}
+
+// ── Código ───────────────────────────────────────────────────
+pre, code {
+  font-family: $font-family-monospace;
+  font-size: 0.875em;
+  border-radius: 4px;
+}
+
+pre.sourceCode {
+  border-left: 4px solid $usm-azul-claro;
+  border-radius: 4px;
+}
+
+code:not(pre code) {
+  background: $usm-azul-claro;
+  color: $usm-azul;
+  padding: 0.15em 0.35em;
+  border-radius: 3px;
+}
+
+// ── Tablas ───────────────────────────────────────────────────
+.table {
+  font-size: 0.9rem;
+
+  thead th {
+    background: $usm-azul;
+    color: white;
+    border: none;
+    font-weight: 600;
+    padding: 0.6rem 0.8rem;
+  }
+
+  tbody tr:nth-child(even) td {
+    background: $usm-gris-fondo;
+  }
+
+  td {
+    padding: 0.5rem 0.8rem;
+    vertical-align: middle;
+  }
+}
+
+// ── Listing cards ─────────────────────────────────────────────
+.quarto-listing-default .list-group-item {
+  border: 1px solid $border-color;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  transition: box-shadow 0.2s, transform 0.2s;
+
+  &:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+    border-color: $usm-azul-medio;
+  }
+}
+
+.quarto-grid-item {
+  border: 1px solid $border-color;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: box-shadow 0.2s, transform 0.2s;
+
+  &:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transform: translateY(-3px);
+  }
+
+  .card-header {
+    background: $usm-azul;
+    color: white;
+  }
+}
+
+// ── Footer ───────────────────────────────────────────────────
+.nav-footer {
+  background: $usm-gris-fondo;
+  border-top: 1px solid $border-color;
+  font-size: 0.85rem;
+  color: #666;
+}
+
+// ── TOC lateral ──────────────────────────────────────────────
+#TOC {
+  font-size: 0.85rem;
+
+  .nav-link {
+    color: $usm-gris-texto;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    transition: background 0.15s;
+
+    &:hover {
+      background: $usm-azul-claro;
+      color: $usm-azul;
+    }
+
+    &.active {
+      background: $usm-azul-claro;
+      color: $usm-azul;
+      font-weight: 600;
+    }
+  }
+}
+```
+
+### SCSS para tema oscuro
+
+```scss
+// assets/scss/dark.scss
+
+/*-- scss:defaults --*/
+
+$primary:         #4a9eed;
+$link-color:      #7ab8f5;
+$body-color:      #c8c8c8;
+$body-bg:         #1a1a2e;
+$headings-color:  #a8c8f0;
+
+/*-- scss:rules --*/
+
+.navbar {
+  border-bottom: 3px solid #D00000;
+  background: #0d0d1f !important;
+}
+
+h2 {
+  border-bottom: 2px solid #2a3a5c;
+  color: #a8c8f0;
+}
+
+code:not(pre code) {
+  background: #1e2d4a;
+  color: #7ab8f5;
+}
+
+pre.sourceCode {
+  border-left: 4px solid #2a3a5c;
+}
+```
+
+### Google Fonts en el sitio
+
+```yaml
+# En _quarto.yml
+format:
+  html:
+    mainfont: "'Source Sans 3', sans-serif"
+    monofont: "'Fira Code', monospace"
+    include-in-header:
+      text: |
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+```
+
+---
+
+## Barra de búsqueda integrada
+
+Quarto incluye búsqueda de texto completo sin ningún servidor externo — funciona como JavaScript puro en el navegador usando un índice generado al momento del build.
+
+### Configurar la búsqueda
+
+```yaml
+website:
+  search:
+    location: navbar        # navbar | sidebar
+    type: overlay           # overlay | textbox
+    limit: 20               # máximo de resultados
+    collapse-after: 3       # colapsar resultados por sección
+    copy-button: true       # botón para copiar el resultado
+
+    # Fuentes a indexar
+    algolia:                # opcional: Algolia DocSearch (más potente)
+      index-name: mat281
+      application-id: TU_APP_ID
+      search-only-api-key: TU_KEY
+```
+
+La búsqueda por defecto (sin Algolia) indexa automáticamente todo el contenido de texto del sitio, incluyendo:
+
+- Títulos y subtítulos
+- Texto de los párrafos
+- Captions de figuras y tablas
+- Contenido de callouts
+- Código fuente (si está visible)
+
+### Excluir páginas del índice de búsqueda
+
+```yaml
+# En el frontmatter de una página específica
+---
+search: false    # no indexar esta página
+---
+```
+
+```yaml
+# En _quarto.yml — excluir patrones de rutas
+website:
+  search:
+    exclude:
+      - "404.qmd"
+      - "assets/**"
+      - "examenes/**"       # no indexar exámenes
+```
+
+### Búsqueda multiidioma
+
+Si el sitio tiene páginas en español e inglés:
+
+```yaml
+website:
+  search:
+    language: es            # idioma del índice (afecta stemming)
+```
+
+---
+
+## Páginas especiales del sitio
+
+### Página 404 personalizada
+
+```yaml
+# 404.qmd en la raíz del proyecto
+---
+title: "Página no encontrada"
+search: false
+---
+
+La página que buscas no existe o fue movida.
+
+[← Volver al inicio](index.qmd)
+```
+
+```yaml
+# En _quarto.yml
+website:
+  404-page: 404.qmd
+```
+
+### Página de inicio (`index.qmd`) efectiva
+
+La página de inicio es la primera impresión del sitio. Para un curso, debe responder en 10 segundos: ¿qué es este curso, para quién, cómo se usa?
+
+```markdown
+---
+title: "MAT281 — Aplicaciones de la Matemática en Ingeniería"
+subtitle: "Primer semestre 2025 · Universidad Técnica Federico Santa María"
+page-layout: full            # sin márgenes laterales en la home
+toc: false                   # sin tabla de contenidos en la home
+---
+
+::: {.hero-section}
+# Bienvenido a MAT281
+
+Curso de introducción a **ciencia de datos con Python** para
+estudiantes de ingeniería de tercer año.
+
+::: {.hero-buttons}
+[Ver material →](lectures/index.qmd){.btn .btn-primary .btn-lg}
+[Ver programa →](programa/index.qmd){.btn .btn-outline-secondary}
+:::
+:::
+
+---
+
+## Próximas entregas
+
+| Fecha | Evaluación | Estado |
+|:-----:|------------|:------:|
+| 18 Abr | Lab 3 — Regresión lineal | 🟡 Pendiente |
+| 25 Abr | Tarea 2 | ⏳ No abierta |
+| 15 May | Prueba 1 | ⏳ No abierta |
+
+## Últimas novedades
+
+```
+
+````yaml
+# En index.qmd: listado de las últimas 3 noticias
+listing:
+  id: news
+  type: default
+  contents: "noticias/posts"
+  sort: "date desc"
+  max-items: 3
+  fields: [date, title, description]
+````
+
+```markdown
+::: {#news}
+:::
+
+## Contacto
+
+- **Docente:** Juan Pérez · [juan.perez@usm.cl](mailto:juan.perez@usm.cl)
+- **Ayudantías:** Martes 14:00-15:30 en Sala D-101
+- **Consultas:** Teams del curso (respuesta en ≤24 horas hábiles)
+```
+
+---
+
+## Caso de cierre: sitio completo de un curso
+
+### Estructura final del repositorio
+
+```
+mat281-2025-1/
+├── _quarto.yml                     ← configuración central (ver arriba)
+├── index.qmd                       ← home del curso
+├── 404.qmd                         ← página de error personalizada
+│
+├── programa/
+│   └── index.qmd                   ← syllabus con tabla de contenidos
+│
+├── lectures/
+│   ├── index.qmd                   ← listado de clases (grilla)
+│   ├── semana01/
+│   │   ├── index.qmd               ← apunte reproducible
+│   │   └── slides.qmd              ← RevealJS
+│   ├── semana02/
+│   │   ├── index.qmd
+│   │   └── slides.qmd
+│   └── semana05/
+│       ├── index.qmd
+│       └── slides.qmd
+│
+├── labs/
+│   ├── index.qmd                   ← listado de laboratorios (tabla)
+│   ├── lab01/
+│   │   ├── enunciado.qmd
+│   │   └── datos.csv
+│   ├── lab02/
+│   │   └── enunciado.qmd
+│   └── lab03/
+│       ├── enunciado.qmd
+│       └── datos.csv
+│
+├── assignments/
+│   ├── index.qmd
+│   ├── tarea01.qmd
+│   └── tarea02.qmd
+│
+├── noticias/
+│   ├── index.qmd                   ← blog de anuncios
+│   └── posts/
+│       ├── bienvenida.qmd
+│       ├── lab3-disponible.qmd
+│       └── tarea2-disponible.qmd
+│
+├── recursos/
+│   └── index.qmd                   ← catálogo de recursos externos
+│
+├── assets/
+│   ├── img/
+│   │   └── brand/
+│   │       ├── brand__usm.png
+│   │       └── brand__usm2.png
+│   ├── scss/
+│   │   ├── light.scss
+│   │   └── dark.scss
+│   └── bib/
+│       ├── referencias.bib
+│       └── apa-es.csl
+│
+├── _freeze/
+├── .gitignore
+├── README.md
+│
+└── .github/
+    └── workflows/
+        └── deploy.yml
+```
+
+### `lectures/index.qmd`: el catálogo de clases
+
+```yaml
+---
+title: "Clases"
+subtitle: "Material de cada sesión — apuntes y slides"
+listing:
+  type: grid
+  contents: "semana*"
+  sort: "date asc"
+  grid-columns: 3
+  image-height: 200px
+  fields: [date, title, description, categories]
+  categories: true
+  filter-ui: true
+  feed:
+    title: "MAT281 — Nuevas clases"
+page-layout: full
+toc: false
+---
+```
+
+### `lectures/semana05/index.qmd`: un apunte completo
+
+```yaml
+---
+title: "Semana 5: Regresión Lineal Simple"
+date: "2025-04-08"
+description: "Estimación MCO, interpretación de $R^2$ y diagnóstico de residuos."
+categories: [regresión, estadística, python]
+image: "preview.png"
+sidebar: lectures-sidebar
+---
+
+[📊 Ver slides](slides.qmd){.btn .btn-outline-primary .btn-sm}
+[🚀 Abrir en Colab](https://colab.research.google.com/github/fralfaro/mat281/blob/main/lectures/semana05/index.ipynb){.btn .btn-outline-warning .btn-sm}
+
+## Objetivos de la sesión
+
+Al finalizar esta clase, serás capaz de:
+
+1. Estimar los parámetros $\beta_0$ y $\beta_1$ por mínimos cuadrados.
+2. Interpretar el coeficiente de determinación $R^2$.
+3. Verificar los supuestos del modelo con gráficos de residuos.
+
+## Contenido
+
+### El modelo
+
+...contenido del apunte reproducible (como en el capítulo anterior)...
+```
+
+### `programa/index.qmd`: el syllabus
+
+```markdown
+---
+title: "Programa del curso"
+subtitle: "MAT281 — Primer semestre 2025"
+toc: true
+toc-depth: 2
+---
+
+## Descripción del curso
+
+MAT281 introduce herramientas de análisis de datos para resolver
+problemas de ingeniería reales usando Python...
+
+## Equipo docente
+
+| Rol | Nombre | Email | Horario de consulta |
+|-----|--------|-------|---------------------|
+| Profesor | Juan Pérez | juan.perez@usm.cl | Jue 15:00-17:00 |
+| Ayudante | Ana García | ana.garcia@usm.cl | Mar 14:00-16:00 |
+
+## Evaluaciones
+
+| Instrumento | Cantidad | Ponderación | Descripción |
+|-------------|:--------:|:-----------:|-------------|
+| Laboratorios | 6 | 30% | Entrega semanal |
+| Tareas | 3 | 30% | Trabajo individual |
+| Pruebas | 2 | 40% | Presenciales |
+
+### Requisitos de aprobación
+
+- Nota final ponderada ≥ 4.0
+- Asistencia mínima: 75%
+- Entrega de al menos el 80% de los laboratorios
+
+## Calendario
+
+| Semana | Fechas | Tema | Evaluación |
+|:------:|--------|------|:----------:|
+| 1 | 04-08 Mar | Introducción y configuración | — |
+| 2 | 11-15 Mar | Estadística descriptiva | Lab 1 |
+| 3 | 18-22 Mar | Visualización de datos | Lab 2 |
+| 4 | 25-29 Mar | Regresión lineal I | Lab 3 |
+| 5 | 01-05 Abr | Regresión lineal II | Tarea 1 |
+| — | 07-11 Abr | **Semana Santa** | — |
+| 6 | 15-19 Abr | Regresión múltiple | Lab 4 |
+| 7 | 22-26 Abr | Regresión logística | Tarea 2 |
+| 8 | 29 Abr | **Prueba 1** | Prueba 1 (25%) |
+
+## Bibliografía
+
+- McKinney, W. (2022). *Python for Data Analysis* (3ª ed.). O'Reilly.
+- VanderPlas, J. (2023). *Python Data Science Handbook*. O'Reilly.
+- James, G. et al. (2023). *Introduction to Statistical Learning with Python*. Springer.
+```
+
+### Verificar el sitio antes de publicar
+
+```bash
+# Preview local completo
+quarto preview
+
+# Renderizar el sitio completo (sin preview)
+quarto render
+
+# Verificar que no hay links rotos
+quarto check
+
+# Ver el tamaño del sitio generado
+du -sh _site/
+# → Típicamente 10-50 MB para un sitio de curso con varios notebooks
+```
+
+### Lista de verificación final del sitio
+
+```
+Configuración:
+☐ _quarto.yml con navbar completa y links correctos
+☐ Footer con nombre del docente, licencia y año
+☐ favicon configurado (logo UTFSM)
+☐ open-graph: true para compartir en redes
+
+Contenido:
+☐ index.qmd con descripción, calendario y contacto
+☐ programa/index.qmd con syllabus completo
+☐ Todas las semanas tienen index.qmd con date y categories
+☐ Listing de clases muestra correctamente todas las semanas
+
+Diseño:
+☐ Modo claro y oscuro funcionan correctamente
+☐ SCSS personalizado con colores institucionales
+☐ Navbar visible en mobile (responsive)
+☐ TOC visible en páginas largas
+
+Funcionamiento:
+☐ Búsqueda funciona y encuentra contenido
+☐ Links internos funcionan (no hay 404)
+☐ Links externos abren en pestaña nueva
+☐ Código se ejecuta sin errores (quarto render sin errores)
+☐ Figuras tienen captions en español
+
+Publicación:
+☐ GitHub Actions configurado (ver capítulo siguiente)
+☐ GitHub Pages activado en el repositorio
+☐ Sitio accesible en username.github.io/mat281
+```
+
+---
+
+## Referencias
+
+- Allaire, J.J. et al. (2022). *Quarto websites guide*. [quarto.org/docs/websites](https://quarto.org/docs/websites/)
+- Quarto Docs. *Listing pages*. [quarto.org/docs/websites/website-listings.html](https://quarto.org/docs/websites/website-listings.html)
+- Quarto Docs. *Website navigation*. [quarto.org/docs/websites/website-navigation.html](https://quarto.org/docs/websites/website-navigation.html)
+- Quarto Docs. *HTML theming*. [quarto.org/docs/output-formats/html-themes.html](https://quarto.org/docs/output-formats/html-themes.html)
+- Bootstrap 5. *Documentation*. [getbootstrap.com/docs/5.3](https://getbootstrap.com/docs/5.3/)
+- Sass. *SCSS syntax*. [sass-lang.com/documentation](https://sass-lang.com/documentation/)
