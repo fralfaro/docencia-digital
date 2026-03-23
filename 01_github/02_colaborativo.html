@@ -1,0 +1,1863 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Flujo colaborativo – Docencia Digital</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../01_github/03_automatizacion.html" rel="next">
+<link href="../01_github/01_esencial.html" rel="prev">
+<link href="../assets/img/brand/brand__usm.png" rel="icon" type="image/png">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-f418161beb48e0141c760e455f12af2c.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-d657bf7690219e97efde434ca28cf501.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-02f69ddec8db6f163318686ba9cde2b1.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-d657bf7690219e97efde434ca28cf501.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No se han encontrado resultados",
+    "search-matching-documents-text": "documentos encontrados",
+    "search-copy-link-title": "Copiar el enlace en la búsqueda",
+    "search-hide-matches-text": "Ocultar resultados adicionales",
+    "search-more-match-text": "resultado adicional en este documento",
+    "search-more-matches-text": "resultados adicionales en este documento",
+    "search-clear-button-title": "Borrar",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Buscar"
+  }
+}</script>
+<script src="../site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="../site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
+
+
+</head>
+
+<body class="nav-sidebar floating quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../01_github/01_esencial.html">🟩 GitHub</a></li><li class="breadcrumb-item"><a href="../01_github/02_colaborativo.html"><span class="chapter-title">Flujo colaborativo</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Docencia Digital</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/fralfaro/docencia-digital" title="Ejecutar el código" class="quarto-navigation-tool px-1" aria-label="Ejecutar el código"><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo oscuro"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Buscar"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🏠 Home</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">🟪 Introducción</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../00_intro/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Bienvenida al Curso</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">🟩 GitHub</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../01_github/01_esencial.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Git y GitHub esencial</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../01_github/02_colaborativo.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">Flujo colaborativo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../01_github/03_automatizacion.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Automatización y Pages</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">🟧 Google Colab</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../02_colab/colab_01_esencial.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Colab esencial</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../02_colab/colab_02_pandas.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Manipulación de datos con pandas</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../02_colab/colab_03_visualizacion.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Visualización de datos</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">🟥 LaTeX</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../03_latex/overleaf_01_esencial.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">LaTeX esencial</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../03_latex/overleaf_02_matematica.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Matemática y escritura científica</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../03_latex/overleaf_03_plantillas.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Plantillas y producción de documentos</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text">🟦 Quarto</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../04_quarto/quarto_01_intro.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Qué es Quarto y por qué usarlo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../04_quarto/quarto_02_documentos.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Documentos reproducibles</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../04_quarto/quarto_03_revealjs.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Presentaciones con RevealJS</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../04_quarto/quarto_04_sitios.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Sitios web y blogs docentes</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../04_quarto/quarto_05_pages.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Publicación con GitHub Pages</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../04_quarto/quarto_06_flujo.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Flujo docente completo con Quarto</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
+ <span class="menu-text">🤖 IA</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../05_ia/ia_01_panorama.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Panorama de herramientas IA</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../05_ia/ia_02_prompting.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Prompting efectivo para docentes</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../05_ia/ia_03_notebooklm.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">NotebookLM en profundidad</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../05_ia/ia_04_pedagogico.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Diseño pedagógico con IA</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../05_ia/ia_05_rag.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Chatbots y RAG</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../05_ia/ia_06_agentes.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Agentes IA</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../05_ia/ia_07_copilot_studio.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Copilot Studio y plataformas institucionales</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../05_ia/ia_08_etica.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Ética y uso responsable de IA en el aula</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content column-page-right" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../01_github/01_esencial.html">🟩 GitHub</a></li><li class="breadcrumb-item"><a href="../01_github/02_colaborativo.html"><span class="chapter-title">Flujo colaborativo</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-title">Flujo colaborativo</span></h1>
+<p class="subtitle lead">Fork, Pull Requests, Classroom y trabajo en equipo docente</p>
+</div>
+
+
+
+<div class="quarto-title-meta column-page-right">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>El capítulo anterior cubrió el uso individual de Git y GitHub: tú, tus archivos, tu historial. Este capítulo cubre la dimensión colaborativa: cómo trabajas con ayudantes, cómo gestionas entregas de estudiantes, cómo propones y revisas cambios sin pisar el trabajo de nadie.</p>
+<p>La colaboración en GitHub no es solo técnica — es un protocolo social. Fork, Pull Request, revisión de código: cada uno de estos mecanismos existe porque coordinar trabajo entre personas es difícil, y porque los errores en un repositorio compartido afectan a todos.</p>
+<hr>
+<section id="fork-y-pull-request-cómo-proponer-cambios" class="level2">
+<h2 class="anchored" data-anchor-id="fork-y-pull-request-cómo-proponer-cambios">Fork y Pull Request: cómo proponer cambios</h2>
+<section id="el-problema-que-resuelven" class="level3">
+<h3 class="anchored" data-anchor-id="el-problema-que-resuelven">El problema que resuelven</h3>
+<p>Imagina este escenario: tienes el repositorio del curso y un ayudante quiere agregar una solución al laboratorio 3. Si le das acceso de escritura directo, puede hacer push de cualquier cosa al branch <code>main</code> — incluyendo errores. Si no le das acceso, no puede contribuir.</p>
+<p>El mecanismo de <strong>Fork + Pull Request</strong> resuelve esto elegantemente: el ayudante trabaja en su propia copia, hace los cambios, y propone integrarlos. Tú revisas, comentas, pides ajustes si es necesario, y decides si los incorporas.</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">graph TD
+    O["📦 Repo original\ntu-username/mat281"] 
+    F["🍴 Fork\nayudante/mat281"]
+    B["🌿 Branch\nayudante/mat281:lab03-solucion"]
+    PR["🔀 Pull Request\n'Agrego solución lab 3'"]
+    M["✅ Merge\nen repo original"]
+
+    O -- "Fork" --&gt; F
+    F -- "git checkout -b lab03-solucion" --&gt; B
+    B -- "commits + push" --&gt; F
+    F -- "Comparar y proponer" --&gt; PR
+    PR -- "Revisión y aprobación" --&gt; M
+    M --&gt; O
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+</section>
+<section id="fork-una-copia-independiente" class="level3">
+<h3 class="anchored" data-anchor-id="fork-una-copia-independiente">Fork: una copia independiente</h3>
+<p>Un <strong>fork</strong> es una copia completa de un repositorio bajo tu propia cuenta de GitHub. No es solo descargar los archivos — es un repositorio independiente que mantiene una referencia al original (llamado <em>upstream</em>).</p>
+<p><strong>Cuándo hace fork un ayudante:</strong></p>
+<ol type="1">
+<li>Va a <code>github.com/tu-username/mat281-2025-1</code></li>
+<li>Clic en el botón <strong>Fork</strong> (arriba a la derecha)</li>
+<li>Selecciona su propia cuenta como destino</li>
+<li>GitHub crea <code>github.com/ayudante/mat281-2025-1</code></li>
+</ol>
+<p>Ahora el ayudante clona <strong>su fork</strong> (no el original):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># El ayudante clona su fork</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone git@github.com:ayudante/mat281-2025-1.git</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> mat281-2025-1</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Agrega referencia al repo original (para poder sincronizar)</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> remote add upstream git@github.com:tu-username/mat281-2025-1.git</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Verifica los remotos configurados</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> remote <span class="at">-v</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># origin    git@github.com:ayudante/mat281-2025-1.git (fetch)</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># origin    git@github.com:ayudante/mat281-2025-1.git (push)</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co"># upstream  git@github.com:tu-username/mat281-2025-1.git (fetch)</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># upstream  git@github.com:tu-username/mat281-2025-1.git (push)</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Nota</span>origin vs upstream
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><code>origin</code> es siempre el remoto desde el que clonaste (en este caso, el fork del ayudante). <code>upstream</code> es la convención para el repositorio original. Esta distinción es importante: el ayudante hace push a <code>origin</code> (su fork) y sincroniza desde <code>upstream</code> (el tuyo).</p>
+</div>
+</div>
+</section>
+<section id="trabajar-en-un-branch-dedicado" class="level3">
+<h3 class="anchored" data-anchor-id="trabajar-en-un-branch-dedicado">Trabajar en un branch dedicado</h3>
+<p>Antes de modificar cualquier cosa, el ayudante crea un branch con un nombre descriptivo:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear branch y cambiarse a él en un solo comando</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> checkout <span class="at">-b</span> lab03-solucion</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Alternativa moderna (Git 2.23+)</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> switch <span class="at">-c</span> lab03-solucion</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Verificar en qué branch estás</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> branch</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co"># * lab03-solucion</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">#   main</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Ahora trabaja normalmente: edita, commitea, sube al fork:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Edita los archivos</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ... agrega labs/lab03/solucion.ipynb ...</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add labs/lab03/solucion.ipynb</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"feat: agrego solución lab 3 con comentarios explicativos"</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Sube el branch al fork (no al repo original)</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push origin lab03-solucion</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="crear-el-pull-request" class="level3">
+<h3 class="anchored" data-anchor-id="crear-el-pull-request">Crear el Pull Request</h3>
+<p>Después del push, GitHub muestra automáticamente un banner en el fork del ayudante: <em>“lab03-solucion had recent pushes — Compare &amp; pull request”</em>. También se puede crear manualmente:</p>
+<ol type="1">
+<li>Ve al fork en GitHub</li>
+<li>Clic en <strong>Compare &amp; pull request</strong></li>
+<li>Verifica que la base sea <code>tu-username/mat281-2025-1:main</code> y el compare sea <code>ayudante/mat281-2025-1:lab03-solucion</code></li>
+<li>Escribe un título descriptivo: <code>"feat: solución lab 3 con comentarios paso a paso"</code></li>
+<li>En la descripción, explica:
+<ul>
+<li>Qué cambios hace</li>
+<li>Cómo verificar que funciona</li>
+<li>Si hay algo pendiente o decisiones que tomar</li>
+</ul></li>
+<li>Clic en <strong>Create pull request</strong></li>
+</ol>
+<p><strong>Plantilla de descripción de PR para uso docente:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">## ¿Qué hace este PR?</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>Agrega la solución comentada del lab 3 (regresión lineal) con:</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Código paso a paso con explicaciones en celdas Markdown</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Gráficos de diagnóstico del modelo</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Sección de interpretación de resultados</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="fu">## Cómo verificar</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Abrir <span class="in">`labs/lab03/solucion.ipynb`</span> en Jupyter o Colab</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Ejecutar todas las celdas (Kernel → Restart &amp; Run All)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Verificar que no hay errores y los gráficos se generan</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="fu">## Notas</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Usé el dataset de la versión actualizada en <span class="in">`datasets/processed/`</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Queda pendiente agregar ejercicio adicional (lo hago en otro PR)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="sincronizar-el-fork-con-el-repo-original" class="level3">
+<h3 class="anchored" data-anchor-id="sincronizar-el-fork-con-el-repo-original">Sincronizar el fork con el repo original</h3>
+<p>Si el repo original tiene cambios nuevos (tú publicaste más material), el ayudante necesita sincronizar su fork antes de seguir trabajando:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Traer cambios del repo original</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> fetch upstream</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Cambiar al branch main local</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> switch main</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Incorporar los cambios del upstream</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> merge upstream/main</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Subir el main actualizado al fork</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push origin main</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Volver al branch de trabajo y rebase sobre el main actualizado</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> switch lab03-solucion</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> rebase main</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Sincronizar fork desde la interfaz web
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>GitHub tiene un botón <strong>Sync fork</strong> en la página del fork que hace esto en un clic, sin terminal. Útil para ayudantes menos familiarizados con Git.</p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="revisión-de-código-y-comentarios-en-línea" class="level2">
+<h2 class="anchored" data-anchor-id="revisión-de-código-y-comentarios-en-línea">Revisión de código y comentarios en línea</h2>
+<section id="por-qué-revisar-antes-de-hacer-merge" class="level3">
+<h3 class="anchored" data-anchor-id="por-qué-revisar-antes-de-hacer-merge">Por qué revisar antes de hacer merge</h3>
+<p>Un Pull Request sin revisión es un merge automático — pierde el valor del mecanismo. La revisión sirve para:</p>
+<ul>
+<li>Detectar errores antes de que lleguen al <code>main</code> (y a los estudiantes).</li>
+<li>Asegurar consistencia de estilo y formato en el material.</li>
+<li>Compartir conocimiento entre el equipo docente.</li>
+<li>Crear un registro auditado de todas las decisiones sobre el material.</li>
+</ul>
+</section>
+<section id="interfaz-de-revisión-en-github" class="level3">
+<h3 class="anchored" data-anchor-id="interfaz-de-revisión-en-github">Interfaz de revisión en GitHub</h3>
+<p>En el Pull Request, la pestaña <strong>Files changed</strong> muestra todos los archivos modificados con diff línea por línea. Las líneas rojas son eliminadas, las verdes son agregadas.</p>
+<p><strong>Para comentar en una línea específica:</strong></p>
+<ol type="1">
+<li>Pestaña <strong>Files changed</strong></li>
+<li>Hover sobre la línea que quieres comentar → clic en el <code>+</code> azul</li>
+<li>Escribe el comentario</li>
+<li>Elige:
+<ul>
+<li><strong>Add single comment</strong> → comenta esa línea inmediatamente</li>
+<li><strong>Start a review</strong> → acumula comentarios para enviarlos juntos al final</li>
+</ul></li>
+</ol>
+<p><strong>Tipos de comentario en una revisión:</strong></p>
+<pre><code>💬 Pregunta: "¿Por qué usaste df.dropna() aquí en lugar de df.fillna()?
+   ¿Perdemos muchas filas?"
+
+✏️ Sugerencia: "Sugiero renombrar esta variable a `modelo_regresion`
+   para consistencia con el resto del material del curso."
+
+🐛 Error: "Esta celda falla si el CSV tiene comas en los valores
+   de texto. Necesita quotechar='"'."
+
+✅ Aprobación: "Todo bien, solo un comentario menor de estilo."</code></pre>
+<p><strong>GitHub permite sugerir cambios directamente</strong> — el ayudante puede aceptar la sugerencia con un clic y hace commit automático:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="in">```suggestion</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="in">modelo_reg = LinearRegression()</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="in">modelo_reg.fit(X_train, y_train)</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="completar-la-revisión" class="level3">
+<h3 class="anchored" data-anchor-id="completar-la-revisión">Completar la revisión</h3>
+<p>Al terminar de revisar, clic en <strong>Review changes</strong> (arriba a la derecha en Files changed):</p>
+<ul>
+<li><strong>Comment:</strong> comentarios generales sin aprobar ni rechazar</li>
+<li><strong>Approve:</strong> el PR está listo para hacer merge</li>
+<li><strong>Request changes:</strong> hay algo que debe corregirse antes de hacer merge</li>
+</ul>
+<p>El ayudante recibe los comentarios, hace los cambios, hace push al mismo branch — los commits nuevos aparecen automáticamente en el PR. Se puede iterar varias veces.</p>
+</section>
+<section id="hacer-el-merge" class="level3">
+<h3 class="anchored" data-anchor-id="hacer-el-merge">Hacer el merge</h3>
+<p>Una vez aprobado, quien tiene permisos hace el merge. GitHub ofrece tres opciones:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Opción</th>
+<th>Qué hace</th>
+<th>Cuándo usarla</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Create a merge commit</strong></td>
+<td>Un commit de merge que une los dos historiales</td>
+<td>Por defecto, conserva todo el contexto</td>
+</tr>
+<tr class="even">
+<td><strong>Squash and merge</strong></td>
+<td>Aplasta todos los commits del PR en uno solo</td>
+<td>Cuando el branch tiene muchos commits pequeños de trabajo en progreso</td>
+</tr>
+<tr class="odd">
+<td><strong>Rebase and merge</strong></td>
+<td>Replay lineal de los commits sobre main</td>
+<td>Cuando quieres un historial limpio sin commits de merge</td>
+</tr>
+</tbody>
+</table>
+<p>Para repositorios de cursos, <strong>Squash and merge</strong> suele ser la opción más limpia: el PR entero aparece como un único commit descriptivo en <code>main</code>, sin el ruido de “wip”, “arreglo typo”, etc.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Proteger el branch main
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>En el repositorio, ve a <strong>Settings → Branches → Add branch protection rule</strong>. Configura <code>main</code> para requerir al menos una aprobación antes de hacer merge. Esto impide que nadie (incluido tú, accidentalmente) haga push directo a <code>main</code> sin revisión.</p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="resolución-de-conflictos-de-merge" class="level2">
+<h2 class="anchored" data-anchor-id="resolución-de-conflictos-de-merge">Resolución de conflictos de merge</h2>
+<section id="cuándo-ocurren-los-conflictos" class="level3">
+<h3 class="anchored" data-anchor-id="cuándo-ocurren-los-conflictos">Cuándo ocurren los conflictos</h3>
+<p>Un conflicto ocurre cuando dos personas modificaron <strong>las mismas líneas</strong> del mismo archivo en branches diferentes. Git no sabe qué versión conservar y te pide que lo resuelvas manualmente.</p>
+<p>Escenario típico en docencia: tú corregiste un error en <code>lectures/semana03/notebook.ipynb</code> directamente en <code>main</code>, y tu ayudante también modificó esas mismas celdas en su branch <code>semana03-mejoras</code>.</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">gitGraph
+   commit id: "versión base semana 3"
+   branch semana03-mejoras
+   commit id: "ayudante: agrega gráfico"
+   commit id: "ayudante: mejora explicación"
+   checkout main
+   commit id: "tú: corriges error en celda 4"
+   merge semana03-mejoras id: "⚠️ CONFLICTO"
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+</section>
+<section id="cómo-se-ve-un-conflicto" class="level3">
+<h3 class="anchored" data-anchor-id="cómo-se-ve-un-conflicto">Cómo se ve un conflicto</h3>
+<p>Git marca los conflictos directamente en el archivo:</p>
+<pre><code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+# Esta es la versión que está en main (tus cambios)
+modelo = LinearRegression(fit_intercept=True)
+resultado = modelo.fit(X, y)
+=======
+# Esta es la versión del branch del ayudante
+modelo = LinearRegression()
+resultado = modelo.fit(X_train, y_train)
+coef = modelo.coef_
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; semana03-mejoras</code></pre>
+<p>Las tres secciones: - <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</code> hasta <code>=======</code>: la versión actual en tu branch (main) - <code>=======</code> hasta <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code>: la versión del branch que estás mergeando</p>
+</section>
+<section id="resolver-el-conflicto-paso-a-paso" class="level3">
+<h3 class="anchored" data-anchor-id="resolver-el-conflicto-paso-a-paso">Resolver el conflicto paso a paso</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Git te avisa del conflicto al intentar el merge</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> merge semana03-mejoras</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Auto-merging lectures/semana03/notebook.ipynb</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># CONFLICT (content): Merge conflict in lectures/semana03/notebook.ipynb</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Automatic merge failed; fix conflicts and then commit the result.</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Ver qué archivos tienen conflictos</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> status</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co"># both modified: lectures/semana03/notebook.ipynb</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Abrir el archivo en VS Code</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="ex">code</span> lectures/semana03/notebook.ipynb</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<p>VS Code resalta los conflictos con botones de acción:</p>
+<ul>
+<li><strong>Accept Current Change</strong> → queda tu versión (HEAD/main)</li>
+<li><strong>Accept Incoming Change</strong> → queda la versión del branch</li>
+<li><strong>Accept Both Changes</strong> → conserva ambas (una después de la otra)</li>
+<li><strong>Compare Changes</strong> → ver el diff lado a lado</li>
+</ul>
+<p>También puedes editar manualmente: borras las marcas (<code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code>, <code>=======</code>, <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code>) y dejas exactamente el código que debe quedar:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Versión final integrada (elegiste conservar ambas mejoras)</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>modelo <span class="op">=</span> LinearRegression(fit_intercept<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>resultado <span class="op">=</span> modelo.fit(X_train, y_train)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>coef <span class="op">=</span> modelo.coef_</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. Marcar el conflicto como resuelto</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add lectures/semana03/notebook.ipynb</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 5. Completar el merge con un commit</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"merge: integro semana03-mejoras resolviendo conflicto en notebook"</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 6. Subir</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="prevenir-conflictos" class="level3">
+<h3 class="anchored" data-anchor-id="prevenir-conflictos">Prevenir conflictos</h3>
+<p>Los conflictos son más fáciles de prevenir que de resolver:</p>
+<ul>
+<li><strong>Divide el trabajo por archivos</strong>, no por secciones del mismo archivo. Si el ayudante trabaja en <code>lab03/</code>, tú trabajas en <code>lectures/semana05/</code>.</li>
+<li><strong>Haz pull frecuentemente</strong> antes de empezar a trabajar.</li>
+<li><strong>Branches cortos</strong>: un branch que vive 1-2 días tiene menos divergencia que uno que vive 2 semanas.</li>
+<li><strong>Comunica</strong> qué archivos estás modificando (un mensaje en el canal del curso es suficiente).</li>
+</ul>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Advertencia</span>Conflictos en notebooks Jupyter
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Los notebooks <code>.ipynb</code> son JSON. Un conflicto en un notebook puede ser muy difícil de resolver manualmente porque el JSON incluye outputs, metadatos y contadores de ejecución. Herramienta útil: <a href="https://nbdime.readthedocs.io/">nbdime</a> — diff y merge de notebooks con visualización legible.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install nbdime</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="ex">nbdime</span> config-git <span class="at">--enable</span> <span class="at">--global</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Después de esto, <code>git diff</code> y <code>git merge</code> usan nbdime automáticamente para notebooks.</p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="branches-por-tarea-o-unidad-temática" class="level2">
+<h2 class="anchored" data-anchor-id="branches-por-tarea-o-unidad-temática">Branches por tarea o unidad temática</h2>
+<section id="el-modelo-de-branches-para-un-curso" class="level3">
+<h3 class="anchored" data-anchor-id="el-modelo-de-branches-para-un-curso">El modelo de branches para un curso</h3>
+<p>Un repositorio de curso activo puede tener varios branches en paralelo en cualquier momento. La clave es establecer una convención clara desde el principio para que todo el equipo entienda qué hay en cada branch.</p>
+<p><strong>Convención recomendada:</strong></p>
+<pre><code>main              → versión estable y publicada (lo que ven los estudiantes)
+dev               → integración de trabajo en progreso
+semana-XX/TEMA    → material específico de una semana
+lab-XX/DESCRIPCION → soluciones o mejoras de un laboratorio
+fix/DESCRIPCION   → corrección de un error específico
+semestre/2025-2   → adaptación para el próximo semestre</code></pre>
+<p><strong>Flujo con esta convención:</strong></p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">gitGraph
+   commit id: "material semanas 1-2"
+   
+   branch dev
+   
+   branch semana-03/regresion
+   commit id: "borrador notebook"
+   commit id: "agrego ejercicios"
+   checkout dev
+   merge semana-03/regresion id: "semana 3 lista"
+   
+   branch lab-02/mejoras
+   commit id: "mejor visualización"
+   checkout dev
+   merge lab-02/mejoras id: "lab 2 mejorado"
+   
+   checkout main
+   merge dev id: "publicación semana 3"
+   
+   commit id: "publicado ✓"
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+</section>
+<section id="crear-y-gestionar-branches" class="level3">
+<h3 class="anchored" data-anchor-id="crear-y-gestionar-branches">Crear y gestionar branches</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear branch para material de la semana 4</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> checkout <span class="at">-b</span> semana-04/series-tiempo</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co"># o con la sintaxis moderna:</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> switch <span class="at">-c</span> semana-04/series-tiempo</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Ver todos los branches (locales y remotos)</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> branch <span class="at">-a</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Cambiar entre branches</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> switch main</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> switch semana-04/series-tiempo</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Eliminar un branch después de hacer merge (ya no lo necesitas)</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> branch <span class="at">-d</span> semana-04/series-tiempo         <span class="co"># local</span></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push origin <span class="at">--delete</span> semana-04/series-tiempo  <span class="co"># remoto</span></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Ver en qué branch está cada archivo modificado</span></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> status</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a><span class="co"># On branch semana-04/series-tiempo</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="branches-para-soluciones-de-tareas" class="level3">
+<h3 class="anchored" data-anchor-id="branches-para-soluciones-de-tareas">Branches para soluciones de tareas</h3>
+<p>Un patrón útil es mantener las soluciones en un branch separado del branch principal. Los estudiantes solo ven <code>main</code>; tú y los ayudantes trabajan en ambos:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Branch con soluciones (nunca se mergea a main)</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> checkout <span class="at">-b</span> soluciones</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co"># En este branch, agrega las soluciones</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add assignments/tarea01/solucion.qmd</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"feat: solución tarea 1"</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push origin soluciones</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Para ver las soluciones, cambias de branch localmente</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> switch soluciones</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Para publicar solo el enunciado, vuelves a main</span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> switch main</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Branches de soluciones en GitHub
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Puedes hacer el branch <code>soluciones</code> privado configurando que solo ciertos colaboradores (tú y los ayudantes) tengan acceso de lectura. Alternativamente, mantén las soluciones en un repositorio separado completamente privado.</p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="github-classroom-gestionar-entregas-de-estudiantes" class="level2">
+<h2 class="anchored" data-anchor-id="github-classroom-gestionar-entregas-de-estudiantes">GitHub Classroom: gestionar entregas de estudiantes</h2>
+<section id="qué-es-github-classroom" class="level3">
+<h3 class="anchored" data-anchor-id="qué-es-github-classroom">Qué es GitHub Classroom</h3>
+<p>GitHub Classroom automatiza la creación de repositorios individuales para cada estudiante a partir de un template. En lugar de recibir archivos por email o en un sistema de entrega centralizado, cada estudiante tiene su propio repositorio privado donde trabaja y hace commits.</p>
+<p><strong>Ventajas sobre sistemas tradicionales de entrega:</strong></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Sistema tradicional</th>
+<th>GitHub Classroom</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Archivo comprimido por email</td>
+<td>Repositorio individual con historial completo</td>
+</tr>
+<tr class="even">
+<td>No sabes cuándo empezó a trabajar</td>
+<td><code>git log</code> muestra exactamente cuándo hizo cada commit</td>
+</tr>
+<tr class="odd">
+<td>Difícil dar feedback en código</td>
+<td>Comentarios en línea en el código directamente</td>
+</tr>
+<tr class="even">
+<td>Sin control de versiones del estudiante</td>
+<td>Pueden revertir errores y ver su progreso</td>
+</tr>
+<tr class="odd">
+<td>No detecta colaboración no autorizada</td>
+<td>Puedes ver si dos repos tienen commits idénticos</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="configurar-github-classroom-desde-cero" class="level3">
+<h3 class="anchored" data-anchor-id="configurar-github-classroom-desde-cero">Configurar GitHub Classroom desde cero</h3>
+<p><strong>1. Crear la organización del curso (si no la tienes):</strong></p>
+<ol type="1">
+<li>GitHub → <strong>+</strong> → <strong>New organization</strong></li>
+<li>Nombre: <code>mat281-usm</code> o <code>mat281-2025-1-usm</code></li>
+<li>Plan: <strong>Free</strong> (suficiente para docencia)</li>
+<li>Invita a los ayudantes como miembros con rol <strong>Member</strong></li>
+</ol>
+<p><strong>2. Configurar Classroom:</strong></p>
+<ol type="1">
+<li>Ve a <a href="https://classroom.github.com">classroom.github.com</a></li>
+<li><strong>Sign in with GitHub</strong></li>
+<li>Clic en <strong>New classroom</strong></li>
+<li>Selecciona la organización del curso (<code>mat281-usm</code>)</li>
+<li>Nombre del classroom: <code>MAT281 — 2025-1</code></li>
+</ol>
+<p><strong>3. Crear el repositorio template del laboratorio:</strong></p>
+<p>El template es el repositorio que cada estudiante recibe como punto de partida. Debe contener:</p>
+<pre><code>lab03-template/
+├── README.md              # instrucciones de la tarea
+├── enunciado.ipynb        # notebook con preguntas (sin solución)
+├── datos/
+│   └── dataset.csv        # datos necesarios
+└── .gitignore             # para Python</code></pre>
+<p>Marca el repositorio como template: <strong>Settings → General → Template repository</strong> ✅</p>
+<p><strong>4. Crear la assignment:</strong></p>
+<ol type="1">
+<li>En Classroom → <strong>New assignment</strong></li>
+<li><strong>Assignment title:</strong> <code>Lab 3 — Regresión Lineal</code></li>
+<li><strong>Deadline:</strong> fecha y hora límite de entrega</li>
+<li><strong>Repository visibility:</strong> Private (solo el estudiante y tú pueden verlo)</li>
+<li><strong>Starter code:</strong> selecciona el template que creaste</li>
+<li><strong>Enable feedback pull requests:</strong> ✅ (muy recomendado — crea un PR automático para dar feedback)</li>
+<li>Clic en <strong>Create assignment</strong></li>
+</ol>
+<p>Classroom genera un <strong>link de invitación</strong>:</p>
+<pre><code>https://classroom.github.com/a/XXXXXXXXXX</code></pre>
+<p>Comparte ese link con los estudiantes (en el LMS del curso, email, etc.).</p>
+</section>
+<section id="el-flujo-desde-el-punto-de-vista-del-estudiante" class="level3">
+<h3 class="anchored" data-anchor-id="el-flujo-desde-el-punto-de-vista-del-estudiante">El flujo desde el punto de vista del estudiante</h3>
+<pre><code>1. Estudiante hace clic en el link
+   ↓
+2. GitHub crea automáticamente:
+   mat281-usm/lab03-APELLIDO-NOMBRE
+   (repositorio privado con el template)
+   ↓
+3. Estudiante clona su repositorio
+   git clone git@github.com:mat281-usm/lab03-apellido-nombre.git
+   ↓
+4. Trabaja, hace commits, hace push
+   (puedes ver su progreso en tiempo real)
+   ↓
+5. Al finalizar: hace push final antes del deadline
+   ↓
+6. Tú revisas el código y das feedback en el PR automático</code></pre>
+</section>
+<section id="revisar-y-dar-feedback-a-estudiantes" class="level3">
+<h3 class="anchored" data-anchor-id="revisar-y-dar-feedback-a-estudiantes">Revisar y dar feedback a estudiantes</h3>
+<p>Desde el panel de Classroom, puedes ver todos los repositorios de una tarea con su estado de actividad.</p>
+<p><strong>Para dar feedback directamente en el código:</strong></p>
+<ol type="1">
+<li>Ve al repositorio del estudiante</li>
+<li>Pestaña <strong>Pull requests</strong> → <strong>Feedback</strong> (el PR automático que Classroom creó)</li>
+<li><strong>Files changed</strong> → comenta en líneas específicas del notebook o script</li>
+</ol>
+<p>Esto es incomparablemente mejor que anotar un PDF: el estudiante ve el comentario exactamente en la línea de código correspondiente.</p>
+<p><strong>Para ver el historial de trabajo:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Clonar el repositorio del estudiante (si tienes acceso)</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone git@github.com:mat281-usm/lab03-apellido-nombre.git</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Ver cuándo hizo cada commit</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> log <span class="at">--oneline</span> <span class="at">--format</span><span class="op">=</span><span class="st">"%h %ad %s"</span> <span class="at">--date</span><span class="op">=</span>short</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="co"># a3f2c19 2025-04-10 feat: completo ejercicio 1</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="co"># b82e104 2025-04-10 wip: intento ejercicio 2</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 3d91a87 2025-04-09 feat: configuro entorno inicial</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="co"># f1c2e50 2025-04-08 Initial commit (template)</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Esto te dice inmediatamente si el estudiante empezó el día de entrega o trabajó durante varios días.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Advertencia</span>Privacidad de datos en Classroom
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Los repositorios de estudiantes contienen trabajo académico personal. Nunca hagas públicos esos repositorios. Configura la organización con <strong>Member privileges → Base permissions → No permissions</strong> para que los estudiantes no puedan ver los repos de sus compañeros.</p>
+<p>Tampoco subas listas de estudiantes ni datos personales a ningún repositorio, ni siquiera privado.</p>
+</div>
+</div>
+</section>
+<section id="github-classroom-assistant" class="level3">
+<h3 class="anchored" data-anchor-id="github-classroom-assistant">GitHub Classroom Assistant</h3>
+<p>Para descargar todos los repositorios de una tarea en batch (útil para corrección offline):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Instalar GitHub Classroom Assistant (herramienta CLI oficial)</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co"># github.com/education/classroom-assistant</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Clonar todos los repos de una tarea de una vez</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="co"># (se hace desde la interfaz gráfica de Classroom Assistant)</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Alternativamente, con la CLI de GitHub:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Instalar gh CLI: cli.github.com</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="ex">gh</span> auth login</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Clonar todos los repos de la organización que coincidan con un patrón</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="ex">gh</span> repo list mat281-usm <span class="at">--limit</span> 100 <span class="at">--json</span> name <span class="dt">\</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span> <span class="ex">jq</span> <span class="at">-r</span> <span class="st">'.[].name | select(startswith("lab03-"))'</span> <span class="dt">\</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span> <span class="fu">xargs</span> <span class="at">-I</span> {} gh repo clone mat281-usm/{}</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<hr>
+</section>
+</section>
+<section id="organización-del-equipo-docente-en-github" class="level2">
+<h2 class="anchored" data-anchor-id="organización-del-equipo-docente-en-github">Organización del equipo docente en GitHub</h2>
+<section id="github-organizations-para-cursos" class="level3">
+<h3 class="anchored" data-anchor-id="github-organizations-para-cursos">GitHub Organizations para cursos</h3>
+<p>Una <strong>organización de GitHub</strong> es una cuenta compartida donde múltiples usuarios colaboran en repositorios bajo un nombre común. Para un departamento o programa de estudios, tener una organización centraliza todo el material.</p>
+<p><strong>Estructura recomendada para un departamento:</strong></p>
+<pre><code>Organización: dmat-usm
+├── Repositorios de cursos:
+│   ├── mat281-2025-1
+│   ├── mat281-2025-2
+│   ├── mat260-2025-1
+│   └── ...
+├── Repositorios compartidos:
+│   ├── plantillas-cursos       (templates reutilizables)
+│   ├── datasets-compartidos    (datos usados en varios cursos)
+│   └── recursos-docentes       (material de apoyo general)
+└── GitHub Classrooms:
+    ├── MAT281-2025-1
+    └── MAT260-2025-1</code></pre>
+</section>
+<section id="crear-y-configurar-la-organización" class="level3">
+<h3 class="anchored" data-anchor-id="crear-y-configurar-la-organización">Crear y configurar la organización</h3>
+<ol type="1">
+<li>GitHub → <strong>+</strong> → <strong>New organization</strong></li>
+<li>Nombre corto y profesional: <code>dmat-usm</code>, <code>inf-usm</code>, <code>icm-usm</code></li>
+<li>Email de contacto: usa un email institucional del departamento, no personal</li>
+<li>Plan: <strong>Free</strong> (suficiente) o solicita <strong>GitHub Education</strong> para organizaciones</li>
+</ol>
+<p><strong>Verificar la organización como educativa:</strong></p>
+<p>En <a href="https://education.github.com/teachers">education.github.com/teachers</a> puedes solicitar beneficios para organizaciones educativas: repositorios privados ilimitados, Actions sin límite de minutos, GitHub Packages.</p>
+</section>
+<section id="equipos-teams-y-permisos" class="level3">
+<h3 class="anchored" data-anchor-id="equipos-teams-y-permisos">Equipos (Teams) y permisos</h3>
+<p>Los <strong>Teams</strong> son grupos de miembros de la organización con permisos configurados. Permiten dar acceso granular: los ayudantes de MAT281 solo ven los repos de MAT281, no los de otros cursos.</p>
+<p><strong>Estructura de teams recomendada:</strong></p>
+<pre><code>dmat-usm (organización)
+├── Team: profesores           → admin en todos los repos del depto.
+│   └── @juan-perez, @maria-gonzalez, ...
+│
+├── Team: ayudantes-mat281     → write en repos de mat281
+│   └── @ayudante1, @ayudante2
+│
+├── Team: ayudantes-mat260     → write en repos de mat260
+│   └── @ayudante3
+│
+└── Team: estudiantes-2025-1   → read (solo lectura)
+    └── (todos los estudiantes del semestre)</code></pre>
+<p><strong>Crear un team:</strong></p>
+<ol type="1">
+<li>Organización → <strong>Teams</strong> → <strong>New team</strong></li>
+<li>Nombre: <code>ayudantes-mat281</code></li>
+<li>Descripción: “Ayudantes del curso MAT281, 2025-1”</li>
+<li>Visibilidad: <strong>Secret</strong> (no visible para estudiantes)</li>
+<li>Invita miembros</li>
+<li>Asigna el team al repositorio con el nivel de permiso correcto:
+<ul>
+<li><strong>Read</strong> → solo pueden ver y clonar</li>
+<li><strong>Triage</strong> → pueden gestionar Issues sin hacer push</li>
+<li><strong>Write</strong> → pueden hacer push (ayudantes activos)</li>
+<li><strong>Maintain</strong> → pueden hacer merge de PRs</li>
+<li><strong>Admin</strong> → control total (solo para jefes de ayudantía o co-docentes)</li>
+</ul></li>
+</ol>
+</section>
+<section id="flujo-de-trabajo-docente-con-organización" class="level3">
+<h3 class="anchored" data-anchor-id="flujo-de-trabajo-docente-con-organización">Flujo de trabajo docente con organización</h3>
+<p>Con esta estructura, el flujo de trabajo para el equipo docente es:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Profesor (admin): crea la estructura del semestre</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="ex">gh</span> repo create dmat-usm/mat281-2025-1 <span class="at">--public</span> <span class="at">--template</span> dmat-usm/plantilla-curso</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Ayudante (write): clona y trabaja en su branch</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone git@github.com:dmat-usm/mat281-2025-1.git</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> switch <span class="at">-c</span> lab04-solucion</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="co"># ... trabaja ...</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push origin lab04-solucion</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Crea PR para revisión del profesor</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Profesor: revisa el PR, comenta, aprueba y hace merge</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<hr>
+</section>
+</section>
+<section id="templates-de-repositorios-para-cursos" class="level2">
+<h2 class="anchored" data-anchor-id="templates-de-repositorios-para-cursos">Templates de repositorios para cursos</h2>
+<section id="qué-es-un-template-de-repositorio" class="level3">
+<h3 class="anchored" data-anchor-id="qué-es-un-template-de-repositorio">Qué es un template de repositorio</h3>
+<p>Un <strong>template</strong> es un repositorio marcado como punto de partida: cuando alguien crea un repositorio basado en él, recibe una copia de todos sus archivos y estructura de carpetas — pero sin el historial de Git del template. Empieza limpio.</p>
+<p>Esto es diferente a un fork (que sí copia el historial y mantiene la referencia al original).</p>
+<p><strong>Casos de uso en docencia:</strong></p>
+<ul>
+<li>Template de curso: estructura estándar que usas cada semestre con las carpetas <code>lectures/</code>, <code>labs/</code>, <code>assignments/</code>, etc.</li>
+<li>Template de laboratorio: enunciado y datos base que cada estudiante recibe via Classroom.</li>
+<li>Template de proyecto de investigación: estructura estándar para trabajos de investigación en el grupo.</li>
+</ul>
+</section>
+<section id="crear-un-template-de-curso" class="level3">
+<h3 class="anchored" data-anchor-id="crear-un-template-de-curso">Crear un template de curso</h3>
+<p><strong>Estructura recomendada del template:</strong></p>
+<pre><code>plantilla-curso/
+├── README.md                 # con placeholders: [NOMBRE_CURSO], [SEMESTRE]
+├── LICENSE
+├── .gitignore                # para Python + R + Quarto
+├── _quarto.yml               # configuración base de Quarto
+│
+├── lectures/
+│   └── semana01/
+│       ├── README.md         # instrucciones de la semana
+│       └── notebook_template.ipynb
+│
+├── labs/
+│   └── lab00-ejemplo/
+│       ├── enunciado.qmd
+│       └── datos/.gitkeep
+│
+├── assignments/
+│   └── tarea00-ejemplo/
+│       └── enunciado.qmd
+│
+├── datasets/
+│   ├── raw/.gitkeep
+│   └── processed/.gitkeep
+│
+└── docs/
+    ├── programa_template.qmd
+    └── calendario_template.qmd</code></pre>
+<p><strong>README con placeholders para personalizar:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># [NOMBRE_CURSO] — [CÓDIGO]</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>**Semestre:** <span class="co">[</span><span class="ot">SEMESTRE</span><span class="co">]</span>  </span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>**Docente:** <span class="co">[</span><span class="ot">NOMBRE_DOCENTE</span><span class="co">]</span> — <span class="co">[</span><span class="ot">EMAIL</span><span class="co">]</span>  </span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>**Universidad:** Universidad Técnica Federico Santa María</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="fu">## Descripción</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">DESCRIPCIÓN DEL CURSO</span><span class="co">]</span></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a><span class="fu">## Estructura del repositorio</span></span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a><span class="in">├── lectures/      # Material de clases</span></span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a><span class="in">├── labs/          # Guías de laboratorio</span></span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a><span class="in">├── assignments/   # Enunciados de tareas</span></span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a><span class="in">├── datasets/      # Datos del curso</span></span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a><span class="in">└── docs/          # Programa y calendario</span></span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a><span class="fu">## Uso</span></span>
+<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb26-24"><a href="#cb26-24" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/<span class="pp">[</span><span class="ss">ORGANIZACIÓN</span><span class="pp">]</span>/<span class="pp">[</span><span class="ss">REPO</span><span class="pp">]</span>.git</span>
+<span id="cb26-25"><a href="#cb26-25" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb26-26"><a href="#cb26-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-27"><a href="#cb26-27" aria-hidden="true" tabindex="-1"></a><span class="fu">## Licencia</span></span>
+<span id="cb26-28"><a href="#cb26-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-29"><a href="#cb26-29" aria-hidden="true" tabindex="-1"></a>MIT + CC BY 4.0</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Marcar el repositorio como template:</strong></p>
+<ol type="1">
+<li>Repositorio → <strong>Settings → General</strong></li>
+<li>Sección <strong>Template repository</strong> → ✅ activar</li>
+<li>El repositorio aparecerá como opción en el dropdown de templates al crear nuevos repos</li>
+</ol>
+</section>
+<section id="usar-el-template-al-crear-un-repositorio-nuevo" class="level3">
+<h3 class="anchored" data-anchor-id="usar-el-template-al-crear-un-repositorio-nuevo">Usar el template al crear un repositorio nuevo</h3>
+<p><strong>Desde la interfaz web:</strong> 1. <strong>+</strong> → <strong>New repository</strong> 2. Sección <strong>Repository template</strong> → selecciona <code>dmat-usm/plantilla-curso</code> 3. El nuevo repo tendrá todos los archivos del template sin el historial</p>
+<p><strong>Desde la CLI:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gh</span> repo create dmat-usm/mat281-2025-2 <span class="dt">\</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">--template</span> dmat-usm/plantilla-curso <span class="dt">\</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">--public</span> <span class="dt">\</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">--description</span> <span class="st">"Material MAT281, semestre 2025-2"</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="template-para-proyecto-de-investigación" class="level3">
+<h3 class="anchored" data-anchor-id="template-para-proyecto-de-investigación">Template para proyecto de investigación</h3>
+<p>Para grupos de investigación, un template diferente:</p>
+<pre><code>plantilla-investigacion/
+├── README.md
+├── LICENSE
+├── .gitignore
+│
+├── data/
+│   ├── raw/.gitkeep          # datos originales, sin modificar
+│   ├── processed/.gitkeep    # datos limpios
+│   └── external/.gitkeep     # datos de fuentes externas
+│
+├── notebooks/
+│   ├── 01_exploracion.ipynb
+│   ├── 02_procesamiento.ipynb
+│   └── 03_modelamiento.ipynb
+│
+├── src/                      # código reutilizable como módulo
+│   ├── __init__.py
+│   ├── data.py               # funciones de carga y limpieza
+│   ├── features.py           # ingeniería de variables
+│   └── models.py             # entrenamiento y evaluación
+│
+├── reports/                  # reportes y figuras finales
+│   └── figures/.gitkeep
+│
+├── requirements.txt
+└── environment.yml           # entorno conda</code></pre>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Nota</span>Cookie-cutter para templates más complejos
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><a href="https://cookiecutter.readthedocs.io/">Cookiecutter</a> es una herramienta que genera repositorios a partir de templates con variables. Si necesitas plantillas que se personalizan automáticamente (nombre del curso, fecha, número de semanas), vale la pena explorarlo.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install cookiecutter</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="ex">cookiecutter</span> gh:fralfaro/plantilla-curso-usm</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Nombre del curso: MAT281</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Semestre: 2025-1</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Docente: Juan Pérez</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="co"># → genera mat281-2025-1/ con todos los archivos personalizados</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="resumen-del-flujo-colaborativo-completo" class="level2">
+<h2 class="anchored" data-anchor-id="resumen-del-flujo-colaborativo-completo">Resumen del flujo colaborativo completo</h2>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">graph TD
+    T["🗂️ Organización GitHub\ndmat-usm"]
+
+    T --&gt; R["📦 Repo principal\nmat281-2025-1\n(profesor: admin)"]
+    T --&gt; C["🎓 GitHub Classroom\nMat281-2025-1"]
+
+    R --&gt; B1["🌿 main\n(versión publicada)"]
+    R --&gt; B2["🌿 dev\n(integración)"]
+
+    B2 --&gt; PR1["🔀 PR: Semana 4\nAyudante → main via dev"]
+    B2 --&gt; PR2["🔀 PR: Lab 3 solución\nAyudante → main via dev"]
+
+    C --&gt; E1["📁 lab03-estudiante1\n(privado, solo el estudiante)"]
+    C --&gt; E2["📁 lab03-estudiante2\n(privado, solo el estudiante)"]
+    C --&gt; En["📁 lab03-estudianteN\n..."]
+
+    E1 --&gt; FB["💬 Feedback PR\ncomentarios en línea"]
+    E2 --&gt; FB
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="referencias" class="level2">
+<h2 class="anchored" data-anchor-id="referencias">Referencias</h2>
+<ul>
+<li>GitHub Docs. <em>Collaborating with pull requests</em>. <a href="https://docs.github.com/es/pull-requests">docs.github.com/es/pull-requests</a></li>
+<li>GitHub Docs. <em>GitHub Classroom documentation</em>. <a href="https://docs.github.com/en/education/manage-coursework-with-github-classroom">docs.github.com/en/education/manage-coursework-with-github-classroom</a></li>
+<li>GitHub Docs. <em>Managing organizations</em>. <a href="https://docs.github.com/es/organizations">docs.github.com/es/organizations</a></li>
+<li>Perez-Riverol, Y. et al.&nbsp;(2016). <em>Ten Simple Rules for Taking Advantage of Git and GitHub</em>. PLOS Computational Biology. <a href="https://doi.org/10.1371/journal.pcbi.1004947">doi.org/10.1371/journal.pcbi.1004947</a></li>
+<li>nbdime. <em>Notebook-specific diffing and merging</em>. <a href="https://nbdime.readthedocs.io">nbdime.readthedocs.io</a></li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copiado");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copiado");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation column-page-right">
+  <div class="nav-page nav-page-previous">
+      <a href="../01_github/01_esencial.html" class="pagination-link" aria-label="Git y GitHub esencial">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">Git y GitHub esencial</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../01_github/03_automatizacion.html" class="pagination-link" aria-label="Automatización y Pages">
+        <span class="nav-page-text"><span class="chapter-title">Automatización y Pages</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

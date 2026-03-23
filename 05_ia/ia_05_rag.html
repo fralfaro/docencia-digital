@@ -1,0 +1,1854 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Chatbots y RAG – Docencia Digital</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../05_ia/ia_06_agentes.html" rel="next">
+<link href="../05_ia/ia_04_pedagogico.html" rel="prev">
+<link href="../assets/img/brand/brand__usm.png" rel="icon" type="image/png">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-f418161beb48e0141c760e455f12af2c.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-d657bf7690219e97efde434ca28cf501.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-02f69ddec8db6f163318686ba9cde2b1.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-d657bf7690219e97efde434ca28cf501.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No se han encontrado resultados",
+    "search-matching-documents-text": "documentos encontrados",
+    "search-copy-link-title": "Copiar el enlace en la búsqueda",
+    "search-hide-matches-text": "Ocultar resultados adicionales",
+    "search-more-match-text": "resultado adicional en este documento",
+    "search-more-matches-text": "resultados adicionales en este documento",
+    "search-clear-button-title": "Borrar",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Buscar"
+  }
+}</script>
+<script src="../site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="../site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
+
+
+</head>
+
+<body class="nav-sidebar floating quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../05_ia/ia_01_panorama.html">🤖 IA</a></li><li class="breadcrumb-item"><a href="../05_ia/ia_05_rag.html"><span class="chapter-title">Chatbots y RAG</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Docencia Digital</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/fralfaro/docencia-digital" title="Ejecutar el código" class="quarto-navigation-tool px-1" aria-label="Ejecutar el código"><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo oscuro"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Buscar"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🏠 Home</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">🟪 Introducción</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../00_intro/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Bienvenida al Curso</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">🟩 GitHub</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../01_github/01_esencial.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Git y GitHub esencial</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../01_github/02_colaborativo.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Flujo colaborativo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../01_github/03_automatizacion.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Automatización y Pages</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">🟧 Google Colab</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../02_colab/colab_01_esencial.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Colab esencial</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../02_colab/colab_02_pandas.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Manipulación de datos con pandas</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../02_colab/colab_03_visualizacion.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Visualización de datos</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">🟥 LaTeX</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../03_latex/overleaf_01_esencial.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">LaTeX esencial</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../03_latex/overleaf_02_matematica.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Matemática y escritura científica</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../03_latex/overleaf_03_plantillas.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Plantillas y producción de documentos</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text">🟦 Quarto</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../04_quarto/quarto_01_intro.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Qué es Quarto y por qué usarlo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../04_quarto/quarto_02_documentos.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Documentos reproducibles</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../04_quarto/quarto_03_revealjs.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Presentaciones con RevealJS</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../04_quarto/quarto_04_sitios.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Sitios web y blogs docentes</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../04_quarto/quarto_05_pages.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Publicación con GitHub Pages</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../04_quarto/quarto_06_flujo.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Flujo docente completo con Quarto</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
+ <span class="menu-text">🤖 IA</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../05_ia/ia_01_panorama.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Panorama de herramientas IA</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../05_ia/ia_02_prompting.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Prompting efectivo para docentes</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../05_ia/ia_03_notebooklm.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">NotebookLM en profundidad</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../05_ia/ia_04_pedagogico.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Diseño pedagógico con IA</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../05_ia/ia_05_rag.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">Chatbots y RAG</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../05_ia/ia_06_agentes.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Agentes IA</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../05_ia/ia_07_copilot_studio.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Copilot Studio y plataformas institucionales</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../05_ia/ia_08_etica.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Ética y uso responsable de IA en el aula</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content column-page-right" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../05_ia/ia_01_panorama.html">🤖 IA</a></li><li class="breadcrumb-item"><a href="../05_ia/ia_05_rag.html"><span class="chapter-title">Chatbots y RAG</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-title">Chatbots y RAG</span></h1>
+<p class="subtitle lead">Construir asistentes sobre tu propio material sin código y con código</p>
+</div>
+
+
+
+<div class="quarto-title-meta column-page-right">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>El capítulo anterior cubrió NotebookLM — la implementación más accesible de RAG para docentes. Este capítulo profundiza en el concepto técnico y lo extiende: cómo funciona RAG por dentro, cuándo NotebookLM no es suficiente, qué alternativas sin código existen, y una introducción al territorio de las herramientas con código (LangChain, LlamaIndex) para quien quiera ir más lejos.</p>
+<hr>
+<section id="qué-es-rag-y-cómo-funciona" class="level2">
+<h2 class="anchored" data-anchor-id="qué-es-rag-y-cómo-funciona">Qué es RAG y cómo funciona</h2>
+<section id="el-problema-que-rag-resuelve" class="level3">
+<h3 class="anchored" data-anchor-id="el-problema-que-rag-resuelve">El problema que RAG resuelve</h3>
+<p>Los modelos de lenguaje tienen dos limitaciones fundamentales para uso docente:</p>
+<p><strong>1. Fecha de corte:</strong> no saben nada posterior a su entrenamiento. <strong>2. Sin acceso a tu material específico:</strong> no conocen tu syllabus, tus apuntes, tus rúbricas.</p>
+<p>La solución naïve sería incluir todo el material en el prompt. El problema: los prompts tienen límites de tamaño, son costosos, y el modelo tiene dificultad para recuperar información específica de documentos muy largos.</p>
+<p><strong>RAG</strong> (Retrieval-Augmented Generation) resuelve esto con una arquitectura más elegante: en lugar de meter todo en el prompt, <em>recupera</em> solo los fragmentos relevantes en el momento en que se necesitan.</p>
+</section>
+<section id="la-arquitectura-rag-paso-a-paso" class="level3">
+<h3 class="anchored" data-anchor-id="la-arquitectura-rag-paso-a-paso">La arquitectura RAG paso a paso</h3>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">graph TD
+    subgraph "Fase de indexación (una sola vez)"
+        DOC["📄 Tus documentos\n(PDF, Markdown, URLs)"]
+        CHUNK["✂️ Chunking\nDividir en fragmentos\nde 500-1000 tokens"]
+        EMB["🔢 Embedding\nConvertir fragmentos\na vectores numéricos"]
+        VDB["🗄️ Vector database\nAlmacenar los vectores\n(Chroma, FAISS, Pinecone)"]
+        DOC --&gt; CHUNK --&gt; EMB --&gt; VDB
+    end
+
+    subgraph "Fase de inferencia (cada pregunta)"
+        Q["❓ Pregunta del usuario\n'¿Cuánto vale el Lab 3?'"]
+        QE["🔢 Embedding de la pregunta"]
+        RET["🔍 Búsqueda semántica\nTop-K fragmentos más similares"]
+        CTX["📋 Contexto recuperado\nLos fragmentos relevantes"]
+        LLM["🧠 LLM\n(Claude, GPT, Gemini)"]
+        ANS["💬 Respuesta\ncon citas de tus documentos"]
+
+        Q --&gt; QE
+        QE --&gt; RET
+        VDB --&gt; RET
+        RET --&gt; CTX
+        CTX --&gt; LLM
+        Q --&gt; LLM
+        LLM --&gt; ANS
+    end
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+</section>
+<section id="los-componentes-técnicos" class="level3">
+<h3 class="anchored" data-anchor-id="los-componentes-técnicos">Los componentes técnicos</h3>
+<p><strong>Chunking:</strong> dividir documentos largos en fragmentos manejables. El tamaño importa:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Chunk size</th>
+<th>Ventaja</th>
+<th>Desventaja</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Pequeño (~200 tokens)</td>
+<td>Recuperación precisa</td>
+<td>Pierde contexto, fragmenta ideas</td>
+</tr>
+<tr class="even">
+<td>Mediano (~500 tokens)</td>
+<td>Balance</td>
+<td>—</td>
+</tr>
+<tr class="odd">
+<td>Grande (~1000 tokens)</td>
+<td>Preserva contexto</td>
+<td>Recupera información irrelevante</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Embeddings:</strong> representaciones vectoriales del significado del texto. Dos fragmentos semánticamente similares tienen vectores cercanos en el espacio de embedding, aunque usen palabras distintas.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Ejemplo conceptual de embeddings</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>fragmento_1 <span class="op">=</span> <span class="st">"La nota mínima de aprobación es 4.0"</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>fragmento_2 <span class="op">=</span> <span class="st">"Para pasar el curso necesitas al menos un 4.0"</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Ambos tienen embeddings muy similares aunque las palabras sean distintas</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>pregunta <span class="op">=</span> <span class="st">"¿Qué nota necesito para aprobar?"</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># El embedding de la pregunta es similar al de ambos fragmentos</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># → El retriever los recupera ambos</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Vector database:</strong> base de datos optimizada para búsqueda por similitud de vectores. Alternativas comunes: FAISS (local, gratuito), Chroma (local, fácil de usar), Pinecone (cloud, escalable).</p>
+<p><strong>Búsqueda semántica vs léxica:</strong> la búsqueda tradicional busca palabras exactas. La búsqueda semántica busca significado:</p>
+<pre><code>Pregunta: "¿Cuándo es la evaluación de mitad de semestre?"
+
+Búsqueda léxica: busca "evaluación" + "mitad" + "semestre"
+→ Puede fallar si el documento dice "Prueba 1" o "midterm"
+
+Búsqueda semántica: busca conceptos relacionados
+→ Encuentra "Prueba 1 — semana 8" aunque no diga "mitad de semestre"</code></pre>
+<hr>
+</section>
+</section>
+<section id="diferencia-entre-chatbot-genérico-y-chatbot-sobre-documentos-propios" class="level2">
+<h2 class="anchored" data-anchor-id="diferencia-entre-chatbot-genérico-y-chatbot-sobre-documentos-propios">Diferencia entre chatbot genérico y chatbot sobre documentos propios</h2>
+<section id="por-qué-importa-la-distinción" class="level3">
+<h3 class="anchored" data-anchor-id="por-qué-importa-la-distinción">Por qué importa la distinción</h3>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">graph LR
+    subgraph "Chatbot genérico (ChatGPT sin archivos)"
+        Q1["'¿Qué dice el syllabus\nsobre las recuperaciones?'"]
+        M1["🧠 Conocimiento general\nde miles de syllabi\nde miles de cursos"]
+        A1["Respuesta genérica:\n'Típicamente los cursos\ntienen una recuperación...'"]
+        Q1 --&gt; M1 --&gt; A1
+    end
+
+    subgraph "Chatbot RAG (sobre tu material)"
+        Q2["'¿Qué dice el syllabus\nsobre las recuperaciones?'"]
+        M2["📄 TU syllabus específico\nde este semestre"]
+        A2["Respuesta específica:\n'Según tu programa 2025-1:\nRecuperación Prueba 1 el 15 de junio...'"]
+        Q2 --&gt; M2 --&gt; A2
+    end
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<p><strong>El chatbot genérico</strong> responde desde su conocimiento de entrenamiento — útil para conceptos generales, pero no sabe nada específico de tu curso.</p>
+<p><strong>El chatbot RAG sobre tu material</strong> responde solo desde tus documentos — puede dar información incorrecta si no está en el documento, pero lo que sí responde es preciso y trazable.</p>
+</section>
+<section id="cuándo-usar-cada-uno" class="level3">
+<h3 class="anchored" data-anchor-id="cuándo-usar-cada-uno">Cuándo usar cada uno</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Necesidad</th>
+<th>Herramienta</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Explicar regresión lineal en términos simples</td>
+<td>ChatGPT / Claude genérico</td>
+</tr>
+<tr class="even">
+<td>Qué dice MI syllabus sobre atrasos</td>
+<td>RAG sobre tu syllabus</td>
+</tr>
+<tr class="odd">
+<td>Generar preguntas de examen sobre un tema</td>
+<td>ChatGPT / Claude + prompt detallado</td>
+</tr>
+<tr class="even">
+<td>Qué dice mi apunte sobre homocedasticidad</td>
+<td>RAG sobre tus apuntes</td>
+</tr>
+<tr class="odd">
+<td>Buscar papers recientes sobre ML en educación</td>
+<td>Perplexity / Gemini (con internet)</td>
+</tr>
+<tr class="even">
+<td>Responder dudas 24/7 sobre TU curso</td>
+<td>RAG configurado con tu material</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+</section>
+<section id="herramientas-sin-código" class="level2">
+<h2 class="anchored" data-anchor-id="herramientas-sin-código">Herramientas sin código</h2>
+<section id="notebooklm-ya-cubierto-en-el-capítulo-anterior" class="level3">
+<h3 class="anchored" data-anchor-id="notebooklm-ya-cubierto-en-el-capítulo-anterior">NotebookLM (ya cubierto en el capítulo anterior)</h3>
+<p>La opción más recomendada para la mayoría de los docentes. Ver Capítulo 3 de esta sesión para la guía completa.</p>
+</section>
+<section id="chatgpt-con-archivos-projects" class="level3">
+<h3 class="anchored" data-anchor-id="chatgpt-con-archivos-projects">ChatGPT con archivos (Projects)</h3>
+<p><strong>ChatGPT Projects</strong> permite subir archivos que el modelo usa como contexto en todas las conversaciones del proyecto.</p>
+<p><strong>Configuración:</strong></p>
+<ol type="1">
+<li>En ChatGPT → <strong>+</strong> → <strong>New project</strong></li>
+<li>Nombre: “Asistente MAT281 2025-1”</li>
+<li><strong>+ Add files</strong> → subir PDFs del curso</li>
+<li>En <strong>Custom instructions</strong>: configurar el rol del asistente</li>
+</ol>
+<pre><code>Custom instructions para el proyecto:
+
+Eres el asistente del curso MAT281 (Aplicaciones de la Matemática en
+Ingeniería) de la UTFSM, semestre 2025-1.
+
+Responde preguntas sobre el programa, evaluaciones, contenido y
+laboratorios del curso usando los archivos subidos.
+
+Si la pregunta no puede responderse con los archivos disponibles,
+di explícitamente: "Esta información no está en el material disponible.
+Consulta directamente al profesor."
+
+No proporciones soluciones a evaluaciones ni codes completos para
+los laboratorios — orienta al estudiante con preguntas o pistas.
+
+Tono: académico, cordial, directo.
+Idioma: español.</code></pre>
+<p><strong>Diferencias con NotebookLM:</strong></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Característica</th>
+<th>ChatGPT Projects</th>
+<th>NotebookLM</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Límite de archivos</td>
+<td>Sin límite explícito</td>
+<td>50 fuentes</td>
+</tr>
+<tr class="even">
+<td>Citas de fuente</td>
+<td>No siempre</td>
+<td>Sí, siempre con cita</td>
+</tr>
+<tr class="odd">
+<td>Audio Overview</td>
+<td>No</td>
+<td>Sí</td>
+</tr>
+<tr class="even">
+<td>Precio</td>
+<td>ChatGPT Plus (USD 20/mes)</td>
+<td>Gratis</td>
+</tr>
+<tr class="odd">
+<td>Compartir con estudiantes</td>
+<td>Link de conversación</td>
+<td>Link de notebook</td>
+</tr>
+<tr class="even">
+<td>Alucinaciones</td>
+<td>Mayor riesgo</td>
+<td>Menor riesgo</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="poe-quora" class="level3">
+<h3 class="anchored" data-anchor-id="poe-quora">Poe (Quora)</h3>
+<p><a href="https://poe.com">poe.com</a> es una plataforma que permite crear chatbots personalizados (llamados “bots”) con instrucciones de sistema y, en algunos planes, subir documentos como base de conocimiento.</p>
+<p><strong>Para docencia:</strong></p>
+<pre><code>Crear bot en Poe:
+1. poe.com → Create Bot
+2. Nombre: "Asistente MAT281"
+3. Prompt del sistema: [las instrucciones de asistente del curso]
+4. Modelo base: GPT-4o, Claude 3.5, u otros disponibles
+5. Compartir: link público o privado con los estudiantes</code></pre>
+<p><strong>Ventajas:</strong> más flexible que NotebookLM para personalizar el comportamiento, permite elegir el modelo base, puede compartirse sin que los estudiantes necesiten cuenta.</p>
+<p><strong>Desventajas:</strong> el soporte de documentos es más limitado que NotebookLM, el plan gratuito tiene límites de mensajes diarios.</p>
+</section>
+<section id="perplexity" class="level3">
+<h3 class="anchored" data-anchor-id="perplexity">Perplexity</h3>
+<p><a href="https://perplexity.ai">perplexity.ai</a> combina búsqueda web con modelo de lenguaje — responde con información actualizada y cita las fuentes. No es RAG sobre tu material propio, pero sí es útil para:</p>
+<ul>
+<li>Preguntas que requieren información reciente (librerías actualizadas, papers de 2024-2025).</li>
+<li>Verificar afirmaciones antes de incluirlas en el material.</li>
+<li>Buscar datasets y recursos externos citados.</li>
+</ul>
+<pre><code>Caso de uso: "¿Cuáles son los últimos benchmarks de modelos de clasificación
+en el dataset de deserción universitaria de Chile? ¿Hay papers de 2024?"
+→ Perplexity busca en tiempo real y cita las fuentes</code></pre>
+</section>
+<section id="comparativa-rápida-de-herramientas-sin-código" class="level3">
+<h3 class="anchored" data-anchor-id="comparativa-rápida-de-herramientas-sin-código">Comparativa rápida de herramientas sin código</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Herramienta</th>
+<th>Costo</th>
+<th>RAG propio</th>
+<th>Citas</th>
+<th>Compartir</th>
+<th>Mejor para</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>NotebookLM</strong></td>
+<td>Gratis</td>
+<td>✅ (50 fuentes)</td>
+<td>✅ siempre</td>
+<td>✅ link</td>
+<td>Asistente del curso, Audio Overview</td>
+</tr>
+<tr class="even">
+<td><strong>ChatGPT Projects</strong></td>
+<td>USD 20/mes</td>
+<td>✅</td>
+<td>⚠️ a veces</td>
+<td>⚠️ limitado</td>
+<td>Asistente con GPT-4o</td>
+</tr>
+<tr class="odd">
+<td><strong>Claude Projects</strong></td>
+<td>USD 20/mes</td>
+<td>✅ (200K tokens)</td>
+<td>⚠️ a veces</td>
+<td>✅</td>
+<td>Documentos largos</td>
+</tr>
+<tr class="even">
+<td><strong>Poe</strong></td>
+<td>Gratis/Plus</td>
+<td>⚠️ limitado</td>
+<td>❌</td>
+<td>✅ público</td>
+<td>Chatbot personalizable</td>
+</tr>
+<tr class="odd">
+<td><strong>Perplexity</strong></td>
+<td>Gratis/Plus</td>
+<td>❌</td>
+<td>✅ (web)</td>
+<td>✅</td>
+<td>Búsqueda actualizada</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+</section>
+<section id="herramientas-con-código-langchain-y-llamaindex" class="level2">
+<h2 class="anchored" data-anchor-id="herramientas-con-código-langchain-y-llamaindex">Herramientas con código: LangChain y LlamaIndex</h2>
+<p>Para quien quiere ir más allá de las herramientas no-code — sea por necesidades específicas, para investigación, o para integrar el chatbot en un sistema institucional — LangChain y LlamaIndex son los frameworks de Python más usados para construir aplicaciones RAG.</p>
+<section id="cuándo-tiene-sentido-usar-código" class="level3">
+<h3 class="anchored" data-anchor-id="cuándo-tiene-sentido-usar-código">Cuándo tiene sentido usar código</h3>
+<p>Antes de entrar al código, la pregunta honesta: ¿necesitas realmente esto?</p>
+<pre><code>Usa herramientas no-code si:
+✅ Tu objetivo es tener un asistente del curso funcionando esta semana
+✅ No tienes tiempo para mantener código en producción
+✅ NotebookLM o Claude Projects cumplen el caso de uso
+
+Considera código si:
+→ Necesitas integrar el chatbot en un sistema institucional (LMS, intranet)
+→ Quieres personalizar el chunking, el retriever o el modelo
+→ Procesas documentos de forma automática (nuevos archivos cada semana)
+→ Quieres control total sobre qué datos se envían a qué servicio
+→ Es parte de un proyecto de investigación o tesis</code></pre>
+</section>
+<section id="llamaindex-orientado-a-documentos-e-indexación" class="level3">
+<h3 class="anchored" data-anchor-id="llamaindex-orientado-a-documentos-e-indexación">LlamaIndex: orientado a documentos e indexación</h3>
+<p>LlamaIndex está diseñado específicamente para construir pipelines de indexación y recuperación de documentos. Su API es más simple que LangChain para el caso de uso RAG básico.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Instalación</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># pip install llama-index llama-index-llms-anthropic llama-index-embeddings-openai</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> llama_index.core <span class="im">import</span> VectorStoreIndex, SimpleDirectoryReader</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> llama_index.llms.anthropic <span class="im">import</span> Anthropic</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> llama_index.core <span class="im">import</span> Settings</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Configuración ──────────────────────────────────────────────</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>Settings.llm <span class="op">=</span> Anthropic(model<span class="op">=</span><span class="st">"claude-sonnet-4-20250514"</span>)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Settings.embed_model = OpenAIEmbedding()  # o usar embeddings locales</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Cargar documentos ──────────────────────────────────────────</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co"># SimpleDirectoryReader carga todos los archivos de una carpeta</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>documentos <span class="op">=</span> SimpleDirectoryReader(</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    input_dir<span class="op">=</span><span class="st">"material_curso/"</span>,   <span class="co"># carpeta con PDFs, .txt, .md</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    recursive<span class="op">=</span><span class="va">True</span>,                 <span class="co"># incluir subcarpetas</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    required_exts<span class="op">=</span>[<span class="st">".pdf"</span>, <span class="st">".md"</span>, <span class="st">".txt"</span>]</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>).load_data()</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Cargados </span><span class="sc">{</span><span class="bu">len</span>(documentos)<span class="sc">}</span><span class="ss"> fragmentos de documentos"</span>)</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Crear el índice vectorial ──────────────────────────────────</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="co"># LlamaIndex hace el chunking y embedding automáticamente</span></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>indice <span class="op">=</span> VectorStoreIndex.from_documents(</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>    documentos,</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>    show_progress<span class="op">=</span><span class="va">True</span></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Persistir el índice (para no reindexar cada vez) ──────────</span></span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>indice.storage_context.persist(persist_dir<span class="op">=</span><span class="st">"indice_curso/"</span>)</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Crear el motor de consultas ────────────────────────────────</span></span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>motor <span class="op">=</span> indice.as_query_engine(</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>    similarity_top_k<span class="op">=</span><span class="dv">4</span>,          <span class="co"># recuperar los 4 fragmentos más similares</span></span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>    response_mode<span class="op">=</span><span class="st">"compact"</span>,     <span class="co"># modo de respuesta compacto</span></span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>    verbose<span class="op">=</span><span class="va">True</span>                 <span class="co"># mostrar qué fragmentos recuperó</span></span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Consultar ─────────────────────────────────────────────────</span></span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>respuesta <span class="op">=</span> motor.query(</span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>    <span class="st">"¿Cuánto vale la Prueba 1 en la nota final del curso?"</span></span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(respuesta.response)</span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Fuentes:"</span>)</span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> nodo <span class="kw">in</span> respuesta.source_nodes:</span>
+<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  Score: </span><span class="sc">{</span>nodo<span class="sc">.</span>score<span class="sc">:.3f}</span><span class="ss"> | </span><span class="sc">{</span>nodo<span class="sc">.</span>metadata<span class="sc">.</span>get(<span class="st">'file_name'</span>, <span class="st">'N/A'</span>)<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Cargar el índice persistido (sin reindexar):</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> llama_index.core <span class="im">import</span> StorageContext, load_index_from_storage</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Cargar índice existente</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>storage_context <span class="op">=</span> StorageContext.from_defaults(persist_dir<span class="op">=</span><span class="st">"indice_curso/"</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>indice <span class="op">=</span> load_index_from_storage(storage_context)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>motor <span class="op">=</span> indice.as_query_engine(similarity_top_k<span class="op">=</span><span class="dv">4</span>)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Ya listo para consultas</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>respuesta <span class="op">=</span> motor.query(<span class="st">"¿Qué datasets se usan en los laboratorios?"</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="langchain-orquestación-de-pipelines-complejos" class="level3">
+<h3 class="anchored" data-anchor-id="langchain-orquestación-de-pipelines-complejos">LangChain: orquestación de pipelines complejos</h3>
+<p>LangChain es más general que LlamaIndex — permite construir pipelines donde el LLM no solo responde sino que toma decisiones, llama herramientas externas, y encadena múltiples pasos.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># pip install langchain langchain-anthropic langchain-community faiss-cpu</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain_anthropic <span class="im">import</span> ChatAnthropic</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain_community.document_loaders <span class="im">import</span> DirectoryLoader, PyPDFLoader</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain.text_splitter <span class="im">import</span> RecursiveCharacterTextSplitter</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain_community.embeddings <span class="im">import</span> HuggingFaceEmbeddings</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain_community.vectorstores <span class="im">import</span> FAISS</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain.chains <span class="im">import</span> RetrievalQA</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain.prompts <span class="im">import</span> PromptTemplate</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co"># ── 1. Cargar documentos ───────────────────────────────────────</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>loader <span class="op">=</span> DirectoryLoader(</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"material_curso/"</span>,</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    glob<span class="op">=</span><span class="st">"**/*.pdf"</span>,</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>    loader_cls<span class="op">=</span>PyPDFLoader,</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>    show_progress<span class="op">=</span><span class="va">True</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>documentos_raw <span class="op">=</span> loader.load()</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Páginas cargadas: </span><span class="sc">{</span><span class="bu">len</span>(documentos_raw)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="co"># ── 2. Chunking ────────────────────────────────────────────────</span></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>splitter <span class="op">=</span> RecursiveCharacterTextSplitter(</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>    chunk_size<span class="op">=</span><span class="dv">800</span>,          <span class="co"># tokens por fragmento</span></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>    chunk_overlap<span class="op">=</span><span class="dv">150</span>,       <span class="co"># solapamiento para no perder contexto</span></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>    separators<span class="op">=</span>[<span class="st">"</span><span class="ch">\n\n</span><span class="st">"</span>, <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>, <span class="st">". "</span>, <span class="st">" "</span>]  <span class="co"># puntos de corte preferidos</span></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>chunks <span class="op">=</span> splitter.split_documents(documentos_raw)</span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Fragmentos creados: </span><span class="sc">{</span><span class="bu">len</span>(chunks)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a><span class="co"># ── 3. Embeddings locales (sin costo de API) ───────────────────</span></span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Alternativa gratuita: modelo de HuggingFace que corre localmente</span></span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>embeddings <span class="op">=</span> HuggingFaceEmbeddings(</span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>    model_name<span class="op">=</span><span class="st">"sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"</span></span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Modelo multilingüe que funciona bien en español</span></span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a><span class="co"># ── 4. Vector store ────────────────────────────────────────────</span></span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a>vectorstore <span class="op">=</span> FAISS.from_documents(chunks, embeddings)</span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a>vectorstore.save_local(<span class="st">"vectorstore_curso/"</span>)   <span class="co"># guardar en disco</span></span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a><span class="co"># ── 5. Prompt personalizado ────────────────────────────────────</span></span>
+<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a>TEMPLATE_ASISTENTE <span class="op">=</span> <span class="st">"""Eres el asistente oficial del curso MAT281</span></span>
+<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a><span class="st">(Aplicaciones de la Matemática en Ingeniería) de la UTFSM.</span></span>
+<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a><span class="st">Usa EXCLUSIVAMENTE la siguiente información del curso para responder:</span></span>
+<span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a><span class="sc">{context}</span></span>
+<span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-49"><a href="#cb9-49" aria-hidden="true" tabindex="-1"></a><span class="st">Si la información no está en el contexto, responde:</span></span>
+<span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a><span class="st">"Esta información no está en el material disponible del curso."</span></span>
+<span id="cb9-51"><a href="#cb9-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-52"><a href="#cb9-52" aria-hidden="true" tabindex="-1"></a><span class="st">No inventes información. No uses conocimiento externo al contexto dado.</span></span>
+<span id="cb9-53"><a href="#cb9-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-54"><a href="#cb9-54" aria-hidden="true" tabindex="-1"></a><span class="st">Pregunta: </span><span class="sc">{question}</span></span>
+<span id="cb9-55"><a href="#cb9-55" aria-hidden="true" tabindex="-1"></a><span class="st">Respuesta en español:"""</span></span>
+<span id="cb9-56"><a href="#cb9-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-57"><a href="#cb9-57" aria-hidden="true" tabindex="-1"></a>prompt <span class="op">=</span> PromptTemplate(</span>
+<span id="cb9-58"><a href="#cb9-58" aria-hidden="true" tabindex="-1"></a>    template<span class="op">=</span>TEMPLATE_ASISTENTE,</span>
+<span id="cb9-59"><a href="#cb9-59" aria-hidden="true" tabindex="-1"></a>    input_variables<span class="op">=</span>[<span class="st">"context"</span>, <span class="st">"question"</span>]</span>
+<span id="cb9-60"><a href="#cb9-60" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-61"><a href="#cb9-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-62"><a href="#cb9-62" aria-hidden="true" tabindex="-1"></a><span class="co"># ── 6. Cadena RAG ─────────────────────────────────────────────</span></span>
+<span id="cb9-63"><a href="#cb9-63" aria-hidden="true" tabindex="-1"></a>llm <span class="op">=</span> ChatAnthropic(</span>
+<span id="cb9-64"><a href="#cb9-64" aria-hidden="true" tabindex="-1"></a>    model<span class="op">=</span><span class="st">"claude-sonnet-4-20250514"</span>,</span>
+<span id="cb9-65"><a href="#cb9-65" aria-hidden="true" tabindex="-1"></a>    temperature<span class="op">=</span><span class="dv">0</span>,           <span class="co"># 0 = máxima precisión, mínima creatividad</span></span>
+<span id="cb9-66"><a href="#cb9-66" aria-hidden="true" tabindex="-1"></a>    max_tokens<span class="op">=</span><span class="dv">1000</span></span>
+<span id="cb9-67"><a href="#cb9-67" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-68"><a href="#cb9-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-69"><a href="#cb9-69" aria-hidden="true" tabindex="-1"></a>retriever <span class="op">=</span> vectorstore.as_retriever(</span>
+<span id="cb9-70"><a href="#cb9-70" aria-hidden="true" tabindex="-1"></a>    search_type<span class="op">=</span><span class="st">"similarity"</span>,</span>
+<span id="cb9-71"><a href="#cb9-71" aria-hidden="true" tabindex="-1"></a>    search_kwargs<span class="op">=</span>{<span class="st">"k"</span>: <span class="dv">4</span>}   <span class="co"># recuperar top-4 fragmentos</span></span>
+<span id="cb9-72"><a href="#cb9-72" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-73"><a href="#cb9-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-74"><a href="#cb9-74" aria-hidden="true" tabindex="-1"></a>cadena_rag <span class="op">=</span> RetrievalQA.from_chain_type(</span>
+<span id="cb9-75"><a href="#cb9-75" aria-hidden="true" tabindex="-1"></a>    llm<span class="op">=</span>llm,</span>
+<span id="cb9-76"><a href="#cb9-76" aria-hidden="true" tabindex="-1"></a>    chain_type<span class="op">=</span><span class="st">"stuff"</span>,      <span class="co"># "stuff" = meter todos los fragmentos en el prompt</span></span>
+<span id="cb9-77"><a href="#cb9-77" aria-hidden="true" tabindex="-1"></a>    retriever<span class="op">=</span>retriever,</span>
+<span id="cb9-78"><a href="#cb9-78" aria-hidden="true" tabindex="-1"></a>    chain_type_kwargs<span class="op">=</span>{<span class="st">"prompt"</span>: prompt},</span>
+<span id="cb9-79"><a href="#cb9-79" aria-hidden="true" tabindex="-1"></a>    return_source_documents<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb9-80"><a href="#cb9-80" aria-hidden="true" tabindex="-1"></a>    verbose<span class="op">=</span><span class="va">False</span></span>
+<span id="cb9-81"><a href="#cb9-81" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-82"><a href="#cb9-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-83"><a href="#cb9-83" aria-hidden="true" tabindex="-1"></a><span class="co"># ── 7. Hacer consultas ─────────────────────────────────────────</span></span>
+<span id="cb9-84"><a href="#cb9-84" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> consultar(pregunta: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="cb9-85"><a href="#cb9-85" aria-hidden="true" tabindex="-1"></a>    resultado <span class="op">=</span> cadena_rag.invoke({<span class="st">"query"</span>: pregunta})</span>
+<span id="cb9-86"><a href="#cb9-86" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Pregunta: </span><span class="sc">{</span>pregunta<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb9-87"><a href="#cb9-87" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Respuesta:</span><span class="ch">\n</span><span class="sc">{</span>resultado[<span class="st">'result'</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb9-88"><a href="#cb9-88" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Fuentes:"</span>)</span>
+<span id="cb9-89"><a href="#cb9-89" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> doc <span class="kw">in</span> resultado[<span class="st">'source_documents'</span>]:</span>
+<span id="cb9-90"><a href="#cb9-90" aria-hidden="true" tabindex="-1"></a>        fuente <span class="op">=</span> doc.metadata.get(<span class="st">'source'</span>, <span class="st">'N/A'</span>)</span>
+<span id="cb9-91"><a href="#cb9-91" aria-hidden="true" tabindex="-1"></a>        pagina <span class="op">=</span> doc.metadata.get(<span class="st">'page'</span>, <span class="st">'?'</span>)</span>
+<span id="cb9-92"><a href="#cb9-92" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  → </span><span class="sc">{</span>fuente<span class="sc">}</span><span class="ss">, p.</span><span class="sc">{</span>pagina<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb9-93"><a href="#cb9-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-94"><a href="#cb9-94" aria-hidden="true" tabindex="-1"></a><span class="co"># Pruebas</span></span>
+<span id="cb9-95"><a href="#cb9-95" aria-hidden="true" tabindex="-1"></a>consultar(<span class="st">"¿Cuánto vale la Prueba 1?"</span>)</span>
+<span id="cb9-96"><a href="#cb9-96" aria-hidden="true" tabindex="-1"></a>consultar(<span class="st">"¿Cuáles son los criterios de evaluación del Lab 3?"</span>)</span>
+<span id="cb9-97"><a href="#cb9-97" aria-hidden="true" tabindex="-1"></a>consultar(<span class="st">"¿Puedo usar calculadora en el examen?"</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="interfaz-web-simple-con-streamlit" class="level3">
+<h3 class="anchored" data-anchor-id="interfaz-web-simple-con-streamlit">Interfaz web simple con Streamlit</h3>
+<p>Para convertir el chatbot en una aplicación web que los estudiantes puedan usar sin instalar nada:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># app.py — Asistente del curso con interfaz web</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co"># pip install streamlit langchain langchain-anthropic faiss-cpu</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> streamlit <span class="im">as</span> st</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain_community.vectorstores <span class="im">import</span> FAISS</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain_community.embeddings <span class="im">import</span> HuggingFaceEmbeddings</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain_anthropic <span class="im">import</span> ChatAnthropic</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain.chains <span class="im">import</span> RetrievalQA</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain.prompts <span class="im">import</span> PromptTemplate</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Configuración de la página</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>st.set_page_config(</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    page_title<span class="op">=</span><span class="st">"Asistente MAT281"</span>,</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>    page_icon<span class="op">=</span><span class="st">"🤖"</span>,</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>    layout<span class="op">=</span><span class="st">"centered"</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>st.title(<span class="st">"🤖 Asistente MAT281"</span>)</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>st.caption(<span class="st">"Basado en el material oficial del curso. Responde solo con información del syllabus y apuntes."</span>)</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Cargar vectorstore (una sola vez gracias al cache)</span></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a><span class="at">@st.cache_resource</span></span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cargar_sistema():</span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>    embeddings <span class="op">=</span> HuggingFaceEmbeddings(</span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>        model_name<span class="op">=</span><span class="st">"sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"</span></span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>    vectorstore <span class="op">=</span> FAISS.load_local(</span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>        <span class="st">"vectorstore_curso/"</span>,</span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>        embeddings,</span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>        allow_dangerous_deserialization<span class="op">=</span><span class="va">True</span></span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>    PROMPT <span class="op">=</span> PromptTemplate(</span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a>        template<span class="op">=</span><span class="st">"""Eres el asistente del curso MAT281 de la UTFSM.</span></span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a><span class="st">Usa SOLO esta información para responder: </span><span class="sc">{context}</span></span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a><span class="st">Si no está en el contexto, di: "Esta información no está disponible."</span></span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a><span class="st">Pregunta: </span><span class="sc">{question}</span></span>
+<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a><span class="st">Respuesta:"""</span>,</span>
+<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a>        input_variables<span class="op">=</span>[<span class="st">"context"</span>, <span class="st">"question"</span>]</span>
+<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-42"><a href="#cb10-42" aria-hidden="true" tabindex="-1"></a>    llm <span class="op">=</span> ChatAnthropic(model<span class="op">=</span><span class="st">"claude-sonnet-4-20250514"</span>, temperature<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb10-43"><a href="#cb10-43" aria-hidden="true" tabindex="-1"></a>    cadena <span class="op">=</span> RetrievalQA.from_chain_type(</span>
+<span id="cb10-44"><a href="#cb10-44" aria-hidden="true" tabindex="-1"></a>        llm<span class="op">=</span>llm,</span>
+<span id="cb10-45"><a href="#cb10-45" aria-hidden="true" tabindex="-1"></a>        retriever<span class="op">=</span>vectorstore.as_retriever(search_kwargs<span class="op">=</span>{<span class="st">"k"</span>: <span class="dv">4</span>}),</span>
+<span id="cb10-46"><a href="#cb10-46" aria-hidden="true" tabindex="-1"></a>        chain_type_kwargs<span class="op">=</span>{<span class="st">"prompt"</span>: PROMPT},</span>
+<span id="cb10-47"><a href="#cb10-47" aria-hidden="true" tabindex="-1"></a>        return_source_documents<span class="op">=</span><span class="va">True</span></span>
+<span id="cb10-48"><a href="#cb10-48" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb10-49"><a href="#cb10-49" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> cadena</span>
+<span id="cb10-50"><a href="#cb10-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-51"><a href="#cb10-51" aria-hidden="true" tabindex="-1"></a>cadena <span class="op">=</span> cargar_sistema()</span>
+<span id="cb10-52"><a href="#cb10-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-53"><a href="#cb10-53" aria-hidden="true" tabindex="-1"></a><span class="co"># Historial de conversación</span></span>
+<span id="cb10-54"><a href="#cb10-54" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="st">"mensajes"</span> <span class="kw">not</span> <span class="kw">in</span> st.session_state:</span>
+<span id="cb10-55"><a href="#cb10-55" aria-hidden="true" tabindex="-1"></a>    st.session_state.mensajes <span class="op">=</span> []</span>
+<span id="cb10-56"><a href="#cb10-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-57"><a href="#cb10-57" aria-hidden="true" tabindex="-1"></a><span class="co"># Mostrar historial</span></span>
+<span id="cb10-58"><a href="#cb10-58" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> msg <span class="kw">in</span> st.session_state.mensajes:</span>
+<span id="cb10-59"><a href="#cb10-59" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> st.chat_message(msg[<span class="st">"rol"</span>]):</span>
+<span id="cb10-60"><a href="#cb10-60" aria-hidden="true" tabindex="-1"></a>        st.write(msg[<span class="st">"contenido"</span>])</span>
+<span id="cb10-61"><a href="#cb10-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-62"><a href="#cb10-62" aria-hidden="true" tabindex="-1"></a><span class="co"># Input del usuario</span></span>
+<span id="cb10-63"><a href="#cb10-63" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> pregunta <span class="op">:=</span> st.chat_input(<span class="st">"Pregunta sobre el curso..."</span>):</span>
+<span id="cb10-64"><a href="#cb10-64" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Mostrar pregunta</span></span>
+<span id="cb10-65"><a href="#cb10-65" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> st.chat_message(<span class="st">"user"</span>):</span>
+<span id="cb10-66"><a href="#cb10-66" aria-hidden="true" tabindex="-1"></a>        st.write(pregunta)</span>
+<span id="cb10-67"><a href="#cb10-67" aria-hidden="true" tabindex="-1"></a>    st.session_state.mensajes.append({<span class="st">"rol"</span>: <span class="st">"user"</span>, <span class="st">"contenido"</span>: pregunta})</span>
+<span id="cb10-68"><a href="#cb10-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-69"><a href="#cb10-69" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Generar respuesta</span></span>
+<span id="cb10-70"><a href="#cb10-70" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> st.chat_message(<span class="st">"assistant"</span>):</span>
+<span id="cb10-71"><a href="#cb10-71" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> st.spinner(<span class="st">"Buscando en el material del curso..."</span>):</span>
+<span id="cb10-72"><a href="#cb10-72" aria-hidden="true" tabindex="-1"></a>            resultado <span class="op">=</span> cadena.invoke({<span class="st">"query"</span>: pregunta})</span>
+<span id="cb10-73"><a href="#cb10-73" aria-hidden="true" tabindex="-1"></a>            respuesta <span class="op">=</span> resultado[<span class="st">"result"</span>]</span>
+<span id="cb10-74"><a href="#cb10-74" aria-hidden="true" tabindex="-1"></a>            fuentes <span class="op">=</span> resultado[<span class="st">"source_documents"</span>]</span>
+<span id="cb10-75"><a href="#cb10-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-76"><a href="#cb10-76" aria-hidden="true" tabindex="-1"></a>        st.write(respuesta)</span>
+<span id="cb10-77"><a href="#cb10-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-78"><a href="#cb10-78" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Mostrar fuentes</span></span>
+<span id="cb10-79"><a href="#cb10-79" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> fuentes:</span>
+<span id="cb10-80"><a href="#cb10-80" aria-hidden="true" tabindex="-1"></a>            <span class="cf">with</span> st.expander(<span class="st">"📄 Fuentes"</span>):</span>
+<span id="cb10-81"><a href="#cb10-81" aria-hidden="true" tabindex="-1"></a>                <span class="cf">for</span> doc <span class="kw">in</span> fuentes:</span>
+<span id="cb10-82"><a href="#cb10-82" aria-hidden="true" tabindex="-1"></a>                    fuente <span class="op">=</span> doc.metadata.get(<span class="st">"source"</span>, <span class="st">"N/A"</span>)</span>
+<span id="cb10-83"><a href="#cb10-83" aria-hidden="true" tabindex="-1"></a>                    pagina <span class="op">=</span> doc.metadata.get(<span class="st">"page"</span>, <span class="st">"?"</span>)</span>
+<span id="cb10-84"><a href="#cb10-84" aria-hidden="true" tabindex="-1"></a>                    st.caption(<span class="ss">f"→ </span><span class="sc">{</span>fuente<span class="sc">}</span><span class="ss">, p.</span><span class="sc">{</span>pagina<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb10-85"><a href="#cb10-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-86"><a href="#cb10-86" aria-hidden="true" tabindex="-1"></a>    st.session_state.mensajes.append({<span class="st">"rol"</span>: <span class="st">"assistant"</span>, <span class="st">"contenido"</span>: respuesta})</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Ejecutar localmente</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="ex">streamlit</span> run app.py</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Para que los estudiantes accedan, necesitas un servidor o usar:</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co"># streamlit share (gratuito para apps públicas)</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<hr>
+</section>
+</section>
+<section id="límites-y-riesgos-respuestas-incorrectas-privacidad" class="level2">
+<h2 class="anchored" data-anchor-id="límites-y-riesgos-respuestas-incorrectas-privacidad">Límites y riesgos: respuestas incorrectas, privacidad</h2>
+<section id="cuándo-rag-falla" class="level3">
+<h3 class="anchored" data-anchor-id="cuándo-rag-falla">Cuándo RAG falla</h3>
+<p>RAG no es perfecto. Los principales modos de falla:</p>
+<p><strong>1. El fragmento relevante no fue recuperado</strong></p>
+<p>Si el retriever no encuentra el fragmento correcto (porque la pregunta usa palabras muy distintas al documento), el LLM responde sin contexto y puede alucinar.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Diagnóstico: verificar qué fragmentos recupera el retriever</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>resultado <span class="op">=</span> cadena_rag.invoke({<span class="st">"query"</span>: <span class="st">"¿Cuándo es la Prueba 1?"</span>})</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> doc <span class="kw">in</span> resultado[<span class="st">'source_documents'</span>]:</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(doc.page_content[:<span class="dv">200</span>])  <span class="co"># ver los primeros 200 chars de cada fragmento</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Si el fragmento correcto no aparece, ajusta: - Aumentar <code>k</code> (recuperar más fragmentos). - Revisar el chunking (fragmentos demasiado grandes pueden “diluir” la información relevante). - Usar búsqueda híbrida (semántica + léxica).</p>
+<p><strong>2. El fragmento fue recuperado pero el contexto es insuficiente</strong></p>
+<pre><code>Documento: "Las recuperaciones son el 15 de junio."
+Pregunta: "¿Qué pasa si reprobo la prueba 1?"
+
+El retriever recupera el fragmento correcto, pero el LLM no sabe
+si hay algún requisito adicional (nota mínima, asistencia) porque
+esa información está en otro fragmento que no fue recuperado.</code></pre>
+<p>Solución: aumentar el tamaño del chunk o usar técnicas de recuperación jerárquica.</p>
+<p><strong>3. El LLM ignora el contexto y responde desde su entrenamiento</strong></p>
+<p>Incluso con instrucciones claras de “responde solo con el contexto”, los modelos a veces mezclan con su conocimiento general. Esto es especialmente problemático para información específica del curso.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Temperatura 0 reduce (pero no elimina) este comportamiento</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>llm <span class="op">=</span> ChatAnthropic(</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    model<span class="op">=</span><span class="st">"claude-sonnet-4-20250514"</span>,</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    temperature<span class="op">=</span><span class="dv">0</span>  <span class="co"># determinístico</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Instrucción más estricta en el prompt:</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>TEMPLATE <span class="op">=</span> <span class="st">"""...</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="st">IMPORTANTE: Si la información NO está en el contexto de abajo,</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="st">responde LITERALMENTE: "Información no disponible en el material del curso."</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="st">No uses ningún otro conocimiento. No hagas inferencias.</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="st">...</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>4. Respuestas contradictorias entre fragmentos</strong></p>
+<p>Si el syllabus del año pasado y el del año en curso están ambos indexados, el retriever puede recuperar fragmentos de ambos y el LLM puede mezclarlos.</p>
+<p>Solución: asegurarse de indexar solo el material del semestre actual, o agregar metadatos de versión y filtrar por ellos.</p>
+</section>
+<section id="riesgos-de-privacidad" class="level3">
+<h3 class="anchored" data-anchor-id="riesgos-de-privacidad">Riesgos de privacidad</h3>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">graph TD
+    R["⚠️ Riesgos de privacidad en RAG docente"]
+    R --&gt; R1["📋 Datos de estudiantes\nen los documentos\nindexados"]
+    R --&gt; R2["☁️ Envío de fragmentos\na APIs de terceros\n(OpenAI, Anthropic)"]
+    R --&gt; R3["🗄️ Almacenamiento\ndel vectorstore\nen infraestructura externa"]
+    R --&gt; R4["🔓 Acceso no autorizado\nal índice vectorial\nsi se comparte"]
+
+    R1 --&gt; S1["✅ Solución: anonimizar\nantes de indexar"]
+    R2 --&gt; S2["✅ Solución: usar embeddings\nlocales (HuggingFace)"]
+    R3 --&gt; S3["✅ Solución: vectorstore\nlocal (FAISS) en disco propio"]
+    R4 --&gt; S4["✅ Solución: no publicar\nel vectorstore, solo la app"]
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<p><strong>Lo que pasa cuando usas embeddings de OpenAI o Anthropic:</strong></p>
+<p>Cada fragmento de tu documento se envía como texto a la API para ser convertido a vector. Esto significa que el contenido del documento pasa por los servidores de la empresa.</p>
+<p><strong>Alternativa con embeddings locales (gratis, sin envío de datos):</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Embeddings locales con HuggingFace — corren en tu máquina</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co"># pip install sentence-transformers</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain_community.embeddings <span class="im">import</span> HuggingFaceEmbeddings</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>embeddings <span class="op">=</span> HuggingFaceEmbeddings(</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    model_name<span class="op">=</span><span class="st">"sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"</span>,</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Modelo multilingüe de 50MB, corre localmente</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Calidad menor que OpenAI text-embedding-3, pero suficiente para docs del curso</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>    model_kwargs<span class="op">=</span>{<span class="st">"device"</span>: <span class="st">"cpu"</span>}</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Reglas de privacidad para RAG docente:</strong></p>
+<pre><code>NUNCA indexar:
+- Documentos con nombres y datos de estudiantes
+- Notas individuales
+- Evaluaciones no publicadas (mientras están vigentes)
+- Documentos institucionales confidenciales
+
+SÍ indexar (sin problema):
+- Syllabus y programa del curso
+- Apuntes y material publicado
+- Enunciados de laboratorios ya publicados
+- Rúbricas publicadas a los estudiantes
+- FAQs de consultas previas (anonimizadas)</code></pre>
+</section>
+<section id="costos-de-operación" class="level3">
+<h3 class="anchored" data-anchor-id="costos-de-operación">Costos de operación</h3>
+<p>Para referencia al evaluar si usar API externa o embeddings locales:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Componente</th>
+<th>Opción gratuita</th>
+<th>Opción de pago</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Embeddings</td>
+<td>HuggingFace local</td>
+<td>OpenAI (~USD 0.02/millón tokens)</td>
+</tr>
+<tr class="even">
+<td>Vector store</td>
+<td>FAISS local</td>
+<td>Pinecone, Weaviate cloud</td>
+</tr>
+<tr class="odd">
+<td>LLM</td>
+<td>Claude gratuito (límites)</td>
+<td>Claude Pro / API (~USD 0.003/1K tokens)</td>
+</tr>
+<tr class="even">
+<td>Hosting</td>
+<td>Local / Streamlit Community</td>
+<td>Render, Railway, GCP</td>
+</tr>
+</tbody>
+</table>
+<p>Para un curso de 35 estudiantes con uso moderado:</p>
+<pre><code>Estimación mensual con API:
+- Indexación inicial: ~50 páginas × 500 tokens/página = 25K tokens → ~USD 0.05
+- Consultas: 35 estudiantes × 10 consultas/mes × 1K tokens/consulta = 350K tokens → ~USD 1.05
+Total estimado: USD 1-3/mes para uso real de clase</code></pre>
+<hr>
+</section>
+</section>
+<section id="ejemplo-completo-asistente-del-curso-desplegado" class="level2">
+<h2 class="anchored" data-anchor-id="ejemplo-completo-asistente-del-curso-desplegado">Ejemplo completo: asistente del curso desplegado</h2>
+<section id="el-flujo-completo-en-producción" class="level3">
+<h3 class="anchored" data-anchor-id="el-flujo-completo-en-producción">El flujo completo en producción</h3>
+<pre><code>1. Preparar material
+   ↓ (manual, una vez por semestre)
+2. Indexar documentos
+   python indexar.py
+   ↓ (automático, ~5 minutos para 50 PDFs)
+3. Probar localmente
+   streamlit run app.py
+   ↓ (verificar respuestas)
+4. Desplegar en Streamlit Community Cloud
+   git push → deploy automático
+   ↓ (gratuito para apps públicas)
+5. Compartir URL con estudiantes
+   https://mat281-asistente.streamlit.app</code></pre>
+</section>
+<section id="script-de-indexación-completo" class="level3">
+<h3 class="anchored" data-anchor-id="script-de-indexación-completo">Script de indexación completo</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># indexar.py — Script para (re)indexar el material del curso</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pathlib</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain_community.document_loaders <span class="im">import</span> PyPDFLoader, DirectoryLoader</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain.text_splitter <span class="im">import</span> RecursiveCharacterTextSplitter</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain_community.embeddings <span class="im">import</span> HuggingFaceEmbeddings</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain_community.vectorstores <span class="im">import</span> FAISS</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> indexar_material(</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>    carpeta: <span class="bu">str</span> <span class="op">=</span> <span class="st">"material_curso/"</span>,</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>    output: <span class="bu">str</span> <span class="op">=</span> <span class="st">"vectorstore_curso/"</span>,</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>    chunk_size: <span class="bu">int</span> <span class="op">=</span> <span class="dv">800</span>,</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>    chunk_overlap: <span class="bu">int</span> <span class="op">=</span> <span class="dv">150</span></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a><span class="co">    Indexa todos los PDFs de una carpeta y guarda el vectorstore.</span></span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a><span class="co">    Uso:</span></span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a><span class="co">        python indexar.py</span></span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>    carpeta_path <span class="op">=</span> pathlib.Path(carpeta)</span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Verificar que existen documentos</span></span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a>    pdfs <span class="op">=</span> <span class="bu">list</span>(carpeta_path.rglob(<span class="st">"*.pdf"</span>))</span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a>    mds  <span class="op">=</span> <span class="bu">list</span>(carpeta_path.rglob(<span class="st">"*.md"</span>))</span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Encontrados: </span><span class="sc">{</span><span class="bu">len</span>(pdfs)<span class="sc">}</span><span class="ss"> PDFs, </span><span class="sc">{</span><span class="bu">len</span>(mds)<span class="sc">}</span><span class="ss"> Markdowns"</span>)</span>
+<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> pdfs <span class="kw">and</span> <span class="kw">not</span> mds:</span>
+<span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="ss">f"No se encontraron documentos en </span><span class="sc">{</span>carpeta<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb19-31"><a href="#cb19-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-32"><a href="#cb19-32" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Cargar documentos</span></span>
+<span id="cb19-33"><a href="#cb19-33" aria-hidden="true" tabindex="-1"></a>    all_docs <span class="op">=</span> []</span>
+<span id="cb19-34"><a href="#cb19-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-35"><a href="#cb19-35" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> pdf <span class="kw">in</span> pdfs:</span>
+<span id="cb19-36"><a href="#cb19-36" aria-hidden="true" tabindex="-1"></a>        loader <span class="op">=</span> PyPDFLoader(<span class="bu">str</span>(pdf))</span>
+<span id="cb19-37"><a href="#cb19-37" aria-hidden="true" tabindex="-1"></a>        docs <span class="op">=</span> loader.load()</span>
+<span id="cb19-38"><a href="#cb19-38" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Agregar metadatos del archivo</span></span>
+<span id="cb19-39"><a href="#cb19-39" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> doc <span class="kw">in</span> docs:</span>
+<span id="cb19-40"><a href="#cb19-40" aria-hidden="true" tabindex="-1"></a>            doc.metadata[<span class="st">'archivo'</span>] <span class="op">=</span> pdf.name</span>
+<span id="cb19-41"><a href="#cb19-41" aria-hidden="true" tabindex="-1"></a>            doc.metadata[<span class="st">'tipo'</span>] <span class="op">=</span> <span class="st">'PDF'</span></span>
+<span id="cb19-42"><a href="#cb19-42" aria-hidden="true" tabindex="-1"></a>        all_docs.extend(docs)</span>
+<span id="cb19-43"><a href="#cb19-43" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  ✓ </span><span class="sc">{</span>pdf<span class="sc">.</span>name<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span><span class="bu">len</span>(docs)<span class="sc">}</span><span class="ss"> páginas"</span>)</span>
+<span id="cb19-44"><a href="#cb19-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-45"><a href="#cb19-45" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Chunking</span></span>
+<span id="cb19-46"><a href="#cb19-46" aria-hidden="true" tabindex="-1"></a>    splitter <span class="op">=</span> RecursiveCharacterTextSplitter(</span>
+<span id="cb19-47"><a href="#cb19-47" aria-hidden="true" tabindex="-1"></a>        chunk_size<span class="op">=</span>chunk_size,</span>
+<span id="cb19-48"><a href="#cb19-48" aria-hidden="true" tabindex="-1"></a>        chunk_overlap<span class="op">=</span>chunk_overlap,</span>
+<span id="cb19-49"><a href="#cb19-49" aria-hidden="true" tabindex="-1"></a>        separators<span class="op">=</span>[<span class="st">"</span><span class="ch">\n\n</span><span class="st">"</span>, <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>, <span class="st">". "</span>, <span class="st">" "</span>]</span>
+<span id="cb19-50"><a href="#cb19-50" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb19-51"><a href="#cb19-51" aria-hidden="true" tabindex="-1"></a>    chunks <span class="op">=</span> splitter.split_documents(all_docs)</span>
+<span id="cb19-52"><a href="#cb19-52" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Fragmentos totales: </span><span class="sc">{</span><span class="bu">len</span>(chunks)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb19-53"><a href="#cb19-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-54"><a href="#cb19-54" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Embeddings locales</span></span>
+<span id="cb19-55"><a href="#cb19-55" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Generando embeddings (puede tardar 2-5 minutos)..."</span>)</span>
+<span id="cb19-56"><a href="#cb19-56" aria-hidden="true" tabindex="-1"></a>    embeddings <span class="op">=</span> HuggingFaceEmbeddings(</span>
+<span id="cb19-57"><a href="#cb19-57" aria-hidden="true" tabindex="-1"></a>        model_name<span class="op">=</span><span class="st">"sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"</span>,</span>
+<span id="cb19-58"><a href="#cb19-58" aria-hidden="true" tabindex="-1"></a>        model_kwargs<span class="op">=</span>{<span class="st">"device"</span>: <span class="st">"cpu"</span>}</span>
+<span id="cb19-59"><a href="#cb19-59" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb19-60"><a href="#cb19-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-61"><a href="#cb19-61" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Crear y guardar vectorstore</span></span>
+<span id="cb19-62"><a href="#cb19-62" aria-hidden="true" tabindex="-1"></a>    vectorstore <span class="op">=</span> FAISS.from_documents(chunks, embeddings)</span>
+<span id="cb19-63"><a href="#cb19-63" aria-hidden="true" tabindex="-1"></a>    vectorstore.save_local(output)</span>
+<span id="cb19-64"><a href="#cb19-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-65"><a href="#cb19-65" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Guardar registro de indexación</span></span>
+<span id="cb19-66"><a href="#cb19-66" aria-hidden="true" tabindex="-1"></a>    registro <span class="op">=</span> {</span>
+<span id="cb19-67"><a href="#cb19-67" aria-hidden="true" tabindex="-1"></a>        <span class="st">"fecha"</span>: <span class="bu">str</span>(pathlib.Path(output).stat().st_mtime),</span>
+<span id="cb19-68"><a href="#cb19-68" aria-hidden="true" tabindex="-1"></a>        <span class="st">"documentos"</span>: <span class="bu">len</span>(pdfs) <span class="op">+</span> <span class="bu">len</span>(mds),</span>
+<span id="cb19-69"><a href="#cb19-69" aria-hidden="true" tabindex="-1"></a>        <span class="st">"chunks"</span>: <span class="bu">len</span>(chunks),</span>
+<span id="cb19-70"><a href="#cb19-70" aria-hidden="true" tabindex="-1"></a>        <span class="st">"archivos"</span>: [<span class="bu">str</span>(p.name) <span class="cf">for</span> p <span class="kw">in</span> pdfs <span class="op">+</span> mds]</span>
+<span id="cb19-71"><a href="#cb19-71" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb19-72"><a href="#cb19-72" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> <span class="bu">open</span>(pathlib.Path(output) <span class="op">/</span> <span class="st">"registro.json"</span>, <span class="st">"w"</span>) <span class="im">as</span> f:</span>
+<span id="cb19-73"><a href="#cb19-73" aria-hidden="true" tabindex="-1"></a>        json.dump(registro, f, indent<span class="op">=</span><span class="dv">2</span>, ensure_ascii<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb19-74"><a href="#cb19-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-75"><a href="#cb19-75" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">✅ Vectorstore guardado en '</span><span class="sc">{</span>output<span class="sc">}</span><span class="ss">'"</span>)</span>
+<span id="cb19-76"><a href="#cb19-76" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"   </span><span class="sc">{</span><span class="bu">len</span>(chunks)<span class="sc">}</span><span class="ss"> fragmentos de </span><span class="sc">{</span><span class="bu">len</span>(pdfs <span class="op">+</span> mds)<span class="sc">}</span><span class="ss"> documentos indexados"</span>)</span>
+<span id="cb19-77"><a href="#cb19-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-78"><a href="#cb19-78" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:</span>
+<span id="cb19-79"><a href="#cb19-79" aria-hidden="true" tabindex="-1"></a>    indexar_material()</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<hr>
+</section>
+</section>
+<section id="referencias" class="level2">
+<h2 class="anchored" data-anchor-id="referencias">Referencias</h2>
+<ul>
+<li>Lewis, P. et al.&nbsp;(2020). <em>Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks</em>. NeurIPS 2020. <a href="https://arxiv.org/abs/2005.11401">arxiv.org/abs/2005.11401</a></li>
+<li>LlamaIndex documentation. <a href="https://docs.llamaindex.ai">docs.llamaindex.ai</a></li>
+<li>LangChain documentation. <a href="https://python.langchain.com">python.langchain.com</a></li>
+<li>FAISS (Facebook AI Similarity Search). <a href="https://github.com/facebookresearch/faiss">github.com/facebookresearch/faiss</a></li>
+<li>Sentence Transformers — multilingüe. <a href="https://huggingface.co/sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2">huggingface.co/sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2</a></li>
+<li>Streamlit documentation. <a href="https://docs.streamlit.io">docs.streamlit.io</a></li>
+<li>Gao, Y. et al.&nbsp;(2023). <em>Retrieval-Augmented Generation for Large Language Models: A Survey</em>. <a href="https://arxiv.org/abs/2312.10997">arxiv.org/abs/2312.10997</a></li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copiado");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copiado");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation column-page-right">
+  <div class="nav-page nav-page-previous">
+      <a href="../05_ia/ia_04_pedagogico.html" class="pagination-link" aria-label="Diseño pedagógico con IA">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">Diseño pedagógico con IA</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../05_ia/ia_06_agentes.html" class="pagination-link" aria-label="Agentes IA">
+        <span class="nav-page-text"><span class="chapter-title">Agentes IA</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
