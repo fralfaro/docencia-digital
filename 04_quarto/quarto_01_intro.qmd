@@ -9,7 +9,7 @@ La promesa de Quarto es concreta: **un archivo `.qmd`, múltiples formatos de sa
 
 Este capítulo cubre la base conceptual y técnica para entender qué es Quarto, cómo se instala, y cómo funciona el ciclo de trabajo. Los capítulos siguientes entran en cada formato de salida en detalle.
 
----
+
 
 ## Quarto vs Jupyter Notebooks vs R Markdown
 

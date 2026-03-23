@@ -121,11 +121,9 @@ sns.scatterplot(data=df, x='asistencia', y='nota_final')
 
 El estilo alternativo (heredado de R Markdown) pone las opciones dentro de la llave, pero se desaconseja en Quarto:
 
-````python
-```{python, echo=TRUE, warning=FALSE}
+<pre><code class="language-markdown">```{python, echo=TRUE, warning=FALSE}
 # Estilo antiguo — funciona pero no recomendado en Quarto
-```
-````
+```</code></pre>
 
 ---
 

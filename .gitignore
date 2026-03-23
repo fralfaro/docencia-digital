@@ -211,3 +211,5 @@ _freeze
 _site
 
 estructura_capacitacion.md
+**/*.quarto_ipynb
+docs/

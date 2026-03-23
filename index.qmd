@@ -34,12 +34,12 @@ Al finalizar la capacitación, el o la participante será capaz de:
 
 | Sesión | Tema | Contenidos clave | Material |
 |--------|------|-----------------|----------|
-| 📘 0 | Introducción | Presentación del curso y metodología. | [Slides](00_intro/presentacion.qmd) |
-| 📗 1 | GitHub para docencia | Repositorios, flujo de trabajo y gestión de proyectos académicos. | [Slides](github/presentacion.qmd) |
-| 📙 2 | Google Colab | Notebooks en la nube, ejecución de código y colaboración. | [Slides](colab/presentacion.qmd) |
-| 📒 3 | Overleaf y LaTeX | Documentos con formato profesional y plantillas académicas. | [Slides](overleaf/presentacion.qmd) |
-| 📕 4 | Quarto para docencia | Sitios, informes y presentaciones reproducibles con GitHub Pages. | [Slides](quarto/presentacion.qmd) |
-| 📓 5 | IA para docencia | Herramientas de IA, prompting y uso responsable en el aula. | [Slides](ia/presentacion.qmd) |
+| 📘 0 | Introducción | Presentación del curso y metodología. | [Slides](talks/00_intro/presentacion.qmd) |
+| 📗 1 | GitHub para docencia | Repositorios, flujo de trabajo y gestión de proyectos académicos. | [Slides](talks/github/presentacion.qmd) |
+| 📙 2 | Google Colab | Notebooks en la nube, ejecución de código y colaboración. | [Slides](talks/colab/presentacion.qmd) |
+| 📒 3 | Overleaf y LaTeX | Documentos con formato profesional y plantillas académicas. | [Slides](talks/overleaf/presentacion.qmd) |
+| 📕 4 | Quarto para docencia | Sitios, informes y presentaciones reproducibles con GitHub Pages. | [Slides](talks/quarto/presentacion.qmd) |
+| 📓 5 | IA para docencia | Herramientas de IA, prompting y uso responsable en el aula. | [Slides](talks/ia/presentacion.qmd) |
 
 
 ## Metodología de Enseñanza y Aprendizaje
