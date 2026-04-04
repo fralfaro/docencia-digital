@@ -1,0 +1,18 @@
+---
+title: "LaTeX y Overleaf para docencia"
+format:
+  html:
+    toc: false
+---
+
+## Objetivo
+
+Este módulo cubre el uso de LaTeX y Overleaf como sistema de composición tipográfica para la producción de documentos académicos de calidad profesional. Se estudia la estructura básica de un documento LaTeX, la escritura de ecuaciones matemáticas y el uso de ambientes para teoremas y demostraciones, el uso de plantillas institucionales y de revistas científicas, y la integración de herramientas de IA para acelerar la escritura en LaTeX. Al finalizar el módulo, el participante podrá producir guías de ejercicios, apuntes y evaluaciones con formato académico profesional, y comprenderá cuándo usar LaTeX y cuándo usar Quarto.
+
+## Contenidos
+
+| # | Tema | Presentación |
+|:--:|------|:------------:|
+| 1 | [LaTeX esencial — El estándar de publicación académica desde cero](overleaf_01_esencial.qmd) | [slides](../../slides/03_latex/01_esencial.html) |
+| 2 | [Matemática y escritura científica — Ecuaciones, teoremas y documentos técnicos](overleaf_02_matematica.qmd) | [slides](../../slides/03_latex/02_matematica.html) |
+| 3 | [Plantillas y producción de documentos — Beamer, tikz, IA para LaTeX](overleaf_03_plantillas.qmd) | [slides](../../slides/03_latex/03_plantillas.html) |

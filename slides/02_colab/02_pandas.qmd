@@ -1,0 +1,529 @@
+---
+title: "Manipulación de datos con pandas"
+subtitle: "Del dato crudo al análisis en Google Colab"
+author: "Francisco Alfaro"
+institute: "Docencia Digital · UTFSM"
+date: today
+date-format: "MMMM YYYY"
+
+format:
+  revealjs:
+    theme: [default, ../custom.scss]
+    slide-number: true
+    progress: true
+    history: false
+    transition: fade
+    transition-speed: fast
+    incremental: false
+    fig-align: center
+    highlight-style: github
+    code-block-bg: true
+    center: false
+    width: 1280
+    height: 720
+    margin: 0.08
+    footer: "Docencia Digital · UTFSM · 2026"
+    logo: "../../assets/img/brand/brand__usm.png"
+
+execute:
+  echo: false
+  warning: false
+---
+
+##  {.title-slide background-color="#0F2044"}
+
+::: title-block
+**Manipulación de datos con pandas**
+
+Del dato crudo al análisis en Google Colab
+:::
+
+::: subtitle-block
+Sesión 2 — Google Colab para docencia
+:::
+
+::: author-block
+Francisco Alfaro\
+Docencia Digital · UTFSM · 2026
+:::
+
+------------------------------------------------------------------------
+
+## pandas: la hoja de cálculo programable
+
+::: columns
+::: {.column width="55%"}
+**¿Qué es pandas?**
+
+La librería central del ecosistema de ciencia de datos en Python.
+
+- NumPy = la calculadora
+- **pandas = la hoja de cálculo programable**
+
+Permite cargar, explorar, limpiar, transformar y exportar datos tabulares con sintaxis expresiva y eficiente.
+
+```python
+import pandas as pd
+
+# Verificar versión
+print(pd.__version__)  # 2.2.x
+```
+:::
+
+::: {.column width="45%"}
+
+**El DataFrame:**
+
+```{mermaid}
+graph TD
+    DF["📊 DataFrame df"]
+    DF --> C1["📋 Serie: nombre\n['Ana','Luis','María']"]
+    DF --> C2["📋 Serie: nota\n[6.2, 5.8, 6.9]"]
+    DF --> C3["📋 Serie: carrera\n['Civil','Ind.','Civil']"]
+    DF --> I["🔢 Índice\n[0, 1, 2]"]
+```
+
+Una tabla bidimensional con filas y columnas etiquetadas.
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Cargar datos: CSV, Excel, URL, Google Drive
+
+::: columns
+::: {.column width="55%"}
+**Desde CSV local o URL:**
+
+```python
+# Desde URL pública (recomendado para docencia)
+df = pd.read_csv('https://raw.githubusercontent.com/...')
+
+# CSV local
+df = pd.read_csv('datos.csv')
+
+# Con opciones
+df = pd.read_csv('datos.csv',
+    sep=';',           # separador punto y coma
+    encoding='utf-8',
+    decimal=',')       # decimales con coma (España/Chile)
+```
+
+**Desde Excel:**
+
+```python
+df = pd.read_excel('datos.xlsx', sheet_name='Hoja1')
+```
+:::
+
+::: {.column width="45%"}
+
+**Desde Google Drive en Colab:**
+
+```python
+from google.colab import drive
+drive.mount('/content/drive')
+
+df = pd.read_csv(
+    '/content/drive/MyDrive/datos.csv'
+)
+```
+
+**Formatos adicionales:**
+
+```python
+pd.read_json('datos.json')
+pd.read_parquet('datos.parquet')
+pd.read_sql(query, conexion)
+```
+
+::: {.callout-tip icon="false"}
+## Para clases: usa URLs de GitHub
+
+Los datos en tu repo del curso siempre están accesibles sin configuración.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Exploración inicial: lo primero que siempre haces
+
+::: columns
+::: {.column width="55%"}
+```python
+# Dimensiones
+df.shape         # (1000, 8) → filas, columnas
+
+# Primeras / últimas filas
+df.head(5)
+df.tail(3)
+
+# Tipos de datos y valores nulos
+df.info()
+
+# Estadísticas descriptivas
+df.describe()
+
+# Valores únicos en una columna
+df['carrera'].unique()
+df['carrera'].value_counts()
+
+# Valores nulos por columna
+df.isnull().sum()
+```
+:::
+
+::: {.column width="45%"}
+
+**La secuencia de exploración:**
+
+| Paso | Función | Pregunta que responde |
+|---|---|---|
+| 1 | `shape` | ¿Cuántos datos tengo? |
+| 2 | `head()` | ¿Cómo se ven los datos? |
+| 3 | `info()` | ¿Qué tipos son las columnas? |
+| 4 | `describe()` | ¿Cuál es el rango de los valores? |
+| 5 | `isnull().sum()` | ¿Hay datos faltantes? |
+
+::: {.callout-note icon="false"}
+## Buena práctica docente
+
+Muestra esta secuencia al inicio de cada notebook de análisis. Los estudiantes la internalizan como ritual.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Selección y filtrado
+
+::: columns
+::: {.column width="55%"}
+**Seleccionar columnas:**
+
+```python
+# Una columna → Serie
+df['nota']
+
+# Varias columnas → DataFrame
+df[['nombre', 'nota', 'carrera']]
+```
+
+**Filtrar filas (condiciones):**
+
+```python
+# Nota >= 4
+aprobados = df[df['nota'] >= 4]
+
+# Múltiples condiciones
+civil_buenos = df[
+    (df['carrera'] == 'Civil') &
+    (df['nota'] >= 5.5)
+]
+
+# Valores en una lista
+carreras = df[df['carrera'].isin(['Civil', 'Industrial'])]
+```
+:::
+
+::: {.column width="45%"}
+
+**Selección por posición y por etiqueta:**
+
+```python
+# Por posición (iloc)
+df.iloc[0]      # primera fila
+df.iloc[0:5]    # filas 0 a 4
+df.iloc[:, 1:3] # columnas 1 a 2
+
+# Por etiqueta (loc)
+df.loc[0]             # índice 0
+df.loc[:, 'nota']     # toda la columna nota
+df.loc[df['nota'] > 5, ['nombre', 'nota']]
+```
+
+::: {.callout-tip icon="false"}
+## `loc` vs `iloc`
+
+`loc` = por **etiqueta** (nombre de la columna, valor del índice)
+
+`iloc` = por **posición** (número entero, como una lista de Python)
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Limpieza de datos: los casos más frecuentes
+
+::: columns
+::: {.column width="55%"}
+**Manejar valores nulos:**
+
+```python
+# Eliminar filas con cualquier nulo
+df_limpio = df.dropna()
+
+# Eliminar solo si hay nulo en columnas específicas
+df_limpio = df.dropna(subset=['nota', 'carrera'])
+
+# Rellenar con un valor
+df['nota'].fillna(df['nota'].mean(), inplace=True)
+
+# Rellenar con método
+df['nota'].fillna(method='ffill', inplace=True)
+```
+
+**Duplicados:**
+
+```python
+df.duplicated().sum()        # cuántos hay
+df = df.drop_duplicates()   # eliminar
+```
+:::
+
+::: {.column width="45%"}
+
+**Tipos de datos:**
+
+```python
+# Convertir columna a número
+df['nota'] = pd.to_numeric(df['nota'], errors='coerce')
+
+# Convertir a fecha
+df['fecha'] = pd.to_datetime(df['fecha'])
+
+# Convertir a categoría (eficiente para texto repetido)
+df['carrera'] = df['carrera'].astype('category')
+```
+
+**Renombrar columnas:**
+
+```python
+df = df.rename(columns={
+    'nota_final': 'nota',
+    'nombre_alumno': 'nombre'
+})
+```
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Transformaciones: apply, map y asignación
+
+::: columns
+::: {.column width="55%"}
+**Crear columnas nuevas:**
+
+```python
+# Operación directa
+df['nota_ponderada'] = df['nota'] * 0.7 + df['extra'] * 0.3
+
+# Función condicional con apply
+def letra(nota):
+    if nota >= 5.5: return 'A'
+    elif nota >= 4.0: return 'B'
+    else: return 'F'
+
+df['letra'] = df['nota'].apply(letra)
+
+# Con lambda (funciones cortas)
+df['aprobado'] = df['nota'].apply(lambda x: x >= 4.0)
+```
+:::
+
+::: {.column width="45%"}
+
+**Operaciones de texto:**
+
+```python
+# Minúsculas, strip, reemplazar
+df['nombre'] = df['nombre'].str.lower().str.strip()
+df['email'] = df['email'].str.replace('@correo.cl', '@usm.cl')
+
+# Extraer parte de texto
+df['apellido'] = df['nombre'].str.split(' ').str[-1]
+```
+
+::: {.callout-note icon="false"}
+## `apply` vs operaciones vectorizadas
+
+Cuando puedes, usa operaciones de pandas directas (más rápidas). Usa `apply` cuando necesitas lógica compleja que no se puede vectorizar.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Agrupación y agregación: groupby
+
+::: columns
+::: {.column width="55%"}
+**Pregunta típica:** *"¿Cuál es la nota promedio por carrera?"*
+
+```python
+# Promedio de nota por carrera
+df.groupby('carrera')['nota'].mean()
+
+# Múltiples métricas
+resumen = df.groupby('carrera').agg(
+    promedio=('nota', 'mean'),
+    minimo=('nota', 'min'),
+    maximo=('nota', 'max'),
+    conteo=('nota', 'count')
+)
+
+# Dos niveles de agrupación
+df.groupby(['carrera', 'semestre'])['nota'].mean()
+```
+:::
+
+::: {.column width="45%"}
+
+**Pivot tables:**
+
+```python
+tabla = df.pivot_table(
+    values='nota',
+    index='carrera',
+    columns='semestre',
+    aggfunc='mean'
+)
+```
+
+::: {.callout-tip icon="false"}
+## `groupby` + `reset_index()`
+
+Después de un `groupby`, el resultado tiene el grupo como índice. Usa `.reset_index()` para convertirlo en DataFrame normal y poder graficar directamente.
+
+```python
+promedios = df.groupby('carrera')['nota'].mean().reset_index()
+```
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Merge y concatenación de DataFrames
+
+::: columns
+::: {.column width="55%"}
+**Merge (equivalente a JOIN en SQL):**
+
+```python
+# Inner join (solo filas que coinciden en ambos)
+df_merge = pd.merge(df_notas, df_estudiantes,
+                    on='id_alumno', how='inner')
+
+# Left join (todas las filas de df_notas)
+df_merge = pd.merge(df_notas, df_estudiantes,
+                    on='id_alumno', how='left')
+
+# Columnas con nombres distintos
+df_merge = pd.merge(df_a, df_b,
+                    left_on='id', right_on='alumno_id')
+```
+:::
+
+::: {.column width="45%"}
+
+**Concatenación (apilar DataFrames):**
+
+```python
+# Apilar verticalmente (mismo formato)
+df_total = pd.concat([df_2024, df_2025],
+                     ignore_index=True)
+
+# Agregar columna para identificar origen
+df_2024['año'] = 2024
+df_2025['año'] = 2025
+df_total = pd.concat([df_2024, df_2025])
+```
+
+::: {.callout-note icon="false"}
+## `merge` vs `concat`
+
+`merge` = unir por columna clave (como JOIN)\
+`concat` = apilar DataFrames (como UNION ALL)
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Exportar resultados
+
+::: columns
+::: {.column width="55%"}
+**Guardar el análisis:**
+
+```python
+# CSV
+df.to_csv('resultados.csv', index=False)
+
+# Excel
+df.to_excel('resultados.xlsx',
+            sheet_name='Análisis',
+            index=False)
+
+# Parquet (eficiente para datos grandes)
+df.to_parquet('resultados.parquet')
+```
+
+**Descargar desde Colab:**
+
+```python
+from google.colab import files
+files.download('resultados.csv')
+```
+:::
+
+::: {.column width="45%"}
+
+**Pipeline completo típico:**
+
+```python
+# 1. Cargar
+df = pd.read_csv(url)
+
+# 2. Explorar
+df.info()
+df.describe()
+
+# 3. Limpiar
+df = df.dropna(subset=['nota'])
+df['nota'] = pd.to_numeric(df['nota'])
+
+# 4. Transformar
+df['aprobado'] = df['nota'] >= 4.0
+
+# 5. Analizar
+resumen = df.groupby('carrera').agg(...)
+
+# 6. Exportar
+resumen.to_csv('resumen.csv', index=False)
+```
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+##  {.final-slide background-color="#0F2044"}
+
+::: center-content
+**¿Preguntas?**
+
+------------------------------------------------------------------------
+
+Francisco Alfaro\
+`fralfaro@usm.cl`\
+Docencia Digital · UTFSM
+
+*2026*
+:::

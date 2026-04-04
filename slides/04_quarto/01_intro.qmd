@@ -1,0 +1,482 @@
+---
+title: "Qué es Quarto y por qué usarlo"
+subtitle: "El sistema de publicación científica para el docente moderno"
+author: "Francisco Alfaro"
+institute: "Docencia Digital · UTFSM"
+date: today
+date-format: "MMMM YYYY"
+
+format:
+  revealjs:
+    theme: [default, ../custom.scss]
+    slide-number: true
+    progress: true
+    history: false
+    transition: fade
+    transition-speed: fast
+    incremental: false
+    fig-align: center
+    highlight-style: github
+    code-block-bg: true
+    center: false
+    width: 1280
+    height: 720
+    margin: 0.08
+    footer: "Docencia Digital · UTFSM · 2026"
+    logo: "../../assets/img/brand/brand__usm.png"
+
+execute:
+  echo: false
+  warning: false
+---
+
+##  {.title-slide background-color="#0F2044"}
+
+::: title-block
+**Qué es Quarto y por qué usarlo**
+
+El sistema de publicación científica para el docente moderno
+:::
+
+::: subtitle-block
+Sesión 4 — Quarto para material académico
+:::
+
+::: author-block
+Francisco Alfaro\
+Docencia Digital · UTFSM · 2026
+:::
+
+------------------------------------------------------------------------
+
+## La promesa de Quarto
+
+::: columns
+::: {.column width="60%"}
+**Un archivo `.qmd`, múltiples formatos de salida:**
+
+Escribes una vez y renderizas como:
+
+- HTML → sitio web del curso
+- PDF → para imprimir o enviar a revista
+- RevealJS → presentación de clase
+- Word → informe institucional
+
+Sin copiar y pegar. Sin inconsistencias entre versiones.
+:::
+
+::: {.column width="40%"}
+
+::: {.callout-note icon="false"}
+## Este libro que lees
+
+Este material está construido completamente en Quarto. El sitio web, las presentaciones y los documentos PDF salen del mismo repositorio de archivos `.qmd`.
+:::
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Quarto vs Jupyter Notebooks vs R Markdown
+
+::: columns
+::: {.column width="55%"}
+Los tres nacen de la misma necesidad: mezclar narrativa con código ejecutable.
+
+Eso se llama **programación literaria** (*literate programming*) — propuesta por Donald Knuth en 1984.
+
+```{mermaid}
+graph LR
+    JN["Jupyter\nNotebooks\n(2011)"] --> Q["Quarto\n(2022)"]
+    RM["R Markdown\n(2012)"] --> Q
+    Q --> H["HTML"]
+    Q --> P["PDF"]
+    Q --> S["Slides"]
+    Q --> W["Word"]
+    Q --> B["Book"]
+```
+:::
+
+::: {.column width="45%"}
+
+| Sistema | Lenguajes | Formatos |
+|---|---|---|
+| Jupyter | Python, R, Julia | HTML, PDF |
+| R Markdown | R, Python | HTML, PDF, Word |
+| **Quarto** | **Python, R, Julia, Observable** | **HTML, PDF, Word, RevealJS, Docx, y más** |
+
+::: {.callout-important icon="false"}
+## La diferencia clave de Quarto
+
+No depende de R. Funciona igualmente bien con Python. Y produce más formatos desde el mismo archivo.
+:::
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Instalación y configuración
+
+::: columns
+::: {.column width="55%"}
+**1. Instalar Quarto:**
+
+→ [quarto.org/docs/get-started](https://quarto.org/docs/get-started/)
+
+Disponible para Windows, Mac, Linux.
+
+**2. Verificar la instalación:**
+
+```bash
+quarto --version
+# 1.5.57
+```
+
+**3. Instalar la extensión en VS Code:**
+
+Extensiones → buscar **Quarto** → instalar
+
+La extensión agrega:
+- Preview en tiempo real del documento
+- Completado de opciones YAML
+- Resaltado de sintaxis en chunks
+:::
+
+::: {.column width="45%"}
+
+**Extensiones de VS Code recomendadas:**
+
+| Extensión | Para qué |
+|---|---|
+| Quarto | Editor y preview |
+| Python | Soporte de Python |
+| Jupyter | Soporte de notebooks |
+| GitLens | Integración con Git |
+
+::: {.callout-tip icon="false"}
+## En Overleaf o Colab
+
+Quarto también funciona en la nube. En GitHub Actions lo instalas automáticamente con la action `quarto-dev/quarto-actions/setup@v2`.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## El archivo `.qmd`: anatomía básica
+
+::: columns
+::: {.column width="55%"}
+**Frontmatter YAML:**
+
+```yaml
+---
+title: "Regresión Lineal"
+subtitle: "Introducción a modelos predictivos"
+author: "Juan Pérez"
+date: today
+format: html
+---
+```
+
+**Texto en Markdown:**
+
+```markdown
+## Introducción
+
+La regresión lineal modela la relación
+entre una variable dependiente $y$ y
+variables independientes $x_1, \ldots, x_p$.
+
+$$y = \beta_0 + \beta_1 x_1 + \varepsilon$$
+```
+:::
+
+::: {.column width="45%"}
+
+**Chunk de código:**
+
+````markdown
+```{{python}}
+import pandas as pd
+import matplotlib.pyplot as plt
+
+df = pd.read_csv('datos.csv')
+df.head()
+```
+````
+
+**Renderizar:**
+
+```bash
+quarto render documento.qmd
+# → documento.html
+```
+
+::: {.callout-note icon="false"}
+## `.qmd` = Markdown + YAML + chunks
+
+El formato es familiar si conoces R Markdown o Jupyter. La sintaxis de los chunks es ligeramente diferente pero el concepto es idéntico.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Formatos de salida: uno para cada propósito
+
+::: columns
+::: {.column width="55%"}
+**HTML (website):**
+
+```yaml
+format:
+  html:
+    theme: cosmo
+    toc: true
+    code-fold: true
+```
+
+**PDF (vía LaTeX):**
+
+```yaml
+format:
+  pdf:
+    documentclass: article
+    geometry:
+      - top=2cm
+      - left=3cm
+```
+
+**Word:**
+
+```yaml
+format:
+  docx:
+    reference-doc: plantilla.docx
+```
+:::
+
+::: {.column width="45%"}
+
+**RevealJS (presentación):**
+
+```yaml
+format:
+  revealjs:
+    theme: default
+    slide-number: true
+    transition: fade
+```
+
+**Múltiples formatos del mismo archivo:**
+
+```yaml
+format:
+  html: default
+  pdf: default
+  revealjs: default
+```
+
+```bash
+quarto render --to html
+quarto render --to pdf
+quarto render --to revealjs
+```
+
+::: {.callout-tip icon="false"}
+## Un solo archivo fuente
+
+Escribes el contenido una vez. Cambiar de HTML a PDF es solo cambiar el `format` en el YAML.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## El ciclo de trabajo con Quarto
+
+```{mermaid}
+graph LR
+    E["✏️ Editar\n.qmd en VS Code"]
+    P["👁️ Preview\nen el navegador"]
+    R["🎨 Render\nformato final"]
+    G["🐙 GitHub\nversión y deploy"]
+
+    E -- "quarto preview" --> P
+    P -- "editar y ver cambios en vivo" --> E
+    E -- "quarto render" --> R
+    R -- "git push" --> G
+    G -- "GitHub Pages\nauto-deploy" --> P
+```
+
+::: {.callout-tip icon="false"}
+## `quarto preview` es tu mejor amigo
+
+Abre el documento en el navegador y lo actualiza automáticamente cada vez que guardas. Es como el modo de edición en Google Docs pero para publicación académica.
+:::
+
+------------------------------------------------------------------------
+
+## Opciones de ejecución de código
+
+::: columns
+::: {.column width="55%"}
+**A nivel de documento (en el frontmatter):**
+
+```yaml
+execute:
+  echo: true       # mostrar el código
+  warning: false   # ocultar warnings
+  message: false   # ocultar mensajes
+  freeze: auto     # no re-ejecutar si no cambió
+```
+
+**A nivel de chunk individual:**
+
+````markdown
+```{{python}}
+#| echo: false      # ocultar este código específico
+#| fig-cap: "Distribución de notas"
+#| fig-width: 8
+#| fig-height: 4
+
+plt.hist(df['nota'])
+plt.show()
+```
+````
+:::
+
+::: {.column width="45%"}
+
+**Opciones más usadas en docencia:**
+
+| Opción | Efecto |
+|---|---|
+| `echo: false` | Muestra solo el output |
+| `echo: true` | Muestra código + output |
+| `eval: false` | Muestra el código sin ejecutar |
+| `output: false` | Ejecuta pero no muestra output |
+| `fig-cap: "..."` | Pie de figura |
+| `code-fold: true` | Código colapsable |
+
+::: {.callout-note icon="false"}
+## `freeze: auto` es crítico para deployment
+
+Con `freeze`, Quarto guarda los resultados. En GitHub Actions, solo re-ejecuta el código que cambió. El tiempo de build puede reducirse de 15 min a 2 min.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Tipos de proyecto Quarto
+
+::: columns
+::: {.column width="50%"}
+**Website (sitio del curso):**
+
+```bash
+quarto create project website mi-curso
+```
+
+```
+mi-curso/
+├── _quarto.yml    # configuración del sitio
+├── index.qmd      # página de inicio
+├── lectures/
+│   └── semana01.qmd
+└── labs/
+    └── lab01.qmd
+```
+
+**Book (libro o apuntes):**
+
+```bash
+quarto create project book mi-libro
+```
+
+Genera automáticamente capítulos numerados con navegación.
+:::
+
+::: {.column width="50%"}
+
+**Blog:**
+
+```bash
+quarto create project blog mi-blog
+```
+
+Posts con fecha, categorías y RSS automático.
+
+**Manuscript (paper):**
+
+```bash
+quarto create project manuscript mi-paper
+```
+
+Optimizado para publicación académica con múltiples formatos de salida.
+
+::: {.callout-tip icon="false"}
+## ¿Qué proyecto elegir para docencia?
+
+**Website** → sitio del curso completo con navegación
+
+**Book** → apuntes o libro de texto del curso
+
+**RevealJS** (sin proyecto) → presentaciones de clase individuales
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## La ventaja sobre PowerPoint: reproducibilidad
+
+::: columns
+::: {.column width="55%"}
+**Con PowerPoint:**
+
+- La figura de regresión la hiciste manualmente en Excel
+- Si los datos cambian, actualizas Excel, exportas PNG, lo insertas de nuevo
+- El número "media = 5.23" del texto puede estar desactualizado
+- Envías el `.pptx` a un colega → no puede reproducir los cálculos
+
+**Con Quarto:**
+
+- La figura sale del código que está en el mismo documento
+- Si los datos cambian, `quarto render` → todo actualizado automáticamente
+- El número "media = `{python} df['nota'].mean():.2f`" siempre es correcto
+- El colega clona el repositorio y reproduce todo en segundos
+:::
+
+::: {.column width="45%"}
+
+::: {.callout-important icon="false"}
+## El principio de reproducibilidad
+
+El documento es la verdad. No hay pasos ocultos entre los datos y el resultado final.
+
+Eso tiene valor en docencia: los estudiantes ven exactamente cómo se llegó a cada número y cada figura.
+:::
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+##  {.final-slide background-color="#0F2044"}
+
+::: center-content
+**¿Preguntas?**
+
+------------------------------------------------------------------------
+
+Francisco Alfaro\
+`fralfaro@usm.cl`\
+Docencia Digital · UTFSM
+
+*2026*
+:::

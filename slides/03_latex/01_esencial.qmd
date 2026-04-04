@@ -1,0 +1,449 @@
+---
+title: "LaTeX esencial"
+subtitle: "El estándar de publicación académica desde cero"
+author: "Francisco Alfaro"
+institute: "Docencia Digital · UTFSM"
+date: today
+date-format: "MMMM YYYY"
+
+format:
+  revealjs:
+    theme: [default, ../custom.scss]
+    slide-number: true
+    progress: true
+    history: false
+    transition: fade
+    transition-speed: fast
+    incremental: false
+    fig-align: center
+    highlight-style: github
+    code-block-bg: true
+    center: false
+    width: 1280
+    height: 720
+    margin: 0.08
+    footer: "Docencia Digital · UTFSM · 2026"
+    logo: "../../assets/img/brand/brand__usm.png"
+
+execute:
+  echo: false
+  warning: false
+---
+
+##  {.title-slide background-color="#0F2044"}
+
+::: title-block
+**LaTeX esencial**
+
+El estándar de publicación académica desde cero
+:::
+
+::: subtitle-block
+Sesión 3 — Overleaf y LaTeX para docencia
+:::
+
+::: author-block
+Francisco Alfaro\
+Docencia Digital · UTFSM · 2026
+:::
+
+------------------------------------------------------------------------
+
+## ¿Por qué LaTeX? El problema que resuelve
+
+::: columns
+::: {.column width="55%"}
+**Escenarios que todos reconocen:**
+
+- Diez minutos ajustando una ecuación en Word para que no se vea horrible
+- Una revista científica pide reformatear todo el documento en su plantilla
+- Las referencias cruzadas se rompen al mover secciones
+- La numeración de ecuaciones es manual y se desordena
+
+**LaTeX no es un procesador de texto — es un sistema de composición tipográfica.**
+
+Tú describes la *estructura*. LaTeX decide cómo se ve.
+:::
+
+::: {.column width="45%"}
+
+```{mermaid}
+graph TD
+    W["📝 Word / Google Docs\nWYSIWYG"] --> O1["❌ Ecuaciones limitadas\n❌ Numeración manual\n✅ Curva de entrada baja"]
+    L["⚙️ LaTeX\nMarkup"] --> O2["✅ Ecuaciones perfectas\n✅ Numeración automática\n✅ Referencias robustas\n❌ Curva de entrada alta"]
+```
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+## LaTeX en la academia: los números
+
+::: columns
+::: {.column width="55%"}
+**Más del 90%** de las revistas de matemáticas, física, ingeniería y computación aceptan o **requieren** LaTeX.
+
+**La razón:** ningún otro sistema produce ecuaciones matemáticas con esa calidad tipográfica.
+
+**Overleaf:** el entorno LaTeX en la nube
+
+- Sin instalar nada (como Colab para Python)
+- Colaboración en tiempo real
+- Plantillas de revistas y conferencias
+- Compilación automática al guardar
+
+→ [overleaf.com](https://www.overleaf.com)
+:::
+
+::: {.column width="45%"}
+
+::: {.callout-note icon="false"}
+## Para docentes de ingeniería y matemáticas
+
+Dominar LaTeX no es una curiosidad técnica — es la diferencia entre material que se ve amateur y material que se ve como un libro de texto publicado.
+:::
+
+**Plan gratuito de Overleaf:**
+
+- Proyectos ilimitados
+- Colaboración con hasta 1 persona
+- Compilaciones sin límite
+- Acceso a todas las plantillas
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Estructura básica de un documento LaTeX
+
+```latex
+\documentclass[12pt, letterpaper]{article}
+
+% Paquetes
+\usepackage[utf8]{inputenc}   % caracteres especiales (tildes, ñ)
+\usepackage[spanish]{babel}   % idioma
+\usepackage{amsmath}          % matemáticas
+\usepackage{graphicx}         % imágenes
+\usepackage{hyperref}         % links clicables
+
+% Metadatos
+\title{Guía de Laboratorio 3}
+\author{Juan Pérez}
+\date{Semestre 2025-1}
+
+\begin{document}
+
+\maketitle          % genera la portada automáticamente
+\tableofcontents    % tabla de contenidos automática
+
+\section{Introducción}
+Texto de la sección...
+
+\subsection{Objetivos}
+Los objetivos son...
+
+\end{document}
+```
+
+------------------------------------------------------------------------
+
+## Texto y formato básico
+
+::: columns
+::: {.column width="55%"}
+**Énfasis y formato:**
+
+```latex
+Texto \textbf{negrita} y \textit{cursiva}.
+\texttt{código monoespaciado}
+\underline{subrayado}
+
+% Alineación
+\begin{center}
+  Texto centrado
+\end{center}
+
+\begin{flushright}
+  Texto a la derecha
+\end{flushright}
+```
+
+**Listas:**
+
+```latex
+\begin{itemize}          % viñetas
+  \item Primer ítem
+  \item Segundo ítem
+\end{itemize}
+
+\begin{enumerate}        % numerada
+  \item Paso uno
+  \item Paso dos
+\end{enumerate}
+```
+:::
+
+::: {.column width="45%"}
+
+**Secciones y jerarquía:**
+
+```latex
+\part{Parte I}
+  \chapter{Capítulo}       % solo en book
+    \section{Sección}
+      \subsection{Sub}
+        \subsubsection{Subsub}
+          \paragraph{Párrafo}
+```
+
+**Comentarios (no aparecen en el PDF):**
+
+```latex
+% Esto es un comentario
+% El compilador lo ignora completamente
+```
+
+::: {.callout-tip icon="false"}
+## `\maketitle` y `\tableofcontents`
+
+Dos comandos que hacen todo solos. La tabla de contenidos se genera automáticamente con todos los números de página correctos.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Ecuaciones: el poder de LaTeX
+
+::: columns
+::: {.column width="55%"}
+**Modo inline** (dentro del texto):
+
+```latex
+Sea $f(x) = x^2 + 3x - 2$ una función cuadrática.
+Su derivada es $f'(x) = 2x + 3$.
+```
+
+**Modo display** (línea propia, centrada):
+
+```latex
+\begin{equation}
+  \int_0^{\infty} e^{-x^2} \, dx = \frac{\sqrt{\pi}}{2}
+\end{equation}
+
+% Sin número de ecuación
+\[
+  \nabla J(\theta) \propto \sum_s \mu(s) \sum_a q_\pi(s,a)
+\]
+```
+:::
+
+::: {.column width="45%"}
+
+**Símbolos más usados:**
+
+```latex
+% Fracciones
+\frac{numerador}{denominador}
+
+% Subíndices y superíndices
+x_{i}    x^{2}    x_{ij}^{2}
+
+% Raíces
+\sqrt{x}    \sqrt[3]{x}
+
+% Sumas e integrales
+\sum_{i=1}^{n}    \int_a^b
+
+% Letras griegas
+\alpha \beta \gamma \theta \mu \sigma
+
+% Operadores
+\lim_{x \to 0}    \max_{x}    \min_x
+```
+
+::: {.callout-important icon="false"}
+## La ventaja clave sobre Word
+
+Las ecuaciones en LaTeX son **texto estructurado**, no imágenes. Se escalan, se pueden referenciar y se actualizan automáticamente.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Tablas y figuras
+
+::: columns
+::: {.column width="55%"}
+**Tabla básica:**
+
+```latex
+\begin{table}[h]
+  \centering
+  \caption{Resultados del experimento}
+  \label{tab:resultados}
+  \begin{tabular}{|l|c|r|}
+    \hline
+    Método & Precisión & Tiempo \\
+    \hline
+    Lineal & 0.82 & 1.2s \\
+    Árbol  & 0.91 & 3.7s \\
+    Red    & 0.95 & 45.2s \\
+    \hline
+  \end{tabular}
+\end{table}
+```
+
+→ Ver Tabla \ref{tab:resultados} (referencia automática)
+:::
+
+::: {.column width="45%"}
+
+**Figura:**
+
+```latex
+\usepackage{graphicx}   % en el preámbulo
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\linewidth]{grafico.png}
+  \caption{Distribución de notas}
+  \label{fig:notas}
+\end{figure}
+```
+
+::: {.callout-tip icon="false"}
+## Generador de tablas LaTeX
+
+[tables-generator.com](https://www.tablesgenerator.com/) → diseña la tabla visualmente → copia el LaTeX.
+
+Mucho más rápido que escribir la tabla a mano.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Referencias bibliográficas con BibTeX
+
+::: columns
+::: {.column width="55%"}
+**Archivo `referencias.bib`:**
+
+```bibtex
+@book{sutton2018,
+  author    = {Sutton, Richard S. and Barto, Andrew G.},
+  title     = {Reinforcement Learning: An Introduction},
+  publisher = {MIT Press},
+  year      = {2018},
+  edition   = {2nd}
+}
+
+@article{lecun1989,
+  author  = {LeCun, Yann and others},
+  title   = {Backpropagation Applied to Handwritten Zip Code Recognition},
+  journal = {Neural Computation},
+  year    = {1989},
+  volume  = {1}
+}
+```
+:::
+
+::: {.column width="45%"}
+
+**En el documento `.tex`:**
+
+```latex
+% En el preámbulo
+\usepackage[style=apa]{biblatex}
+\addbibresource{referencias.bib}
+
+% En el texto
+Según \cite{sutton2018}, el aprendizaje...
+
+Los experimentos de \cite{lecun1989} muestran...
+
+% Al final del documento
+\printbibliography
+```
+
+::: {.callout-note icon="false"}
+## Exportar desde Zotero o Mendeley
+
+Zotero → seleccionar referencias → Exportar → Better BibTeX → `referencias.bib`. La bibliografía completa se genera automáticamente.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Flujo de trabajo con Overleaf
+
+::: columns
+::: {.column width="55%"}
+**Crear un proyecto:**
+
+1. overleaf.com → New Project → Blank Project
+2. Escribe el `.tex` en el editor
+3. Clic en **Compile** (o Ctrl+Enter)
+4. El PDF aparece a la derecha en segundos
+
+**Colaborar:**
+
+1. Share → Invite a collaborator (email)
+2. Ambos editan en tiempo real
+3. Track Changes para ver qué cambió quién
+:::
+
+::: {.column width="45%"}
+
+**Conectar con GitHub:**
+
+Overleaf Pro → Git Integration → clonar o pushear a GitHub.
+
+Con cuenta gratuita, descargar el ZIP y subirlo manualmente al repositorio del curso.
+
+::: {.callout-tip icon="false"}
+## Overleaf como entorno de clase
+
+El docente comparte el proyecto con acceso de lectura. Los estudiantes ven el LaTeX y el PDF en tiempo real. Ideal para mostrar cómo se construye un documento.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Errores comunes de LaTeX y cómo resolverlos
+
+| Error | Causa probable | Solución |
+|---|---|---|
+| `Undefined control sequence` | Comando mal escrito o paquete faltante | Verificar ortografía y agregar `\usepackage{}` |
+| `Missing $ inserted` | Símbolo matemático fuera de modo math | Poner el símbolo dentro de `$...$` |
+| `Overfull \hbox` | Línea de texto demasiado larga | Agregar `\allowbreak` o reformular |
+| `File not found` | Imagen o `.bib` no encontrado | Verificar nombre y ruta del archivo |
+| `Too many }'s` | Llaves sin cerrar | Revisar que cada `{` tiene su `}` |
+
+::: {.callout-tip icon="false"}
+## Estrategia ante un error
+
+Ir al log de compilación → buscar la línea donde aparece `ERROR:` → leer el mensaje → buscar en Google "latex [mensaje del error]". La comunidad LaTeX es enorme y casi todo error tiene solución documentada.
+:::
+
+------------------------------------------------------------------------
+
+##  {.final-slide background-color="#0F2044"}
+
+::: center-content
+**¿Preguntas?**
+
+------------------------------------------------------------------------
+
+Francisco Alfaro\
+`fralfaro@usm.cl`\
+Docencia Digital · UTFSM
+
+*2026*
+:::

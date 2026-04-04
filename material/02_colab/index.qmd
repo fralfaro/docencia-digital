@@ -1,0 +1,18 @@
+---
+title: "Google Colab para docencia"
+format:
+  html:
+    toc: false
+---
+
+## Objetivo
+
+Este módulo cubre el uso de Google Colab como entorno de ejecución de código en la nube para docencia práctica. Se estudia la lógica de los notebooks como documentos que integran explicación y ejecución, el acceso a datos desde distintas fuentes, la manipulación de datos tabulares con pandas, y la producción de visualizaciones estáticas e interactivas. Al finalizar el módulo, el participante será capaz de crear y publicar notebooks interactivos listos para uso en clases prácticas, accesibles desde cualquier dispositivo sin instalación.
+
+## Contenidos
+
+| # | Tema | Presentación |
+|:--:|------|:------------:|
+| 1 | [Colab esencial — Notebooks en la nube para docencia práctica](colab_01_esencial.qmd) | [slides](../../slides/02_colab/01_esencial.html) |
+| 2 | [Manipulación de datos con pandas — Del dato crudo al análisis](colab_02_pandas.qmd) | [slides](../../slides/02_colab/02_pandas.html) |
+| 3 | [Visualización de datos — matplotlib, seaborn y plotly](colab_03_visualizacion.qmd) | [slides](../../slides/02_colab/03_visualizacion.html) |

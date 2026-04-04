@@ -1,0 +1,465 @@
+---
+title: "Documentos reproducibles"
+subtitle: "Chunks, callouts, referencias cruzadas y salida multiformato"
+author: "Francisco Alfaro"
+institute: "Docencia Digital · UTFSM"
+date: today
+date-format: "MMMM YYYY"
+
+format:
+  revealjs:
+    theme: [default, ../custom.scss]
+    slide-number: true
+    progress: true
+    history: false
+    transition: fade
+    transition-speed: fast
+    incremental: false
+    fig-align: center
+    highlight-style: github
+    code-block-bg: true
+    center: false
+    width: 1280
+    height: 720
+    margin: 0.08
+    footer: "Docencia Digital · UTFSM · 2026"
+    logo: "../../assets/img/brand/brand__usm.png"
+
+execute:
+  echo: false
+  warning: false
+---
+
+##  {.title-slide background-color="#0F2044"}
+
+::: title-block
+**Documentos reproducibles**
+
+Chunks, callouts, referencias cruzadas y salida multiformato
+:::
+
+::: subtitle-block
+Sesión 4 — Quarto para material académico
+:::
+
+::: author-block
+Francisco Alfaro\
+Docencia Digital · UTFSM · 2026
+:::
+
+------------------------------------------------------------------------
+
+## ¿Qué es un documento reproducible?
+
+::: columns
+::: {.column width="60%"}
+Un documento reproducible es aquel que cualquier persona puede tomar, ejecutar, y obtener **exactamente el mismo resultado**.
+
+No "similar" — **exactamente el mismo**.
+
+Para un docente esto significa:
+
+- El apunte que dice "la media es 5.23" tiene la media calculada desde el código
+- El histograma que muestra esa distribución sale del mismo código
+- Si los datos cambian, ambos se actualizan solos al renderizar
+:::
+
+::: {.column width="40%"}
+
+::: {.callout-important icon="false"}
+## Sin pasos ocultos
+
+❌ "Copié el número del Excel"
+
+❌ "Ajusté la figura manualmente en PowerPoint"
+
+✅ Cada número, figura y tabla se genera desde el código del documento.
+:::
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Chunks de código: la unidad básica
+
+::: columns
+::: {.column width="55%"}
+**Sintaxis de un chunk en Quarto:**
+
+````markdown
+```{{python}}
+#| label: fig-notas
+#| fig-cap: "Distribución de notas del curso"
+#| fig-width: 8
+#| fig-height: 4
+#| echo: false
+
+import matplotlib.pyplot as plt
+import pandas as pd
+
+df = pd.read_csv('datos.csv')
+plt.hist(df['nota'], bins=20, color='steelblue')
+plt.xlabel('Nota')
+plt.show()
+```
+````
+:::
+
+::: {.column width="45%"}
+
+**Opciones de chunk más usadas:**
+
+| Opción | Valores | Efecto |
+|---|---|---|
+| `echo` | true/false | Muestra/oculta el código |
+| `eval` | true/false | Ejecuta o no el código |
+| `output` | true/false | Muestra/oculta el output |
+| `warning` | true/false | Muestra/oculta warnings |
+| `fig-cap` | texto | Pie de figura |
+| `fig-width` | número | Ancho en pulgadas |
+| `label` | texto | ID para referencias cruzadas |
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Inline code: resultados directamente en el texto
+
+::: columns
+::: {.column width="55%"}
+En lugar de escribir el número manualmente:
+
+```markdown
+La nota promedio del curso fue 5.23.
+```
+
+Que puede quedar desactualizado si los datos cambian...
+
+**Usa inline code:**
+
+```markdown
+La nota promedio del curso fue
+`{python} round(df['nota'].mean(), 2)`.
+```
+
+Al renderizar, Quarto ejecuta la expresión y reemplaza el resultado en el texto. Siempre correcto, siempre actualizado.
+:::
+
+::: {.column width="45%"}
+
+**Más ejemplos de inline code:**
+
+```markdown
+El dataset tiene `{python} len(df)` filas y
+`{python} df.shape[1]` columnas.
+
+La nota mínima fue `{python} df['nota'].min()`
+y la máxima `{python} df['nota'].max()`.
+
+Se identificaron `{python} df['nota'].isna().sum()`
+valores faltantes en la columna de notas.
+```
+
+::: {.callout-tip icon="false"}
+## Para apuntes de clase
+
+Cuando actualizas el dataset del siguiente semestre, todos los números del texto se actualizan automáticamente al hacer `quarto render`.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Figuras y tablas generadas desde código
+
+::: columns
+::: {.column width="55%"}
+**Figura referenciable:**
+
+````markdown
+```{{python}}
+#| label: fig-scatter
+#| fig-cap: "Horas de estudio vs nota final"
+
+plt.scatter(df['horas'], df['nota'])
+plt.xlabel('Horas de estudio')
+plt.ylabel('Nota')
+plt.show()
+```
+````
+
+En el texto: `Como muestra @fig-scatter, existe una correlación positiva...`
+
+→ Quarto genera "Figura 1" automáticamente y la numera.
+:::
+
+::: {.column width="45%"}
+
+**Tabla desde código:**
+
+````markdown
+```{{python}}
+#| label: tbl-resumen
+#| tbl-cap: "Estadísticas descriptivas por carrera"
+
+resumen = df.groupby('carrera')['nota'].describe()
+resumen.round(2)
+```
+````
+
+En el texto: `La Tabla @tbl-resumen muestra...`
+
+::: {.callout-note icon="false"}
+## Prefijos de las etiquetas
+
+- Figuras: `fig-nombre`
+- Tablas: `tbl-nombre`
+- Ecuaciones: `eq-nombre`
+- Secciones: `sec-nombre`
+
+La referencia `@fig-nombre` genera "Figura 1" (o "Figure 1" en inglés).
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Callouts: bloques pedagógicos visuales
+
+::: columns
+::: {.column width="55%"}
+**Los cinco tipos:**
+
+```markdown
+::: {.callout-note}
+## Nota
+Información adicional de contexto.
+:::
+
+::: {.callout-tip}
+## Consejo
+Buena práctica o atajo útil.
+:::
+
+::: {.callout-warning}
+## Advertencia
+Algo que puede salir mal.
+:::
+
+::: {.callout-important}
+## Importante
+Concepto clave que no debe perderse.
+:::
+
+::: {.callout-caution}
+## Precaución
+Acción que puede tener consecuencias irreversibles.
+:::
+```
+:::
+
+::: {.column width="45%"}
+
+**Opciones de callout:**
+
+```markdown
+::: {.callout-tip icon="false" collapse="true"}
+## Pista (expandir para ver)
+
+Esta pista solo aparece cuando el estudiante
+hace clic para expandir el bloque.
+:::
+```
+
+::: {.callout-tip icon="false"}
+## En apuntes de curso
+
+Los callouts son perfectos para: definiciones, ejemplos, advertencias sobre errores comunes, pistas en guías de ejercicios y conexiones con otros temas del curso.
+:::
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Referencias cruzadas: el sistema completo
+
+::: columns
+::: {.column width="55%"}
+**Etiquetar:**
+
+```markdown
+## Introducción {#sec-intro}
+
+$$
+y = \beta_0 + \beta_1 x + \varepsilon
+$$ {#eq-regresion}
+
+![Figura de dispersión](scatter.png){#fig-scatter}
+```
+
+**Referenciar:**
+
+```markdown
+Como vimos en @sec-intro, la ecuación
+@eq-regresion modela la relación lineal.
+
+La @fig-scatter muestra el ajuste del modelo.
+```
+
+Quarto genera automáticamente: "Sección 1", "Ecuación 1", "Figura 1".
+:::
+
+::: {.column width="45%"}
+
+**Configurar el idioma de las referencias:**
+
+```yaml
+lang: es
+crossref:
+  fig-prefix: "Figura"
+  tbl-prefix: "Tabla"
+  eq-prefix: "Ecuación"
+  sec-prefix: "Sección"
+```
+
+::: {.callout-important icon="false"}
+## Numeración automática
+
+Si insertas una nueva figura antes de la Figura 3, **todas se renumeran automáticamente**. Las referencias en el texto siguen siendo correctas.
+
+Lo mismo con secciones, tablas y ecuaciones.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Tablas con `knitr::kable` y `gt`
+
+::: columns
+::: {.column width="55%"}
+**Tabla simple con pandas:**
+
+````markdown
+```{{python}}
+#| tbl-cap: "Resultados del modelo"
+
+import pandas as pd
+from IPython.display import display
+
+resultados = pd.DataFrame({
+    'Modelo': ['Lineal', 'Árbol', 'Red'],
+    'Precisión': [0.82, 0.91, 0.95],
+    'Tiempo (s)': [1.2, 3.7, 45.2]
+})
+
+display(resultados.style.format({
+    'Precisión': '{:.2%}',
+    'Tiempo (s)': '{:.1f}'
+}))
+```
+````
+:::
+
+::: {.column width="45%"}
+
+**Tabla desde Markdown puro:**
+
+```markdown
+| Semana | Tema | Material |
+|--------|------|----------|
+| 1 | Introducción | [Ver](lectures/s01.qmd) |
+| 2 | Estadística | [Ver](lectures/s02.qmd) |
+| 3 | Regresión | [Ver](lectures/s03.qmd) |
+```
+
+::: {.callout-tip icon="false"}
+## Cuándo usar qué
+
+**Tabla Markdown:** contenido estático (calendario, lista de temas)
+
+**Tabla desde código:** datos que vienen de un DataFrame o cálculo
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Salida multiformato desde un solo archivo
+
+::: columns
+::: {.column width="55%"}
+**Configurar múltiples formatos:**
+
+```yaml
+---
+title: "Guía de Laboratorio 3"
+format:
+  html:
+    theme: cosmo
+    toc: true
+    code-fold: true
+  pdf:
+    documentclass: article
+    geometry:
+      - top=2cm
+      - left=3cm
+  docx:
+    reference-doc: plantilla-usm.docx
+---
+```
+:::
+
+::: {.column width="45%"}
+
+**Renderizar todos los formatos:**
+
+```bash
+quarto render guia.qmd
+# → guia.html
+# → guia.pdf
+# → guia.docx
+```
+
+**Opciones específicas por formato:**
+
+````markdown
+```{{python}}
+#| echo: false
+#| fig-format: svg   # SVG para HTML
+                     # PDF para PDF (automático)
+plt.plot(x, y)
+plt.show()
+```
+````
+
+::: {.callout-note icon="false"}
+## El flujo docente ideal
+
+HTML → sitio del curso (navegable)
+
+PDF → imprimible para quien lo prefiera
+
+Word → para colegas que editan en Word
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+##  {.final-slide background-color="#0F2044"}
+
+::: center-content
+**¿Preguntas?**
+
+------------------------------------------------------------------------
+
+Francisco Alfaro\
+`fralfaro@usm.cl`\
+Docencia Digital · UTFSM
+
+*2026*
+:::

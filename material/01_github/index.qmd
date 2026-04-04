@@ -1,0 +1,18 @@
+---
+title: "GitHub para docencia"
+format:
+  html:
+    toc: false
+---
+
+## Objetivo
+
+Este módulo cubre el uso de Git y GitHub como sistema de control de versiones y plataforma de colaboración para el trabajo docente universitario. Se estudia el flujo de trabajo individual con repositorios locales y remotos, los mecanismos de colaboración mediante fork y pull requests, la gestión de entregas de estudiantes con GitHub Classroom, y la automatización del despliegue de sitios web académicos mediante GitHub Actions y GitHub Pages. Al finalizar el módulo, el participante contará con un repositorio del curso publicado en GitHub Pages con pipeline de CI/CD activo.
+
+## Contenidos
+
+| # | Tema | Presentación |
+|:--:|------|:------------:|
+| 1 | [Git y GitHub esencial — Control de versiones para el docente](01_esencial.qmd) | [slides](../../slides/01_github/01_esencial.html) |
+| 2 | [Flujo colaborativo — Fork, Pull Requests y GitHub Classroom](02_colaborativo.qmd) | [slides](../../slides/01_github/02_colaborativo.html) |
+| 3 | [Automatización y Pages — GitHub Actions, CI/CD y publicación](03_automatizacion.qmd) | [slides](../../slides/01_github/03_automatizacion.html) |

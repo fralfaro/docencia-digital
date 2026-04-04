@@ -1,0 +1,38 @@
+project:
+  type: website
+  output-dir: ../docs/slides
+  render:
+    - "00_intro/*.qmd"
+    - "01_github/*.qmd"
+    - "02_colab/*.qmd"
+    - "03_latex/*.qmd"
+    - "04_quarto/*.qmd"
+    - "05_ia/*.qmd"
+
+website:
+  title: "Presentaciones — Docencia Digital"
+
+format:
+  revealjs:
+    theme: [default, custom.scss]
+    slide-number: true
+    progress: true
+    history: false
+    transition: fade
+    transition-speed: fast
+    incremental: false
+    fig-align: center
+    highlight-style: github
+    code-block-bg: true
+    center: false
+    width: 1280
+    height: 720
+    margin: 0.08
+    footer: "Docencia Digital · UTFSM · 2026"
+    logo: "../assets/img/brand/brand__usm.png"
+
+execute:
+  echo: false
+  warning: false
+
+lang: es

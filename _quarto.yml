@@ -1,6 +1,14 @@
 project:
   type: book
   output-dir: docs
+  render:
+    - "index.qmd"
+    - "material/00_intro/intro.qmd"
+    - "material/01_github/*.qmd"
+    - "material/02_colab/*.qmd"
+    - "material/03_latex/*.qmd"
+    - "material/04_quarto/*.qmd"
+    - "material/05_ia/*.qmd"
 
 book:
   title: "Docencia Digital"
@@ -9,45 +17,47 @@ book:
   date: "06/01/2026"
   favicon: "assets/img/brand/brand__usm.png"
   repo-url: "https://github.com/fralfaro/docencia-digital"
+  sidebar:
+    logo: "assets/img/brand/brand__usm.png"
 
   chapters:
     - index.qmd
     - part: "🟪 Introducción"
       chapters:
-        - 00_intro/index.qmd
-    - part: "🟩 GitHub"
+        - material/00_intro/intro.qmd
+    - part: material/01_github/index.qmd  # <-- archivo, no texto
       chapters:
-        - 01_github/01_esencial.qmd
-        - 01_github/02_colaborativo.qmd
-        - 01_github/03_automatizacion.qmd
-    - part: "🟧 Google Colab"
+        - material/01_github/01_esencial.qmd
+        - material/01_github/02_colaborativo.qmd
+        - material/01_github/03_automatizacion.qmd
+    - part: material/02_colab/index.qmd  # <-- archivo, no texto
       chapters:
-        - 02_colab/colab_01_esencial.qmd
-        - 02_colab/colab_02_pandas.qmd
-        - 02_colab/colab_03_visualizacion.qmd
-    - part: "🟥 LaTeX"
+        - material/02_colab/colab_01_esencial.qmd
+        - material/02_colab/colab_02_pandas.qmd
+        - material/02_colab/colab_03_visualizacion.qmd
+    - part: material/03_latex/index.qmd  # <-- archivo, no texto
       chapters:
-        - 03_latex/overleaf_01_esencial.qmd
-        - 03_latex/overleaf_02_matematica.qmd
-        - 03_latex/overleaf_03_plantillas.qmd
-    - part: "🟦 Quarto"
+        - material/03_latex/overleaf_01_esencial.qmd
+        - material/03_latex/overleaf_02_matematica.qmd
+        - material/03_latex/overleaf_03_plantillas.qmd
+    - part: material/04_quarto/index.qmd  # <-- archivo, no texto
       chapters:
-        - 04_quarto/quarto_01_intro.qmd
-        - 04_quarto/quarto_02_documentos.qmd
-        - 04_quarto/quarto_03_revealjs.qmd
-        - 04_quarto/quarto_04_sitios.qmd
-        - 04_quarto/quarto_05_pages.qmd
-        - 04_quarto/quarto_06_flujo.qmd
-    - part: "🤖 IA"
+        - material/04_quarto/quarto_01_intro.qmd
+        - material/04_quarto/quarto_02_documentos.qmd
+        - material/04_quarto/quarto_03_revealjs.qmd
+        - material/04_quarto/quarto_04_sitios.qmd
+        - material/04_quarto/quarto_05_pages.qmd
+        - material/04_quarto/quarto_06_flujo.qmd
+    - part: material/05_ia/index.qmd  # <-- archivo, no texto
       chapters:
-        - 05_ia/ia_01_panorama.qmd
-        - 05_ia/ia_02_prompting.qmd
-        - 05_ia/ia_03_notebooklm.qmd
-        - 05_ia/ia_04_pedagogico.qmd
-        - 05_ia/ia_05_rag.qmd
-        - 05_ia/ia_06_agentes.qmd
-        - 05_ia/ia_07_copilot_studio.qmd
-        - 05_ia/ia_08_etica.qmd
+        - material/05_ia/ia_01_panorama.qmd
+        - material/05_ia/ia_02_prompting.qmd
+        - material/05_ia/ia_03_notebooklm.qmd
+        - material/05_ia/ia_04_pedagogico.qmd
+        - material/05_ia/ia_05_rag.qmd
+        - material/05_ia/ia_06_agentes.qmd
+        - material/05_ia/ia_07_copilot_studio.qmd
+        - material/05_ia/ia_08_etica.qmd
 
 lang: es
 
@@ -57,5 +67,5 @@ format:
       light: [flatly, light.scss]
       dark: [darkly, dark.scss]
     number-sections: false
-    toc: false
+    toc: true
     page-layout: full

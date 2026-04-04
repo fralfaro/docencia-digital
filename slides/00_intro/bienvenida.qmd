@@ -1,0 +1,313 @@
+---
+title: "Bienvenida al Curso"
+subtitle: "¿Por qué docencia digital hoy?"
+author: "Francisco Alfaro"
+institute: "Docencia Digital · UTFSM"
+date: today
+date-format: "MMMM YYYY"
+
+format:
+  revealjs:
+    theme: [default, ../custom.scss]
+    slide-number: true
+    progress: true
+    history: false
+    transition: fade
+    transition-speed: fast
+    incremental: false
+    fig-align: center
+    highlight-style: github
+    code-block-bg: true
+    center: false
+    width: 1280
+    height: 720
+    margin: 0.08
+    footer: "Docencia Digital · UTFSM · 2026"
+    logo: "../../assets/img/brand/brand__usm.png"
+
+execute:
+  echo: false
+  warning: false
+---
+
+##  {.title-slide background-color="#0F2044"}
+
+::: title-block
+**Bienvenida al Curso**
+
+Docencia digital para el académico universitario
+:::
+
+::: subtitle-block
+¿Por qué estas herramientas? ¿Por qué ahora? ¿Por qué tú?
+:::
+
+::: author-block
+Francisco Alfaro\
+Docencia Digital · UTFSM · 2026
+:::
+
+------------------------------------------------------------------------
+
+## La pregunta que abre todo
+
+::: columns
+::: {.column width="60%"}
+<br><br>
+
+> *"¿Cuándo fue la última vez que cambiaste algo fundamental en cómo enseñas?"*
+
+:::
+
+::: {.column width="40%"}
+
+::: {.callout-note icon="false"}
+## Esta capacitación
+
+No es sobre tecnología por sí sola —
+es sobre esa pregunta.
+:::
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+## El mundo cambió. La universidad, más lento.
+
+::: columns
+::: {.column width="50%"}
+**Hoy cualquier persona puede:**
+
+- Ejecutar código en la nube sin instalar nada
+- Publicar un sitio web en minutos, gratis
+- Generar documentos académicos desde el navegador
+- Colaborar en tiempo real con el mundo
+- Consultar a una IA sobre casi cualquier tema
+:::
+
+::: {.column width="50%"}
+**En muchas aulas universitarias:**
+
+- Diapositivas en PowerPoint
+- Documentos Word enviados por correo
+- Evaluaciones en papel o formularios básicos
+- El mismo flujo de trabajo de hace 15 años
+
+::: {.callout-important icon="false"}
+## No es un juicio
+
+Es una brecha real — y tiene explicación.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## ¿Por qué cuesta tanto adoptar nuevas herramientas?
+
+| Obstáculo | Por qué ocurre |
+|-----------|---------------|
+| **Tiempo escaso** | Docencia + investigación + gestión + extensión |
+| **Curva de entrada alta** | LaTeX, Git, Quarto son intimidantes sin acompañamiento |
+| **Falta de referentes** | La innovación se contagia de un colega, no de un paper |
+| **Incentivos desalineados** | Publicar importa más que enseñar bien en la academia |
+| **Miedo a quedar en evidencia** | Probar algo nuevo en clase implica riesgo de imagen |
+
+::: fragment
+::: {.callout-tip icon="false"}
+## La propuesta de este curso
+
+Reconocer esas barreras — y apuntar directamente a bajarlas.
+:::
+:::
+
+------------------------------------------------------------------------
+
+## El momento de la IA
+
+::: columns
+::: {.column width="55%"}
+**2022 → ChatGPT → cambio irreversible**
+
+Herramientas como ChatGPT, Gemini, Claude y NotebookLM pasaron de ser curiosidades a ser parte del flujo cotidiano de estudiantes universitarios.
+
+**Tensiones reales en el aula:**
+
+- Estudiantes que entregan trabajos asistidos por IA sin declararlo
+- Docentes que prohíben sin tener política clara
+- Evaluaciones diseñadas para un mundo que ya no existe
+- Desconcierto sobre qué significa "aprender" hoy
+:::
+
+::: {.column width="45%"}
+
+::: {.callout-important icon="false"}
+## La postura de este curso
+
+Ignorar este escenario no es una opción.
+
+Entender la IA — y saber cómo posicionarse — es parte de lo que aprenderemos.
+:::
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Las cinco herramientas del ecosistema
+
+| Herramienta | Para qué sirve en docencia |
+|-------------|--------------------------|
+| **GitHub** | Organizar y versionar material, colaborar con ayudantes |
+| **Google Colab** | Ejecutar código en la nube, notebooks interactivos para clases |
+| **Overleaf / LaTeX** | Documentos académicos con formato profesional |
+| **Quarto** | Sitios, reportes, presentaciones reproducibles desde un solo archivo |
+| **IA** | Planificación, generación de materiales, retroalimentación |
+
+::: fragment
+::: {.callout-note icon="false"}
+## ¿Por qué estas y no otras?
+
+Se integran entre sí, son gratuitas o freemium, tienen comunidades activas y curva de aprendizaje razonable para partir de cero.
+:::
+:::
+
+------------------------------------------------------------------------
+
+## ¿A quién está dirigido?
+
+::: columns
+::: {.column width="50%"}
+**Principalmente:**
+
+- Docentes universitarios que quieren modernizar sus materiales sin invertir meses
+- Ayudantes y estudiantes de posgrado que producen material docente
+
+**También:**
+
+- Profesionales que enseñan fuera de la academia
+- Cualquier persona curiosa sobre el ecosistema educativo digital
+:::
+
+::: {.column width="50%"}
+
+::: {.callout-tip icon="false"}
+## Requisito de entrada
+
+**No se requiere** conocimiento previo de programación.
+
+**Sí se requiere** disposición a probar cosas nuevas y tolerancia a los errores del camino.
+:::
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Estructura del curso: seis sesiones, seis productos
+
+| Sesión | Herramienta | Producto al finalizar |
+|--------|-------------|----------------------|
+| 0 | Introducción | Mapa del ecosistema y motivación |
+| 1 | GitHub | Repositorio del curso publicado |
+| 2 | Google Colab | Notebook interactivo para clase práctica |
+| 3 | Overleaf / LaTeX | Guía de ejercicios en PDF profesional |
+| 4 | Quarto | Sitio web del curso en GitHub Pages |
+| 5 | IA | Recurso pedagógico generado con IA |
+
+::: fragment
+Cada sesión combina **explicación conceptual**, **demostración en vivo** y **actividad aplicada**.
+:::
+
+------------------------------------------------------------------------
+
+## La lógica del ecosistema
+
+```{mermaid}
+graph LR
+    G["GitHub\nversión y colaboración"]
+    C["Google Colab\ncódigo en la nube"]
+    L["LaTeX / Overleaf\ndocumentos PDF"]
+    Q["Quarto\npublicación web"]
+    I["IA\ngeneración asistida"]
+
+    G --> Q
+    C --> Q
+    L --> Q
+    I --> G
+    I --> C
+    I --> L
+    Q --> G
+```
+
+Todo se conecta. El repositorio GitHub almacena el material de Quarto. Colab se embebe en el sitio. LaTeX produce el PDF adjunto. La IA acelera cada paso.
+
+------------------------------------------------------------------------
+
+## Una nota honesta antes de comenzar
+
+::: columns
+::: {.column width="60%"}
+<br>
+
+*"La tecnología no mejora la docencia por sí sola.*
+
+*Una clase mal diseñada sigue siendo una clase mal diseñada aunque use las herramientas más modernas del mercado.*
+
+*Lo que sí puede hacer la tecnología — bien usada — es **reducir la fricción**: entre la idea y el material terminado, entre el docente y el estudiante, entre el conocimiento y quien lo necesita."*
+:::
+
+::: {.column width="40%"}
+
+::: {.callout-note icon="false"}
+## El espíritu del curso
+
+No se trata de adoptar tecnología por moda.
+
+Se trata de recuperar tiempo, mejorar calidad y llegar mejor a quienes enseñamos.
+:::
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Pregunta de cierre — diagnóstico en vivo
+
+::: columns
+::: {.column width="55%"}
+<br><br>
+
+> *"¿Cuál es el mayor dolor de cabeza que tienes hoy en la producción de material para tus cursos?"*
+
+:::
+
+::: {.column width="45%"}
+
+::: {.callout-tip icon="false"}
+## Por qué esta pregunta importa
+
+Las respuestas de hoy son el hilo conductor del resto de la capacitación.
+
+No hay respuesta incorrecta.
+:::
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+##  {.final-slide background-color="#0F2044"}
+
+::: center-content
+**¿Preguntas?**
+
+------------------------------------------------------------------------
+
+Francisco Alfaro\
+`fralfaro@usm.cl`\
+Docencia Digital · UTFSM
+
+*2026*
+:::

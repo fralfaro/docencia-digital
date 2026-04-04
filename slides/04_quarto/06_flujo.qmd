@@ -1,0 +1,414 @@
+---
+title: "Flujo docente completo con Quarto"
+subtitle: "Del repositorio vacío al curso publicado, de punta a punta"
+author: "Francisco Alfaro"
+institute: "Docencia Digital · UTFSM"
+date: today
+date-format: "MMMM YYYY"
+
+format:
+  revealjs:
+    theme: [default, ../custom.scss]
+    slide-number: true
+    progress: true
+    history: false
+    transition: fade
+    transition-speed: fast
+    incremental: false
+    fig-align: center
+    highlight-style: github
+    code-block-bg: true
+    center: false
+    width: 1280
+    height: 720
+    margin: 0.08
+    footer: "Docencia Digital · UTFSM · 2026"
+    logo: "../../assets/img/brand/brand__usm.png"
+
+execute:
+  echo: false
+  warning: false
+---
+
+##  {.title-slide background-color="#0F2044"}
+
+::: title-block
+**Flujo docente completo con Quarto**
+
+Del repositorio vacío al curso publicado, de punta a punta
+:::
+
+::: subtitle-block
+Sesión 4 — Quarto para material académico
+:::
+
+::: author-block
+Francisco Alfaro\
+Docencia Digital · UTFSM · 2026
+:::
+
+------------------------------------------------------------------------
+
+## El problema del material disperso
+
+::: columns
+::: {.column width="55%"}
+**El escenario típico:**
+
+- El programa en el sistema académico
+- Los apuntes en Google Drive (carpeta desorganizada)
+- Las slides en OneDrive o pendrive
+- Los datos en otro lugar
+- Las soluciones en el correo
+- La versión "definitiva" en otro archivo
+
+Cada semestre: *"¿dónde puse la versión final del lab 3?"*
+
+:::
+
+::: {.column width="45%"}
+
+::: {.callout-important icon="false"}
+## El cambio de paradigma
+
+**Un solo lugar de verdad.**
+
+El repositorio GitHub es el curso. Todo lo demás (el sitio web, el PDF, las slides) se genera desde allí automáticamente.
+:::
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+## La arquitectura del repositorio como sitio del curso
+
+```{mermaid}
+graph TD
+    R["🐙 Repositorio GitHub\nmat281-2025-1"]
+    R --> Q["📄 Archivos .qmd\n(fuente de todo)"]
+    R --> A["⚙️ GitHub Actions\n(automatización)"]
+    Q --> WEB["🌐 Sitio web\nGitHub Pages"]
+    Q --> PDF["📄 PDF\npara imprimir"]
+    Q --> SL["📊 Slides RevealJS\npresentaciones de clase"]
+    A --> WEB
+    A --> CI["✅ CI\nverifica notebooks"]
+```
+
+::: {.callout-tip icon="false"}
+## El flujo semanal
+
+Escribes en `.qmd` → `git push` → Actions despliega → sitio actualizado en 3 minutos. Los estudiantes ven el nuevo material sin que tú hagas nada más.
+:::
+
+------------------------------------------------------------------------
+
+## Paso 1: crear el repositorio desde el template
+
+```bash
+# Desde la CLI de GitHub
+gh repo create mat281-2025-1 \
+  --template dmat-usm/plantilla-curso \
+  --public \
+  --description "Material MAT281, semestre 2025-1"
+
+# Clonar localmente
+git clone git@github.com:tu-username/mat281-2025-1.git
+cd mat281-2025-1
+```
+
+**Lo que trae el template:**
+
+```
+├── _quarto.yml        # configurado para website
+├── .gitignore         # Python + Quarto + OS
+├── LICENSE            # MIT
+├── README.md          # con placeholders
+├── requirements.txt   # dependencias Python base
+├── .github/
+│   └── workflows/
+│       ├── check-notebooks.yml
+│       └── deploy-pages.yml
+└── assets/            # logos, scss
+```
+
+------------------------------------------------------------------------
+
+## Paso 2: configurar `_quarto.yml`
+
+```yaml
+project:
+  type: website
+
+website:
+  title: "MAT281 — 2025-1"
+  description: "Aplicaciones de la Matemática en Ingeniería"
+
+  navbar:
+    logo: assets/img/brand/brand__usm.png
+    left:
+      - text: "Inicio"        href: index.qmd
+      - text: "Clases"        href: lectures/index.qmd
+      - text: "Laboratorios"  href: labs/index.qmd
+      - text: "Tareas"        href: assignments/index.qmd
+    right:
+      - icon: github
+        href: https://github.com/tu-username/mat281-2025-1
+
+  page-footer:
+    center: "© 2025 Juan Pérez · UTFSM · CC BY 4.0"
+
+execute:
+  freeze: auto
+  echo: true
+  warning: false
+
+format:
+  html:
+    theme:
+      light: [flatly, assets/scss/light.scss]
+      dark: [darkly, assets/scss/dark.scss]
+    toc: true
+    code-tools: true
+    code-copy: true
+```
+
+------------------------------------------------------------------------
+
+## Paso 3: el flujo semanal de producción de material
+
+```bash
+# Lunes: preparar material de la semana nueva
+git switch -c semana-06/series-tiempo
+# ... creates lectures/semana06/notebook.qmd ...
+
+git add lectures/semana06/
+git commit -m "feat: material semana 6 - series de tiempo"
+git push origin semana-06/series-tiempo
+
+# → Abres PR en GitHub
+# → Actions ejecuta check-notebooks.yml automáticamente
+# → Si pasa: revisas el PR y apruebas
+# → Merge a main
+# → Actions ejecuta deploy-pages.yml
+# → En 3-5 min el sitio está actualizado
+```
+
+::: {.callout-tip icon="false"}
+## El valor de este flujo
+
+Nunca más "subir el archivo manualmente al portal". Nunca más olvidar renderizar. El proceso es reproducible, documentado y auditable.
+:::
+
+------------------------------------------------------------------------
+
+## Paso 4: integrar Colab y LaTeX en el sitio
+
+::: columns
+::: {.column width="55%"}
+**Links a Colab desde el sitio:**
+
+```markdown
+<!-- En cualquier .qmd del sitio -->
+
+[![Abrir en Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/usuario/mat281/blob/main/lectures/semana06/notebook.ipynb)
+```
+
+**PDF de LaTeX adjunto:**
+
+```markdown
+[📄 Descargar guía en PDF](assets/pdf/guia_lab3.pdf)
+```
+
+→ El PDF de Overleaf se sube a `assets/pdf/` en el repositorio.
+:::
+
+::: {.column width="45%"}
+
+**Estructura final:**
+
+```
+mat281-2025-1/
+├── lectures/
+│   └── semana06/
+│       ├── notebook.qmd   ← sitio
+│       └── notebook.ipynb ← Colab
+├── labs/
+│   └── lab03/
+│       ├── enunciado.qmd
+│       └── enunciado.ipynb
+└── assets/
+    └── pdf/
+        └── guia_lab3.pdf  ← LaTeX
+```
+
+::: {.callout-note icon="false"}
+## El ecosistema completo
+
+GitHub como versión → Quarto como sitio → Colab como ejecutor → LaTeX como PDF. Todo conectado desde un solo repositorio.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Mantener el curso semestre a semestre
+
+::: columns
+::: {.column width="55%"}
+**Al cierre del semestre:**
+
+```bash
+# Etiquetar la versión final
+git tag -a v2025-1 -m "Cierre semestre 2025-1"
+git push origin v2025-1
+
+# Crear branch para el siguiente semestre
+git checkout -b semestre/2025-2
+
+# Adaptar _quarto.yml y calendarios
+# Actualizar datasets y ejemplos
+# Hacer push
+git push origin semestre/2025-2
+```
+
+**En GitHub:**
+
+Crear **Release** desde el tag `v2025-1` → descargable como ZIP.
+
+Los estudiantes del siguiente semestre acceden siempre a la versión más reciente del `main`.
+:::
+
+::: {.column width="45%"}
+
+**Lo que se mantiene entre semestres:**
+
+- Estructura del repositorio (del template)
+- Temas, teoría, ejemplos base
+- Workflows de GitHub Actions
+- `_freeze/` de los contenidos que no cambiaron
+
+**Lo que se actualiza:**
+
+- Fechas del calendario
+- Datasets (versiones más recientes)
+- Datasets de ejemplos
+- Enunciados de labs y tareas
+
+::: {.callout-tip icon="false"}
+## Issues para planificar el siguiente semestre
+
+Al cerrar el semestre, crea Issues etiquetados `next-semester` con todo lo que quieres mejorar. Al inicio del siguiente, los tienes listos para implementar.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## El repositorio de charlas como portafolio
+
+::: columns
+::: {.column width="55%"}
+**Un patrón adicional muy útil:**
+
+Mantener un repositorio de presentaciones individuales publicadas como portafolio personal:
+
+```
+charlas-academicas/
+├── _quarto.yml        # website listing
+├── index.qmd          # página principal
+└── charlas/
+    ├── 2025-03-intro-git/
+    │   └── index.qmd   (RevealJS)
+    ├── 2025-04-quarto/
+    │   └── index.qmd   (RevealJS)
+    └── 2026-01-ia-docencia/
+        └── index.qmd   (RevealJS)
+```
+:::
+
+::: {.column width="45%"}
+
+**El listing en `index.qmd`:**
+
+```yaml
+---
+title: "Charlas académicas"
+listing:
+  contents: charlas
+  type: grid
+  sort: "date desc"
+  fields: [date, title, description]
+---
+```
+
+→ Genera automáticamente una cuadrícula con todas las presentaciones.
+
+::: {.callout-note icon="false"}
+## Para docentes que dan charlas externas
+
+Cada charla es una carpeta con su RevealJS. El sitio las lista automáticamente. Se comparte con un link. Las charlas quedan archivadas y accesibles por siempre.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## El estado final: qué tienes al terminar este módulo
+
+::: columns
+::: {.column width="50%"}
+**Repositorio en GitHub con:**
+
+☐ Estructura profesional de carpetas\
+☐ `.gitignore`, `LICENSE`, `README.md`\
+☐ `requirements.txt` con dependencias\
+☐ Workflows de CI/CD configurados
+
+**Sitio web del curso con:**
+
+☐ Navbar con links a clases, labs y tareas\
+☐ Sidebar con contenidos por semana\
+☐ Footer con licencia y contacto\
+☐ Modo oscuro/claro
+
+**Pipeline automático:**
+
+☐ Verificación de notebooks en cada PR\
+☐ Deploy del sitio en cada push a `main`\
+☐ Sitio actualizado en \<5 minutos tras cada push
+:::
+
+::: {.column width="50%"}
+
+::: {.callout-important icon="false"}
+## La pregunta que cierra el módulo
+
+¿Cuánto tiempo de tu semana vas a recuperar al no tener que hacer estas tareas manualmente?
+
+- Subir archivos al portal: 0 min
+- Recordar renderizar antes de publicar: 0 min
+- Buscar "la versión final": 0 min
+- Mantener la numeración de páginas: 0 min
+
+Esas horas van a preparar mejor el contenido — que es lo que realmente importa.
+:::
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+##  {.final-slide background-color="#0F2044"}
+
+::: center-content
+**¿Preguntas?**
+
+------------------------------------------------------------------------
+
+Francisco Alfaro\
+`fralfaro@usm.cl`\
+Docencia Digital · UTFSM
+
+*2026*
+:::

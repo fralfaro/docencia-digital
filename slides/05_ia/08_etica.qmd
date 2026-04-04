@@ -1,0 +1,424 @@
+---
+title: "Ética y uso responsable de IA en el aula"
+subtitle: "Sesgos, propiedad intelectual, privacidad y políticas para la docencia"
+author: "Francisco Alfaro"
+institute: "Docencia Digital · UTFSM"
+date: today
+date-format: "MMMM YYYY"
+
+format:
+  revealjs:
+    theme: [default, ../custom.scss]
+    slide-number: true
+    progress: true
+    history: false
+    transition: fade
+    transition-speed: fast
+    incremental: false
+    fig-align: center
+    highlight-style: github
+    code-block-bg: true
+    center: false
+    width: 1280
+    height: 720
+    margin: 0.08
+    footer: "Docencia Digital · UTFSM · 2026"
+    logo: "../../assets/img/brand/brand__usm.png"
+
+execute:
+  echo: false
+  warning: false
+---
+
+##  {.title-slide background-color="#0F2044"}
+
+::: title-block
+**Ética y uso responsable de IA en el aula**
+
+Sesgos, propiedad intelectual, privacidad y políticas
+:::
+
+::: subtitle-block
+Sesión 5 — Inteligencia Artificial para docencia
+:::
+
+::: author-block
+Francisco Alfaro\
+Docencia Digital · UTFSM · 2026
+:::
+
+------------------------------------------------------------------------
+
+## El capítulo más incómodo — y el más importante
+
+::: columns
+::: {.column width="60%"}
+No hay respuestas definitivas aquí.
+
+La ética del uso de IA en educación es un territorio **en construcción**, donde las decisiones que tomamos hoy como docentes están configurando normas que todavía no existen formalmente.
+
+Lo que sí hay son:
+
+- Marcos para pensar
+- Preguntas que hacerse antes de actuar
+- Malas prácticas ya claramente identificadas
+
+Este capítulo los organiza.
+:::
+
+::: {.column width="40%"}
+
+::: {.callout-important icon="false"}
+## Por qué importa el debate ético
+
+Las herramientas de IA amplifican tanto lo bueno como lo malo de quienes las usan.
+
+Un docente con criterio pedagógico sólido las usará bien. Un sistema diseñado sin reflexión ética puede causar daño a escala.
+:::
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Sesgos en modelos de lenguaje
+
+::: columns
+::: {.column width="55%"}
+**Los LLMs aprenden de texto humano.**
+
+El texto humano refleja las estructuras de poder, las inequidades y los prejuicios de las sociedades que lo producen.
+
+Un modelo entrenado con texto de internet **no es neutral**.
+
+```{mermaid}
+graph TD
+    C["📚 Corpus de entrenamiento\ntexto de internet, libros, código"]
+    B["⚠️ Sesgos del corpus\ngénero, raza, geografía, clase"]
+    M["🤖 Modelo entrenado"]
+    O["📤 Output del modelo\nreplica los sesgos del corpus"]
+
+    C --> B --> M --> O
+```
+:::
+
+::: {.column width="45%"}
+
+**Ejemplos de sesgos observados:**
+
+- Asociaciones de género con profesiones (médico = masculino)
+- Representación desbalanceada de perspectivas geográficas
+- Sesgos de clase socioeconómica en los ejemplos
+- Sobrerepresentación del inglés y perspectivas anglosajonas
+
+**Para docentes:**
+
+Si usas un LLM para generar casos de estudio o ejemplos, verifica que no reproduzcan estereotipos que reforzarían prejuicios en tus estudiantes.
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Efectos de los sesgos en el contexto educativo
+
+::: columns
+::: {.column width="50%"}
+**Sesgos que impactan directamente:**
+
+**1. Evaluación desigual:**
+
+Si usas IA para retroalimentar entregas, ¿evalúa igual el trabajo de estudiantes con nombres "típicamente" de un grupo étnico vs otro?
+
+**2. Representación en ejemplos:**
+
+¿Los casos de estudio generados por IA siempre tienen protagonistas de ciertos grupos? ¿Las mujeres aparecen como ingenieras o como usuarios finales?
+
+**3. Perspectivas valoradas:**
+
+¿El modelo privilegia ciertos tipos de razonamiento sobre otros? ¿Penaliza formas de expresión más propias de culturas no anglosajonas?
+:::
+
+::: {.column width="50%"}
+
+**Cómo mitigar en la práctica:**
+
+- Revisar el output con conciencia del sesgo específico antes de usarlo
+- Diversificar activamente los ejemplos y contextos cuando generamos material
+- Pedir explícitamente diversidad en el prompt:
+
+*"Genera 5 casos de estudio con protagonistas de distintos géneros, de contextos latinoamericanos, y con diferentes aproximaciones al problema"*
+
+::: {.callout-tip icon="false"}
+## El docente como filtro crítico
+
+El modelo genera. El docente filtra con criterio pedagógico y ético. Esa cadena de responsabilidad no puede romperse.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Propiedad intelectual y derechos de autor
+
+::: columns
+::: {.column width="55%"}
+**Las preguntas sin respuesta aún clara:**
+
+- ¿A quién pertenece el texto generado por IA? ¿Al usuario que escribió el prompt? ¿A la empresa de IA? ¿A nadie?
+- ¿Puede un LLM reproducir texto de libros con derechos de autor que estaban en su corpus de entrenamiento?
+- ¿Puede un docente publicar bajo licencia CC material que fue asistido por IA?
+- ¿Puede un estudiante entregar trabajo asistido por IA como propio?
+
+**El estado legal en 2026:**
+
+La mayoría de las jurisdicciones aún no tiene legislación específica. Los tribunales están resolviendo casos individuales que van a sentar precedentes.
+:::
+
+::: {.column width="45%"}
+
+**Postura práctica mientras el marco legal se define:**
+
+✅ Declara cuándo usaste IA en la producción del material
+
+✅ Revisa que el output no reproduzca texto protegido (especialmente con citas textuales)
+
+✅ Verifica la política de tu institución antes de publicar material generado con IA
+
+::: {.callout-warning icon="false"}
+## En evaluaciones
+
+La política de integridad académica de tu institución probablemente ya cubre el uso no declarado de IA como una forma de deshonestidad académica.
+
+Si no la cubre explícitamente, actúa ahora para actualizarla.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Privacidad de datos de estudiantes
+
+::: columns
+::: {.column width="55%"}
+**Qué son datos sensibles en el contexto educativo:**
+
+- Nombres, RUT, emails de estudiantes
+- Notas individuales y trayectoria académica
+- Entregas y trabajos de evaluación
+- Comunicaciones privadas (preguntas, consultas)
+- Información sobre necesidades especiales o situaciones personales
+
+**El problema:**
+
+Cuando un docente pega la entrega de un estudiante en ChatGPT para obtener retroalimentación, **está enviando datos personales de ese estudiante a los servidores de OpenAI** sin el consentimiento explícito del estudiante.
+:::
+
+::: {.column width="45%"}
+
+::: {.callout-important icon="false"}
+## Regla clara
+
+**Nunca** ingresar datos personales de estudiantes en servicios de IA de consumo gratuito (ChatGPT sin cuenta de empresa, Claude sin cuenta de empresa).
+
+**En cambio:**
+
+- Anonimizar los datos antes de usarlos
+- Usar servicios institucionales (Copilot Studio con M365)
+- Procesar localmente (Ollama) cuando sea necesario
+:::
+
+**En Chile:**
+
+La Ley 19.628 y su próxima actualización regulan el tratamiento de datos personales. Los datos académicos de estudiantes están incluidos.
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+## El debate sobre la integridad académica
+
+::: columns
+::: {.column width="55%"}
+**La pregunta que no tiene respuesta única:**
+
+*"¿Cuándo el uso de IA en una evaluación es deshonestidad académica?"*
+
+**El espectro de respuestas posibles:**
+
+1. **Prohibición total:** toda IA en evaluaciones es trampa
+2. **Declaración obligatoria:** se permite con declaración explícita
+3. **Evaluaciones diseñadas para IA:** se asume que usan IA y se evalúa su uso crítico
+4. **Distinción por nivel de tarea:** prohibida en conceptual, permitida en operativo
+
+**No hay consenso en la academia global todavía.**
+:::
+
+::: {.column width="45%"}
+
+**Preguntas que cada docente debe responderse:**
+
+- ¿Qué competencia quiero que el estudiante demuestre?
+- ¿Puede la IA adquirir esa competencia o solo simularla?
+- ¿Mis evaluaciones actuales miden comprensión o solo producción?
+- ¿Estoy preparando estudiantes para un mundo donde la IA existe?
+
+::: {.callout-note icon="false"}
+## El rediseño evaluativo
+
+Si la IA puede hacer el 100% de tu evaluación actual, quizás el problema no es la IA — es el diseño de la evaluación.
+
+Preguntas que requieren razonamiento contextualizado, experiencia propia o juicio ético son mucho más difíciles de "resolver" con IA.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Hacia una política de IA para el curso: pasos concretos
+
+::: columns
+::: {.column width="55%"}
+**1. Declarar la postura en el syllabus:**
+
+Explícita, clara, con ejemplos de qué está y no está permitido.
+
+**2. Distinguir por tipo de actividad:**
+
+No la misma política para todos los trabajos. Diferencia entre actividades de aprendizaje y evaluaciones sumativas.
+
+**3. Pedir declaración de uso:**
+
+*"Si usaste IA en este trabajo, describe qué herramientas usaste y cómo contribuyeron al resultado final."*
+
+**4. Diseñar para la era de IA:**
+
+Incluir actividades que requieran reflexión personal, opinión fundamentada, conexión con la experiencia propia, trabajo en clase presencial.
+:::
+
+::: {.column width="45%"}
+
+**5. Actualizar las evaluaciones:**
+
+```
+Evaluaciones más robustas frente a IA:
+
+✅ Presentación oral con preguntas
+✅ Defensa del trabajo con preguntas
+✅ Diario de proceso (reflexión semana a semana)
+✅ Análisis de caso con datos del entorno local
+✅ Errores comentados (¿qué salió mal y por qué?)
+✅ Evaluación por pares con criterio explicado
+```
+
+::: {.callout-tip icon="false"}
+## La pregunta que cambia todo
+
+*"¿Puede un estudiante que no entendió el contenido pasar esta evaluación usando IA?"*
+
+Si la respuesta es sí → rediseñar.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Tres principios para el uso responsable de IA en docencia
+
+::: columns
+::: {.column width="33%"}
+::: {.callout-note icon="false"}
+## 1. Transparencia
+
+Declara cuando usas IA en la producción de material.
+
+Pide a los estudiantes que declaren su uso.
+
+La IA debe ser visible, no invisible.
+:::
+:::
+
+::: {.column width="33%"}
+::: {.callout-tip icon="false"}
+## 2. Verificación
+
+Revisa siempre lo que el LLM genera antes de usarlo.
+
+La responsabilidad del contenido final es tuya, no del modelo.
+
+Un error publicado con tu nombre es tuyo, aunque lo generó la IA.
+:::
+:::
+
+::: {.column width="33%"}
+::: {.callout-important icon="false"}
+## 3. Aprendizaje primero
+
+Toda decisión de uso de IA debe responder:
+
+*"¿Esto favorece o dificulta el aprendizaje real de mis estudiantes?"*
+
+Si dificulta → no usarlo, aunque sea más eficiente.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Cierre del módulo de IA
+
+::: columns
+::: {.column width="55%"}
+**Lo que cubrimos en esta sesión:**
+
+1. Panorama de herramientas: ChatGPT, Claude, Gemini
+2. Prompting efectivo para docentes
+3. NotebookLM: IA sobre tu propio material
+4. Diseño pedagógico con IA
+5. RAG: construir asistentes propios
+6. Agentes: sistemas que razonan y actúan
+7. Copilot Studio: plataformas institucionales
+8. **Ética y uso responsable** ← hoy
+
+**El hilo conductor:**
+
+La IA es una herramienta que amplifica las capacidades y el criterio del docente — no lo reemplaza.
+:::
+
+::: {.column width="45%"}
+
+::: {.callout-important icon="false"}
+## La pregunta que cierra el curso
+
+> *"¿Qué vas a hacer de manera diferente en tu próxima clase gracias a lo que aprendiste aquí?"*
+
+Esa pregunta no tiene respuesta incorrecta.
+
+Tiene respuestas más o menos ambiciosas.
+
+Elige una ambiciosa.
+:::
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+##  {.final-slide background-color="#0F2044"}
+
+::: center-content
+**Gracias**
+
+------------------------------------------------------------------------
+
+Francisco Alfaro\
+`fralfaro@usm.cl`\
+Docencia Digital · UTFSM
+
+*2026*
+
+---
+
+*"La tecnología no mejora la docencia por sí sola. Lo que sí puede hacer — bien usada — es reducir la fricción: entre la idea y el material terminado, entre el docente y el estudiante, entre el conocimiento y quien lo necesita."*
+:::

@@ -1,0 +1,479 @@
+---
+title: "Automatización y Pages"
+subtitle: "GitHub Actions, CI/CD y publicación de sitios docentes"
+author: "Francisco Alfaro"
+institute: "Docencia Digital · UTFSM"
+date: today
+date-format: "MMMM YYYY"
+
+format:
+  revealjs:
+    theme: [default, ../custom.scss]
+    slide-number: true
+    progress: true
+    history: false
+    transition: fade
+    transition-speed: fast
+    incremental: false
+    fig-align: center
+    highlight-style: github
+    code-block-bg: true
+    center: false
+    width: 1280
+    height: 720
+    margin: 0.08
+    footer: "Docencia Digital · UTFSM · 2026"
+    logo: "../../assets/img/brand/brand__usm.png"
+
+execute:
+  echo: false
+  warning: false
+---
+
+##  {.title-slide background-color="#0F2044"}
+
+::: title-block
+**Automatización y Pages**
+
+GitHub Actions, CI/CD y publicación de sitios docentes
+:::
+
+::: subtitle-block
+Sesión 1 — GitHub para docencia
+:::
+
+::: author-block
+Francisco Alfaro\
+Docencia Digital · UTFSM · 2026
+:::
+
+------------------------------------------------------------------------
+
+## La promesa de la automatización docente
+
+::: columns
+::: {.column width="60%"}
+<br>
+
+> *Subes el material de la semana 5 y en tres minutos está publicado en `tu-username.github.io/mat281`.*
+
+*Sin pasos manuales, sin olvidar renderizar, sin inconsistencias entre lo que tienes local y lo que ven los estudiantes.*
+
+:::
+
+::: {.column width="40%"}
+
+::: {.callout-note icon="false"}
+## Lo que aprenderemos
+
+**GitHub Actions** = el motor de automatización
+
+**GitHub Pages** = el resultado visible
+
+Juntos = sitio del curso que se actualiza solo.
+:::
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+## GitHub Actions: qué es y cómo funciona
+
+::: columns
+::: {.column width="50%"}
+**GitHub Actions** permite definir *workflows* que se ejecutan en respuesta a eventos del repositorio.
+
+Cada workflow = archivo YAML en `.github/workflows/`
+
+```{mermaid}
+graph LR
+    E["⚡ Evento\npush a main"]
+    W["📋 Workflow\ndeploy.yml"]
+    J["⚙️ Job\nbuild-deploy"]
+    S["📦 Steps\ncheckout → setup → render → deploy"]
+
+    E --> W --> J --> S
+```
+:::
+
+::: {.column width="50%"}
+
+**Estructura mínima de un workflow:**
+
+```yaml
+name: Mi workflow
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  mi-job:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Paso 1
+        uses: actions/checkout@v4
+
+      - name: Paso 2
+        run: echo "¡Hola!"
+```
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Eventos que disparan workflows
+
+```yaml
+on:
+  push:                    # cualquier push
+    branches: [main]       # solo al branch main
+    paths:                 # solo si cambian estos archivos
+      - 'lectures/**'
+      - '*.qmd'
+
+  pull_request:            # cuando se abre o actualiza un PR
+    branches: [main]
+
+  schedule:                # por horario (cron)
+    - cron: '0 9 * * 1'   # todos los lunes a las 9:00 UTC
+
+  workflow_dispatch:       # ejecución manual desde la interfaz web
+```
+
+::: {.callout-tip icon="false"}
+## GitHub Actions es gratuito para repos públicos
+
+Para repositorios públicos: **minutos ilimitados**.
+
+Para repos privados: 2.000 min/mes en el plan gratuito — suficiente para uso docente.
+:::
+
+------------------------------------------------------------------------
+
+## CI: verificar que los notebooks no tienen errores
+
+::: columns
+::: {.column width="55%"}
+**¿Por qué importa?**
+
+Es frustrante para un estudiante abrir el notebook de la semana 4 y encontrar un `NameError` en la celda 7 porque cambiaste el nombre de una variable sin actualizar las celdas que dependen de ella.
+
+**Solución:** ejecutar automáticamente todos los notebooks en cada push.
+
+```yaml
+# .github/workflows/check-notebooks.yml
+name: Verificar notebooks
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '**.ipynb'
+```
+:::
+
+::: {.column width="45%"}
+
+```yaml
+jobs:
+  ejecutar-notebooks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - run: |
+          pip install -r requirements.txt
+          pip install jupyter nbconvert
+
+      - run: |
+          find . -name "*.ipynb" \
+            -not -path "./*solucion*" \
+            | xargs jupyter nbconvert \
+                --to notebook \
+                --execute \
+                --inplace
+```
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+## GitHub Pages: el sitio del curso en la web
+
+::: columns
+::: {.column width="55%"}
+**GitHub Pages** convierte el contenido de un repositorio en un sitio web público, sin costo:
+
+```
+tu-username.github.io/mat281-2025-1
+```
+
+**Tres fuentes posibles:**
+
+| Fuente | Cuándo usarla |
+|---|---|
+| Branch `main`, carpeta `/docs` | Sitio simple, más directo |
+| Branch `gh-pages` dedicado | Sitio generado, separado del código |
+| **GitHub Actions** | Más flexible, recomendado |
+:::
+
+::: {.column width="45%"}
+
+::: {.callout-tip icon="false"}
+## Opción más simple: desde `/docs`
+
+En `_quarto.yml`:
+```yaml
+project:
+  output-dir: docs
+```
+
+Render → commit de `docs/` → push → activar Pages en Settings.
+
+En 1-2 minutos el sitio está online.
+:::
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Deploy automático con GitHub Actions (recomendado)
+
+```yaml
+# .github/workflows/deploy-pages.yml
+name: Deploy Quarto a GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          version: '1.5.57'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      - run: pip install -r requirements.txt
+      - uses: quarto-dev/quarto-actions/render@v2
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: '_site'
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+    steps:
+      - uses: actions/deploy-pages@v4
+```
+
+------------------------------------------------------------------------
+
+## El flujo end-to-end
+
+```{mermaid}
+sequenceDiagram
+    participant D as 💻 Docente
+    participant G as 🐙 GitHub
+    participant A as ⚙️ Actions Runner
+    participant P as 🌐 GitHub Pages
+
+    D->>G: git push (nuevo material)
+    G->>A: dispara deploy-pages.yml
+    A->>A: checkout + instala Quarto + Python
+    A->>A: quarto render
+    A->>P: deploy _site/
+    P->>D: sitio actualizado en ~3 minutos
+    Note over D,P: Estudiantes ya pueden ver el nuevo material
+```
+
+::: {.callout-tip icon="false"}
+## `freeze: auto` para acelerar el build
+
+```yaml
+execute:
+  freeze: auto
+```
+
+Quarto guarda resultados en `_freeze/`. Si el código no cambió, no lo re-ejecuta. Build de 15 min → 3 min.
+:::
+
+------------------------------------------------------------------------
+
+## Secrets: credenciales seguras en workflows
+
+::: columns
+::: {.column width="55%"}
+**Cuándo los necesitas:**
+
+- Acceder a una API de datos en el workflow
+- Autenticar con un servidor institucional
+- Notificar por Slack cuando se publica material
+- Acceder a un repositorio privado de soluciones
+
+**Nunca pongas credenciales directamente en el YAML.**
+
+**Configurar:** Settings → Secrets and variables → Actions → New secret
+:::
+
+::: {.column width="45%"}
+
+**Usar en el workflow:**
+
+```yaml
+steps:
+  - name: Descargar datos
+    env:
+      API_KEY: ${{ secrets.API_KEY_DATOS }}
+    run: python scripts/descargar.py
+```
+
+**En Python:**
+
+```python
+import os
+api_key = os.environ.get("API_KEY")
+```
+
+::: {.callout-note icon="false"}
+## GITHUB_TOKEN
+
+Token automático que GitHub crea para cada run. No necesita configuración. Tiene permisos sobre el repo donde corre el workflow.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## GitHub Copilot: asistencia al escribir en el editor
+
+::: columns
+::: {.column width="55%"}
+**Para docentes, Copilot es útil para:**
+
+- Generar código de ejemplo para notebooks de clase
+- Completar bloques YAML de Actions sin recordar la sintaxis
+- Escribir celdas de Markdown con explicaciones de conceptos
+- Refactorizar código para hacerlo más didáctico
+- Generar datos sintéticos para ejemplos
+
+**Acceso:** Con GitHub Education (Pro para docentes) está **incluido sin costo adicional**.
+
+→ [education.github.com/teachers](https://education.github.com/teachers)
+:::
+
+::: {.column width="45%"}
+
+**Las funciones más útiles en VS Code:**
+
+| Función | Cómo activar |
+|---|---|
+| Completado inline | Escribe, Tab para aceptar |
+| `/explain` | Explica el código seleccionado |
+| `/fix` | Corrección de un error |
+| `/doc` | Genera documentación |
+| Inline Chat | `Ctrl+I` directo en el editor |
+
+::: {.callout-warning icon="false"}
+## Copilot no reemplaza la revisión
+
+Comete errores en lógica estadística y matemática. Úsalo como acelerador, no como oracle.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Tiempos típicos de build
+
+| Contenido | Tiempo de deploy |
+|---|---|
+| Solo `.qmd` con texto y tablas | 1-2 minutos |
+| `.qmd` con código Python (con `freeze`) | 2-4 minutos |
+| `.qmd` con código Python (sin `freeze`) | 5-15 minutos |
+| Notebooks Jupyter + Quarto | 8-20 minutos |
+
+::: fragment
+**Optimizar:**
+
+```yaml
+# Cache de dependencias Python
+- uses: actions/setup-python@v5
+  with:
+    python-version: '3.11'
+    cache: 'pip'   # cachea ~/.cache/pip entre runs
+
+# Cache de Quarto freeze
+- uses: actions/cache@v4
+  with:
+    path: _freeze
+    key: quarto-freeze-${{ hashFiles('**/*.qmd') }}
+```
+:::
+
+------------------------------------------------------------------------
+
+## Checklist del repositorio completo
+
+```
+Repositorio base:
+☐ README.md con descripción, estructura y contacto
+☐ LICENSE (MIT + mención CC BY para contenido)
+☐ .gitignore para Python + R + Quarto
+☐ requirements.txt con todas las dependencias
+
+GitHub Pages:
+☐ Settings → Pages → Source configurado (Actions)
+☐ Sitio accesible en tu-username.github.io/mat281
+☐ Navbar con links a clases, labs y tareas
+
+GitHub Actions:
+☐ check-notebooks.yml activo en PRs
+☐ deploy-pages.yml publicando en pushes a main
+☐ Primer deploy exitoso (pestaña Actions, todo verde ✅)
+
+Colaboración:
+☐ Ayudantes con acceso write
+☐ Branch protection en main (requiere PR)
+☐ GitHub Classroom configurado para la primera tarea
+```
+
+------------------------------------------------------------------------
+
+##  {.final-slide background-color="#0F2044"}
+
+::: center-content
+**¿Preguntas?**
+
+------------------------------------------------------------------------
+
+Francisco Alfaro\
+`fralfaro@usm.cl`\
+Docencia Digital · UTFSM
+
+*2026*
+:::

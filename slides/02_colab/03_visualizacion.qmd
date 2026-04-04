@@ -1,0 +1,466 @@
+---
+title: "Visualización de datos"
+subtitle: "matplotlib, seaborn, plotly e ipywidgets en Google Colab"
+author: "Francisco Alfaro"
+institute: "Docencia Digital · UTFSM"
+date: today
+date-format: "MMMM YYYY"
+
+format:
+  revealjs:
+    theme: [default, ../custom.scss]
+    slide-number: true
+    progress: true
+    history: false
+    transition: fade
+    transition-speed: fast
+    incremental: false
+    fig-align: center
+    highlight-style: github
+    code-block-bg: true
+    center: false
+    width: 1280
+    height: 720
+    margin: 0.08
+    footer: "Docencia Digital · UTFSM · 2026"
+    logo: "../../assets/img/brand/brand__usm.png"
+
+execute:
+  echo: false
+  warning: false
+---
+
+##  {.title-slide background-color="#0F2044"}
+
+::: title-block
+**Visualización de datos**
+
+matplotlib, seaborn, plotly e ipywidgets en Google Colab
+:::
+
+::: subtitle-block
+Sesión 2 — Google Colab para docencia
+:::
+
+::: author-block
+Francisco Alfaro\
+Docencia Digital · UTFSM · 2026
+:::
+
+------------------------------------------------------------------------
+
+## Por qué importa la visualización en docencia
+
+::: columns
+::: {.column width="55%"}
+> *"Una visualización bien hecha hace en segundos lo que una tabla tarda minutos en comunicar."*
+
+Para un docente, la diferencia entre un gráfico claro y uno confuso es la diferencia entre:
+
+- Un estudiante que **entiende el patrón**
+- Un estudiante que **se queda mirando números**
+
+:::
+
+::: {.column width="45%"}
+
+**Tres niveles en Python:**
+
+| Librería | Para qué |
+|---|---|
+| **matplotlib** | Control total sobre cada elemento |
+| **seaborn** | Gráficos estadísticos con mínimo código |
+| **plotly** | Visualizaciones interactivas en el navegador |
+
+Y **ipywidgets** para dashboards simples en el notebook.
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Configuración global: buenas prácticas desde el inicio
+
+```python
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Configuración global de matplotlib
+plt.rcParams.update({
+    'figure.figsize':    (10, 6),
+    'figure.dpi':         100,
+    'axes.grid':          True,
+    'grid.alpha':         0.3,
+    'grid.linestyle':     '--',
+    'axes.spines.top':    False,
+    'axes.spines.right':  False,
+    'font.family':        'sans-serif',
+})
+
+# Estilo de seaborn
+sns.set_theme(style='whitegrid', palette='muted')
+```
+
+::: {.callout-tip icon="false"}
+## Hacerlo una vez, al inicio del notebook
+
+Esta celda establece el estilo para todos los gráficos del notebook. Los estudiantes no tienen que preocuparse por el formato en cada gráfico individual.
+:::
+
+------------------------------------------------------------------------
+
+## matplotlib: los gráficos más comunes
+
+::: columns
+::: {.column width="55%"}
+**Dispersión (scatter):**
+
+```python
+fig, ax = plt.subplots()
+ax.scatter(df['x'], df['y'],
+           c='steelblue', alpha=0.6, s=40)
+ax.set_xlabel('Variable X')
+ax.set_ylabel('Variable Y')
+ax.set_title('Relación entre X e Y')
+plt.tight_layout()
+plt.show()
+```
+
+**Línea temporal:**
+
+```python
+ax.plot(df['fecha'], df['valor'],
+        color='steelblue', linewidth=2,
+        label='Precio')
+ax.legend()
+```
+:::
+
+::: {.column width="45%"}
+
+**Histograma:**
+
+```python
+ax.hist(df['nota'], bins=20,
+        color='steelblue', edgecolor='white',
+        alpha=0.8)
+ax.axvline(df['nota'].mean(),
+           color='red', linestyle='--',
+           label='Media')
+```
+
+**Barras:**
+
+```python
+categorias = df.groupby('carrera')['nota'].mean()
+ax.bar(categorias.index, categorias.values,
+       color='steelblue')
+ax.tick_params(axis='x', rotation=45)
+```
+
+::: {.callout-note icon="false"}
+## `fig, ax = plt.subplots()`
+
+Esta es la sintaxis orientada a objetos. Es más flexible que `plt.plot()` directamente, especialmente al hacer múltiples subgráficos.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Múltiples subgráficos
+
+```python
+fig, axes = plt.subplots(1, 3, figsize=(15, 5))
+
+# Subgráfico 1: histograma
+axes[0].hist(df['nota'], bins=15, color='steelblue')
+axes[0].set_title('Distribución de notas')
+
+# Subgráfico 2: boxplot
+axes[1].boxplot(df['nota'])
+axes[1].set_title('Boxplot de notas')
+
+# Subgráfico 3: scatter
+axes[2].scatter(df['horas_estudio'], df['nota'], alpha=0.5)
+axes[2].set_xlabel('Horas de estudio')
+axes[2].set_ylabel('Nota')
+axes[2].set_title('Estudio vs Nota')
+
+plt.suptitle('Análisis de rendimiento académico', fontsize=14)
+plt.tight_layout()
+plt.show()
+```
+
+::: {.callout-tip icon="false"}
+## `plt.tight_layout()` siempre al final
+
+Ajusta automáticamente el espaciado entre subgráficos para que los títulos y etiquetas no se superpongan.
+:::
+
+------------------------------------------------------------------------
+
+## seaborn: gráficos estadísticos con mínimo código
+
+::: columns
+::: {.column width="55%"}
+**Distribuciones:**
+
+```python
+# Histograma + KDE
+sns.histplot(df['nota'], kde=True, bins=20)
+
+# Boxplot por categoría
+sns.boxplot(x='carrera', y='nota', data=df)
+
+# Violín (distribución + cuartiles)
+sns.violinplot(x='carrera', y='nota', data=df)
+```
+
+**Relaciones:**
+
+```python
+# Scatter con regresión
+sns.regplot(x='horas', y='nota', data=df)
+
+# Scatter por categoría
+sns.scatterplot(x='horas', y='nota',
+               hue='carrera', data=df)
+```
+:::
+
+::: {.column width="45%"}
+
+**Calor y correlaciones:**
+
+```python
+# Mapa de calor de correlaciones
+corr = df.select_dtypes('number').corr()
+sns.heatmap(corr, annot=True, fmt='.2f',
+            cmap='coolwarm', center=0)
+```
+
+**Matriz de dispersión:**
+
+```python
+sns.pairplot(df, hue='carrera',
+             vars=['nota', 'horas', 'asistencia'])
+```
+
+::: {.callout-tip icon="false"}
+## seaborn para exploración rápida
+
+Una línea de seaborn equivale a 15 líneas de matplotlib. Úsalo para exploración; usa matplotlib cuando necesites control fino.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## plotly: gráficos interactivos
+
+::: columns
+::: {.column width="55%"}
+```python
+!pip install plotly -q
+
+import plotly.express as px
+
+# Scatter interactivo
+fig = px.scatter(df,
+    x='horas_estudio',
+    y='nota',
+    color='carrera',
+    hover_data=['nombre'],
+    title='Horas de estudio vs Nota',
+    labels={'horas_estudio': 'Horas', 'nota': 'Nota'})
+
+fig.show()
+```
+
+El usuario puede:
+- Zoom con scroll
+- Pan arrastrando
+- Hover para ver datos individuales
+- Clic en leyenda para filtrar categorías
+:::
+
+::: {.column width="45%"}
+
+**Otros gráficos de plotly express:**
+
+```python
+# Barras
+px.bar(df, x='carrera', y='nota',
+       color='carrera', barmode='group')
+
+# Histograma
+px.histogram(df, x='nota', nbins=20,
+             color='carrera')
+
+# Caja
+px.box(df, x='carrera', y='nota',
+       color='carrera', points='all')
+
+# Mapa de calor
+px.imshow(corr_matrix, text_auto=True,
+          color_continuous_scale='RdBu_r')
+```
+
+::: {.callout-note icon="false"}
+## Cuándo usar plotly
+
+Cuando los estudiantes necesitan **explorar** los datos. El hover para ver valores individuales es muy valioso en datasets grandes.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## ipywidgets: dashboards interactivos en el notebook
+
+::: columns
+::: {.column width="55%"}
+```python
+import ipywidgets as widgets
+from IPython.display import display
+
+# Slider para el número de bins
+bins_slider = widgets.IntSlider(
+    value=20, min=5, max=100,
+    description='Bins:'
+)
+
+# Dropdown para elegir la variable
+var_dropdown = widgets.Dropdown(
+    options=['nota', 'horas', 'asistencia'],
+    value='nota',
+    description='Variable:'
+)
+
+def actualizar(bins, variable):
+    plt.figure(figsize=(8, 4))
+    plt.hist(df[variable], bins=bins,
+             color='steelblue', edgecolor='white')
+    plt.title(f'Distribución de {variable}')
+    plt.show()
+
+widgets.interactive(actualizar,
+    bins=bins_slider,
+    variable=var_dropdown)
+```
+:::
+
+::: {.column width="45%"}
+
+**Widgets más útiles para docencia:**
+
+| Widget | Uso típico |
+|---|---|
+| `IntSlider` | Ajustar k en k-NN, número de árboles |
+| `FloatSlider` | Tasa de aprendizaje, umbral |
+| `Dropdown` | Elegir dataset o variable |
+| `Checkbox` | Activar/desactivar opciones |
+| `RadioButtons` | Seleccionar tipo de modelo |
+
+::: {.callout-tip icon="false"}
+## Intuición sin código
+
+Los estudiantes desarrollan intuición sobre parámetros (overfitting, underfitting, k) sin tener que reescribir código en cada experimento.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Guardar gráficos en alta resolución
+
+::: columns
+::: {.column width="55%"}
+**Guardar con matplotlib:**
+
+```python
+fig, ax = plt.subplots(figsize=(10, 6))
+ax.scatter(df['x'], df['y'])
+ax.set_title('Mi gráfico')
+
+# PNG de alta resolución
+fig.savefig('grafico.png', dpi=300,
+            bbox_inches='tight')
+
+# PDF vectorial (para LaTeX o Word)
+fig.savefig('grafico.pdf', bbox_inches='tight')
+
+# SVG (escalable para web)
+fig.savefig('grafico.svg', bbox_inches='tight')
+```
+
+**Descargar desde Colab:**
+
+```python
+from google.colab import files
+files.download('grafico.png')
+```
+:::
+
+::: {.column width="45%"}
+
+**Guardar plotly como HTML:**
+
+```python
+# HTML interactivo (con toda la interactividad)
+fig.write_html('grafico.html')
+
+# PNG estático (requiere kaleido)
+!pip install kaleido -q
+fig.write_image('grafico.png', scale=3)
+```
+
+::: {.callout-note icon="false"}
+## Para el sitio del curso
+
+- **PNG** (dpi=150) → notebooks e informes
+- **SVG** → sitio Quarto (escalable, sin pixelado)
+- **HTML** → plotly embebido en el sitio interactivo
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Guía de selección: ¿qué gráfico para cada situación?
+
+| Pregunta | Gráfico recomendado |
+|---|---|
+| ¿Cómo se distribuye una variable numérica? | Histograma + KDE (seaborn) |
+| ¿Hay outliers? | Boxplot / Violín |
+| ¿Relación entre dos variables numéricas? | Scatter (matplotlib) |
+| ¿Comparar categorías? | Barras (matplotlib) |
+| ¿Evolución en el tiempo? | Línea (matplotlib) |
+| ¿Correlación entre variables? | Heatmap (seaborn) |
+| ¿Explorar dataset grande interactivamente? | Scatter plotly |
+| ¿Distribución por grupos? | Violín o boxplot (seaborn, hue=) |
+
+::: {.callout-important icon="false"}
+## La regla de oro
+
+El mejor gráfico es el más simple que responde la pregunta. No agregues dimensiones (colores, tamaños, facetas) que no corresponden a variables relevantes.
+:::
+
+------------------------------------------------------------------------
+
+##  {.final-slide background-color="#0F2044"}
+
+::: center-content
+**¿Preguntas?**
+
+------------------------------------------------------------------------
+
+Francisco Alfaro\
+`fralfaro@usm.cl`\
+Docencia Digital · UTFSM
+
+*2026*
+:::

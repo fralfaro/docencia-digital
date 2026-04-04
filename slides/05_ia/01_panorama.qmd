@@ -1,0 +1,380 @@
+---
+title: "Panorama de herramientas IA"
+subtitle: "ChatGPT, Gemini y Claude para el docente universitario"
+author: "Francisco Alfaro"
+institute: "Docencia Digital · UTFSM"
+date: today
+date-format: "MMMM YYYY"
+
+format:
+  revealjs:
+    theme: [default, ../custom.scss]
+    slide-number: true
+    progress: true
+    history: false
+    transition: fade
+    transition-speed: fast
+    incremental: false
+    fig-align: center
+    highlight-style: github
+    code-block-bg: true
+    center: false
+    width: 1280
+    height: 720
+    margin: 0.08
+    footer: "Docencia Digital · UTFSM · 2026"
+    logo: "../../assets/img/brand/brand__usm.png"
+
+execute:
+  echo: false
+  warning: false
+---
+
+##  {.title-slide background-color="#0F2044"}
+
+::: title-block
+**Panorama de herramientas IA**
+
+ChatGPT, Gemini y Claude para el docente universitario
+:::
+
+::: subtitle-block
+Sesión 5 — Inteligencia Artificial para docencia
+:::
+
+::: author-block
+Francisco Alfaro\
+Docencia Digital · UTFSM · 2026
+:::
+
+------------------------------------------------------------------------
+
+## El antes y el después: 2022 como punto de inflexión
+
+::: columns
+::: {.column width="55%"}
+**Noviembre 2022:** ChatGPT llega al público.
+
+En menos de dos meses alcanzó **100 millones de usuarios** — el producto de consumo de más rápido crecimiento en la historia.
+
+Hoy los modelos de lenguaje son parte del flujo de trabajo cotidiano de millones de personas — incluyendo **estudiantes universitarios**.
+
+Esto no es una moda. Es un cambio estructural.
+:::
+
+::: {.column width="45%"}
+
+**Línea de tiempo:**
+
+| Año | Hito |
+|---|---|
+| 2020 | GPT-3 (OpenAI) |
+| 2022 | ChatGPT lanzado |
+| 2023 | GPT-4, Claude, Bard |
+| 2024 | GPT-4o, Claude 3, Gemini 1.5 |
+| 2025 | Modelos multimodales, agentes |
+| 2026 | **Dónde estamos hoy** |
+
+::: {.callout-important icon="false"}
+## Para el docente
+
+Ignorar este escenario no es una opción. La pregunta no es "si" — es "cómo".
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Los tres modelos dominantes en docencia
+
+```{mermaid}
+graph TD
+    IA["🤖 Modelos de lenguaje para docencia 2026"]
+
+    IA --> CH["🟢 ChatGPT\nOpenAI · GPT-4o / o1"]
+    IA --> CL["🟠 Claude\nAnthropic · Claude 3.5/4"]
+    IA --> GE["🔵 Gemini\nGoogle · 1.5/2.0 Pro"]
+
+    CH --> CH1["Más usado globalmente\nExcelente en código\nPlugin ecosystem"]
+    CL --> CL1["Mejor en textos largos\nMás cuidadoso con sesgos\nNotebookLM integrado vía Google"]
+    GE --> GE1["Integrado con Google Workspace\nNotebookLM\nVídeo y audio multimodal"]
+```
+
+------------------------------------------------------------------------
+
+## Comparación práctica para docencia
+
+::: columns
+::: {.column width="55%"}
+| Caso de uso docente | Mejor opción |
+|---|---|
+| Generar código Python/R | ChatGPT o Claude |
+| Explicar conceptos matemáticos | Claude |
+| Trabajar con tus documentos propios | NotebookLM (Gemini) |
+| Integración con Google Classroom | Gemini |
+| Generar evaluaciones desde tu material | NotebookLM |
+| Diseño de rúbricas | Claude o ChatGPT |
+| Análisis de texto y lectura | Claude |
+| Búsqueda con información reciente | ChatGPT (con búsqueda web) |
+:::
+
+::: {.column width="45%"}
+
+::: {.callout-note icon="false"}
+## No son intercambiables
+
+Cada modelo tiene fortalezas reales. La respuesta a "¿cuál es mejor?" siempre es: **depende de la tarea**.
+
+Tener acceso a los tres (con cuentas gratuitas) es lo óptimo.
+:::
+
+**Precios (2026):**
+
+- ChatGPT Free / Plus (~$20/mes)
+- Claude Free / Pro (~$20/mes)
+- Gemini Free / Advanced (~$20/mes)
+
+Google One AI Premium incluye Gemini Advanced.
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+## ¿Qué puede hacer un LLM para un docente?
+
+::: columns
+::: {.column width="50%"}
+**Generación de contenido:**
+
+- Explicaciones de conceptos a distintos niveles
+- Enunciados de ejercicios y problemas
+- Rúbricas de evaluación
+- Preguntas de opción múltiple
+- Retroalimentación sobre entregas de estudiantes
+
+**Transformación de contenido:**
+
+- Resumir papers o textos largos
+- Traducir material al inglés/español
+- Adaptar un texto a otro nivel de dificultad
+- Convertir apuntes en preguntas de examen
+:::
+
+::: {.column width="50%"}
+
+**Apoyo técnico:**
+
+- Generar código de ejemplo para la clase
+- Depurar código de estudiantes
+- Escribir código LaTeX para ecuaciones
+- Generar datos sintéticos para demos
+
+**Planificación:**
+
+- Diseñar unidades didácticas
+- Sugerir actividades de aprendizaje activo
+- Proponer secuencias pedagógicas
+- Alinear objetivos con evaluaciones
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Lo que un LLM NO puede hacer (o hace mal)
+
+::: columns
+::: {.column width="55%"}
+**Limitaciones reales que importan en docencia:**
+
+| Limitación | Consecuencia práctica |
+|---|---|
+| **Fecha de corte** | No sabe lo que pasó después de su entrenamiento |
+| **Alucinaciones** | Inventa referencias, estadísticas, citas que no existen |
+| **Sin acceso a TU material** | Responde con conocimiento general, no tu syllabus |
+| **Sesgos del corpus** | Reproduce sesgos del texto de entrenamiento |
+| **No razona en lógica formal** | Puede equivocarse en demostraciones matemáticas complejas |
+:::
+
+::: {.column width="45%"}
+
+::: {.callout-warning icon="false"}
+## Regla de oro
+
+Siempre verifica lo que el LLM genera antes de usarlo en clase.
+
+Especialmente:
+- Referencias bibliográficas (inventadas con frecuencia)
+- Datos estadísticos específicos
+- Demostraciones matemáticas complejas
+- Código que involucra lógica sutil
+:::
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+## ChatGPT: casos de uso más valiosos para docentes
+
+::: columns
+::: {.column width="55%"}
+**Generación de código didáctico:**
+
+*"Escribe un ejemplo de regresión lineal en Python para estudiantes de tercer año. El código debe usar pandas, scikit-learn y matplotlib. Incluye comentarios explicativos en cada paso. Los datos deben ser sobre notas y horas de estudio."*
+
+**Depuración de código de estudiantes:**
+
+Pegar el código del estudiante + el error → ChatGPT explica qué falló y por qué.
+
+**Preguntas de examen:**
+
+*"Genera 5 preguntas de opción múltiple sobre regresión lineal, nivel universitario, con 4 alternativas cada una y la respuesta correcta indicada."*
+:::
+
+::: {.column width="45%"}
+
+**Funciones avanzadas:**
+
+- **GPT-4o Vision**: analiza gráficos, tablas, capturas de pantalla
+- **Code Interpreter**: ejecuta código Python en el navegador, hace análisis de datos, genera gráficos
+- **Búsqueda web**: responde con información actualizada, con fuentes
+- **DALL-E**: genera imágenes para material didáctico
+
+::: {.callout-tip icon="false"}
+## Code Interpreter para docencia
+
+Sube un CSV → pide análisis → ChatGPT genera código, lo ejecuta y muestra los resultados. Sin instalar nada.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Claude: el modelo para textos largos y complejos
+
+::: columns
+::: {.column width="55%"}
+**Fortaleza principal:**
+
+Ventana de contexto muy larga (hasta 200K tokens ≈ 150.000 palabras). Puede trabajar con libros de texto completos, papers, apuntes extensos.
+
+**Casos de uso:**
+
+- Subir el libro de texto del curso → pedir resumen por capítulo
+- Pegar un paper de 30 páginas → pedir preguntas de discusión
+- Subir todos los apuntes del curso → generar una guía de estudio integrada
+
+**Diferenciador:**
+
+Más cuidadoso con sesgos y con afirmaciones que no puede verificar. Más probable que diga "no estoy seguro" cuando no lo está.
+:::
+
+::: {.column width="45%"}
+
+**Claude en Projects:**
+
+Permite mantener conversaciones con contexto persistente → el asistente "recuerda" el syllabus del curso, los estilos que prefiere el docente, el nivel de los estudiantes.
+
+::: {.callout-tip icon="false"}
+## Para docentes que escriben mucho
+
+Claude es excepcionalmente bueno para: editar y mejorar textos académicos, mantener consistencia de estilo a lo largo de un apunte, y explicar conceptos con analogías claras.
+:::
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Gemini y NotebookLM: IA con tus propios documentos
+
+::: columns
+::: {.column width="55%"}
+**NotebookLM** es la herramienta más diferenciada para docentes:
+
+- Subes tus documentos (syllabus, apuntes, papers, guías)
+- El modelo **solo responde con base en lo que subiste**
+- Cada respuesta viene con **citas exactas** del documento fuente
+
+**Lo que esto significa:**
+
+No mezcla tu material con conocimiento externo no verificado. Si le preguntas algo que no está en tus documentos, dice que no tiene esa información.
+
+→ [notebooklm.google.com](https://notebooklm.google.com)
+:::
+
+::: {.column width="45%"}
+
+::: {.callout-important icon="false"}
+## La propuesta de valor única
+
+ChatGPT responde con lo que sabe del mundo.
+
+NotebookLM responde con lo que **tú** le diste.
+
+Para generar preguntas de examen basadas exactamente en tu material, NotebookLM gana.
+:::
+
+**Audio Overview:**
+
+NotebookLM puede generar un **podcast de audio** de ~10 minutos resumiendo tus documentos. Ideal para que los estudiantes repasen material en formato audio.
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Marco para decidir cuál herramienta usar
+
+::: columns
+::: {.column width="55%"}
+```{mermaid}
+graph TD
+    P["¿Qué necesitas?"]
+    P --> A["Trabajar con TU material"]
+    P --> B["Generar contenido nuevo"]
+    P --> C["Código o matemáticas"]
+    P --> D["Integración con Google"]
+
+    A --> N["NotebookLM"]
+    B --> CL["ChatGPT o Claude"]
+    C --> CH["ChatGPT o Claude"]
+    D --> G["Gemini"]
+```
+:::
+
+::: {.column width="45%"}
+
+**La pregunta clave antes de usar cualquier IA:**
+
+> *"¿Qué pasa si esto que el modelo generó es incorrecto?"*
+
+- Si el impacto es bajo → úsalo con revisión rápida
+- Si el impacto es alto → verifica cuidadosamente
+- Si el impacto es crítico (evaluación oficial, datos publicados) → crea tú mismo el contenido
+
+::: {.callout-note icon="false"}
+## La IA como acelerador, no como oráculo
+
+El LLM no reemplaza tu criterio docente. Reduce el tiempo de producción de borradores. El criterio editorial final siempre es tuyo.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+##  {.final-slide background-color="#0F2044"}
+
+::: center-content
+**¿Preguntas?**
+
+------------------------------------------------------------------------
+
+Francisco Alfaro\
+`fralfaro@usm.cl`\
+Docencia Digital · UTFSM
+
+*2026*
+:::

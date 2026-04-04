@@ -1,0 +1,133 @@
+---
+title: "Bienvenida al Curso"
+subtitle: "¿Por qué docencia digital hoy?"
+---
+
+::: {.callout-note appearance="minimal"}
+**Presentación del módulo:** [slides](../talks/00_intro/bienvenida.html)
+:::
+
+
+Bienvenido o bienvenida a esta capacitación. Antes de entrar en herramientas y tutoriales, vale la pena detenerse un momento en la pregunta que da origen a todo esto.
+
+¿Por qué ahora? ¿Por qué estas herramientas? ¿Y por qué tú, como docente universitario, deberías importarte?
+
+Este capítulo no tiene código ni ejercicios. Es una invitación a reflexionar sobre el momento en que vivimos — y sobre el rol que puede jugar la tecnología en la docencia de manera honesta y sin exagerar.
+
+
+
+## El mundo cambió. La universidad, más lento.
+
+<img src="https://sascha-kasper.com/wp-content/uploads/2018/05/personal_learning_curve_1200x720-1024x614.jpg" 
+     style="display: block; margin: 0 auto; width: 700px;">
+
+En los últimos diez años, la forma en que se produce, organiza y comparte el conocimiento cambió radicalmente. Hoy cualquier persona con conexión a internet puede:
+
+- Ejecutar código en la nube sin instalar nada.
+- Publicar un sitio web completo de forma gratuita en minutos.
+- Generar un documento académico con formato profesional desde el navegador.
+- Colaborar en tiempo real con personas en el otro lado del mundo.
+- Consultar a un modelo de inteligencia artificial sobre casi cualquier tema.
+
+Sin embargo, en muchas aulas universitarias el flujo de trabajo sigue siendo el mismo de hace quince años: diapositivas en PowerPoint, documentos Word enviados por correo, evaluaciones en papel o formularios básicos.
+
+No es un juicio. Es una brecha real — y tiene explicación.
+
+
+## ¿Por qué cuesta tanto sumar a los docentes universitarios?
+
+<img src="https://sascha-kasper.com/wp-content/uploads/2018/05/personal_learning_curve_1200x720-1024x614.jpg" 
+     style="display: block; margin: 0 auto; width: 700px;">
+
+La adopción tecnológica en educación superior enfrenta obstáculos específicos que no siempre se discuten abiertamente:
+
+**Tiempo escaso.** Un académico universitario equilibra docencia, investigación, gestión y extensión. Aprender una herramienta nueva tiene un costo real — y nadie quiere invertir horas en algo que no sabe si va a funcionar.
+
+**Curva de entrada alta.** Herramientas como LaTeX, Git o Quarto son poderosas, pero intimidantes al principio. Sin acompañamiento, la mayoría abandona en las primeras horas.
+
+**Falta de referentes cercanos.** Es difícil adoptar algo que nadie en tu departamento usa. La innovación docente rara vez se contagia de un paper — se contagia viendo a un colega usarlo.
+
+**Incentivos desalineados.** En la academia, publicar importa más que enseñar bien. Mejorar los materiales docentes raramente aparece en los criterios de evaluación académica.
+
+**Miedo a quedar en evidencia.** Nadie quiere verse torpe frente a sus estudiantes. Probar algo nuevo en clase implica un riesgo de imagen que muchos prefieren evitar.
+
+Esta capacitación nace reconociendo esas barreras — y apuntando directamente a bajarlas.
+
+
+## El momento de la IA
+
+<img src="https://sascha-kasper.com/wp-content/uploads/2018/05/personal_learning_curve_1200x720-1024x614.jpg" 
+     style="display: block; margin: 0 auto; width: 700px;">
+
+A todo lo anterior se suma un fenómeno que en los últimos dos años cambió las reglas del juego de manera irreversible: la inteligencia artificial generativa.
+
+Herramientas como **ChatGPT**, **Gemini**, **Claude** y **NotebookLM** pasaron de ser curiosidades tecnológicas a ser parte del flujo de trabajo cotidiano de millones de personas — incluyendo estudiantes universitarios.
+
+Esto genera tensiones reales en el aula:
+
+- Estudiantes que entregan trabajos asistidos por IA sin declararlo.
+- Docentes que prohíben la IA sin tener una política clara.
+- Evaluaciones diseñadas para un mundo donde estas herramientas no existían.
+- Desconcierto generalizado sobre qué significa "aprender" cuando la IA puede resolver la tarea.
+
+Ignorar este escenario no es una opción. Entenderlo — y saber cómo posicionarse frente a él — es parte de lo que propone este curso.
+
+
+
+## ¿Qué ofrece este curso?
+
+Esta capacitación no promete convertirte en desarrollador ni en experto en inteligencia artificial. Propone algo más concreto y más útil: **un flujo de trabajo digital integrado** para producir y publicar materiales académicos de calidad.
+
+Las herramientas que trabajaremos son:
+
+| Herramienta | ¿Para qué sirve en docencia? |
+|-------------|------------------------------|
+| ![](../assets/img/tool/tool__github.png){height=20px} **GitHub** | Organizar y compartir materiales de manera colaborativa y versionada. |
+| ![](../assets/img/tool/tool__google-colab.png){height=20px} **Google Colab** | Ejecutar código en la nube, crear notebooks interactivos para clases prácticas. |
+| ![](../assets/img/tool/tool__latex.png){height=20px} **Overleaf / LaTeX** | Redactar documentos académicos con formato profesional: guías, apuntes, artículos. |
+| ![](../assets/img/tool/tool__quarto.png){height=20px} **Quarto** | Crear sitios web, reportes, presentaciones y libros digitales reproducibles. |
+| ![](../assets/img/tool/tool__openai.png){height=20px} **IA** | Apoyar la planificación, generación de materiales y retroalimentación. |
+
+No son las únicas herramientas que existen. Son las que mejor se integran entre sí, tienen comunidades activas, son gratuitas o freemium, y tienen curva de aprendizaje razonable para alguien que parte desde cero.
+
+
+
+## ¿A quién está dirigido?
+
+Este curso está pensado principalmente para **docentes universitarios** — pero su contenido es útil para cualquier persona que necesite comunicar conocimiento de forma clara, reproducible y profesional:
+
+- Académicos que quieren modernizar sus materiales sin invertir meses de aprendizaje.
+- Ayudantes y estudiantes de posgrado que producen material docente.
+- Profesionales que enseñan fuera de la academia y quieren herramientas de nivel universitario.
+- Cualquier persona curiosa sobre cómo funciona el ecosistema digital de la educación hoy.
+
+No se requieren conocimientos previos de programación. Se requiere disposición a probar cosas nuevas y tolerancia a los errores del camino.
+
+
+
+## ¿Cómo está organizado el curso?
+
+El curso se estructura en seis sesiones, cada una centrada en una herramienta del ecosistema:
+
+| Sesión | Tema |
+|--------|------|
+| 📘 0 | Introducción *(este capítulo)* |
+| 📗 1 | GitHub para docencia |
+| 📙 2 | Google Colab |
+| 📒 3 | Overleaf y LaTeX |
+| 📕 4 | Quarto para material académico |
+| 📓 5 | Inteligencia Artificial para docencia |
+
+Cada sesión combina explicación conceptual, demostración en vivo y una actividad aplicada. Al final de cada sesión tendrás un producto concreto: un repositorio, un notebook, un documento o un recurso pedagógico listo para usar.
+
+
+
+## Una nota final antes de comenzar
+
+La tecnología no mejora la docencia por sí sola. Una clase mal diseñada sigue siendo una clase mal diseñada aunque use las herramientas más modernas del mercado.
+
+Lo que sí puede hacer la tecnología — bien usada — es **reducir la fricción**: entre la idea y el material terminado, entre el docente y el estudiante, entre el conocimiento y quien lo necesita.
+
+Ese es el espíritu de este curso. No se trata de adoptar tecnología por moda. Se trata de recuperar tiempo, mejorar la calidad de lo que producimos y llegar mejor a quienes enseñamos.
+
+Empecemos.

@@ -1,0 +1,383 @@
+---
+title: "Diseño pedagógico con IA"
+subtitle: "Integrar la inteligencia artificial sin perder el rol del docente"
+author: "Francisco Alfaro"
+institute: "Docencia Digital · UTFSM"
+date: today
+date-format: "MMMM YYYY"
+
+format:
+  revealjs:
+    theme: [default, ../custom.scss]
+    slide-number: true
+    progress: true
+    history: false
+    transition: fade
+    transition-speed: fast
+    incremental: false
+    fig-align: center
+    highlight-style: github
+    code-block-bg: true
+    center: false
+    width: 1280
+    height: 720
+    margin: 0.08
+    footer: "Docencia Digital · UTFSM · 2026"
+    logo: "../../assets/img/brand/brand__usm.png"
+
+execute:
+  echo: false
+  warning: false
+---
+
+##  {.title-slide background-color="#0F2044"}
+
+::: title-block
+**Diseño pedagógico con IA**
+
+Integrar la inteligencia artificial sin perder el rol del docente
+:::
+
+::: subtitle-block
+Sesión 5 — Inteligencia Artificial para docencia
+:::
+
+::: author-block
+Francisco Alfaro\
+Docencia Digital · UTFSM · 2026
+:::
+
+------------------------------------------------------------------------
+
+## Dos tipos de uso de la IA en docencia
+
+::: columns
+::: {.column width="55%"}
+**Tipo 1: Hacer más rápido lo que ya hacías**
+
+- Generar un borrador de rúbrica → revisar y ajustar
+- Crear preguntas de práctica → curar las que son buenas
+- Resumir un paper → confirmar que el resumen es correcto
+
+**Tipo 2: Hacer lo que antes no podías hacer**
+
+- Personalizar retroalimentación para 35 entregas simultáneamente
+- Tener un tutor disponible a las 11pm la noche antes del examen
+- Adaptar automáticamente la dificultad al nivel de cada estudiante
+
+Este capítulo es sobre el **Tipo 2**.
+:::
+
+::: {.column width="45%"}
+
+::: {.callout-important icon="false"}
+## La pregunta relevante
+
+No es "¿puede la IA hacer esto?"
+
+Es "¿qué nuevas posibilidades pedagógicas abre la IA que antes eran logísticamente imposibles?"
+:::
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+## IA para planificación de unidades didácticas
+
+::: columns
+::: {.column width="55%"}
+**El problema del diseño curricular solitario:**
+
+Diseñar una unidad bien articulada — objetivos progresivos, actividades alineadas, evaluaciones coherentes, material diferenciado — puede tomar **días de trabajo**.
+
+La mayoría de los docentes no tiene esos días. El resultado: unidades que repiten el esquema del semestre pasado.
+
+**Con IA como interlocutor:**
+
+```
+Quiero diseñar una unidad de 4 semanas sobre
+series de tiempo para ingeniería. Los estudiantes
+ya saben regresión lineal pero no han visto
+autocorrelación. El objetivo al terminar es que
+puedan ajustar un modelo ARIMA básico.
+
+Diseña la secuencia de aprendizaje usando
+el modelo de diseño backward (Wiggins & McTighe):
+empieza por la evidencia de aprendizaje, luego
+define los objetivos, luego las actividades.
+```
+:::
+
+::: {.column width="45%"}
+
+**El diseño backward con IA:**
+
+```{mermaid}
+graph TD
+    E["🎯 Evidencias de aprendizaje\n¿Cómo sabré que aprendieron?"]
+    O["📋 Objetivos\n¿Qué deben poder hacer?"]
+    A["📚 Actividades\n¿Cómo llegar ahí?"]
+
+    E --> O --> A
+```
+
+La IA como **interlocutor** — no como diseñador. Tú validas, rechazas y ajustas. Ella genera borradores rápidamente.
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Retroalimentación asistida por IA: el caso real
+
+::: columns
+::: {.column width="55%"}
+**El problema:**
+
+- 35 estudiantes entregan el lab 3
+- Cada entrega tiene 5 preguntas de análisis de datos
+- Dar retroalimentación útil y personalizada a las 35 → 4-6 horas
+
+**Con IA:**
+
+```
+Eres un docente asistente de estadística.
+Revisa la siguiente entrega según esta rúbrica
+y proporciona retroalimentación específica.
+
+RÚBRICA:
+[criterio 1: ...]
+[criterio 2: ...]
+
+ENTREGA DEL ESTUDIANTE:
+[pegar entrega]
+
+La retroalimentación debe:
+- Señalar exactamente qué está bien y por qué
+- Identificar errores con referencia a la pregunta
+- Proponer cómo mejorar (no dar la solución)
+- Tono: formativo, no punitivo
+```
+
+→ Revisar el output → enviar con ajustes menores.
+:::
+
+::: {.column width="45%"}
+
+**Lo que la IA hace bien:**
+
+- Detectar errores técnicos (código incorrecto, fórmula mal aplicada)
+- Describir lo que el estudiante hizo
+- Formatear la retroalimentación
+
+**Lo que el docente debe hacer:**
+
+- Verificar que la retroalimentación es correcta (la IA puede equivocarse)
+- Agregar el contexto del aprendizaje del estudiante
+- Calibrar el tono según el historial individual
+
+::: {.callout-warning icon="false"}
+## Personalización ≠ automatización ciega
+
+Usar IA para retroalimentar no significa delegar la evaluación. Significa escalar la capacidad de dar feedback específico sin sacrificar calidad.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Tutores y asistentes para los estudiantes
+
+::: columns
+::: {.column width="55%"}
+**Casos de uso para los estudiantes:**
+
+1. **Asistente de resolución de dudas** disponible 24/7
+2. **Tutor socrático** que hace preguntas en lugar de dar respuestas
+3. **Corrector de borradores** antes de entregar
+4. **Generador de ejemplos adicionales** cuando el del apunte no es suficiente
+
+**Configurar un asistente tutor:**
+
+```
+Eres un asistente de estudio para el curso
+MAT281 de la UTFSM.
+
+REGLAS ABSOLUTAS:
+- Nunca des la respuesta directa a un ejercicio del curso
+- Cuando un estudiante esté atascado, haz preguntas
+  que lo guíen hacia la solución
+- Si detectas un error conceptual, primero pregunta
+  por qué el estudiante piensa lo que piensa
+
+Los apuntes del curso son: [pegar material]
+```
+:::
+
+::: {.column width="45%"}
+
+**La diferencia entre un buen y mal tutor IA:**
+
+| ❌ Malo | ✅ Bueno |
+|---|---|
+| Da la respuesta inmediatamente | Hace preguntas guía |
+| No verifica comprensión | Pide que el estudiante explique |
+| Ignora el material del curso | Referencia los apuntes específicos |
+| Disponible para hacer trampa | Diseñado para el aprendizaje |
+
+::: {.callout-tip icon="false"}
+## El tutor socrático
+
+*"¿Qué ya sabes sobre este tema? ¿Qué pasa si reemplazas x por 0 en la ecuación? ¿Qué te dice el gráfico que graficaste?"*
+
+Es más efectivo pedagógicamente y más difícil de usar para hacer trampa.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Actividades de aprendizaje activo con IA
+
+::: columns
+::: {.column width="55%"}
+**1. Debate con posiciones asignadas:**
+
+Los estudiantes defienden una posición técnica frente a un oponente IA que argumenta la posición contraria.
+
+*"Un equipo argumenta que K-means es el mejor algoritmo para este dataset. Actúa como oponente técnico y desafía sus argumentos con contraejemplos y preguntas difíciles."*
+
+**2. Revisión por pares asistida:**
+
+El estudiante revisa la entrega de otro con apoyo de la IA para identificar puntos a mejorar.
+
+**3. "Enseñar a la IA":**
+
+El estudiante explica un concepto a un chatbot configurado para hacer preguntas de un estudiante confundido. Si puede responder bien las preguntas → entiende el concepto.
+:::
+
+::: {.column width="45%"}
+
+**4. Análisis crítico de outputs de IA:**
+
+```
+Actividad: el docente presenta una respuesta
+generada por ChatGPT sobre [TEMA DEL CURSO].
+
+Los estudiantes deben identificar:
+- ¿Qué está correcto?
+- ¿Qué está incorrecto o incompleto?
+- ¿Qué falta?
+- ¿Cómo mejorarías la respuesta?
+```
+
+Este ejercicio desarrolla **pensamiento crítico** y **capacidad de verificar información** — habilidades esenciales en la era de la IA.
+
+::: {.callout-note icon="false"}
+## El meta-aprendizaje
+
+Aprender a evaluar outputs de IA es una competencia transversal que los estudiantes usarán toda su vida profesional.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Política de uso de IA en el curso: un marco
+
+::: columns
+::: {.column width="55%"}
+**El error más común:** prohibir todo o permitir todo sin reflexión.
+
+**Un marco por nivel de tarea:**
+
+| Tarea | Política razonable |
+|---|---|
+| Exploración inicial de un tema | IA permitida como punto de partida |
+| Generación de código (sintaxis) | IA permitida, comprensión obligatoria |
+| Diseño de la solución | IA como interlocutor, no como diseñador |
+| Interpretación de resultados | Sin IA (habilidad central del curso) |
+| Redacción de análisis | Borrador con IA, versión final propia |
+| Evaluación en condiciones de examen | Sin IA |
+:::
+
+::: {.column width="45%"}
+
+**Declaración en el syllabus:**
+
+```
+Política de uso de IA en MAT281:
+
+El uso de herramientas de IA (ChatGPT, Claude,
+Gemini, Copilot) está PERMITIDO para:
+✅ Completar sintaxis de funciones ya entendidas
+✅ Explorar funciones de librerías
+✅ Generar borradores de código
+
+El uso de IA NO reemplaza:
+❌ Entender la lógica del algoritmo
+❌ Diseñar la solución al problema
+❌ Interpretar los resultados
+❌ Las evaluaciones en condiciones de examen
+
+El trabajo con IA debe declararse.
+```
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+## El rol del docente en la era de la IA
+
+::: columns
+::: {.column width="55%"}
+**Lo que la IA no puede reemplazar en docencia:**
+
+- La relación docente-estudiante como motivación
+- El criterio experto sobre qué importa y por qué
+- La adaptación en tiempo real al estado de la clase
+- La pregunta de seguimiento que abre el pensamiento
+- El reconocimiento personalizado del progreso individual
+- El modelado de la postura frente al conocimiento (humildad intelectual, curiosidad)
+
+:::
+
+::: {.column width="45%"}
+
+::: {.callout-important icon="false"}
+## La reconfiguración del rol
+
+La IA se hace cargo de las tareas rutinarias y escalables:
+
+- Borradores de material
+- Retroalimentación inicial
+- Respuestas a preguntas frecuentes
+- Organización del contenido
+
+El docente se libera para las tareas que requieren **presencia humana**:
+
+- Diseño pedagógico profundo
+- Acompañamiento individual
+- Evaluación de comprensión real
+:::
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+##  {.final-slide background-color="#0F2044"}
+
+::: center-content
+**¿Preguntas?**
+
+------------------------------------------------------------------------
+
+Francisco Alfaro\
+`fralfaro@usm.cl`\
+Docencia Digital · UTFSM
+
+*2026*
+:::

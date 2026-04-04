@@ -1,0 +1,481 @@
+---
+title: "Flujo colaborativo"
+subtitle: "Fork, Pull Requests, Classroom y trabajo en equipo docente"
+author: "Francisco Alfaro"
+institute: "Docencia Digital · UTFSM"
+date: today
+date-format: "MMMM YYYY"
+
+format:
+  revealjs:
+    theme: [default, ../custom.scss]
+    slide-number: true
+    progress: true
+    history: false
+    transition: fade
+    transition-speed: fast
+    incremental: false
+    fig-align: center
+    highlight-style: github
+    code-block-bg: true
+    center: false
+    width: 1280
+    height: 720
+    margin: 0.08
+    footer: "Docencia Digital · UTFSM · 2026"
+    logo: "../../assets/img/brand/brand__usm.png"
+
+execute:
+  echo: false
+  warning: false
+---
+
+##  {.title-slide background-color="#0F2044"}
+
+::: title-block
+**Flujo colaborativo**
+
+Fork, Pull Requests, Classroom y trabajo en equipo docente
+:::
+
+::: subtitle-block
+Sesión 1 — GitHub para docencia
+:::
+
+::: author-block
+Francisco Alfaro\
+Docencia Digital · UTFSM · 2026
+:::
+
+------------------------------------------------------------------------
+
+## El problema que resuelve el PR
+
+::: columns
+::: {.column width="55%"}
+**Escenario típico:**
+
+Tu ayudante quiere agregar la solución del laboratorio 3 al repositorio del curso.
+
+- Si le das **acceso directo** → puede hacer push de cualquier cosa al `main`
+- Si **no le das acceso** → no puede contribuir
+
+**El mecanismo Fork + Pull Request resuelve esto:**
+
+El ayudante trabaja en su propia copia, hace los cambios, y **propone** integrarlos. Tú revisas y decides.
+:::
+
+::: {.column width="45%"}
+```{mermaid}
+graph TD
+    O["📦 Repo original"]
+    F["🍴 Fork del ayudante"]
+    B["🌿 Branch dedicado"]
+    PR["🔀 Pull Request"]
+    M["✅ Merge"]
+
+    O -- "Fork" --> F
+    F -- "checkout -b" --> B
+    B -- "commits + push" --> F
+    F -- "proponer" --> PR
+    PR -- "revisión + aprobación" --> M
+    M --> O
+```
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Fork: una copia independiente
+
+::: columns
+::: {.column width="55%"}
+**El ayudante:**
+
+1. Va a `github.com/tu-username/mat281`
+2. Clic en **Fork** → selecciona su cuenta
+3. GitHub crea `github.com/ayudante/mat281`
+
+```bash
+# Clona su fork (no el original)
+git clone git@github.com:ayudante/mat281.git
+cd mat281
+
+# Agrega referencia al repo original
+git remote add upstream git@github.com:tu-username/mat281.git
+```
+
+:::
+
+::: {.column width="45%"}
+
+::: {.callout-note icon="false"}
+## origin vs upstream
+
+`origin` = el fork del ayudante (donde hace push)
+
+`upstream` = el repositorio original (de donde sincroniza)
+:::
+
+Sincronizar el fork cuando hay cambios nuevos:
+
+```bash
+git fetch upstream
+git switch main
+git merge upstream/main
+git push origin main
+```
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Crear y revisar un Pull Request
+
+::: columns
+::: {.column width="55%"}
+**El ayudante:**
+
+```bash
+# Crear branch dedicado
+git checkout -b lab03-solucion
+
+# Trabaja... agrega labs/lab03/solucion.ipynb
+
+git add labs/lab03/solucion.ipynb
+git commit -m "feat: solución lab 3 con comentarios"
+git push origin lab03-solucion
+```
+
+→ GitHub muestra banner: *"Compare & pull request"*
+
+**En el PR escribe:**
+- ¿Qué hace?
+- ¿Cómo verificar que funciona?
+- ¿Hay algo pendiente?
+:::
+
+::: {.column width="45%"}
+
+**Tú como revisor:**
+
+- Pestaña **Files changed** → diff línea a línea
+- Clic en `+` para comentar una línea específica
+- Tipos de comentario:
+  - 💬 Pregunta
+  - ✏️ Sugerencia
+  - 🐛 Error
+  - ✅ Aprobación
+
+::: {.callout-tip icon="false"}
+## GitHub permite sugerir cambios
+
+El ayudante los acepta con un clic → commit automático.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Opciones de merge
+
+| Opción | Qué hace | Cuándo usarla |
+|---|---|---|
+| **Create a merge commit** | Une los dos historiales | Por defecto, conserva contexto |
+| **Squash and merge** | Aplasta todos los commits del PR en uno | PR con muchos commits pequeños de WIP |
+| **Rebase and merge** | Replay lineal sobre main | Historial limpio sin commits de merge |
+
+::: fragment
+::: {.callout-tip icon="false"}
+## Recomendación para cursos
+
+**Squash and merge** → el PR entero como un único commit descriptivo en `main`. Sin ruido de "wip", "arreglo typo", etc.
+:::
+:::
+
+::: fragment
+**Proteger el branch main:**
+
+Settings → Branches → Add rule → *Require pull request reviews before merging* ✅
+
+Nadie (incluido tú, accidentalmente) hace push directo a `main`.
+:::
+
+------------------------------------------------------------------------
+
+## Resolución de conflictos
+
+::: columns
+::: {.column width="50%"}
+**Cuándo ocurren:**
+
+Dos personas modificaron **las mismas líneas** del mismo archivo en branches distintos.
+
+**Cómo se ve:**
+
+```
+<<<<<<< HEAD
+modelo = LinearRegression(fit_intercept=True)
+=======
+modelo = LinearRegression()
+coef = modelo.coef_
+>>>>>>> semana03-mejoras
+```
+
+**Resolver:**
+
+1. Editar el archivo → dejar el código final correcto
+2. `git add` del archivo resuelto
+3. `git commit`
+:::
+
+::: {.column width="50%"}
+
+**Prevenir conflictos:**
+
+- Divide el trabajo por **archivos**, no por secciones del mismo archivo
+- Haz `git pull` frecuentemente antes de empezar
+- Branches cortos: 1-2 días de vida tienen menos divergencia
+- Comunica qué archivos estás modificando
+
+::: {.callout-warning icon="false"}
+## Conflictos en notebooks `.ipynb`
+
+Son JSON → difíciles de resolver manualmente.
+
+Solución: [nbdime](https://nbdime.readthedocs.io/)
+
+```bash
+pip install nbdime
+nbdime config-git --enable --global
+```
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Estrategia de branches para un curso
+
+::: columns
+::: {.column width="55%"}
+**Convención recomendada:**
+
+```
+main              → versión estable (lo que ven los estudiantes)
+dev               → integración de trabajo en progreso
+semana-XX/TEMA    → material de una semana
+lab-XX/DESC       → soluciones o mejoras de un lab
+fix/DESC          → corrección de error específico
+semestre/2025-2   → adaptación para el próximo semestre
+```
+:::
+
+::: {.column width="45%"}
+
+```{mermaid}
+gitGraph
+   commit id: "semanas 1-2"
+   branch dev
+   branch semana-03/regresion
+   commit id: "borrador"
+   checkout dev
+   merge semana-03/regresion id: "semana 3 lista"
+   checkout main
+   merge dev id: "publicación ✓"
+```
+
+::: {.callout-note icon="false"}
+## Branch para soluciones
+
+Mantén soluciones en un branch `soluciones` que nunca se mergea a `main`. Los estudiantes solo ven `main`.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## GitHub Classroom: gestionar entregas de estudiantes
+
+::: columns
+::: {.column width="50%"}
+**El problema actual:**
+
+| Sistema tradicional | GitHub Classroom |
+|---|---|
+| Archivo comprimido por email | Repositorio individual con historial |
+| No sabes cuándo empezó | `git log` muestra exactamente cuándo |
+| Feedback en PDF anotado | Comentarios en línea en el código |
+| Sin control de versiones | Pueden revertir errores y ver su progreso |
+:::
+
+::: {.column width="50%"}
+
+**Flujo del estudiante:**
+
+```
+1. Clic en link de invitación
+   ↓
+2. GitHub crea repo privado con el template
+   mat281-usm/lab03-apellido-nombre
+   ↓
+3. Estudiante clona y trabaja
+   ↓
+4. Push final antes del deadline
+   ↓
+5. Tú revisas y das feedback en el PR automático
+```
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Configurar GitHub Classroom paso a paso
+
+::: columns
+::: {.column width="55%"}
+**1. Crear organización del curso:**
+
+- GitHub → + → New organization
+- Nombre: `mat281-usm`
+- Plan: **Free** (suficiente para docencia)
+
+**2. En classroom.github.com:**
+
+- New classroom → selecciona la org
+- Nombre: `MAT281 — 2025-1`
+
+**3. Crear template del lab:**
+
+- `README.md` con instrucciones
+- `enunciado.ipynb` sin solución
+- `datos/` con el dataset
+- Marcar como **Template repository** ✅
+:::
+
+::: {.column width="45%"}
+
+**4. Crear assignment:**
+
+- Título, deadline, visibilidad privada
+- Starter code → el template creado
+- Enable feedback pull requests ✅
+
+Classroom genera un link:
+```
+https://classroom.github.com/a/XXXXX
+```
+
+→ Comparte con los estudiantes en el LMS.
+
+::: {.callout-tip icon="false"}
+## Ver el progreso en tiempo real
+
+Desde el panel de Classroom puedes ver todos los repositorios con su estado de actividad — incluso antes del deadline.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## GitHub Organizations para departamentos
+
+::: columns
+::: {.column width="55%"}
+**Estructura recomendada:**
+
+```
+Organización: dmat-usm
+├── Repositorios de cursos:
+│   ├── mat281-2025-1
+│   ├── mat281-2025-2
+│   └── mat260-2025-1
+├── Repositorios compartidos:
+│   ├── plantillas-cursos
+│   └── datasets-compartidos
+└── GitHub Classrooms:
+    └── MAT281-2025-1
+```
+:::
+
+::: {.column width="45%"}
+
+**Teams y permisos:**
+
+| Team | Permiso |
+|---|---|
+| `profesores` | Admin en todos los repos |
+| `ayudantes-mat281` | Write en repos de mat281 |
+| `estudiantes-2025-1` | Read (solo lectura) |
+
+::: {.callout-note icon="false"}
+## GitHub Education
+
+En [education.github.com/teachers](https://education.github.com/teachers) puedes verificar tu organización como educativa → repos privados ilimitados, Actions sin límite.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Templates de repositorios para reutilizar cada semestre
+
+::: columns
+::: {.column width="55%"}
+**Un template** = repositorio marcado como punto de partida. Cuando alguien crea un repo basado en él, recibe todos los archivos sin el historial de Git.
+
+**Estructura del template de curso:**
+
+```
+plantilla-curso/
+├── README.md          # con placeholders
+├── LICENSE
+├── .gitignore
+├── _quarto.yml
+├── lectures/
+│   └── semana01/
+├── labs/
+└── datasets/
+    └── raw/.gitkeep
+```
+
+**Marcar como template:**
+Settings → General → **Template repository** ✅
+:::
+
+::: {.column width="45%"}
+
+**Usar desde CLI:**
+
+```bash
+gh repo create dmat-usm/mat281-2025-2 \
+  --template dmat-usm/plantilla-curso \
+  --public \
+  --description "MAT281, semestre 2025-2"
+```
+
+::: {.callout-tip icon="false"}
+## El valor del template
+
+Al inicio de cada semestre: clic en "Use this template" → repositorio nuevo con la estructura lista en 30 segundos.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+##  {.final-slide background-color="#0F2044"}
+
+::: center-content
+**¿Preguntas?**
+
+------------------------------------------------------------------------
+
+Francisco Alfaro\
+`fralfaro@usm.cl`\
+Docencia Digital · UTFSM
+
+*2026*
+:::

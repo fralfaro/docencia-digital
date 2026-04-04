@@ -1,0 +1,487 @@
+---
+title: "Git y GitHub esencial"
+subtitle: "Control de versiones para el docente universitario"
+author: "Francisco Alfaro"
+institute: "Docencia Digital · UTFSM"
+date: today
+date-format: "MMMM YYYY"
+
+format:
+  revealjs:
+    theme: [default, ../custom.scss]
+    slide-number: true
+    progress: true
+    history: false
+    transition: fade
+    transition-speed: fast
+    incremental: false
+    fig-align: center
+    highlight-style: github
+    code-block-bg: true
+    center: false
+    width: 1280
+    height: 720
+    margin: 0.08
+    footer: "Docencia Digital · UTFSM · 2026"
+    logo: "../../assets/img/brand/brand__usm.png"
+
+execute:
+  echo: false
+  warning: false
+---
+
+##  {.title-slide background-color="#0F2044"}
+
+::: title-block
+**Git y GitHub esencial**
+
+Control de versiones para el docente universitario
+:::
+
+::: subtitle-block
+Sesión 1 — GitHub para docencia
+:::
+
+::: author-block
+Francisco Alfaro\
+Docencia Digital · UTFSM · 2026
+:::
+
+------------------------------------------------------------------------
+
+## ¿Ya resolviste este problema... de la peor manera?
+
+::: columns
+::: {.column width="55%"}
+Reconoce alguno de estos:
+
+- `apuntes_final_v3_ESTE_SI_corregido2.docx`
+- Email: *"ignora la versión anterior, va esta"*
+- Perdiste una semana de trabajo por guardar encima del archivo equivocado
+- Tu ayudante modificó el archivo que tú también estabas editando
+
+:::
+
+::: {.column width="45%"}
+
+::: {.callout-important icon="false"}
+## La solución existe
+
+**Git** resuelve ese problema.
+
+**GitHub** es donde ese trabajo vive, se comparte y colabora.
+:::
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Git vs GitHub: la distinción que confunde a todos
+
+::: columns
+::: {.column width="50%"}
+**Git**
+
+- Software que corre en tu computador
+- Funciona completamente **sin internet**
+- Lleva el historial de cambios de tus archivos
+
+**GitHub**
+
+- Plataforma web que almacena repos Git en la nube
+- Agrega colaboración: PRs, Issues, Pages, Actions
+- Sin Git, GitHub no existe
+:::
+
+::: {.column width="50%"}
+```{mermaid}
+graph LR
+    L["💻 Tu computador\nGit local"] -- "git push" --> R["☁️ GitHub\nrepositorio remoto"]
+    R -- "git pull" --> L
+    R -- "git clone" --> C["💻 Tu ayudante"]
+    C -- "git push" --> R
+```
+
+::: {.callout-tip icon="false"}
+## La analogía
+
+Git = tu sistema de archivos local.
+GitHub = Google Drive diseñado para código con herramientas de colaboración.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Los tres conceptos clave: repositorio, commit, branch
+
+::: columns
+::: {.column width="33%"}
+**Repositorio**
+
+Una carpeta que Git rastrea. Contiene tus archivos + una carpeta oculta `.git/` con todo el historial.
+
+```
+mat281-2025-1/
+├── .git/        ← historial
+├── README.md
+├── lectures/
+└── labs/
+```
+:::
+
+::: {.column width="33%"}
+**Commit**
+
+Fotografía de todos tus archivos en un momento específico.
+
+- Hash único (`a3f2c19`)
+- Quién, cuándo, qué mensaje
+- Referencia al commit anterior
+
+:::
+
+::: {.column width="33%"}
+**Branch**
+
+Línea paralela de desarrollo. Trabajas en una versión sin afectar la otra.
+
+- `main` → lo que ven los estudiantes
+- `dev` → material en preparación
+- `semestre-2025-2` → siguiente semestre
+:::
+:::
+
+------------------------------------------------------------------------
+
+## El flujo de los tres estados
+
+```{mermaid}
+graph LR
+    W["📁 Working directory\narchivos que editas"]
+    S["📋 Staging area\nlo que vas a commitear"]
+    R["🗄️ Repositorio\nhistorial permanente"]
+
+    W -- "git add archivo.qmd" --> S
+    S -- "git commit -m 'mensaje'" --> R
+    R -- "git checkout / git restore" --> W
+```
+
+::: columns
+::: {.column width="60%"}
+**¿Por qué el staging?**
+
+Puedes modificar 5 archivos pero commitear solo 2. Construyes commits lógicos y coherentes aunque hayas modificado muchas cosas a la vez.
+:::
+
+::: {.column width="40%"}
+::: {.callout-tip icon="false"}
+## Una vez commiteado
+
+Está guardado. Puedes volver a cualquier punto del historial en cualquier momento.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Configuración inicial (una sola vez)
+
+```bash
+git config --global user.name "Juan Pérez"
+git config --global user.email "juan.perez@usm.cl"
+git config --global core.editor "code --wait"   # VS Code como editor
+git config --global init.defaultBranch main
+```
+
+::: columns
+::: {.column width="60%"}
+**Verificar:**
+
+```bash
+git config --list
+# user.name=Juan Pérez
+# user.email=juan.perez@usm.cl
+# init.defaultbranch=main
+```
+:::
+
+::: {.column width="40%"}
+::: {.callout-warning icon="false"}
+## Email institucional
+
+Usa tu `@usm.cl`. Es lo que aparece en el historial y lo que GitHub usa para asociar commits a tu perfil.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## El ciclo de trabajo diario
+
+```bash
+# 1. Antes de empezar: traer cambios del remoto
+git pull
+
+# 2. Trabajar normalmente... editas lectures/semana03.qmd
+
+# 3. Ver qué cambió
+git status
+
+# 4. Ver exactamente qué líneas cambiaron
+git diff lectures/semana03.qmd
+
+# 5. Agregar al staging
+git add lectures/semana03.qmd
+
+# 6. Crear el commit
+git commit -m "docs: agrego material semana 3 - regresión lineal"
+
+# 7. Subir al remoto
+git push
+```
+
+::: {.callout-tip icon="false"}
+## El ritmo ideal
+
+`pull` → edita → `status` → `add` → `commit` → `push`. Siempre así.
+:::
+
+------------------------------------------------------------------------
+
+## Problemas docentes resueltos con Git
+
+| Problema docente | Solución con Git |
+|---|---|
+| "¿Cuál era la versión del enunciado que entregué?" | `git log` muestra historial completo con fechas |
+| "Mi ayudante modificó el archivo que yo editaba" | Branches separados + merge controlado |
+| "Quiero probar un cambio grande sin romper lo que funciona" | Branch nuevo, sin tocar `main` |
+| "El estudiante dice que el enunciado era diferente" | `git diff` muestra qué cambió y cuándo |
+| "Perdí el archivo" | Está en el repositorio remoto, intacto |
+| "Quiero reutilizar el material el próximo semestre" | Tags por semestre + repositorio archivado |
+
+------------------------------------------------------------------------
+
+## El README.md: portada del repositorio
+
+::: columns
+::: {.column width="55%"}
+GitHub renderiza el README automáticamente. Debe responder en 30 segundos: **¿qué es esto, para quién es, cómo se usa?**
+
+**Estructura recomendada:**
+
+```markdown
+# MAT281 — Nombre del Curso
+**Semestre:** 2025-1
+**Docente:** Juan Pérez
+
+## Descripción
+...
+
+## Estructura del repositorio
+...
+
+## Cómo usar
+git clone https://github.com/...
+
+## Licencia
+MIT + CC BY 4.0
+```
+:::
+
+::: {.column width="45%"}
+
+**Herramientas útiles:**
+
+- [readme.so](https://readme.so) → editor visual
+- [shields.io](https://shields.io) → badges
+
+::: {.callout-note icon="false"}
+## El README importa
+
+Es lo primero que ven tus estudiantes, tu ayudante y cualquier colega que acceda al repositorio.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## El .gitignore: qué NO rastrear
+
+::: columns
+::: {.column width="55%"}
+**¿Por qué importa?**
+
+Sin `.gitignore`, Git rastrea todo — incluyendo basura que no debería estar en el repositorio.
+
+**Lo que debe ignorarse:**
+
+```gitignore
+# Python
+__pycache__/
+.ipynb_checkpoints/
+.env
+
+# Quarto
+_site/
+_book/
+_freeze/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# NUNCA subir
+*.key
+credentials.json
+token.json
+```
+:::
+
+::: {.column width="45%"}
+
+::: {.callout-warning icon="false"}
+## Regla de oro
+
+Si ya subiste un archivo sensible, borrarlo en un commit no es suficiente — sigue en el historial.
+
+Revisa siempre con `git status` antes de `git add .`
+:::
+
+Generador automático: [gitignore.io](https://www.toptal.com/developers/gitignore)
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Issues y Projects: gestión docente en GitHub
+
+::: columns
+::: {.column width="55%"}
+**Issues** = unidades de trabajo pendiente
+
+```
+✅ Preparar guía lab 4
+🐛 Error en celda 7 del notebook semana 3
+💡 Agregar ejercicio de validación cruzada
+📅 Actualizar dataset semana 5
+```
+
+**Cerrar desde un commit:**
+
+```bash
+git commit -m "fix: corrijo error en notebook semana 3
+
+Closes #12"
+```
+
+Al hacer push, GitHub cierra el Issue #12 automáticamente.
+:::
+
+::: {.column width="45%"}
+
+**GitHub Projects** = tablero Kanban
+
+```
+📋 MAT281 — Planificación 2025-1
+
+│  Backlog  │  En curso  │  Publicado  │
+├───────────┼────────────┼─────────────┤
+│  Lab 5    │  Semana 6  │  Semanas 1-5│
+│  Lab 6    │            │  Labs 1-4   │
+```
+
+::: {.callout-tip icon="false"}
+## Planificación semestral
+
+Crea un Issue por cada semana de material al inicio del semestre. Al final, el historial de Issues cerrados es un registro completo de todo lo preparado.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Licencias: declarar qué pueden hacer otros con tu material
+
+::: columns
+::: {.column width="50%"}
+**Sin licencia** → todos los derechos reservados por defecto, aunque el repositorio sea público.
+
+**Para código (notebooks, scripts):**
+
+| Licencia | Restricción |
+|---|---|
+| **MIT** | Solo mantener copyright |
+| **Apache 2.0** | MIT + patentes |
+| **GPL v3** | Derivados también GPL |
+
+→ **Recomendación: MIT**
+:::
+
+::: {.column width="50%"}
+**Para contenido (apuntes, slides):**
+
+Creative Commons — combina módulos:
+
+- **BY** = dar crédito al autor
+- **SA** = derivados con misma licencia
+- **NC** = solo uso no comercial
+- **ND** = sin derivados
+
+→ **Recomendación: CC BY 4.0**
+
+::: {.callout-note icon="false"}
+## La combinación estándar en docencia
+
+```
+Código:    MIT License
+Contenido: CC BY 4.0
+```
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## El repositorio mínimo de un curso
+
+```
+mat281-2025-1/
+├── .gitignore          # archivos excluidos
+├── LICENSE             # MIT para el código
+├── README.md           # portada del repositorio
+├── lectures/           # material de clases
+│   └── semana01/
+│       ├── notebook.ipynb
+│       └── slides.qmd
+├── labs/               # guías de laboratorio
+│   └── lab01/
+│       ├── enunciado.qmd
+│       └── datos.csv
+├── assignments/        # tareas
+└── datasets/
+    └── raw/.gitkeep    # placeholder (datos en .gitignore)
+```
+
+::: {.callout-tip icon="false"}
+## Flujo semanal
+
+`git pull` → editar → `git add` → `git commit` → `git push` → sitio actualizado.
+:::
+
+------------------------------------------------------------------------
+
+##  {.final-slide background-color="#0F2044"}
+
+::: center-content
+**¿Preguntas?**
+
+------------------------------------------------------------------------
+
+Francisco Alfaro\
+`fralfaro@usm.cl`\
+Docencia Digital · UTFSM
+
+*2026*
+:::

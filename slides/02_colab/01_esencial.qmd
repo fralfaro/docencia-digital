@@ -1,0 +1,449 @@
+---
+title: "Colab esencial"
+subtitle: "Notebooks en la nube para docencia práctica"
+author: "Francisco Alfaro"
+institute: "Docencia Digital · UTFSM"
+date: today
+date-format: "MMMM YYYY"
+
+format:
+  revealjs:
+    theme: [default, ../custom.scss]
+    slide-number: true
+    progress: true
+    history: false
+    transition: fade
+    transition-speed: fast
+    incremental: false
+    fig-align: center
+    highlight-style: github
+    code-block-bg: true
+    center: false
+    width: 1280
+    height: 720
+    margin: 0.08
+    footer: "Docencia Digital · UTFSM · 2026"
+    logo: "../../assets/img/brand/brand__usm.png"
+
+execute:
+  echo: false
+  warning: false
+---
+
+##  {.title-slide background-color="#0F2044"}
+
+::: title-block
+**Colab esencial**
+
+Notebooks en la nube para docencia práctica
+:::
+
+::: subtitle-block
+Sesión 2 — Google Colab para docencia
+:::
+
+::: author-block
+Francisco Alfaro\
+Docencia Digital · UTFSM · 2026
+:::
+
+------------------------------------------------------------------------
+
+## El problema que resuelve Colab
+
+::: columns
+::: {.column width="55%"}
+**El escenario sin Colab:**
+
+- Un estudiante tiene Mac, otro Windows, otro Linux
+- Uno tiene Python 3.10, otro 3.12
+- Uno tiene instalado pandas, otro no
+- Las primeras dos horas de clase se van en *"a mí no me funciona"*
+
+**Con Google Colab:**
+
+Todos ejecutan el mismo código en el mismo entorno, desde el navegador, **sin instalar nada**.
+
+:::
+
+::: {.column width="45%"}
+
+::: {.callout-note icon="false"}
+## El flujo docente
+
+1. Docente sube el notebook
+2. Estudiantes abren el link
+3. Empiezan a trabajar
+
+Sin instalación. Sin configuración. Sin excusas.
+:::
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+## ¿Qué es un notebook y la lógica de celdas?
+
+::: columns
+::: {.column width="55%"}
+Un notebook mezcla **código ejecutable** y **texto formateado** en una secuencia de bloques llamados **celdas**.
+
+```{mermaid}
+graph TD
+    N["📓 Notebook"]
+    N --> C1["📝 Celda Markdown\n## Regresión lineal\nLa regresión lineal modela..."]
+    N --> C2["💻 Celda de código\nfrom sklearn.linear_model import...\nmodelo = LinearRegression()"]
+    N --> C3["📊 Output\nCoeficiente: 2.34 · [gráfico]"]
+    N --> C4["📝 Celda Markdown\n### Interpretación\nEl coeficiente de 2.34..."]
+```
+:::
+
+::: {.column width="45%"}
+
+A diferencia de:
+
+- **Script Python** → solo código
+- **Documento Word** → solo texto
+- **Notebook** → explicación + ejecución + resultado entrelazados
+
+::: {.callout-tip icon="false"}
+## Para docencia
+
+Una celda explica el concepto, la siguiente lo demuestra con código, la siguiente muestra el resultado.
+:::
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Colab vs Jupyter local: las ventajas clave
+
+| Característica | Jupyter local | Google Colab |
+|---|---|---|
+| Instalación | Requerida | **No requerida** |
+| Entorno | Depende del OS | **Idéntico para todos** |
+| GPU gratuita | No | **Sí (T4, L4)** |
+| Colaboración en tiempo real | No | **Sí, como Google Docs** |
+| Almacenamiento | Local | Google Drive |
+| Costo | Gratis | **Gratis** (con límites) |
+
+::: fragment
+::: {.callout-important icon="false"}
+## La ventaja decisiva para docencia
+
+**Heterogeneidad de entornos eliminada.** El docente sube un notebook; los estudiantes lo ejecutan sin tocar nada de su sistema.
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Interfaz de Colab: lo esencial para empezar
+
+::: columns
+::: {.column width="55%"}
+**Crear un notebook:**
+
+→ [colab.research.google.com](https://colab.research.google.com) → New notebook
+
+**Tipos de celda:**
+
+- **Código** → se ejecuta con Shift+Enter
+- **Texto** → Markdown renderizado
+
+**Shortcuts imprescindibles:**
+
+| Acción | Atajo |
+|---|---|
+| Ejecutar celda | `Shift+Enter` |
+| Ejecutar + nueva celda | `Alt+Enter` |
+| Nueva celda arriba | `A` (en modo comando) |
+| Nueva celda abajo | `B` (en modo comando) |
+| Modo comando | `Esc` |
+| Modo edición | `Enter` |
+:::
+
+::: {.column width="45%"}
+
+**Runtime y GPU:**
+
+Runtime → Change runtime type
+
+- **CPU** → suficiente para la mayoría
+- **T4 GPU** → modelos de ML, visión computacional
+- **L4 GPU** → modelos grandes (disponible en Colab Pro)
+
+::: {.callout-note icon="false"}
+## Límite de sesión gratuita
+
+~12 horas continuas. Para sesiones largas de entrenamiento: Colab Pro (~$10/mes) o usar recursos institucionales.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Acceso a datos: las cuatro formas
+
+::: columns
+::: {.column width="55%"}
+**1. Subida directa (datos pequeños):**
+
+```python
+from google.colab import files
+uploaded = files.upload()
+# Se abre diálogo de selección de archivo
+```
+
+**2. Desde URL pública (CSV, JSON):**
+
+```python
+import pandas as pd
+df = pd.read_csv('https://raw.githubusercontent.com/...')
+```
+
+**3. Desde Google Drive:**
+
+```python
+from google.colab import drive
+drive.mount('/content/drive')
+df = pd.read_csv('/content/drive/MyDrive/datos.csv')
+```
+:::
+
+::: {.column width="45%"}
+
+**4. Descargar con wget/curl:**
+
+```python
+!wget https://ejemplo.com/dataset.zip
+!unzip dataset.zip
+```
+
+**Instalar librerías adicionales:**
+
+```python
+!pip install seaborn plotly
+```
+
+::: {.callout-tip icon="false"}
+## Recomendación para docencia
+
+Usa datos en URLs públicas (GitHub raw, repositorio del curso). Los estudiantes los cargan automáticamente sin montar Drive ni subir archivos.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Colaboración y compartir notebooks
+
+::: columns
+::: {.column width="50%"}
+**Compartir como Google Docs:**
+
+- Clic en **Share** → Agregar emails
+- Colaboración en tiempo real (múltiples cursores)
+- Perfecto para trabajo en equipo durante la clase
+
+**Para toda la clase:**
+
+- Share → *Anyone with the link can view*
+- Los estudiantes hacen *File → Save a copy in Drive* → su propia copia
+
+**Abrir en Colab desde GitHub:**
+
+Agrega a la URL de GitHub:
+
+```
+https://colab.research.google.com/github/
+usuario/repo/blob/main/notebook.ipynb
+```
+:::
+
+::: {.column width="50%"}
+
+**Compartir con botón en el README:**
+
+```markdown
+[![Open In Colab](https://colab.research.google.com/assets/
+colab-badge.svg)](https://colab.research.google.com/github/
+usuario/repo/blob/main/notebook.ipynb)
+```
+
+![](https://colab.research.google.com/assets/colab-badge.svg)
+
+::: {.callout-note icon="false"}
+## Flujo recomendado para labs
+
+Notebook en GitHub → link en el sitio del curso → estudiantes hacen su copia en Drive → trabajan en su copia.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Formularios y widgets interactivos
+
+::: columns
+::: {.column width="55%"}
+**Colab Forms:** parámetros configurables sin tocar el código
+
+```python
+# @title Configurar modelo
+learning_rate = 0.01  # @param {type:"number"}
+num_epochs = 100      # @param {type:"slider", min:10, max:500}
+optimizer = "Adam"    # @param ["Adam", "SGD", "RMSprop"]
+```
+
+La celda muestra un formulario visual — el estudiante ajusta parámetros sin editar código.
+:::
+
+::: {.column width="45%"}
+
+**`ipywidgets` para dashboards:**
+
+```python
+import ipywidgets as widgets
+from IPython.display import display
+
+slider = widgets.IntSlider(
+    value=5, min=1, max=20,
+    description='K vecinos:'
+)
+
+def actualizar(k):
+    # Re-entrena con k vecinos
+    ...
+
+widgets.interactive(actualizar, k=slider)
+```
+
+::: {.callout-tip icon="false"}
+## Para clases de estadística
+
+Sliders que cambian parámetros y actualizan gráficos en tiempo real. Los estudiantes desarrollan intuición sin escribir código.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Conectar Colab con GitHub
+
+::: columns
+::: {.column width="55%"}
+**Clonar y trabajar con el repo del curso:**
+
+```python
+# Clonar repositorio
+!git clone https://github.com/usuario/mat281.git
+%cd mat281
+
+# Ver estructura
+!ls -la
+
+# Instalar dependencias del proyecto
+!pip install -r requirements.txt
+```
+
+**Guardar cambios (con autenticación):**
+
+```python
+!git config user.email "juan@usm.cl"
+!git config user.name "Juan Pérez"
+!git add .
+!git commit -m "feat: completo ejercicio 3"
+!git push
+# → pedirá token de GitHub
+```
+:::
+
+::: {.column width="45%"}
+
+**Patrón recomendado para estudiantes:**
+
+1. Fork del repositorio del curso
+2. Abrir su fork en Colab
+3. Trabajar → guardar en Drive
+4. Push al fork → Pull Request
+
+::: {.callout-warning icon="false"}
+## Token de GitHub en Colab
+
+Nunca pongas el token directamente en el notebook. Usa userdata de Colab:
+
+```python
+from google.colab import userdata
+token = userdata.get('GITHUB_TOKEN')
+```
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Buenas prácticas docentes con Colab
+
+::: columns
+::: {.column width="50%"}
+**En el notebook para los estudiantes:**
+
+✅ Celda de instalación al inicio (todo en una sola)
+
+```python
+!pip install pandas matplotlib seaborn -q
+```
+
+✅ Celda de verificación de entorno
+
+```python
+import sys
+print(f"Python {sys.version}")
+import pandas as pd
+print(f"pandas {pd.__version__}")
+```
+
+✅ Celdas de tarea claramente marcadas
+
+```python
+# ============ TU CÓDIGO AQUÍ ============
+
+# ========================================
+```
+:::
+
+::: {.column width="50%"}
+
+**Lo que no hacer:**
+
+❌ Datos que requieren Drive montado (depende de la cuenta del estudiante)
+
+❌ Notebooks sin reiniciar antes de publicar (`Kernel → Restart and Run All`)
+
+❌ Celdas en desorden que solo funcionan si ejecutas en cierto orden
+
+::: {.callout-important icon="false"}
+## Antes de publicar un notebook
+
+Siempre hacer `Runtime → Restart and run all` y verificar que funciona de inicio a fin sin errores.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+##  {.final-slide background-color="#0F2044"}
+
+::: center-content
+**¿Preguntas?**
+
+------------------------------------------------------------------------
+
+Francisco Alfaro\
+`fralfaro@usm.cl`\
+Docencia Digital · UTFSM
+
+*2026*
+:::

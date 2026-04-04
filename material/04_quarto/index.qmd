@@ -1,0 +1,21 @@
+---
+title: "Quarto para material académico"
+format:
+  html:
+    toc: false
+---
+
+## Objetivo
+
+Este módulo cubre el uso de Quarto como sistema de publicación científica reproducible para la producción de documentos, sitios web y presentaciones académicas. Se estudia la arquitectura del sistema, la creación de documentos con código ejecutable, referencias cruzadas y callouts pedagógicos, la producción de presentaciones RevealJS, la construcción de sitios web de curso, la publicación automática en GitHub Pages y la integración de todos los componentes en un flujo de trabajo docente semestral. Al finalizar el módulo, el participante tendrá el sitio web de su curso publicado con actualización automática.
+
+## Contenidos
+
+| # | Tema | Presentación |
+|:--:|------|:------------:|
+| 1 | [Qué es Quarto y por qué usarlo — Sistema de publicación científica](quarto_01_intro.qmd) | [slides](../../slides/04_quarto/01_intro.html) |
+| 2 | [Documentos reproducibles — Chunks, callouts y referencias cruzadas](quarto_02_documentos.qmd) | [slides](../../slides/04_quarto/02_documentos.html) |
+| 3 | [Presentaciones con RevealJS — Slides académicas con código y ecuaciones](quarto_03_revealjs.qmd) | [slides](../../slides/04_quarto/03_revealjs.html) |
+| 4 | [Sitios web y blogs docentes — Publicar el curso completo como sitio web](quarto_04_sitios.qmd) | [slides](../../slides/04_quarto/04_sitios.html) |
+| 5 | [Publicación con GitHub Pages — De archivo local a sitio web en minutos](quarto_05_pages.qmd) | [slides](../../slides/04_quarto/05_pages.html) |
+| 6 | [Flujo docente completo con Quarto — Del repositorio vacío al curso publicado](quarto_06_flujo.qmd) | [slides](../../slides/04_quarto/06_flujo.html) |

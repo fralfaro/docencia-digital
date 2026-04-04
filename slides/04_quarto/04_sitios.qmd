@@ -1,0 +1,408 @@
+---
+title: "Sitios web y blogs docentes"
+subtitle: "Publicar el curso completo como sitio web con Quarto"
+author: "Francisco Alfaro"
+institute: "Docencia Digital · UTFSM"
+date: today
+date-format: "MMMM YYYY"
+
+format:
+  revealjs:
+    theme: [default, ../custom.scss]
+    slide-number: true
+    progress: true
+    history: false
+    transition: fade
+    transition-speed: fast
+    incremental: false
+    fig-align: center
+    highlight-style: github
+    code-block-bg: true
+    center: false
+    width: 1280
+    height: 720
+    margin: 0.08
+    footer: "Docencia Digital · UTFSM · 2026"
+    logo: "../../assets/img/brand/brand__usm.png"
+
+execute:
+  echo: false
+  warning: false
+---
+
+##  {.title-slide background-color="#0F2044"}
+
+::: title-block
+**Sitios web y blogs docentes**
+
+Publicar el curso completo como sitio web con Quarto
+:::
+
+::: subtitle-block
+Sesión 4 — Quarto para material académico
+:::
+
+::: author-block
+Francisco Alfaro\
+Docencia Digital · UTFSM · 2026
+:::
+
+------------------------------------------------------------------------
+
+## Por qué un sitio web del curso importa
+
+::: columns
+::: {.column width="55%"}
+Un sitio web del curso no es un lujo — es una **decisión de diseño pedagógico**.
+
+Cuando los estudiantes pueden:
+
+- Navegar el material en cualquier dispositivo
+- Buscar un concepto dentro del apunte
+- Ver el código y sus resultados en el mismo lugar
+- Acceder a todo sin descargar nada
+
+... el acceso al conocimiento se **democratiza de forma concreta**.
+
+Quarto produce sitios web profesionales sin saber HTML, CSS ni JavaScript.
+:::
+
+::: {.column width="45%"}
+
+::: {.callout-note icon="false"}
+## El resultado
+
+- Búsqueda integrada en todo el sitio
+- Modo oscuro/claro automático
+- Navegación con sidebar
+- Responsive (funciona en móvil)
+- Se despliega en GitHub Pages en minutos
+:::
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Crear el proyecto website
+
+```bash
+# Crear un proyecto website nuevo
+quarto create project website mat281-sitio
+```
+
+**Estructura generada:**
+
+```
+mat281-sitio/
+├── _quarto.yml       # configuración central del sitio
+├── index.qmd         # página de inicio (home)
+├── about.qmd         # página "acerca de" (ejemplo)
+└── styles.css        # estilos adicionales
+```
+
+::: {.callout-tip icon="false"}
+## El archivo `_quarto.yml` es el cerebro del sitio
+
+Ahí defines la estructura de navegación, el tema visual, el footer, y las opciones de ejecución de código para todo el sitio. Los archivos `.qmd` individuales heredan esas opciones.
+:::
+
+------------------------------------------------------------------------
+
+## `_quarto.yml` para el sitio del curso
+
+```yaml
+project:
+  type: website
+
+website:
+  title: "MAT281 — 2025-1"
+  description: "Aplicaciones de la Matemática en Ingeniería"
+  favicon: assets/img/brand/brand__usm.png
+
+  navbar:
+    logo: assets/img/brand/brand__usm.png
+    left:
+      - text: "Inicio"
+        href: index.qmd
+      - text: "Clases"
+        href: lectures/index.qmd
+      - text: "Laboratorios"
+        href: labs/index.qmd
+      - text: "Tareas"
+        href: assignments/index.qmd
+    right:
+      - icon: github
+        href: https://github.com/tu-username/mat281-2025-1
+      - icon: search
+        text: Buscar
+
+  page-footer:
+    center: |
+      © 2025 Juan Pérez · UTFSM ·
+      [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+```
+
+------------------------------------------------------------------------
+
+## Navegación con sidebar
+
+::: columns
+::: {.column width="55%"}
+**Sidebar automático por sección:**
+
+```yaml
+website:
+  sidebar:
+    style: floating
+    search: true
+    contents:
+      - section: "Semana 1 — Introducción"
+        contents:
+          - lectures/semana01/intro.qmd
+          - lectures/semana01/notebook.qmd
+      - section: "Semana 2 — Estadística"
+        contents:
+          - lectures/semana02/teoria.qmd
+          - lectures/semana02/notebook.qmd
+      - section: "Laboratorios"
+        contents:
+          - labs/lab01.qmd
+          - labs/lab02.qmd
+```
+:::
+
+::: {.column width="45%"}
+
+**Listado automático (listing):**
+
+```yaml
+# En lectures/index.qmd
+---
+title: "Clases"
+listing:
+  contents: "semana*"
+  type: grid
+  sort: "date"
+  fields: [date, title, description]
+---
+```
+
+Genera automáticamente una cuadrícula o tabla con todos los archivos que coincidan con el patrón. Se actualiza solo cuando agregas nuevos archivos.
+
+::: {.callout-tip icon="false"}
+## Para el blog del curso
+
+El listing tipo `default` o `grid` con `sort: "date desc"` crea automáticamente un blog de actualizaciones del curso.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Temas visuales y personalización
+
+::: columns
+::: {.column width="55%"}
+**Temas incluidos (Bootswatch):**
+
+```yaml
+format:
+  html:
+    theme: cosmo      # limpio, moderno
+    # otras opciones: flatly, litera, lumen,
+    # minty, pulse, sandstone, simplex,
+    # sketchy, spacelab, united, yeti
+```
+
+**Modo oscuro/claro automático:**
+
+```yaml
+format:
+  html:
+    theme:
+      light: [flatly, light.scss]
+      dark:  [darkly, dark.scss]
+```
+
+El visitante puede alternar entre modos. La preferencia del sistema operativo se detecta automáticamente.
+:::
+
+::: {.column width="45%"}
+
+**Opciones de formato HTML:**
+
+```yaml
+format:
+  html:
+    toc: true              # tabla de contenidos
+    toc-depth: 3
+    toc-location: right    # left, right, body
+    number-sections: true
+    code-fold: true        # código colapsable
+    code-tools: true       # botón copiar, ver código
+    code-copy: true
+    link-external-icon: true
+    link-external-newwindow: true
+    fig-align: center
+    highlight-style: github
+```
+
+::: {.callout-note icon="false"}
+## `code-fold: true` en docencia
+
+Permite mostrar el output (figura, tabla) y esconder el código por defecto. Los estudiantes que quieren ver el código hacen clic para expandir.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Estructura de carpetas para el sitio del curso
+
+```
+mat281-2025-1/
+├── _quarto.yml            # configuración central
+├── index.qmd              # página de inicio
+├── assets/
+│   ├── img/
+│   │   └── brand__usm.png
+│   └── scss/
+│       ├── light.scss
+│       └── dark.scss
+├── lectures/
+│   ├── index.qmd          # listing de clases
+│   ├── semana01/
+│   │   ├── intro.qmd
+│   │   └── notebook.qmd
+│   └── semana02/
+│       └── notebook.qmd
+├── labs/
+│   ├── index.qmd
+│   └── lab01.qmd
+├── assignments/
+│   ├── index.qmd
+│   └── tarea01.qmd
+└── _freeze/               # resultados cacheados (commitear)
+```
+
+------------------------------------------------------------------------
+
+## Renderizar y previsualizar el sitio
+
+::: columns
+::: {.column width="55%"}
+**Preview en tiempo real:**
+
+```bash
+quarto preview
+# → abre el navegador en localhost:PORT
+# → se actualiza al guardar cualquier .qmd
+```
+
+**Render completo:**
+
+```bash
+quarto render
+# → genera _site/ con todos los HTML
+
+# Render solo un archivo
+quarto render lectures/semana03/notebook.qmd
+```
+
+**Inspeccionar el sitio generado:**
+
+```bash
+ls _site/
+# index.html
+# lectures/
+# labs/
+# ...
+```
+:::
+
+::: {.column width="45%"}
+
+**Opciones de `_quarto.yml` para eficiencia:**
+
+```yaml
+execute:
+  freeze: auto      # no re-ejecutar si no cambió
+  echo: true
+  warning: false
+  message: false
+
+# Excluir archivos del render
+project:
+  render:
+    - "*.qmd"
+    - "!drafts/*"  # excluir carpeta drafts
+```
+
+::: {.callout-tip icon="false"}
+## En equipos con ayudantes
+
+Cada ayudante trabaja en su rama, hace PR. GitHub Actions renderiza y verifica automáticamente antes del merge.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Open Graph y metadatos para compartir
+
+::: columns
+::: {.column width="55%"}
+**Cuando compartes el link del curso en redes sociales o WhatsApp, Quarto puede mostrar una vista previa enriquecida.**
+
+```yaml
+website:
+  open-graph:
+    title: "MAT281 — 2025-1"
+    description: "Material completo del curso de Aplicaciones de la Matemática en Ingeniería"
+    image: assets/img/og-preview.png
+
+  twitter-card:
+    title: "MAT281 — 2025-1"
+    description: "Material abierto bajo CC BY 4.0"
+    image: assets/img/og-preview.png
+    card-style: summary_large_image
+```
+:::
+
+::: {.column width="45%"}
+
+**Metadatos por página:**
+
+```yaml
+# Al inicio de cualquier .qmd
+---
+title: "Semana 3: Regresión Lineal"
+description: "Teoría, implementación en Python y aplicación a datos reales"
+image: figures/scatter.png
+---
+```
+
+::: {.callout-note icon="false"}
+## Para difusión institucional
+
+Un sitio con metadatos Open Graph correctos se ve profesional cuando se comparte en Twitter, LinkedIn o en el portal de la universidad.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+##  {.final-slide background-color="#0F2044"}
+
+::: center-content
+**¿Preguntas?**
+
+------------------------------------------------------------------------
+
+Francisco Alfaro\
+`fralfaro@usm.cl`\
+Docencia Digital · UTFSM
+
+*2026*
+:::

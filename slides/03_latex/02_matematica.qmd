@@ -1,0 +1,426 @@
+---
+title: "Matemática y escritura científica"
+subtitle: "Ecuaciones, teoremas y documentos técnicos en LaTeX"
+author: "Francisco Alfaro"
+institute: "Docencia Digital · UTFSM"
+date: today
+date-format: "MMMM YYYY"
+
+format:
+  revealjs:
+    theme: [default, ../custom.scss]
+    slide-number: true
+    progress: true
+    history: false
+    transition: fade
+    transition-speed: fast
+    incremental: false
+    fig-align: center
+    highlight-style: github
+    code-block-bg: true
+    center: false
+    width: 1280
+    height: 720
+    margin: 0.08
+    footer: "Docencia Digital · UTFSM · 2026"
+    logo: "../../assets/img/brand/brand__usm.png"
+
+execute:
+  echo: false
+  warning: false
+---
+
+##  {.title-slide background-color="#0F2044"}
+
+::: title-block
+**Matemática y escritura científica**
+
+Ecuaciones, teoremas y documentos técnicos en LaTeX
+:::
+
+::: subtitle-block
+Sesión 3 — Overleaf y LaTeX para docencia
+:::
+
+::: author-block
+Francisco Alfaro\
+Docencia Digital · UTFSM · 2026
+:::
+
+------------------------------------------------------------------------
+
+## El origen: por qué LaTeX existe para matemáticas
+
+::: columns
+::: {.column width="60%"}
+Donald Knuth se frustró con la calidad tipográfica de las matemáticas en los procesadores de texto de los años 80.
+
+El resultado fue TeX — un sistema que produce ecuaciones con una **precisión y elegancia que ningún otro software iguala**.
+
+Para un docente de ingeniería o matemáticas, dominar la escritura matemática en LaTeX es la diferencia entre material de clase que se ve **amateur** y material que se ve como un **libro de texto publicado**.
+:::
+
+::: {.column width="40%"}
+
+::: {.callout-note icon="false"}
+## La misma ecuación
+
+**Word:** imagen capturada de un editor de ecuaciones, no escalable, no editable como texto.
+
+**LaTeX:** texto estructurado, escala perfectamente, referenciable, actualizable.
+:::
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Modo math inline y display: los dos contextos
+
+::: columns
+::: {.column width="55%"}
+**Inline** (`$...$`) — dentro del texto:
+
+```latex
+Sea $f(x) = x^2 + 3x - 2$ una función cuadrática.
+Su derivada es $f'(x) = 2x + 3$, que se anula
+en $x = -3/2$.
+```
+
+**Display** (`\begin{equation}` o `\[...\]`) — línea propia:
+
+```latex
+La integral de Riemann se define como:
+\begin{equation}
+  \int_a^b f(x) \, dx = \lim_{n \to \infty}
+  \sum_{i=1}^n f(x_i^*) \Delta x
+  \label{eq:riemann}
+\end{equation}
+```
+
+→ Ver ecuación (\ref{eq:riemann}) — numeración automática.
+:::
+
+::: {.column width="45%"}
+
+**Múltiples líneas alineadas:**
+
+```latex
+\begin{align}
+  (a+b)^2 &= a^2 + 2ab + b^2 \\
+  (a-b)^2 &= a^2 - 2ab + b^2 \\
+  (a+b)(a-b) &= a^2 - b^2
+\end{align}
+```
+
+El `&` marca el punto de alineación. `\\` es el salto de línea.
+
+::: {.callout-tip icon="false"}
+## `equation*` y `align*`
+
+Con asterisco (`equation*`, `align*`) la ecuación no se numera. Sin asterisco, se numera automáticamente.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Notación matemática avanzada
+
+::: columns
+::: {.column width="50%"}
+**Matrices:**
+
+```latex
+\begin{pmatrix}
+  a & b \\
+  c & d
+\end{pmatrix}
+\quad
+\begin{bmatrix}
+  1 & 0 & 0 \\
+  0 & 1 & 0 \\
+  0 & 0 & 1
+\end{bmatrix}
+```
+
+**Sistemas de ecuaciones:**
+
+```latex
+\begin{cases}
+  2x + 3y = 7 \\
+  x - y = 1
+\end{cases}
+```
+
+**Normas y valores absolutos:**
+
+```latex
+\| \mathbf{v} \|_2
+\quad
+|x - \mu|
+\quad
+\left| \frac{x}{y} \right|  % ajuste automático
+```
+:::
+
+::: {.column width="50%"}
+
+**Operadores avanzados:**
+
+```latex
+% Límites
+\lim_{x \to 0} \frac{\sin x}{x} = 1
+
+% Derivadas parciales
+\frac{\partial f}{\partial x}
+\frac{\partial^2 f}{\partial x^2}
+
+% Gradiente, divergencia, laplaciano
+\nabla f \quad \nabla \cdot \mathbf{F} \quad \Delta f
+
+% Esperanza, varianza
+\mathbb{E}[X] \quad \text{Var}(X)
+
+% Conjuntos
+\mathbb{R}^n \quad \mathbb{Z} \quad \mathbb{N}
+```
+
+::: {.callout-tip icon="false"}
+## `\left(` y `\right)`
+
+Ajustan automáticamente el tamaño del paréntesis al contenido. Siempre úsalos con fracciones y matrices.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Teoremas, lemas y demostraciones
+
+::: columns
+::: {.column width="55%"}
+**Definir los ambientes en el preámbulo:**
+
+```latex
+\usepackage{amsthm}
+
+\newtheorem{theorem}{Teorema}[section]
+\newtheorem{lemma}[theorem]{Lema}
+\newtheorem{corollary}[theorem]{Corolario}
+\newtheorem{definition}{Definición}[section]
+
+\theoremstyle{remark}
+\newtheorem{remark}{Observación}
+\newtheorem{example}{Ejemplo}
+```
+:::
+
+::: {.column width="45%"}
+
+**Usarlos en el texto:**
+
+```latex
+\begin{theorem}[Pitágoras]
+  \label{thm:pitagoras}
+  En todo triángulo rectángulo, $c^2 = a^2 + b^2$.
+\end{theorem}
+
+\begin{proof}
+  Sea un triángulo con catetos $a$, $b$
+  e hipotenusa $c$...
+  \qedhere
+\end{proof}
+
+Como consecuencia del Teorema~\ref{thm:pitagoras}:
+
+\begin{corollary}
+  $c = \sqrt{a^2 + b^2}$.
+\end{corollary}
+```
+
+::: {.callout-note icon="false"}
+## `\qedhere`
+
+Pone el cuadrado QED (∎) al final de la demostración. Si la prueba termina en una ecuación display, poner `\qedhere` dentro del ambiente math.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Referencias cruzadas automáticas
+
+::: columns
+::: {.column width="55%"}
+**El mecanismo:**
+
+1. Etiquetas con `\label{tipo:nombre}` en ecuaciones, figuras, tablas, secciones
+2. Referencia con `\ref{tipo:nombre}` o `\eqref{tipo:nombre}`
+
+```latex
+En la Sección~\ref{sec:metodologia} describimos...
+
+La ecuación de regresión es:
+\begin{equation}
+  \hat{y} = \beta_0 + \beta_1 x
+  \label{eq:regresion}
+\end{equation}
+
+Sustituyendo en~\eqref{eq:regresion} obtenemos...
+
+Los resultados de la Tabla~\ref{tab:resultados}
+muestran que...
+```
+:::
+
+::: {.column width="45%"}
+
+**Convención de nombres:**
+
+```
+Ecuaciones:  eq:nombre
+Figuras:     fig:nombre
+Tablas:      tab:nombre
+Secciones:   sec:nombre
+Teoremas:    thm:nombre
+Definiciones: def:nombre
+```
+
+::: {.callout-important icon="false"}
+## La ventaja real
+
+Si insertas una nueva sección en el medio, **todos los números se actualizan solos**. Nunca más numeración manual que se desordena.
+
+Se necesitan **dos compilaciones** para que las referencias queden correctas en Overleaf.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## El paquete `amsmath`: matemáticas completas
+
+::: columns
+::: {.column width="55%"}
+```latex
+\usepackage{amsmath}   % siempre incluirlo
+\usepackage{amssymb}   % símbolos extra: ℝ, ℤ, ℕ
+\usepackage{mathtools} % extiende amsmath
+```
+
+**Ambientes más usados de `amsmath`:**
+
+| Ambiente | Para qué |
+|---|---|
+| `equation` | Ecuación numerada |
+| `align` | Varias ecuaciones alineadas |
+| `gather` | Ecuaciones centradas, sin alinear |
+| `multline` | Ecuación muy larga en varias líneas |
+| `cases` | Definición por casos |
+| `pmatrix` / `bmatrix` | Matrices con paréntesis / corchetes |
+:::
+
+::: {.column width="45%"}
+
+**Operadores matemáticos:**
+
+```latex
+% Definir operadores personalizados
+\DeclareMathOperator{\argmax}{argmax}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\rank}{rank}
+
+% Uso
+\argmax_{x} f(x)
+\diag(\lambda_1, \ldots, \lambda_n)
+```
+
+::: {.callout-tip icon="false"}
+## `\text{}` dentro de math mode
+
+Para texto normal dentro de una ecuación:
+
+```latex
+f(x) = x^2 \quad \text{para } x \geq 0
+```
+
+Sin `\text{}`, el texto en math mode se convierte en variables itálicas pegadas.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Documento científico completo: estructura recomendada
+
+```latex
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{graphicx, float}
+\usepackage[colorlinks=true, linkcolor=blue]{hyperref}
+\usepackage[style=apa, backend=biber]{biblatex}
+\addbibresource{refs.bib}
+
+\newtheorem{theorem}{Teorema}[section]
+\theoremstyle{definition}
+\newtheorem{definition}{Definición}[section]
+
+\title{Título del Paper}
+\author{Autor \\ \small Institución \\ \small email@usm.cl}
+\date{\today}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+  Resumen del trabajo en 150-250 palabras...
+\end{abstract}
+\tableofcontents
+
+\section{Introducción}      \label{sec:intro}
+\section{Marco teórico}     \label{sec:teoria}
+\section{Metodología}       \label{sec:metodo}
+\section{Resultados}        \label{sec:resultados}
+\section{Conclusiones}      \label{sec:conclusion}
+
+\printbibliography
+\end{document}
+```
+
+------------------------------------------------------------------------
+
+## Recursos para escritura matemática en LaTeX
+
+| Recurso | URL | Para qué |
+|---|---|---|
+| **Detexify** | detexify.kirelabs.org | Dibuja el símbolo → te da el comando |
+| **Mathpix** | mathpix.com | Fotografía una ecuación → LaTeX automático |
+| **LaTeX Math Symbols** | overleaf.com/learn | Referencia completa de símbolos |
+| **Overleaf Learn** | overleaf.com/learn | Tutoriales oficiales con ejemplos |
+| **amsmath user guide** | CTAN | Documentación oficial del paquete |
+
+::: {.callout-tip icon="false"}
+## Flujo con IA + LaTeX
+
+**ChatGPT / Claude:** *"Escribe en LaTeX la demostración del teorema de Bayes"* → revisar y corregir el output.
+
+**Mathpix:** Fotografía una ecuación de un libro de texto → LaTeX listo para pegar. Muy útil para transcribir material de clase.
+:::
+
+------------------------------------------------------------------------
+
+##  {.final-slide background-color="#0F2044"}
+
+::: center-content
+**¿Preguntas?**
+
+------------------------------------------------------------------------
+
+Francisco Alfaro\
+`fralfaro@usm.cl`\
+Docencia Digital · UTFSM
+
+*2026*
+:::

@@ -1,0 +1,442 @@
+---
+title: "Prompting efectivo para docentes"
+subtitle: "Cómo comunicarse con la IA para obtener resultados académicos de calidad"
+author: "Francisco Alfaro"
+institute: "Docencia Digital · UTFSM"
+date: today
+date-format: "MMMM YYYY"
+
+format:
+  revealjs:
+    theme: [default, ../custom.scss]
+    slide-number: true
+    progress: true
+    history: false
+    transition: fade
+    transition-speed: fast
+    incremental: false
+    fig-align: center
+    highlight-style: github
+    code-block-bg: true
+    center: false
+    width: 1280
+    height: 720
+    margin: 0.08
+    footer: "Docencia Digital · UTFSM · 2026"
+    logo: "../../assets/img/brand/brand__usm.png"
+
+execute:
+  echo: false
+  warning: false
+---
+
+##  {.title-slide background-color="#0F2044"}
+
+::: title-block
+**Prompting efectivo para docentes**
+
+Cómo comunicarse con la IA para obtener resultados académicos de calidad
+:::
+
+::: subtitle-block
+Sesión 5 — Inteligencia Artificial para docencia
+:::
+
+::: author-block
+Francisco Alfaro\
+Docencia Digital · UTFSM · 2026
+:::
+
+------------------------------------------------------------------------
+
+## La diferencia entre probar y usar productivamente
+
+::: columns
+::: {.column width="60%"}
+La diferencia entre un docente que *"prueba la IA"* y uno que la integra productivamente **no está en el modelo que usan** — está en cómo formulan sus instrucciones.
+
+Un prompt mal construido → output genérico que hay que reescribir completo.
+
+Un prompt bien construido → material que solo necesita revisión menor.
+
+La distancia entre ambos suele ser cuestión de **agregar tres o cuatro líneas de contexto**.
+:::
+
+::: {.column width="40%"}
+
+::: {.callout-note icon="false"}
+## La inversión correcta
+
+5 minutos escribiendo un buen prompt = 30 minutos de edición ahorrados.
+
+El tiempo se invierte antes, no después.
+:::
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Los cuatro elementos de un buen prompt
+
+::: columns
+::: {.column width="55%"}
+**1. Rol** → quién es el modelo en esta tarea
+
+```
+Actúa como un docente universitario de estadística
+para estudiantes de tercer año de ingeniería.
+```
+
+**2. Tarea** → qué debe hacer exactamente
+
+```
+Escribe una explicación del teorema central del límite
+con un ejemplo numérico concreto.
+```
+
+**3. Contexto** → información relevante del entorno
+
+```
+Mis estudiantes ya saben calcular la media y la varianza,
+pero no han visto distribuciones de muestreo.
+```
+
+**4. Formato** → cómo debe presentarse el resultado
+
+```
+Usa formato Markdown. Incluye ecuaciones en LaTeX.
+Longitud: 3-4 párrafos. Termina con 2 preguntas de reflexión.
+```
+:::
+
+::: {.column width="45%"}
+
+```{mermaid}
+graph TD
+    P["📝 Prompt"]
+    P --> R["🎭 Rol\n¿quién es el modelo?"]
+    P --> T["✅ Tarea\n¿qué debe hacer?"]
+    P --> C["📋 Contexto\n¿qué debe saber?"]
+    P --> F["📄 Formato\n¿cómo debe presentarlo?"]
+```
+
+::: {.callout-tip icon="false"}
+## Ninguno es obligatorio siempre
+
+Pero la ausencia de cualquiera de ellos reduce la calidad del output. Con los cuatro, el resultado es predeciblemente bueno.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Prompts listos para usar: generación de contenido
+
+::: columns
+::: {.column width="55%"}
+**Explicación de un concepto:**
+
+```
+Eres docente universitario de matemáticas.
+Explica el concepto de [CONCEPTO] para
+estudiantes de ingeniería que ya conocen
+[CONOCIMIENTO PREVIO] pero no [LO QUE NO SABEN].
+
+Incluye:
+- Definición formal
+- Una analogía intuitiva
+- Un ejemplo numérico paso a paso
+- Una aplicación práctica en ingeniería
+
+Formato: Markdown con ecuaciones en LaTeX.
+Extensión: 400-600 palabras.
+```
+
+**Ejercicios de práctica:**
+
+```
+Genera 5 ejercicios de [TEMA] para estudiantes
+de tercer año de ingeniería, nivel intermedio.
+
+Para cada ejercicio incluye:
+- Enunciado claro
+- Datos necesarios (inventados pero realistas)
+- La respuesta esperada al final (en spoiler o separado)
+
+Aumenta gradualmente la dificultad del ejercicio 1 al 5.
+```
+:::
+
+::: {.column width="45%"}
+
+**Preguntas de examen:**
+
+```
+Crea 10 preguntas de opción múltiple sobre
+[TEMA] para un examen de [NIVEL DE DIFICULTAD].
+
+Requisitos:
+- 4 alternativas cada una (A, B, C, D)
+- Una sola respuesta correcta
+- Los distractores deben ser plausibles
+  (errores conceptuales comunes, no absurdos)
+- Indica la respuesta correcta y por qué
+
+Evita preguntas de memorización pura.
+Prioriza comprensión y aplicación.
+```
+
+::: {.callout-tip icon="false"}
+## Iterar el prompt
+
+Si el primer resultado no es lo que querías, no empieces de nuevo. Agrega: *"El ejercicio 3 es demasiado difícil. Reemplázalo por uno de nivel básico."*
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Prompts para retroalimentación
+
+::: columns
+::: {.column width="55%"}
+**Retroalimentar una entrega:**
+
+```
+Eres un docente que evalúa la siguiente entrega
+de un estudiante de tercer año de ingeniería.
+
+El enunciado era: [PEGAR ENUNCIADO]
+
+La entrega del estudiante es:
+[PEGAR ENTREGA]
+
+La rúbrica de evaluación tiene estos criterios:
+[PEGAR RÚBRICA]
+
+Proporciona retroalimentación que:
+1. Reconozca lo que el estudiante hizo bien
+2. Señale los errores específicos con referencia
+   a la línea o sección exacta
+3. Explique por qué cada error es un error
+4. Sugiera cómo corregirlo
+5. Sea constructiva y motivadora
+
+Tone: profesional pero accesible. No uses "muy bien"
+genérico — sé específico sobre qué fue lo bueno.
+```
+:::
+
+::: {.column width="45%"}
+
+**Generar una rúbrica:**
+
+```
+Crea una rúbrica de evaluación para la siguiente
+tarea de [MATERIA]:
+
+[DESCRIPCIÓN DE LA TAREA]
+
+La rúbrica debe:
+- Tener 5-6 criterios relevantes
+- 4 niveles de desempeño: Insuficiente, Suficiente,
+  Competente, Sobresaliente
+- Descriptores concretos y observables en cada celda
+  (no "entiende el concepto" sino "aplica correctamente
+  el teorema de...")
+- Sumar 100 puntos en total
+
+Formato: tabla Markdown.
+```
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Prompts para adaptar material
+
+::: columns
+::: {.column width="55%"}
+**Cambiar el nivel de dificultad:**
+
+```
+El siguiente texto está escrito para investigadores.
+Adapta la explicación para estudiantes de primer año
+de ingeniería, sin experiencia previa en el tema.
+
+Mantén la precisión conceptual pero:
+- Reemplaza la jerga técnica con lenguaje más accesible
+- Agrega analogías con situaciones cotidianas
+- Acorta las frases complejas
+
+Texto original:
+[PEGAR TEXTO]
+```
+
+**Traducir con preservación técnica:**
+
+```
+Traduce el siguiente texto del inglés al español.
+
+Contexto: es material de clase de estadística
+para ingeniería.
+
+Reglas de traducción:
+- Los términos técnicos en inglés que no tienen
+  traducción estándar en español, déjalos en inglés
+  la primera vez y pon la traducción entre paréntesis
+- Usa "tú" (no "usted") para el estudiante
+- Mantén las ecuaciones exactamente igual
+
+Texto:
+[PEGAR TEXTO]
+```
+:::
+
+::: {.column width="45%"}
+
+**Resumir material extenso:**
+
+```
+Resume el siguiente capítulo del libro de texto
+para estudiantes que lo usarán como guía de estudio
+antes de un examen.
+
+El resumen debe:
+- Tener máximo 500 palabras
+- Identificar los 5 conceptos más importantes
+- Incluir las fórmulas clave (en LaTeX)
+- Terminar con 3 preguntas de auto-evaluación
+
+Capítulo:
+[PEGAR CAPÍTULO]
+```
+
+::: {.callout-note icon="false"}
+## El límite de contexto importa
+
+Para documentos muy largos, divide el contenido en partes y resume por partes. Luego pide un resumen de los resúmenes.
+
+O usa NotebookLM que está diseñado para esto.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Prompts para planificación docente
+
+::: columns
+::: {.column width="55%"}
+**Planificar una unidad:**
+
+```
+Soy docente universitario de [MATERIA].
+Necesito diseñar una unidad de [N] semanas
+sobre [TEMA].
+
+Mis estudiantes:
+- Nivel: [tercero de ingeniería]
+- Conocimientos previos: [LISTAR]
+- Dificultades comunes: [LISTAR]
+
+Objetivo de aprendizaje al terminar:
+[DESCRIPCIÓN]
+
+Diseña la secuencia semanal incluyendo:
+- Tema de cada sesión (2 por semana)
+- Tipo de actividad (clase expositiva, lab, taller)
+- Evaluación formativa al final de cada semana
+- Un proyecto integrador para el final de la unidad
+```
+:::
+
+::: {.column width="45%"}
+
+**Generar casos de estudio:**
+
+```
+Crea un caso de estudio para una clase de
+[MATERIA] que:
+
+- Esté ambientado en un contexto real de Chile
+  o Latinoamérica (no ejemplos de EEUU)
+- Requiera aplicar [CONCEPTO O MÉTODO]
+- Tenga los datos necesarios incluidos en el enunciado
+- Permita múltiples aproximaciones correctas
+- Incluya preguntas de análisis y una de reflexión ética
+
+Nivel: tercer año de ingeniería.
+Tiempo estimado para resolverlo: 45-60 minutos.
+```
+
+::: {.callout-tip icon="false"}
+## Contexto local
+
+Pedir ejemplos con contexto chileno o latinoamericano produce material más cercano a los estudiantes — y diferenciado de los ejemplos genéricos.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Errores comunes en el prompting docente
+
+::: columns
+::: {.column width="50%"}
+**❌ El prompt sin contexto:**
+
+*"Explica la regresión lineal"*
+
+→ Respuesta genérica de Wikipedia
+
+**❌ El prompt ambiguo:**
+
+*"Hazlo más sencillo"*
+
+→ ¿Más corto? ¿Menor complejidad matemática? ¿Más ejemplos?
+
+**❌ Pedir todo de una vez:**
+
+*"Crea una unidad de 10 semanas con 50 ejercicios y 3 proyectos y una rúbrica para cada uno"*
+
+→ Output mediocre en todo porque es demasiado para un prompt
+:::
+
+::: {.column width="50%"}
+
+**✅ En cambio:**
+
+Contexto específico → tarea concreta → formato preciso.
+
+Descomponer tareas grandes en prompts secuenciales.
+
+Usar los outputs anteriores como input de los siguientes.
+
+::: {.callout-tip icon="false"}
+## La conversación como proceso
+
+Los mejores resultados no vienen del primer prompt — vienen de una conversación donde cada respuesta del modelo informa el siguiente prompt.
+
+*"Bien, ahora toma el ejercicio 3 y hazlo más difícil agregando una restricción adicional..."*
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+##  {.final-slide background-color="#0F2044"}
+
+::: center-content
+**¿Preguntas?**
+
+------------------------------------------------------------------------
+
+Francisco Alfaro\
+`fralfaro@usm.cl`\
+Docencia Digital · UTFSM
+
+*2026*
+:::

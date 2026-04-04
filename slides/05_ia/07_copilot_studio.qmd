@@ -1,0 +1,348 @@
+---
+title: "Copilot Studio y plataformas institucionales"
+subtitle: "Agentes IA sin código para la docencia y la gestión universitaria"
+author: "Francisco Alfaro"
+institute: "Docencia Digital · UTFSM"
+date: today
+date-format: "MMMM YYYY"
+
+format:
+  revealjs:
+    theme: [default, ../custom.scss]
+    slide-number: true
+    progress: true
+    history: false
+    transition: fade
+    transition-speed: fast
+    incremental: false
+    fig-align: center
+    highlight-style: github
+    code-block-bg: true
+    center: false
+    width: 1280
+    height: 720
+    margin: 0.08
+    footer: "Docencia Digital · UTFSM · 2026"
+    logo: "../../assets/img/brand/brand__usm.png"
+
+execute:
+  echo: false
+  warning: false
+---
+
+##  {.title-slide background-color="#0F2044"}
+
+::: title-block
+**Copilot Studio y plataformas institucionales**
+
+Agentes IA sin código para la docencia y la gestión universitaria
+:::
+
+::: subtitle-block
+Sesión 5 — Inteligencia Artificial para docencia
+:::
+
+::: author-block
+Francisco Alfaro\
+Docencia Digital · UTFSM · 2026
+:::
+
+------------------------------------------------------------------------
+
+## El otro extremo del espectro: sin código
+
+::: columns
+::: {.column width="55%"}
+El capítulo anterior construyó agentes con Python y LangChain.
+
+Este capítulo cubre el **otro extremo**: herramientas que permiten crear agentes de IA sin escribir código, diseñadas específicamente para entornos institucionales que ya usan el ecosistema **Microsoft**.
+
+**Para un docente o gestor de la UTFSM** que trabaja con Teams, SharePoint y Office 365 todos los días, Copilot Studio ofrece algo valioso:
+
+Un asistente que vive **donde ya vive el trabajo** — sin infraestructura adicional, sin cuentas nuevas.
+:::
+
+::: {.column width="45%"}
+
+```{mermaid}
+graph TD
+    M365["☁️ Microsoft 365\necosistema base"]
+
+    M365 --> COP["🤖 Copilot Studio\ncrear agentes IA"]
+    M365 --> TEAMS["💬 Teams\ndesplegar agentes"]
+    M365 --> SP["📁 SharePoint\nfuentes de conocimiento"]
+    M365 --> OA["🤖 Copilot for M365\nIA en todas las apps"]
+```
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Qué es Microsoft Copilot Studio
+
+::: columns
+::: {.column width="55%"}
+**Copilot Studio** es la plataforma de Microsoft para crear **agentes de IA personalizados** sin código, usando una interfaz visual.
+
+**Antes se llamaba:** Power Virtual Agents.
+
+**Qué puedes hacer:**
+
+- Crear un asistente que responde preguntas sobre el reglamento académico de la universidad
+- Asistente de consultas para alumnos sobre el proceso de titulación
+- Bot de FAQ del departamento integrado en Teams
+- Asistente para revisar documentos de proyectos de tesis
+
+**Sin escribir código Python**, sin configurar APIs, sin infraestructura propia.
+:::
+
+::: {.column width="45%"}
+
+**Acceso:**
+
+→ [copilotstudio.microsoft.com](https://copilotstudio.microsoft.com)
+
+Requiere licencia Microsoft 365 (la mayoría de las universidades ya la tienen).
+
+::: {.callout-note icon="false"}
+## Disponibilidad en UTFSM
+
+Si la UTFSM tiene Microsoft 365 Education, los docentes probablemente ya tienen acceso a Copilot Studio a través de su cuenta institucional.
+
+Verificar con TI: ¿está habilitado Copilot Studio en el tenant?
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Crear un agente en Copilot Studio: el flujo
+
+::: columns
+::: {.column width="55%"}
+**Paso 1: Crear el agente**
+
+→ Copilot Studio → Create → New copilot
+
+Elegir:
+- Nombre del agente
+- Idioma principal (español)
+- Instrucciones iniciales
+
+**Paso 2: Agregar fuentes de conocimiento**
+
+→ Knowledge → Add knowledge source
+
+Acepta:
+- SharePoint sites
+- Documentos de OneDrive
+- PDFs y archivos de Word
+- URLs de sitios web
+- Dataverse (base de datos Microsoft)
+:::
+
+::: {.column width="45%"}
+
+**Paso 3: Configurar tópicos (Topics)**
+
+Los topics son flujos de conversación predefinidos:
+
+- Pregunta frecuente → Respuesta
+- Condición → Acción A o B
+- Recolección de información → Confirmación
+
+**Paso 4: Probar el agente**
+
+Panel de test integrado → escribes preguntas → verificas las respuestas
+
+**Paso 5: Publicar**
+
+- Teams (lo más común en universidades)
+- SharePoint
+- Sitio web embebido
+- Microsoft 365 Chat
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Casos de uso universitarios sin código
+
+::: columns
+::: {.column width="50%"}
+**Asistente de consultas académicas:**
+
+Fuentes: Reglamento académico, calendario universitario, proceso de titulación, formularios oficiales.
+
+*"¿Cuántas veces puedo rendir un examen de recuperación?"*
+
+*"¿Cuál es el plazo para presentar el anteproyecto de tesis?"*
+
+**Bot de soporte al laboratorio:**
+
+Fuentes: Manual del laboratorio, preguntas frecuentes, normas de seguridad.
+
+*"¿Cómo solicito el uso del laboratorio de computación?"*
+
+*"¿Qué software está disponible en los computadores del lab?"*
+:::
+
+::: {.column width="50%"}
+
+**Asistente del curso en Teams:**
+
+Fuentes: Syllabus del curso, guías de laboratorio, rúbricas, calendario de entregas.
+
+*"¿Cuándo es el plazo de entrega del lab 3?"*
+
+*"¿Qué criterios se evalúan en la tarea 2?"*
+
+*"¿Puedo trabajar en pareja en el proyecto final?"*
+
+::: {.callout-tip icon="false"}
+## Integración con Teams
+
+El agente se despliega directamente en el canal Teams del curso. Los estudiantes lo consultan desde la misma aplicación que usan para clases — sin cuentas adicionales.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Copilot for Microsoft 365: IA en todas las apps
+
+::: columns
+::: {.column width="55%"}
+**Copilot for M365** es diferente de Copilot Studio:
+
+- **Copilot Studio** → creas agentes personalizados
+- **Copilot for M365** → IA integrada en Word, Excel, PowerPoint, Teams, Outlook
+
+**En Word:**
+
+- Generar borrador de un apunte
+- Resumir un documento extenso
+- Reescribir sección para mayor claridad
+
+**En Excel:**
+
+- Análisis de datos de notas con lenguaje natural
+- *"Muéstrame los estudiantes con nota < 4.0 en Lab 2 y Lab 3"*
+- Generar gráficos automáticamente
+
+**En Teams:**
+
+- Resumen de reuniones
+- Tarea automática de seguimiento
+- Notas de la reunión de equipo docente
+:::
+
+::: {.column width="45%"}
+
+**En PowerPoint:**
+
+- Generar presentación desde un texto o PDF
+- Rediseñar slides automáticamente
+- *"Crea una presentación de 10 slides sobre regresión logística para ingeniería"*
+
+::: {.callout-note icon="false"}
+## Licencia requerida
+
+Copilot for M365 requiere una licencia adicional a M365 (~$30/usuario/mes en el plan empresarial).
+
+En algunas universidades está disponible para docentes a través del convenio con Microsoft Education.
+
+Verificar disponibilidad con TI.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Comparativa: cuándo usar qué plataforma de IA
+
+::: columns
+::: {.column width="50%"}
+| Escenario | Mejor opción |
+|---|---|
+| Asistente en Teams con datos de SharePoint | **Copilot Studio** |
+| IA en Word/Excel/PowerPoint | **Copilot for M365** |
+| Trabajar con MIS documentos, análisis rápido | **NotebookLM** |
+| Agente personalizado con código Python | **LangChain + OpenAI/Claude** |
+| Chatbot sobre el curso para estudiantes externos | **NotebookLM** o **Copilot Studio** |
+| Generar código y depurar en el IDE | **GitHub Copilot** |
+:::
+
+::: {.column width="50%"}
+
+::: {.callout-important icon="false"}
+## El factor institucional
+
+En la UTFSM, si el ecosistema es Microsoft (Teams, Outlook, SharePoint), Copilot Studio es la opción más natural para desplegar agentes institucionales.
+
+Si el ecosistema es Google (Google Classroom, Gmail, Drive), NotebookLM y Gemini son más naturales.
+
+No es una decisión técnica — es una decisión de **ecosistema**.
+:::
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Privacidad y gobernanza institucional
+
+::: columns
+::: {.column width="55%"}
+**Por qué importa en el contexto universitario:**
+
+- Los datos de estudiantes (notas, asistencias, entregas) son datos sensibles
+- Las regulaciones como GDPR y la ley chilena de protección de datos aplican
+- Los servicios de IA de consumo (ChatGPT gratuito) pueden usar los datos para entrenamiento
+
+**La ventaja de Copilot Studio:**
+
+Al estar dentro del tenant de Microsoft 365 de la institución:
+
+- Los datos nunca salen del tenant institucional
+- El administrador de TI controla el acceso
+- Los logs de actividad están disponibles para auditoría
+- Cumple con los acuerdos de procesamiento de datos institucionales
+:::
+
+::: {.column width="45%"}
+
+::: {.callout-warning icon="false"}
+## Regla de privacidad
+
+Nunca ingresar datos personales de estudiantes (nombre, RUT, notas individuales) en servicios de IA de consumo (ChatGPT gratuito, Claude gratuito).
+
+Para trabajo con datos de estudiantes → usar herramientas institucionales (Copilot Studio con M365) o procesamiento local (Ollama).
+:::
+
+**Verificar antes de implementar:**
+
+- ¿Cumple el servicio con los acuerdos de la institución?
+- ¿Dónde se almacenan los datos?
+- ¿Quién tiene acceso a los logs de conversación?
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+##  {.final-slide background-color="#0F2044"}
+
+::: center-content
+**¿Preguntas?**
+
+------------------------------------------------------------------------
+
+Francisco Alfaro\
+`fralfaro@usm.cl`\
+Docencia Digital · UTFSM
+
+*2026*
+:::

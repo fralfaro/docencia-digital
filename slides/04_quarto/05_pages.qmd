@@ -1,0 +1,405 @@
+---
+title: "Publicación con GitHub Pages"
+subtitle: "De archivo local a sitio web público en minutos"
+author: "Francisco Alfaro"
+institute: "Docencia Digital · UTFSM"
+date: today
+date-format: "MMMM YYYY"
+
+format:
+  revealjs:
+    theme: [default, ../custom.scss]
+    slide-number: true
+    progress: true
+    history: false
+    transition: fade
+    transition-speed: fast
+    incremental: false
+    fig-align: center
+    highlight-style: github
+    code-block-bg: true
+    center: false
+    width: 1280
+    height: 720
+    margin: 0.08
+    footer: "Docencia Digital · UTFSM · 2026"
+    logo: "../../assets/img/brand/brand__usm.png"
+
+execute:
+  echo: false
+  warning: false
+---
+
+##  {.title-slide background-color="#0F2044"}
+
+::: title-block
+**Publicación con GitHub Pages**
+
+De archivo local a sitio web público en minutos
+:::
+
+::: subtitle-block
+Sesión 4 — Quarto para material académico
+:::
+
+::: author-block
+Francisco Alfaro\
+Docencia Digital · UTFSM · 2026
+:::
+
+------------------------------------------------------------------------
+
+## El argumento para publicar
+
+::: columns
+::: {.column width="60%"}
+> *"El material de un curso que vive solo en tu computador existe para ti.*
+>
+> *El material que vive en un sitio web público existe para todos."*
+
+- Tus estudiantes de este semestre
+- Los del próximo semestre
+- Colegas de otras universidades que buscan recursos
+- Tú mismo cuando necesitas el apunte en un dispositivo que no es el tuyo
+:::
+
+::: {.column width="40%"}
+
+::: {.callout-note icon="false"}
+## GitHub Pages
+
+- **Gratis** (para repos públicos)
+- **Sin configuración de servidor**
+- **Dominio automático:** `usuario.github.io/repo`
+- **Actualizaciones automáticas** con cada push
+:::
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+## `quarto publish gh-pages`: el comando más rápido
+
+::: columns
+::: {.column width="55%"}
+**Si tienes el repositorio configurado:**
+
+```bash
+# Un solo comando
+quarto publish gh-pages
+```
+
+Quarto hace automáticamente:
+
+1. Renderiza el sitio localmente
+2. Crea (o actualiza) el branch `gh-pages`
+3. Sube los HTML al branch
+4. GitHub Pages sirve el contenido
+
+**Primera vez, pregunta:**
+
+```
+? Publish site to:
+  ❯ github-pages
+? GitHub Repository: usuario/mat281-2025-1
+? Publish to: https://usuario.github.io/mat281-2025-1
+```
+:::
+
+::: {.column width="45%"}
+
+**Condiciones previas:**
+
+```bash
+# Verificar que estás en un repo de GitHub
+git remote -v
+
+# Quarto instalado
+quarto --version
+
+# gh CLI autenticada (opcional pero recomendado)
+gh auth status
+```
+
+::: {.callout-tip icon="false"}
+## Para publicar el sitio del curso
+
+Este es el método más rápido para empezar. Luego puedes migrar a GitHub Actions cuando quieras automatizar más.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Las tres rutas de publicación
+
+::: columns
+::: {.column width="33%"}
+**Opción A: `quarto publish`**
+
+- Render local + push automático
+- Sin configuración de GitHub Actions
+- Ideal para empezar rápido
+- Requiere correr el comando manualmente cada vez
+
+```bash
+quarto publish gh-pages
+```
+:::
+
+::: {.column width="33%"}
+**Opción B: `/docs` en main**
+
+- Render local → commitear `docs/`
+- GitHub Pages sirve desde `main/docs`
+- Más control, sin Actions
+
+```yaml
+# _quarto.yml
+project:
+  output-dir: docs
+```
+
+```bash
+quarto render
+git add docs/
+git commit -m "render"
+git push
+```
+:::
+
+::: {.column width="33%"}
+**Opción C: GitHub Actions**
+
+- Render automático en cada push
+- Sin archivos generados en el repo
+- El método más robusto
+
+```yaml
+# .github/workflows/deploy.yml
+on:
+  push:
+    branches: [main]
+```
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Activar GitHub Pages en el repositorio
+
+::: columns
+::: {.column width="55%"}
+**Después de correr `quarto publish` (o configurar Actions):**
+
+1. Repositorio en GitHub
+2. **Settings → Pages**
+3. Source:
+   - Si usas `quarto publish`: **Deploy from branch** → `gh-pages` → `/root`
+   - Si usas `docs/`: **Deploy from branch** → `main` → `/docs`
+   - Si usas Actions: **GitHub Actions**
+4. Clic en **Save**
+
+En 1-2 minutos el sitio está en:
+
+```
+https://usuario.github.io/mat281-2025-1
+```
+:::
+
+::: {.column width="45%"}
+
+**Verificar que funciona:**
+
+- Tab **Pages** en Settings → URL del sitio activo
+- Tab **Actions** → último deploy exitoso ✅
+- Abrir la URL en el navegador
+
+::: {.callout-warning icon="false"}
+## 404 al principio
+
+Si el sitio muestra 404 inmediatamente después de activar, espera 1-2 minutos. GitHub Pages tarda un poco en propagar la primera vez.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## El workflow de Actions para GitHub Pages
+
+```yaml
+# .github/workflows/deploy-pages.yml
+name: Deploy Quarto a GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          version: '1.5.57'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      - run: pip install -r requirements.txt
+      - uses: actions/configure-pages@v4
+      - uses: quarto-dev/quarto-actions/render@v2
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: '_site'
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/deploy-pages@v4
+```
+
+------------------------------------------------------------------------
+
+## `_freeze/`: el secreto del deploy rápido
+
+::: columns
+::: {.column width="55%"}
+**Sin freeze:**
+
+Cada deploy ejecuta todo el código de todos los notebooks. Con 20 notebooks de 5 minutos cada uno → 100 minutos de build.
+
+**Con `freeze: auto`:**
+
+```yaml
+# _quarto.yml
+execute:
+  freeze: auto
+```
+
+Quarto guarda los resultados en `_freeze/`. Si el código no cambió, no lo re-ejecuta.
+
+**Build de 100 min → 3-5 min.**
+:::
+
+::: {.column width="45%"}
+
+**Implementación:**
+
+```bash
+# Después de renderizar localmente
+git add _freeze/
+git commit -m "chore: actualizar freeze cache"
+git push
+```
+
+En el workflow de Actions, `_freeze/` ya está en el repo. Solo re-ejecuta lo que cambió.
+
+::: {.callout-important icon="false"}
+## Commitear `_freeze/`
+
+Esto es inusual — normalmente los archivos generados no van al repo. Con Quarto, **`_freeze/` sí debe estar en el repo** para que el deploy automático sea rápido.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Dominio personalizado (opcional)
+
+::: columns
+::: {.column width="55%"}
+Si quieres una URL como `mat281.dmat.usm.cl` en lugar de `fralfaro.github.io/mat281-2025-1`:
+
+**1. Agregar archivo `CNAME` en la raíz:**
+
+```
+mat281.dmat.usm.cl
+```
+
+**2. En GitHub Pages Settings:**
+
+Settings → Pages → Custom domain → `mat281.dmat.usm.cl`
+
+**3. Configurar DNS en la institución:**
+
+CNAME record: `mat281.dmat.usm.cl` → `fralfaro.github.io`
+
+(El administrador de TI de la universidad configura esto)
+:::
+
+::: {.column width="45%"}
+
+::: {.callout-note icon="false"}
+## HTTPS automático
+
+GitHub Pages activa automáticamente HTTPS (certificado Let's Encrypt) para dominios personalizados. No requiere configuración adicional.
+:::
+
+**Para proyectos Quarto, agregar en `_quarto.yml`:**
+
+```yaml
+website:
+  site-url: "https://mat281.dmat.usm.cl"
+```
+
+Esto asegura que las URLs generadas sean correctas para el dominio personalizado.
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Checklist de publicación completa
+
+```
+Contenido:
+☐ index.qmd con descripción del curso, equipo y calendario
+☐ Navegación configurada en _quarto.yml (navbar + sidebar)
+☐ Todos los .qmd tienen title y description en el frontmatter
+☐ Footer con licencia y datos de contacto
+
+Ejecución:
+☐ freeze: auto configurado en _quarto.yml
+☐ _freeze/ commiteado al repositorio
+☐ quarto render ejecutado sin errores localmente
+
+GitHub Pages:
+☐ Repositorio en GitHub (público para Pages gratuito)
+☐ Settings → Pages configurado
+☐ Primera publicación exitosa (URL accesible)
+☐ Sitio verificado en móvil y escritorio
+
+Automatización:
+☐ deploy-pages.yml en .github/workflows/
+☐ Primer deploy automático exitoso (Actions verde ✅)
+☐ Verificar que un push a main actualiza el sitio en 3-5 min
+```
+
+------------------------------------------------------------------------
+
+##  {.final-slide background-color="#0F2044"}
+
+::: center-content
+**¿Preguntas?**
+
+------------------------------------------------------------------------
+
+Francisco Alfaro\
+`fralfaro@usm.cl`\
+Docencia Digital · UTFSM
+
+*2026*
+:::

@@ -1,0 +1,23 @@
+---
+title: "Inteligencia Artificial para docencia"
+format:
+  html:
+    toc: false
+---
+
+## Objetivo
+
+Este módulo cubre el uso de herramientas de inteligencia artificial generativa como apoyo al trabajo docente universitario. Se estudian los principales modelos de lenguaje disponibles (ChatGPT, Claude, Gemini), las técnicas de prompting efectivo para contextos académicos, el uso de NotebookLM para análisis documental sobre material propio, el diseño pedagógico asistido por IA, los fundamentos técnicos de los sistemas RAG, la arquitectura de agentes autónomos, el uso de plataformas institucionales como Copilot Studio, y los marcos éticos para el uso responsable de IA en el aula. Al finalizar el módulo, el participante será capaz de integrar herramientas de IA en su flujo de trabajo docente con criterio técnico y ético.
+
+## Contenidos
+
+| # | Tema | Presentación |
+|:--:|------|:------------:|
+| 1 | [Panorama de herramientas IA — ChatGPT, Gemini y Claude para el docente](ia_01_panorama.qmd) | [slides](../../slides/05_ia/01_panorama.html) |
+| 2 | [Prompting efectivo para docentes — Comunicarse con la IA para obtener resultados de calidad](ia_02_prompting.qmd) | [slides](../../slides/05_ia/02_prompting.html) |
+| 3 | [NotebookLM en profundidad — Análisis documental con IA](ia_03_notebooklm.qmd) | [slides](../../slides/05_ia/03_notebooklm.html) |
+| 4 | [Diseño pedagógico con IA — Integrar la IA sin perder el rol del docente](ia_04_pedagogico.qmd) | [slides](../../slides/05_ia/04_pedagogico.html) |
+| 5 | [Chatbots y RAG — Construir asistentes sobre tu propio material](ia_05_rag.qmd) | [slides](../../slides/05_ia/05_rag.html) |
+| 6 | [Agentes IA — De chatbots reactivos a sistemas que razonan y actúan](ia_06_agentes.qmd) | [slides](../../slides/05_ia/06_agentes.html) |
+| 7 | [Copilot Studio y plataformas institucionales — Agentes sin código](ia_07_copilot_studio.qmd) | [slides](../../slides/05_ia/07_copilot_studio.html) |
+| 8 | [Ética y uso responsable de IA en el aula — Sesgos, privacidad y políticas](ia_08_etica.qmd) | [slides](../../slides/05_ia/08_etica.html) |

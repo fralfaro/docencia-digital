@@ -1,0 +1,389 @@
+---
+title: "Chatbots y RAG"
+subtitle: "Construir asistentes sobre tu propio material sin código y con código"
+author: "Francisco Alfaro"
+institute: "Docencia Digital · UTFSM"
+date: today
+date-format: "MMMM YYYY"
+
+format:
+  revealjs:
+    theme: [default, ../custom.scss]
+    slide-number: true
+    progress: true
+    history: false
+    transition: fade
+    transition-speed: fast
+    incremental: false
+    fig-align: center
+    highlight-style: github
+    code-block-bg: true
+    center: false
+    width: 1280
+    height: 720
+    margin: 0.08
+    footer: "Docencia Digital · UTFSM · 2026"
+    logo: "../../assets/img/brand/brand__usm.png"
+
+execute:
+  echo: false
+  warning: false
+---
+
+##  {.title-slide background-color="#0F2044"}
+
+::: title-block
+**Chatbots y RAG**
+
+Construir asistentes sobre tu propio material sin código y con código
+:::
+
+::: subtitle-block
+Sesión 5 — Inteligencia Artificial para docencia
+:::
+
+::: author-block
+Francisco Alfaro\
+Docencia Digital · UTFSM · 2026
+:::
+
+------------------------------------------------------------------------
+
+## Las dos limitaciones fundamentales de los LLMs
+
+::: columns
+::: {.column width="55%"}
+Los modelos de lenguaje tienen dos limitaciones para uso docente:
+
+**1. Fecha de corte:**
+
+No saben nada posterior a su entrenamiento. Para un curso de ingeniería con papers recientes, esto importa.
+
+**2. Sin acceso a tu material específico:**
+
+No conocen tu syllabus, tus apuntes, tus rúbricas, tu forma de explicar los conceptos.
+
+**La solución naïve:** incluir todo el material en el prompt.
+
+**El problema:** los prompts tienen límites de tamaño, son costosos, y el modelo tiene dificultad para recuperar información específica de documentos muy largos.
+:::
+
+::: {.column width="45%"}
+
+::: {.callout-important icon="false"}
+## La solución: RAG
+
+**Retrieval Augmented Generation** — recuperar los fragmentos relevantes de tus documentos justo antes de generar la respuesta.
+
+El modelo solo ve lo que es relevante para tu pregunta, no todo el corpus.
+:::
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+## ¿Cómo funciona RAG?
+
+```{mermaid}
+graph LR
+    D["📚 Tus documentos\n(apuntes, papers, guías)"]
+    E["🔢 Embeddings\n(vectores)"]
+    B["💾 Base vectorial\n(ChromaDB, Pinecone)"]
+    Q["❓ Pregunta\ndel usuario"]
+    R["🔍 Recuperación\n(top-k fragmentos)"]
+    P["📝 Prompt aumentado\npregunta + fragmentos"]
+    L["🤖 LLM\n(GPT, Claude, Gemini)"]
+    A["✅ Respuesta\ncon fuentes"]
+
+    D --> E --> B
+    Q --> R
+    B --> R
+    R --> P
+    Q --> P
+    P --> L --> A
+```
+
+::: {.callout-tip icon="false"}
+## La clave está en los embeddings
+
+Un embedding es una representación vectorial del texto. Los fragmentos semánticamente similares a la pregunta quedan cerca en el espacio vectorial — así el sistema recupera los más relevantes.
+:::
+
+------------------------------------------------------------------------
+
+## Opción sin código: NotebookLM
+
+::: columns
+::: {.column width="55%"}
+**NotebookLM es RAG sin código:**
+
+1. Subes tus documentos
+2. Haces preguntas
+3. Recibes respuestas con citas
+
+**Para docencia:** es suficiente para la mayoría de los casos de uso.
+
+**Sus limitaciones:**
+
+- No puedes personalizarlo
+- No puedes integrarlo en tu sitio web
+- No puedes configurar el comportamiento del asistente
+- No puedes agregar fuentes dinámicas (como una base de datos que cambia)
+
+Cuando estas limitaciones importan → es momento de construir tu propio RAG.
+:::
+
+::: {.column width="45%"}
+
+**Otras herramientas sin código:**
+
+| Herramienta | Para qué |
+|---|---|
+| **NotebookLM** | Análisis documental, guías de estudio |
+| **Poe.com** | Crear chatbots con personalidad personalizada |
+| **Botpress** | Chatbots con flujos de conversación |
+| **Microsoft Copilot Studio** | Agentes institucionales con Office 365 |
+
+::: {.callout-note icon="false"}
+## Para docentes no técnicos
+
+NotebookLM + Copilot Studio cubren el 90% de los casos de uso sin escribir ninguna línea de código.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## RAG con código: los componentes
+
+::: columns
+::: {.column width="55%"}
+**Stack mínimo viable:**
+
+```python
+# 1. Cargar y dividir documentos
+from langchain.document_loaders import PyPDFLoader
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+
+loader = PyPDFLoader("apuntes_mat281.pdf")
+docs = loader.load()
+
+splitter = RecursiveCharacterTextSplitter(
+    chunk_size=1000,
+    chunk_overlap=200
+)
+chunks = splitter.split_documents(docs)
+```
+
+**Por qué dividir en chunks:**
+
+Los modelos de embedding tienen límites de tokens. Los chunks permiten recuperar solo los fragmentos relevantes, no el documento entero.
+:::
+
+::: {.column width="45%"}
+
+```python
+# 2. Crear embeddings y base vectorial
+from langchain.embeddings import OpenAIEmbeddings
+from langchain.vectorstores import Chroma
+
+embeddings = OpenAIEmbeddings()
+
+vectorstore = Chroma.from_documents(
+    documents=chunks,
+    embedding=embeddings,
+    persist_directory="./db_mat281"
+)
+
+# 3. Crear el retriever
+retriever = vectorstore.as_retriever(
+    search_type="similarity",
+    search_kwargs={"k": 4}  # top 4 fragmentos más relevantes
+)
+
+# 4. Crear la cadena RAG
+from langchain.chains import RetrievalQA
+
+qa = RetrievalQA.from_chain_type(
+    llm=llm,
+    chain_type="stuff",
+    retriever=retriever
+)
+```
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+## RAG con código: la cadena completa
+
+::: columns
+::: {.column width="55%"}
+```python
+from langchain_openai import ChatOpenAI
+from langchain.prompts import PromptTemplate
+from langchain.chains import RetrievalQA
+
+# Modelo de lenguaje
+llm = ChatOpenAI(model="gpt-4o", temperature=0)
+
+# Template del prompt
+template = """Eres un asistente de estudio para
+el curso MAT281 de la UTFSM.
+
+Responde la pregunta del estudiante usando
+ÚNICAMENTE la siguiente información del curso.
+Si la respuesta no está en el material,
+dilo claramente.
+
+Contexto del curso:
+{context}
+
+Pregunta del estudiante:
+{question}
+
+Responde en español, de forma clara y concisa.
+"""
+
+prompt = PromptTemplate(
+    input_variables=["context", "question"],
+    template=template
+)
+```
+:::
+
+::: {.column width="45%"}
+
+```python
+# Cadena RAG completa
+qa_chain = RetrievalQA.from_chain_type(
+    llm=llm,
+    chain_type="stuff",
+    retriever=retriever,
+    chain_type_kwargs={"prompt": prompt},
+    return_source_documents=True
+)
+
+# Usar el asistente
+resultado = qa_chain.invoke(
+    "¿Cuál es la diferencia entre Ridge y Lasso?"
+)
+
+print("Respuesta:", resultado["result"])
+print("\nFuentes:")
+for doc in resultado["source_documents"]:
+    print(f"  - {doc.metadata['source']} p.{doc.metadata['page']}")
+```
+
+**Output:**
+
+```
+Respuesta: La regresión Ridge usa penalización L2...
+Fuentes:
+  - apuntes_mat281.pdf p.47
+  - apuntes_mat281.pdf p.52
+```
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Alternativa local: Ollama + LlamaIndex
+
+::: columns
+::: {.column width="55%"}
+**Para quien no quiere usar APIs de pago o necesita privacidad de datos:**
+
+```bash
+# Instalar Ollama
+# ollama.ai → descarga para tu OS
+
+# Descargar modelo (corre localmente)
+ollama pull llama3.2
+ollama pull nomic-embed-text  # para embeddings
+```
+
+```python
+from llama_index.core import VectorStoreIndex, SimpleDirectoryReader
+from llama_index.llms.ollama import Ollama
+from llama_index.embeddings.ollama import OllamaEmbedding
+
+# Cargar documentos
+documentos = SimpleDirectoryReader("./apuntes/").load_data()
+
+# Crear índice con modelo local
+llm = Ollama(model="llama3.2", request_timeout=120)
+embed = OllamaEmbedding(model_name="nomic-embed-text")
+
+index = VectorStoreIndex.from_documents(documentos,
+    llm=llm, embed_model=embed)
+
+# Consultar
+query_engine = index.as_query_engine()
+response = query_engine.query("¿Qué es el gradiente descendente?")
+```
+:::
+
+::: {.column width="45%"}
+
+**Ventajas de local:**
+
+- Sin costo por token
+- Sin límites de velocidad
+- Datos nunca salen de tu computador (privacidad total)
+- Funciona sin internet
+
+**Desventajas:**
+
+- Requiere GPU potente para velocidad razonable
+- Modelos locales son menos capaces que GPT-4o o Claude
+- Más complejo de configurar
+
+::: {.callout-tip icon="false"}
+## Para documentos sensibles
+
+Si el material del curso contiene información de estudiantes u otros datos sensibles, un RAG completamente local elimina el riesgo de que los datos lleguen a servidores externos.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Cuándo construir tu propio RAG vs usar NotebookLM
+
+| Criterio | NotebookLM | RAG propio |
+|---|---|---|
+| **Complejidad técnica** | Ninguna | Media-alta |
+| **Personalización** | Limitada | Total |
+| **Integración en sitio web** | No | Sí |
+| **Privacidad total de datos** | No (Google) | Sí (local) |
+| **Fuentes dinámicas** | Manual | Automático |
+| **Costo** | Gratis/Pro Google | API + hosting |
+| **Tiempo de puesta en marcha** | Minutos | Días/semanas |
+
+::: {.callout-tip icon="false"}
+## La recomendación práctica
+
+Empieza con NotebookLM. Si las limitaciones te bloquean → considera LangChain o LlamaIndex. Si necesitas privacidad total → Ollama local.
+
+La mayoría de los docentes universitarios nunca necesitará ir más allá de NotebookLM.
+:::
+
+------------------------------------------------------------------------
+
+##  {.final-slide background-color="#0F2044"}
+
+::: center-content
+**¿Preguntas?**
+
+------------------------------------------------------------------------
+
+Francisco Alfaro\
+`fralfaro@usm.cl`\
+Docencia Digital · UTFSM
+
+*2026*
+:::

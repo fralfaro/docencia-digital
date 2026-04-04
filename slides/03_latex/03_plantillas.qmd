@@ -1,0 +1,413 @@
+---
+title: "Plantillas y producción de documentos"
+subtitle: "Beamer, tikz, IA para LaTeX y la decisión LaTeX vs Quarto"
+author: "Francisco Alfaro"
+institute: "Docencia Digital · UTFSM"
+date: today
+date-format: "MMMM YYYY"
+
+format:
+  revealjs:
+    theme: [default, ../custom.scss]
+    slide-number: true
+    progress: true
+    history: false
+    transition: fade
+    transition-speed: fast
+    incremental: false
+    fig-align: center
+    highlight-style: github
+    code-block-bg: true
+    center: false
+    width: 1280
+    height: 720
+    margin: 0.08
+    footer: "Docencia Digital · UTFSM · 2026"
+    logo: "../../assets/img/brand/brand__usm.png"
+
+execute:
+  echo: false
+  warning: false
+---
+
+##  {.title-slide background-color="#0F2044"}
+
+::: title-block
+**Plantillas y producción de documentos**
+
+Beamer, tikz, IA para LaTeX y la decisión LaTeX vs Quarto
+:::
+
+::: subtitle-block
+Sesión 3 — Overleaf y LaTeX para docencia
+:::
+
+::: author-block
+Francisco Alfaro\
+Docencia Digital · UTFSM · 2026
+:::
+
+------------------------------------------------------------------------
+
+## ¿Por qué usar plantillas?
+
+::: columns
+::: {.column width="55%"}
+Una **plantilla LaTeX** es un archivo `.tex` preconfigurado con el formato correcto: márgenes, tipografía, estilos de sección, portada institucional.
+
+En lugar de configurar todo desde cero y cometer errores de formato, **partes del resultado final y solo escribes el contenido**.
+
+| Tipo | Para qué | Fuente |
+|---|---|---|
+| Institucional UTFSM | Informes, memorias | DTD / Biblioteca |
+| IEEE | Papers de ingeniería | overleaf.com/gallery |
+| APA 7ª ed. | Ciencias sociales | Paquete `apa7` |
+| ACM | Computación | overleaf.com/gallery |
+:::
+
+::: {.column width="45%"}
+
+::: {.callout-tip icon="false"}
+## Overleaf Gallery
+
+→ [overleaf.com/gallery](https://www.overleaf.com/gallery)
+
+Cientos de plantillas listas para usar: conferencias IEEE, revistas Springer, tesis universitarias, presentaciones Beamer.
+
+Clic en **Open in Overleaf** → template listo en segundos.
+:::
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Plantilla de informe técnico UTFSM
+
+::: columns
+::: {.column width="55%"}
+```latex
+\documentclass[12pt, letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath, graphicx, hyperref}
+
+% Márgenes
+\usepackage[top=2.5cm, bottom=2.5cm,
+            left=3cm, right=2.5cm]{geometry}
+
+% Encabezado institucional
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhead[L]{\small UTFSM · Departamento de Matemáticas}
+\fancyhead[R]{\small Semestre 2025-1}
+\fancyfoot[C]{\thepage}
+
+\title{\textbf{Guía de Laboratorio 3}\\
+       \large Regresión Lineal}
+\author{Juan Pérez \\ \small juan.perez@usm.cl}
+\date{Semestre 2025-1}
+```
+:::
+
+::: {.column width="45%"}
+
+```latex
+\begin{document}
+\maketitle
+\thispagestyle{empty}  % sin encabezado en portada
+\newpage
+
+\tableofcontents
+\newpage
+
+\section{Introducción}
+\label{sec:intro}
+
+\section{Marco Teórico}
+\label{sec:teoria}
+
+\section{Actividades}
+\label{sec:actividades}
+
+\begin{enumerate}
+  \item Cargar el dataset...
+  \item Aplicar regresión...
+\end{enumerate}
+
+\printbibliography
+\end{document}
+```
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Presentaciones académicas con Beamer
+
+::: columns
+::: {.column width="55%"}
+**Beamer** es la clase LaTeX para presentaciones en PDF. Produce slides con calidad tipográfica perfecta — especialmente para matemáticas.
+
+```latex
+\documentclass{beamer}
+\usetheme{Madrid}        % tema visual
+\usecolortheme{seahorse} % esquema de colores
+
+\title{Regresión Lineal}
+\author{Juan Pérez}
+\institute{UTFSM}
+\date{\today}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Tabla de contenidos}
+  \tableofcontents
+\end{frame}
+
+\section{Introducción}
+\begin{frame}{El problema}
+  \begin{itemize}
+    \item Primer punto
+    \item<2-> Aparece en el slide 2
+    \item<3-> Aparece en el slide 3
+  \end{itemize}
+\end{frame}
+
+\end{document}
+```
+:::
+
+::: {.column width="45%"}
+
+**Elementos de un frame:**
+
+```latex
+\begin{frame}{Título del frame}
+
+  % Dos columnas
+  \begin{columns}
+    \begin{column}{0.5\textwidth}
+      Columna izquierda
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      Columna derecha
+    \end{column}
+  \end{columns}
+
+  % Caja destacada
+  \begin{block}{Resultado clave}
+    $\nabla J(\theta) \propto \mu(s) q_\pi \nabla\pi$
+  \end{block}
+
+  % Alerta
+  \begin{alertblock}{Cuidado}
+    Esta condición debe verificarse...
+  \end{alertblock}
+
+\end{frame}
+```
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+## tikz: diagramas vectoriales en LaTeX
+
+::: columns
+::: {.column width="55%"}
+**tikz** es la librería de gráficos vectoriales de LaTeX. Produce diagramas perfectamente integrados con el texto y las ecuaciones del documento.
+
+```latex
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, shapes, positioning}
+
+\begin{tikzpicture}
+  % Nodos
+  \node[circle, draw, fill=blue!20]
+    (A) at (0,0) {$s_0$};
+  \node[circle, draw, fill=blue!20]
+    (B) at (3,0) {$s_1$};
+  \node[rectangle, draw, fill=green!20]
+    (C) at (6,0) {Terminal};
+
+  % Flechas
+  \draw[->] (A) -- node[above] {right} (B);
+  \draw[->] (B) -- node[above] {right} (C);
+  \draw[->] (A) to[bend right=30]
+    node[below] {left} (B);
+\end{tikzpicture}
+```
+:::
+
+::: {.column width="45%"}
+
+**Casos de uso en docencia:**
+
+- Diagramas de flujo de algoritmos
+- Grafos de estados (cadenas de Markov)
+- Redes neuronales
+- Árboles de decisión
+- Diagramas de bloques de sistemas
+
+::: {.callout-note icon="false"}
+## Alternativa: PGFPlots
+
+Para gráficas de funciones matemáticas directamente en LaTeX:
+
+```latex
+\usepackage{pgfplots}
+
+\begin{tikzpicture}
+\begin{axis}[xlabel=$x$, ylabel=$f(x)$]
+  \addplot[blue, thick] {x^2};
+\end{axis}
+\end{tikzpicture}
+```
+
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Paquetes esenciales para documentos técnicos
+
+| Paquete | Para qué | Ejemplo de uso |
+|---|---|---|
+| `amsmath` | Ecuaciones completas | `align`, `cases`, `matrix` |
+| `graphicx` | Imágenes | `\includegraphics` |
+| `hyperref` | Links clicables | `\href{}{}`, `\ref{}` |
+| `geometry` | Márgenes | `\usepackage[top=2.5cm]{geometry}` |
+| `fancyhdr` | Encabezados personalizados | Logo, número de página |
+| `listings` | Código fuente con sintaxis | Python, R, C++ |
+| `algorithm2e` | Pseudocódigo de algoritmos | Bubble sort, gradient descent |
+| `siunitx` | Unidades del SI | `\SI{9.8}{\meter\per\second}` |
+| `booktabs` | Tablas profesionales | `\toprule`, `\midrule`, `\bottomrule` |
+
+------------------------------------------------------------------------
+
+## IA para generar código LaTeX
+
+::: columns
+::: {.column width="55%"}
+**Los modelos de lenguaje son muy buenos con LaTeX:**
+
+*"Escribe en LaTeX la demostración del Teorema de Bayes con el ambiente `proof` de `amsthm`"*
+
+*"Crea una tabla LaTeX con booktabs que muestre los resultados de precisión de cinco modelos de clasificación"*
+
+*"Genera el código tikz para un diagrama de red neuronal con 3 capas: entrada (4 neuronas), oculta (6), salida (2)"*
+
+**Herramientas específicas:**
+
+- **Mathpix** → fotografía una ecuación → LaTeX
+- **Detexify** → dibuja el símbolo → comando
+- **ChatGPT / Claude** → descripción en texto → LaTeX
+:::
+
+::: {.column width="45%"}
+
+::: {.callout-important icon="false"}
+## Revisar siempre el output de IA
+
+La IA comete errores específicos en LaTeX:
+
+- Paquetes que no son necesarios o que están en conflicto
+- Sintaxis obsoleta de versiones antiguas
+- Tikz que compila pero no produce lo esperado visualmente
+
+Estrategia: pega el output en Overleaf, compila, verifica el resultado visualmente.
+:::
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+## LaTeX vs Quarto: cuándo usar cuál
+
+::: columns
+::: {.column width="50%"}
+**Usa LaTeX cuando:**
+
+✅ Necesitas el formato exacto de una revista o conferencia (IEEE, ACM, Springer)
+
+✅ El documento tiene mucha matemática densa y compleja
+
+✅ Produces una tesis o memoria con plantilla institucional
+
+✅ Necesitas control tipográfico fino (kerning, microtype)
+
+✅ El PDF final es el único formato que importa
+:::
+
+::: {.column width="50%"}
+**Usa Quarto cuando:**
+
+✅ Quieres publicar el mismo contenido en múltiples formatos (HTML, PDF, Word)
+
+✅ El documento tiene código ejecutable que genera las figuras y tablas
+
+✅ Necesitas un sitio web del curso, no solo un PDF
+
+✅ Quieres que los estudiantes puedan ver el código y los resultados juntos
+
+✅ La curva de entrada más baja es importante
+
+:::
+:::
+
+::: fragment
+::: {.callout-tip icon="false"}
+## La combinación ganadora
+
+LaTeX para el **PDF** de alta calidad de los papers y guías formales. Quarto para el **sitio web** del curso con todo el material reproducible. No compiten — se complementan.
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Checklist del documento LaTeX listo para publicar
+
+```
+Preámbulo:
+☐ \usepackage[utf8]{inputenc}     → caracteres especiales
+☐ \usepackage[spanish]{babel}     → reglas tipográficas del español
+☐ \usepackage{amsmath, amssymb}   → matemáticas completas
+☐ \usepackage[style=apa]{biblatex} → bibliografía
+
+Contenido:
+☐ Todas las ecuaciones tienen \label y se referencian con \eqref
+☐ Todas las figuras tienen \caption y \label
+☐ Todas las tablas tienen \caption y \label
+☐ La bibliografía está en el .bib y se cita en el texto
+
+Compilación en Overleaf:
+☐ Compilar dos veces (para referencias cruzadas correctas)
+☐ Sin warnings rojos en el log
+☐ Revisar la tabla de contenidos generada
+☐ Verificar que todos los links funcionan (hyperref)
+```
+
+------------------------------------------------------------------------
+
+##  {.final-slide background-color="#0F2044"}
+
+::: center-content
+**¿Preguntas?**
+
+------------------------------------------------------------------------
+
+Francisco Alfaro\
+`fralfaro@usm.cl`\
+Docencia Digital · UTFSM
+
+*2026*
+:::

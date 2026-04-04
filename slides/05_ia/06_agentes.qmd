@@ -1,0 +1,419 @@
+---
+title: "Agentes IA"
+subtitle: "De chatbots reactivos a sistemas que razonan y actúan"
+author: "Francisco Alfaro"
+institute: "Docencia Digital · UTFSM"
+date: today
+date-format: "MMMM YYYY"
+
+format:
+  revealjs:
+    theme: [default, ../custom.scss]
+    slide-number: true
+    progress: true
+    history: false
+    transition: fade
+    transition-speed: fast
+    incremental: false
+    fig-align: center
+    highlight-style: github
+    code-block-bg: true
+    center: false
+    width: 1280
+    height: 720
+    margin: 0.08
+    footer: "Docencia Digital · UTFSM · 2026"
+    logo: "../../assets/img/brand/brand__usm.png"
+
+execute:
+  echo: false
+  warning: false
+---
+
+##  {.title-slide background-color="#0F2044"}
+
+::: title-block
+**Agentes IA**
+
+De chatbots reactivos a sistemas que razonan y actúan
+:::
+
+::: subtitle-block
+Sesión 5 — Inteligencia Artificial para docencia
+:::
+
+::: author-block
+Francisco Alfaro\
+Docencia Digital · UTFSM · 2026
+:::
+
+------------------------------------------------------------------------
+
+## La diferencia fundamental: chatbot vs agente
+
+::: columns
+::: {.column width="55%"}
+**Un chatbot responde preguntas.**
+
+**Un agente resuelve problemas.**
+
+**Ejemplo concreto:**
+
+Un chatbot puede explicarte cómo funciona K-means.
+
+Un agente puede:
+
+1. Tomar el dataset del laboratorio
+2. Ejecutar K-means con distintos valores de k
+3. Evaluar los resultados con la métrica de silueta
+4. Detectar que el estudiante cometió un error en la normalización
+5. Generar retroalimentación específica sobre ese error
+
+...todo en respuesta a: *"revisa mi laboratorio"*.
+:::
+
+::: {.column width="45%"}
+
+```{mermaid}
+graph TD
+    C["Chatbot"] --> F["Entrada → Respuesta\n(función simple)"]
+
+    A["Agente"] --> R["Razonamiento\n¿qué pasos debo seguir?"]
+    A --> T["Herramientas\nCódigo, APIs, búsqueda"]
+    A --> M["Memoria\ncontexto de la conversación"]
+    A --> Loop["Bucle\nobservar → actuar → observar"]
+```
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+## El ciclo de un agente
+
+::: columns
+::: {.column width="55%"}
+**ReAct: Reasoning + Acting**
+
+```
+Tarea: "Analiza el dataset de notas y
+detecta estudiantes en riesgo de reprobación"
+
+Pensamiento: Necesito cargar el dataset,
+calcular estadísticas básicas y definir
+un umbral de riesgo.
+
+Acción: ejecutar_código("
+    import pandas as pd
+    df = pd.read_csv('notas.csv')
+    df['promedio'] = df[['lab1','lab2','lab3']].mean(axis=1)
+    en_riesgo = df[df['promedio'] < 4.0]
+    print(en_riesgo[['nombre', 'promedio']])
+")
+
+Observación:
+  nombre   promedio
+  Ana      3.8
+  Pedro    3.2
+  ...
+
+Pensamiento: Tengo 7 estudiantes con promedio < 4.0.
+Ahora calculo el desglose por evaluación para cada uno.
+
+Acción: ... (siguiente paso)
+```
+:::
+
+::: {.column width="45%"}
+
+**Los componentes de un agente:**
+
+| Componente | Qué hace |
+|---|---|
+| **LLM** | Razona sobre qué hacer |
+| **Herramientas (Tools)** | Acciones que el agente puede tomar |
+| **Memoria** | Contexto de la conversación |
+| **Bucle de razonamiento** | Observe → Think → Act → Observe |
+
+::: {.callout-note icon="false"}
+## La clave: herramientas
+
+Un agente es tan poderoso como las herramientas que tiene disponibles. Sin herramientas, es solo un chatbot.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Herramientas típicas para agentes educativos
+
+::: columns
+::: {.column width="55%"}
+**Ejecutor de código:**
+
+```python
+from langchain.tools import tool
+
+@tool
+def ejecutar_python(codigo: str) -> str:
+    """Ejecuta código Python y retorna el output."""
+    try:
+        exec_globals = {}
+        exec(codigo, exec_globals)
+        return str(exec_globals.get('resultado', 'OK'))
+    except Exception as e:
+        return f"Error: {str(e)}"
+```
+
+**Buscador en documentos del curso:**
+
+```python
+@tool
+def buscar_en_apuntes(pregunta: str) -> str:
+    """Busca información en los apuntes del curso."""
+    docs = retriever.invoke(pregunta)
+    return "\n".join([d.page_content for d in docs])
+```
+:::
+
+::: {.column width="45%"}
+
+**Calculadora:**
+
+```python
+@tool
+def calcular(expresion: str) -> str:
+    """Evalúa expresiones matemáticas."""
+    try:
+        return str(eval(expresion))
+    except:
+        return "Error en la expresión"
+```
+
+**Otras herramientas útiles:**
+
+- Lector de archivos CSV/Excel
+- Generador de gráficos
+- Buscador web (para papers recientes)
+- Acceso a la API del LMS (notas, asistencias)
+- Generador de PDFs o documentos
+
+::: {.callout-warning icon="false"}
+## Seguridad con ejecución de código
+
+Un agente que ejecuta código puede hacer cosas destructivas si el código es malicioso. En producción, ejecutar siempre en un entorno aislado (sandbox).
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Construir un agente con LangChain
+
+::: columns
+::: {.column width="55%"}
+```python
+from langchain_openai import ChatOpenAI
+from langchain.agents import create_react_agent, AgentExecutor
+from langchain import hub
+
+# Definir las herramientas
+tools = [ejecutar_python, buscar_en_apuntes, calcular]
+
+# El LLM del agente
+llm = ChatOpenAI(model="gpt-4o", temperature=0)
+
+# El prompt de ReAct (de LangChain Hub)
+prompt = hub.pull("hwchase17/react")
+
+# Crear el agente
+agent = create_react_agent(llm, tools, prompt)
+
+# Crear el ejecutor (maneja el bucle observe-act)
+agent_executor = AgentExecutor(
+    agent=agent,
+    tools=tools,
+    verbose=True,         # muestra el razonamiento
+    max_iterations=10,    # máximo de pasos
+    handle_parsing_errors=True
+)
+```
+:::
+
+::: {.column width="45%"}
+
+**Invocar el agente:**
+
+```python
+resultado = agent_executor.invoke({
+    "input": """
+    Tengo el siguiente código que da error:
+    df['nota'] = df['Nota'].apply(lambda x: x/10)
+    Error: KeyError: 'Nota'
+
+    El dataset tiene columnas: nombre, nota_lab, nota_examen.
+
+    Corrige el código y calcula el promedio ponderado
+    (labs 30%, examen 70%).
+    """
+})
+
+print(resultado["output"])
+```
+
+**Output del agente:**
+
+```
+> Pensamiento: El error indica que la columna
+  se llama 'nota_lab', no 'Nota'...
+> Acción: ejecutar_python(...)
+> Observación: El código funciona...
+> Respuesta final: El error era que...
+```
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Agentes para docencia: casos de uso concretos
+
+::: columns
+::: {.column width="50%"}
+**1. Revisor de código de estudiantes:**
+
+El estudiante sube su notebook → el agente lo ejecuta celda por celda, detecta errores, verifica que los resultados son correctos según la solución, y genera retroalimentación específica.
+
+**2. Tutor de diagnóstico:**
+
+El agente hace preguntas al estudiante para evaluar comprensión → identifica dónde está el gap conceptual → genera ejercicios dirigidos a ese gap específico.
+
+**3. Generador de datasets sintéticos:**
+
+A partir de un contexto (sector industrial, tipo de problema), genera un dataset realista con las características estadísticas que el docente especifique.
+:::
+
+::: {.column width="50%"}
+
+**4. Asistente de preparación de examen:**
+
+```
+Tengo que diseñar un examen para 90 minutos
+sobre regresión lineal y logística.
+
+Las condiciones son:
+- 3 preguntas, puntajes 20/40/40
+- Dificultad creciente
+- La pregunta 3 debe incluir interpretación
+  de resultados, no solo cálculo
+
+Genera el examen con pauta de corrección.
+```
+
+**5. Analizador de tendencias del curso:**
+
+Lee las notas de todos los labs → identifica qué conceptos tienen peores resultados → sugiere qué reforzar antes del examen.
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Limitaciones y riesgos de los agentes
+
+::: columns
+::: {.column width="55%"}
+**Limitaciones técnicas:**
+
+| Limitación | Consecuencia |
+|---|---|
+| Pueden ejecutar demasiados pasos | Costo en API tokens |
+| Pueden quedar en loops | Necesitas `max_iterations` |
+| El LLM puede razonar incorrectamente | Verificación humana obligatoria |
+| Herramientas pueden fallar | Manejo de errores robusto |
+
+**Riesgos en contexto educativo:**
+
+- Un agente que hace trampa por el estudiante
+- Un revisor que da la solución en lugar de guiar
+- Acceso no autorizado a datos de estudiantes
+- Outputs incorrectos presentados como correctos
+:::
+
+::: {.column width="45%"}
+
+::: {.callout-important icon="false"}
+## La supervisión humana sigue siendo crítica
+
+Un agente es una herramienta poderosa — y como toda herramienta poderosa, puede usarse bien o mal.
+
+En educación:
+
+- El agente **apoya** al docente, no lo reemplaza
+- Las evaluaciones finales siempre tienen supervisión humana
+- Los estudiantes deben saber cuándo están interactuando con un agente
+
+:::
+
+**Principio de mínimo privilegio:**
+
+Dale al agente solo las herramientas que necesita para su tarea. Un revisor de código no necesita acceso a la base de datos de notas.
+:::
+:::
+
+------------------------------------------------------------------------
+
+## El estado del arte: agentes en 2026
+
+::: columns
+::: {.column width="55%"}
+**Frameworks maduros:**
+
+| Framework | Para qué |
+|---|---|
+| **LangChain** | Agentes y cadenas LLM, muy popular |
+| **LlamaIndex** | Indexación y RAG avanzado |
+| **CrewAI** | Multi-agentes colaborativos |
+| **AutoGen (Microsoft)** | Agentes conversacionales |
+| **Anthropic Agent SDK** | Agentes con Claude |
+
+**En producción hoy:**
+
+- GitHub Copilot = agente de código
+- NotebookLM = agente documental (RAG)
+- Perplexity = agente de búsqueda
+- Cursor = agente de desarrollo de software
+:::
+
+::: {.column width="45%"}
+
+::: {.callout-tip icon="false"}
+## Para docentes que quieren explorar
+
+El nivel mínimo útil es NotebookLM (sin código) o un agente simple con LangChain y herramientas de ejecución de código.
+
+El nivel avanzado (multi-agentes, agentes con memoria persistente) es territorio de investigación — no necesario para docencia.
+:::
+
+**La dirección del campo:**
+
+Los agentes serán la interfaz principal para trabajar con IA en 2027-2028. Aprender los conceptos hoy es la mejor preparación.
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+##  {.final-slide background-color="#0F2044"}
+
+::: center-content
+**¿Preguntas?**
+
+------------------------------------------------------------------------
+
+Francisco Alfaro\
+`fralfaro@usm.cl`\
+Docencia Digital · UTFSM
+
+*2026*
+:::

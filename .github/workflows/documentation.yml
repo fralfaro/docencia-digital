@@ -1,7 +1,7 @@
 on:
   workflow_dispatch:
   push:
-    branches: main
+    branches: [main]
 
 name: Quarto Publish
 
@@ -10,48 +10,46 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - name: Set up uv
-        uses: astral-sh/setup-uv@v5
-        with:
-          enable-cache: true
-
-      - name: Install Python dependencies
-        run: uv pip install --system -r requirements.txt
-
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
 
-      # Configurar R y sus dependencias
-      - uses: r-lib/actions/setup-r@v2
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Set up R
+        uses: r-lib/actions/setup-r@v2
         with:
           use-public-rspm: true
 
-      - uses: r-lib/actions/setup-r-dependencies@v2
+      - name: Cache R packages
+        uses: actions/cache@v4
         with:
-          packages: |
-            any::rmarkdown
-            any::tidyverse
-            any::xml2
-            any::downlit
-            any::here
-            any::janitor
-            any::kableExtra
-            any::reticulate
+          path: ${{ env.R_LIBS_USER }}
+          key: r-${{ hashFiles('**/DESCRIPTION') }}
+          restore-keys: r-
 
+      - name: Install system dependencies
+        run: sudo apt-get install -y libxml2-dev libcurl4-openssl-dev libssl-dev libfontconfig1-dev libharfbuzz-dev libfribidi-dev libfreetype6-dev libpng-dev libtiff5-dev libjpeg-dev
 
-      # Renderizar y Publicar
-      - name: Render and Publish
-        uses: quarto-dev/quarto-actions/publish@v2
+      - name: Install R packages
+        run: |
+          Rscript -e 'install.packages(c("knitr", "rmarkdown", "ggplot2", "dplyr", "tidyr", "kableExtra", "scales", "e1071", "gridExtra"), repos="https://cloud.r-project.org")'
+
+      - name: Render book
+        run: quarto render
+
+      - name: Render slides
+        run: python render_slides.py
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          target: gh-pages
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs

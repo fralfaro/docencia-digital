@@ -1,0 +1,471 @@
+---
+title: "Presentaciones con RevealJS"
+subtitle: "Slides académicas con código, ecuaciones y notas del presentador"
+author: "Francisco Alfaro"
+institute: "Docencia Digital · UTFSM"
+date: today
+date-format: "MMMM YYYY"
+
+format:
+  revealjs:
+    theme: [default, ../custom.scss]
+    slide-number: true
+    progress: true
+    history: false
+    transition: fade
+    transition-speed: fast
+    incremental: false
+    fig-align: center
+    highlight-style: github
+    code-block-bg: true
+    center: false
+    width: 1280
+    height: 720
+    margin: 0.08
+    footer: "Docencia Digital · UTFSM · 2026"
+    logo: "../../assets/img/brand/brand__usm.png"
+
+execute:
+  echo: false
+  warning: false
+---
+
+##  {.title-slide background-color="#0F2044"}
+
+::: title-block
+**Presentaciones con RevealJS**
+
+Slides académicas con código, ecuaciones y notas del presentador
+:::
+
+::: subtitle-block
+Sesión 4 — Quarto para material académico
+:::
+
+::: author-block
+Francisco Alfaro\
+Docencia Digital · UTFSM · 2026
+:::
+
+------------------------------------------------------------------------
+
+## RevealJS vs PowerPoint vs Beamer
+
+::: columns
+::: {.column width="55%"}
+**PowerPoint:** el archivo `.pptx` es el resultado. Difícil de versionar, de reutilizar contenido y de incluir código real.
+
+**Beamer (LaTeX):** produce PDF profesional con matemáticas perfectas. No puede contener código vivo ni animaciones web.
+
+**RevealJS (Quarto):** una presentación HTML. Se ejecuta en el navegador, puede contener:
+
+- Código ejecutable con outputs reales
+- Ecuaciones LaTeX
+- Animaciones y transiciones
+- Audio y video embebidos
+- Se publica en GitHub Pages junto con el curso
+:::
+
+::: {.column width="45%"}
+
+::: {.callout-important icon="false"}
+## La ventaja clave para docencia
+
+El mismo archivo `.qmd` que usas para el **apunte** puede producir las **slides** de esa semana.
+
+Un solo lugar de verdad. Cero copiar y pegar.
+:::
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+## El frontmatter mínimo para RevealJS
+
+```yaml
+---
+title: "Regresión Lineal Simple"
+subtitle: "Semana 3 — Modelamiento Predictivo"
+author: "Juan Pérez"
+institute: "UTFSM"
+date: today
+date-format: "MMMM YYYY"
+
+format:
+  revealjs:
+    theme: default         # moon, sky, night, serif, blood, default
+    slide-number: true     # número de slide
+    progress: true         # barra de progreso
+    transition: fade       # fade, slide, convex, concave, zoom
+    transition-speed: fast
+    width: 1280
+    height: 720
+    margin: 0.08
+    footer: "MAT281 · UTFSM · 2025-1"
+    logo: "assets/img/brand/brand__usm.png"
+---
+```
+
+------------------------------------------------------------------------
+
+## Crear slides: la sintaxis
+
+::: columns
+::: {.column width="55%"}
+**Divisores de slide:**
+
+```markdown
+## Título del slide
+
+Contenido del slide con texto normal.
+
+---
+
+## Siguiente slide
+
+- Viñeta 1
+- Viñeta 2
+
+---
+
+## Slide con ecuación
+
+$$\hat{y} = \beta_0 + \beta_1 x$$
+```
+
+`##` = nuevo slide con título
+`---` = nuevo slide sin título (slide en blanco o especial)
+:::
+
+::: {.column width="45%"}
+
+**Columnas en slides:**
+
+```markdown
+::: columns
+::: {.column width="50%"}
+Columna izquierda
+
+$$f(x) = x^2$$
+:::
+
+::: {.column width="50%"}
+Columna derecha
+
+- Punto 1
+- Punto 2
+:::
+:::
+```
+
+**Callouts en slides:**
+
+```markdown
+::: {.callout-tip icon="false"}
+## Idea clave
+
+El coeficiente $\beta_1$ representa
+el cambio en $y$ por cada unidad de $x$.
+:::
+```
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Animaciones: fragments e incremental
+
+::: columns
+::: {.column width="55%"}
+**Fragment:** aparece al avanzar el slide
+
+```markdown
+## Construcción paso a paso
+
+Primero aparece esto.
+
+::: fragment
+Luego aparece esto.
+:::
+
+::: fragment
+Y finalmente esto.
+:::
+```
+
+**Incremental (listas):**
+
+```yaml
+format:
+  revealjs:
+    incremental: true  # todas las listas aparecen ítem por ítem
+```
+
+O por slide individual:
+
+```markdown
+::: incremental
+- Ítem 1
+- Ítem 2
+- Ítem 3
+:::
+```
+:::
+
+::: {.column width="45%"}
+
+**Highlight de código animado:**
+
+````markdown
+```{{python}}
+#| code-line-numbers: "1|2-3|4-6"
+
+import pandas as pd          # línea 1 sola
+df = pd.read_csv('datos.csv')# líneas 2-3
+df = df.dropna()             # líneas 4-6
+df['nota'] = pd.to_numeric(df['nota'])
+resultado = df.groupby('carrera').mean()
+```
+````
+
+Cada `|` avanza al siguiente bloque resaltado.
+
+::: {.callout-tip icon="false"}
+## Para explicar código paso a paso
+
+El highlight animado es perfecto para explicar un script línea a línea en clase, con tiempo para que los estudiantes entiendan cada parte.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Código ejecutable en slides
+
+::: columns
+::: {.column width="55%"}
+**El código corre y el output aparece en el slide:**
+
+````markdown
+## Demostración en vivo
+
+```{{python}}
+#| echo: true
+#| fig-height: 3
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+x = np.linspace(0, 2*np.pi, 100)
+plt.plot(x, np.sin(x), label='sin(x)')
+plt.plot(x, np.cos(x), label='cos(x)')
+plt.legend()
+plt.grid(True)
+plt.show()
+```
+````
+:::
+
+::: {.column width="45%"}
+
+**Opciones específicas para slides:**
+
+```yaml
+execute:
+  echo: true       # mostrar código en slides
+  warning: false
+
+format:
+  revealjs:
+    code-block-bg: true    # fondo en bloques de código
+    highlight-style: github # tema de resaltado
+    fig-align: center
+```
+
+::: {.callout-note icon="false"}
+## En clase sin internet
+
+Con `freeze: auto`, los resultados están guardados. La presentación funciona sin necesidad de ejecutar código en vivo — perfecto para conexiones inestables en el aula.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Temas y personalización visual
+
+::: columns
+::: {.column width="55%"}
+**Temas predefinidos de RevealJS:**
+
+| Tema | Aspecto |
+|---|---|
+| `default` | Blanco, clásico |
+| `moon` | Azul oscuro |
+| `night` | Negro |
+| `sky` | Azul claro |
+| `serif` | Elegante con serifa |
+| `blood` | Rojo dramático |
+
+**Tema personalizado (SCSS):**
+
+```yaml
+format:
+  revealjs:
+    theme: [default, custom.scss]
+```
+:::
+
+::: {.column width="45%"}
+
+**`custom.scss` básico:**
+
+```scss
+/*-- scss:defaults --*/
+$link-color: #2a7ae2;
+$presentation-heading-font: 'Inter', sans-serif;
+$presentation-heading-color: #1a1a2e;
+$body-bg: #ffffff;
+
+/*-- scss:rules --*/
+.title-block {
+  font-size: 1.8em;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.callout-tip {
+  border-left: 4px solid #2a7ae2;
+}
+```
+
+::: {.callout-tip icon="false"}
+## Colores institucionales
+
+Ajustar `$link-color` y `$presentation-heading-color` a los colores UTFSM hace las presentaciones reconociblemente institucionales.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Notas del presentador
+
+::: columns
+::: {.column width="55%"}
+**Agregar notas al slide:**
+
+```markdown
+## Regresión lineal: los supuestos
+
+- Linealidad
+- Independencia de errores
+- Homocedasticidad
+- Normalidad de residuos
+
+::: {.notes}
+Explicar que en la práctica, linealidad y
+homocedasticidad son los más importantes
+de verificar. Los gráficos de diagnóstico
+(residuos vs fitted) permiten detectar
+violaciones de ambos supuestos.
+
+Mencionar el caso del dataset anscombe
+como ejemplo de cómo R² puede ser idéntico
+con relaciones completamente distintas.
+:::
+```
+:::
+
+::: {.column width="45%"}
+
+**Activar el modo presentador:**
+
+Presionar `S` durante la presentación → abre ventana de presentador con:
+
+- Slide actual (lo que ve la audiencia)
+- Siguiente slide (anticipa lo que viene)
+- Notas del presentador
+- Temporizador
+
+::: {.callout-tip icon="false"}
+## Flujo recomendado
+
+1. Escribe las notas detalladas mientras preparas la charla
+2. En clase, presentas desde el modo presentador
+3. Las notas quedan como guión sin necesidad de otro documento
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Publicar la presentación
+
+::: columns
+::: {.column width="55%"}
+**Render local:**
+
+```bash
+quarto render presentacion.qmd --to revealjs
+# → presentacion.html
+```
+
+El `.html` es autónomo — contiene todo (JS, CSS, fonts) embebido.
+
+**Publicar en GitHub Pages:**
+
+```bash
+quarto publish gh-pages
+```
+
+→ Disponible en `usuario.github.io/nombre-repo`
+
+Los estudiantes acceden desde el navegador en cualquier dispositivo — incluyendo el móvil durante la clase.
+:::
+
+::: {.column width="45%"}
+
+**Exportar a PDF:**
+
+En el navegador con la presentación abierta:
+
+→ Agregar `?print-pdf` a la URL
+
+→ Ctrl+P → Guardar como PDF
+
+O desde la terminal (requiere Chromium):
+
+```bash
+quarto render presentacion.qmd --to revealjs
+# → automáticamente también genera PDF
+# si tienes chromium instalado
+```
+
+::: {.callout-note icon="false"}
+## Compartir con estudiantes
+
+URL de GitHub Pages → acceso inmediato, sin descargar nada, funciona en móvil.
+
+Para estudiantes que prefieren PDF → `?print-pdf` en el navegador.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+##  {.final-slide background-color="#0F2044"}
+
+::: center-content
+**¿Preguntas?**
+
+------------------------------------------------------------------------
+
+Francisco Alfaro\
+`fralfaro@usm.cl`\
+Docencia Digital · UTFSM
+
+*2026*
+:::

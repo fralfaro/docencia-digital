@@ -1,0 +1,342 @@
+---
+title: "NotebookLM en profundidad"
+subtitle: "Análisis documental con IA para docentes universitarios"
+author: "Francisco Alfaro"
+institute: "Docencia Digital · UTFSM"
+date: today
+date-format: "MMMM YYYY"
+
+format:
+  revealjs:
+    theme: [default, ../custom.scss]
+    slide-number: true
+    progress: true
+    history: false
+    transition: fade
+    transition-speed: fast
+    incremental: false
+    fig-align: center
+    highlight-style: github
+    code-block-bg: true
+    center: false
+    width: 1280
+    height: 720
+    margin: 0.08
+    footer: "Docencia Digital · UTFSM · 2026"
+    logo: "../../assets/img/brand/brand__usm.png"
+
+execute:
+  echo: false
+  warning: false
+---
+
+##  {.title-slide background-color="#0F2044"}
+
+::: title-block
+**NotebookLM en profundidad**
+
+Análisis documental con IA para docentes universitarios
+:::
+
+::: subtitle-block
+Sesión 5 — Inteligencia Artificial para docencia
+:::
+
+::: author-block
+Francisco Alfaro\
+Docencia Digital · UTFSM · 2026
+:::
+
+------------------------------------------------------------------------
+
+## El problema que NotebookLM resuelve
+
+::: columns
+::: {.column width="55%"}
+**ChatGPT y Claude** responden con lo que saben de internet.
+
+**NotebookLM** responde **solo con lo que está en los documentos que tú subiste** — y cita exactamente de dónde sacó cada afirmación.
+
+**La diferencia para un docente:**
+
+Cuando preguntas a NotebookLM sobre el contenido del examen, responde con base en **tu** syllabus, **tus** apuntes y **tus** rúbricas — no con conocimiento general que puede ser diferente o contradictorio con lo que enseñas.
+:::
+
+::: {.column width="45%"}
+
+```{mermaid}
+graph TD
+    subgraph "ChatGPT / Claude"
+        P1["Tu pregunta"] --> M1["Modelo entrenado\nen internet"]
+        M1 --> R1["Respuesta de\nconocimiento general"]
+    end
+
+    subgraph "NotebookLM"
+        P2["Tu pregunta"] --> R2["Recuperación de\ntus documentos"]
+        R2 --> M2["Modelo"]
+        M2 --> R3["Respuesta con\ncitas exactas"]
+    end
+```
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Qué es NotebookLM técnicamente
+
+::: columns
+::: {.column width="55%"}
+NotebookLM combina dos componentes:
+
+**RAG (Retrieval Augmented Generation):**
+
+1. Tus documentos se indexan y vectorizan
+2. Tu pregunta se convierte en un vector
+3. Se recuperan los fragmentos más relevantes de tus documentos
+4. El modelo genera la respuesta usando solo esos fragmentos
+
+**Modelo de lenguaje (Gemini):**
+
+Genera la respuesta final con comprensión del lenguaje natural.
+
+La diferencia con un chatbot convencional: el modelo no puede "alucinar" sobre tu material porque solo tiene acceso a lo que recuperó de tus documentos.
+:::
+
+::: {.column width="45%"}
+
+::: {.callout-note icon="false"}
+## Las citas como mecanismo de confianza
+
+Cada respuesta de NotebookLM viene con citas al número de página o sección del documento fuente.
+
+Puedes verificar cualquier afirmación en segundos: clic en la cita → va al texto exacto.
+
+Esto es especialmente valioso para material académico donde la precisión importa.
+:::
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Configurar un notebook desde cero
+
+::: columns
+::: {.column width="55%"}
+**1. Ir a [notebooklm.google.com](https://notebooklm.google.com)**
+
+Requiere cuenta de Google.
+
+**2. Nuevo notebook → agregar fuentes:**
+
+NotebookLM acepta:
+- PDFs (apuntes, papers, guías de laboratorio)
+- Google Docs y Google Slides
+- URLs de páginas web
+- Texto pegado directamente
+- YouTube (transcripción automática)
+- Archivos de audio
+
+**3. Esperar la indexación (segundos a minutos)**
+
+**4. Hacer preguntas en el chat**
+:::
+
+::: {.column width="45%"}
+
+**Límites del plan gratuito:**
+
+- Hasta 50 notebooks
+- Hasta 50 fuentes por notebook
+- Hasta 500.000 palabras por fuente
+- Respuestas ilimitadas
+
+**Límites del plan Pro (Google One AI Premium):**
+
+- Hasta 300 fuentes por notebook
+- Prioridad en el procesamiento
+- Incluye Gemini Advanced en Gmail, Docs, etc.
+
+::: {.callout-tip icon="false"}
+## Para un curso completo
+
+Un notebook por módulo del curso. Cada notebook tiene: apuntes, papers de referencia y guías de laboratorio de ese módulo.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Casos de uso docentes de alto valor
+
+::: columns
+::: {.column width="50%"}
+**1. Generar preguntas de examen desde TU material:**
+
+*"Basándote en el capítulo 3 de mis apuntes sobre regresión logística, genera 8 preguntas de examen a nivel universitario. 4 de comprensión conceptual y 4 de aplicación. Cita el fragmento del que proviene cada pregunta."*
+
+**2. Identificar conceptos clave:**
+
+*"¿Cuáles son los 10 conceptos más importantes en mis apuntes? ¿Cuáles aparecen repetidamente como prerrequisitos para otros?"*
+
+**3. Detectar lagunas en el material:**
+
+*"¿Hay temas que menciono sin desarrollar? ¿Qué partes del syllabus no tienen cobertura en los apuntes?"*
+:::
+
+::: {.column width="50%"}
+
+**4. Crear guía de estudio:**
+
+*"Crea una guía de estudio para el examen final que cubra todos los documentos del notebook. Organízala por tema, incluye las definiciones clave y 2 ejercicios tipo para cada tema."*
+
+**5. Responder preguntas de estudiantes:**
+
+*"Un estudiante pregunta: '¿Cuál es la diferencia entre regresión Ridge y Lasso?' Responde usando solo lo que está en mis apuntes."*
+
+::: {.callout-tip icon="false"}
+## Como asistente de consultas
+
+Puedes compartir el link del notebook con estudiantes para que hagan consultas sobre el material del curso — con la garantía de que las respuestas están ancladas en tu material.
+:::
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Audio Overview: el podcast de tu material
+
+::: columns
+::: {.column width="55%"}
+**Una de las funciones más sorprendentes:**
+
+NotebookLM puede generar un **podcast de audio de ~10 minutos** donde dos voces de IA discuten y resumen tu material como si fuera un podcast educativo real.
+
+**Cómo generarlo:**
+
+1. Notebook con tus fuentes cargadas
+2. Panel "Audio Overview" → **Generate**
+3. Esperar 2-5 minutos
+4. Descargar el MP3
+
+**Opciones:**
+
+- Se puede indicar el enfoque (*"centra el podcast en las aplicaciones prácticas, no en la teoría matemática"*)
+- Personalizar para diferentes audiencias
+:::
+
+::: {.column width="45%"}
+
+**Casos de uso:**
+
+- Resumen del módulo para que los estudiantes repasen en el transporte
+- Introducción a un tema antes de la clase expositiva
+- Material accesible para estudiantes con dificultades de lectura
+
+::: {.callout-note icon="false"}
+## Calidad sorprendente
+
+El diálogo entre las dos voces es natural, hace preguntas y respuestas, introduce analogías y tiene inflexiones de conversación real.
+
+No suena a texto leído en voz alta — suena a dos personas hablando sobre el tema.
+:::
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+## NotebookLM con fuentes de YouTube
+
+::: columns
+::: {.column width="55%"}
+**NotebookLM transcribe y analiza videos de YouTube:**
+
+1. Pegar la URL del video en "Add source → Website"
+2. NotebookLM extrae la transcripción automáticamente
+3. Puedes hacer preguntas sobre el contenido del video
+
+**Casos de uso:**
+
+- Analizar una charla TED relevante al tema del curso
+- Extraer los puntos clave de un tutorial técnico largo
+- Comparar explicaciones de distintos videos sobre el mismo concepto
+- Generar resumen con timestamps para referir a los estudiantes
+
+*"¿En qué minuto del video se explica la derivación del gradiente? ¿Qué ejemplo usa el presentador?"*
+:::
+
+::: {.column width="45%"}
+
+::: {.callout-warning icon="false"}
+## Limitaciones con video
+
+Solo funciona con videos que tienen subtítulos disponibles (la mayoría de los videos de YouTube en inglés y muchos en español).
+
+Si el video no tiene subtítulos, NotebookLM no puede procesar el contenido de audio.
+:::
+
+**Combinación poderosa:**
+
+Un notebook con:
+- Tus apuntes (PDF)
+- El paper de referencia (PDF)
+- El video de clase (YouTube URL)
+
+→ Los estudiantes pueden hacer preguntas que integran los tres recursos.
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Limitaciones que hay que conocer
+
+| Limitación | Qué significa en práctica |
+|---|---|
+| **Solo responde con tus fuentes** | Si el concepto no está en tus documentos, no puede responder |
+| **Calidad del output = calidad del input** | Apuntes con errores → respuestas con errores |
+| **Sin memoria entre notebooks** | Cada notebook es independiente |
+| **No ejecuta código** | No puede analizar datasets, solo texto |
+| **Fecha de corte de Gemini** | Para temas muy recientes, puede no tener contexto |
+| **Idioma** | Funciona mejor en inglés, pero el español ha mejorado mucho |
+
+::: {.callout-important icon="false"}
+## La regla de la fuente única
+
+Todo lo que NotebookLM dice, lo dice porque está en tus documentos. Si no verificas que tus documentos son correctos, NotebookLM te repetirá tus propios errores con confianza.
+
+La calidad de las fuentes es la calidad del sistema.
+:::
+
+------------------------------------------------------------------------
+
+## Comparativa: cuándo usar qué
+
+| Escenario | ChatGPT/Claude | NotebookLM |
+|---|---|---|
+| Generar código de ejemplo | ✅ | ❌ |
+| Preguntas de examen desde MI material | ❌ | ✅ |
+| Explicar un concepto general | ✅ | Solo si está en los docs |
+| Guía de estudio de MIS apuntes | ❌ | ✅ |
+| Retroalimentar entrega de estudiante | ✅ | ✅ (con rúbrica como fuente) |
+| Resumir un paper que no conozco | ✅ | ✅ |
+| Responder preguntas de estudiantes | ✅ | ✅ (anclado en tu material) |
+| Podcast resumen del módulo | ❌ | ✅ (Audio Overview) |
+
+------------------------------------------------------------------------
+
+##  {.final-slide background-color="#0F2044"}
+
+::: center-content
+**¿Preguntas?**
+
+------------------------------------------------------------------------
+
+Francisco Alfaro\
+`fralfaro@usm.cl`\
+Docencia Digital · UTFSM
+
+*2026*
+:::
