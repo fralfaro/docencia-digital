@@ -1,0 +1,1760 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Ética y uso responsable de IA en el aula – Docencia Digital</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../material/05_ia/ia_07_copilot_studio.html" rel="prev">
+<link href="../../assets/img/brand/brand__usm.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-f418161beb48e0141c760e455f12af2c.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-054bc2b8cb1b6ec370a8688fa6c00d10.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-8fd4b497b002349af961823af7d1d6ac.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-054bc2b8cb1b6ec370a8688fa6c00d10.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No se han encontrado resultados",
+    "search-matching-documents-text": "documentos encontrados",
+    "search-copy-link-title": "Copiar el enlace en la búsqueda",
+    "search-hide-matches-text": "Ocultar resultados adicionales",
+    "search-more-match-text": "resultado adicional en este documento",
+    "search-more-matches-text": "resultados adicionales en este documento",
+    "search-clear-button-title": "Borrar",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Buscar"
+  }
+}</script>
+<script src="../../site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="../../site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="../../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
+
+
+</head>
+
+<body class="nav-sidebar floating quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../material/05_ia/index.html">Inteligencia Artificial para docencia</a></li><li class="breadcrumb-item"><a href="../../material/05_ia/ia_08_etica.html"><span class="chapter-title">Ética y uso responsable de IA en el aula</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="../../index.html" class="sidebar-logo-link">
+      <img src="../../assets/img/brand/brand__usm.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none">
+      <img src="../../assets/img/brand/brand__usm.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">Docencia Digital</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/fralfaro/docencia-digital" title="Ejecutar el código" class="quarto-navigation-tool px-1" aria-label="Ejecutar el código"><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo oscuro"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Buscar"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🏠 Home</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">🟪 Introducción</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../material/00_intro/intro.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Bienvenida al Curso</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../material/01_github/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">GitHub para docencia</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../material/01_github/01_esencial.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Git y GitHub esencial</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../material/01_github/02_colaborativo.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Flujo colaborativo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../material/01_github/03_automatizacion.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Automatización y Pages</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../material/02_colab/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Google Colab para docencia</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../material/02_colab/colab_01_esencial.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Colab esencial</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../material/02_colab/colab_02_pandas.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Manipulación de datos con pandas</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../material/02_colab/colab_03_visualizacion.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Visualización de datos</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../material/03_latex/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">LaTeX y Overleaf para docencia</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../material/03_latex/overleaf_01_esencial.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">LaTeX esencial</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../material/03_latex/overleaf_02_matematica.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Matemática y escritura científica</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../material/03_latex/overleaf_03_plantillas.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Plantillas y producción de documentos</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../material/04_quarto/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quarto para material académico</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../material/04_quarto/quarto_01_intro.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Qué es Quarto y por qué usarlo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../material/04_quarto/quarto_02_documentos.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Documentos reproducibles</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../material/04_quarto/quarto_03_revealjs.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Presentaciones con RevealJS</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../material/04_quarto/quarto_04_sitios.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Sitios web y blogs docentes</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../material/04_quarto/quarto_05_pages.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Publicación con GitHub Pages</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../material/04_quarto/quarto_06_flujo.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Flujo docente completo con Quarto</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../material/05_ia/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Inteligencia Artificial para docencia</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../material/05_ia/ia_01_panorama.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Panorama de herramientas IA</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../material/05_ia/ia_02_prompting.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Prompting efectivo para docentes</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../material/05_ia/ia_03_notebooklm.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">NotebookLM en profundidad</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../material/05_ia/ia_04_pedagogico.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Diseño pedagógico con IA</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../material/05_ia/ia_05_rag.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Chatbots y RAG</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../material/05_ia/ia_06_agentes.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Agentes IA</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../material/05_ia/ia_07_copilot_studio.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Copilot Studio y plataformas institucionales</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../material/05_ia/ia_08_etica.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">Ética y uso responsable de IA en el aula</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Tabla de contenidos</h2>
+   
+  <ul>
+  <li><a href="#sesgos-en-modelos-de-lenguaje-y-sus-efectos-en-educación" id="toc-sesgos-en-modelos-de-lenguaje-y-sus-efectos-en-educación" class="nav-link active" data-scroll-target="#sesgos-en-modelos-de-lenguaje-y-sus-efectos-en-educación">Sesgos en modelos de lenguaje y sus efectos en educación</a>
+  <ul class="collapse">
+  <li><a href="#qué-son-los-sesgos-en-llms" id="toc-qué-son-los-sesgos-en-llms" class="nav-link" data-scroll-target="#qué-son-los-sesgos-en-llms">Qué son los sesgos en LLMs</a></li>
+  <li><a href="#manifestaciones-concretas-en-el-aula" id="toc-manifestaciones-concretas-en-el-aula" class="nav-link" data-scroll-target="#manifestaciones-concretas-en-el-aula">Manifestaciones concretas en el aula</a></li>
+  <li><a href="#impacto-en-evaluaciones-asistidas-por-ia" id="toc-impacto-en-evaluaciones-asistidas-por-ia" class="nav-link" data-scroll-target="#impacto-en-evaluaciones-asistidas-por-ia">Impacto en evaluaciones asistidas por IA</a></li>
+  <li><a href="#estrategias-de-mitigación" id="toc-estrategias-de-mitigación" class="nav-link" data-scroll-target="#estrategias-de-mitigación">Estrategias de mitigación</a></li>
+  </ul></li>
+  <li><a href="#propiedad-intelectual-y-derechos-de-autor-del-contenido-generado" id="toc-propiedad-intelectual-y-derechos-de-autor-del-contenido-generado" class="nav-link" data-scroll-target="#propiedad-intelectual-y-derechos-de-autor-del-contenido-generado">Propiedad intelectual y derechos de autor del contenido generado</a>
+  <ul class="collapse">
+  <li><a href="#el-panorama-legal-cambiante-y-no-definitivo" id="toc-el-panorama-legal-cambiante-y-no-definitivo" class="nav-link" data-scroll-target="#el-panorama-legal-cambiante-y-no-definitivo">El panorama legal (cambiante y no definitivo)</a></li>
+  <li><a href="#implicaciones-prácticas-para-docentes" id="toc-implicaciones-prácticas-para-docentes" class="nav-link" data-scroll-target="#implicaciones-prácticas-para-docentes">Implicaciones prácticas para docentes</a></li>
+  <li><a href="#el-problema-del-contenido-de-entrenamiento" id="toc-el-problema-del-contenido-de-entrenamiento" class="nav-link" data-scroll-target="#el-problema-del-contenido-de-entrenamiento">El problema del contenido de entrenamiento</a></li>
+  <li><a href="#posición-práctica-recomendada" id="toc-posición-práctica-recomendada" class="nav-link" data-scroll-target="#posición-práctica-recomendada">Posición práctica recomendada</a></li>
+  </ul></li>
+  <li><a href="#privacidad-y-protección-de-datos-de-estudiantes" id="toc-privacidad-y-protección-de-datos-de-estudiantes" class="nav-link" data-scroll-target="#privacidad-y-protección-de-datos-de-estudiantes">Privacidad y protección de datos de estudiantes</a>
+  <ul class="collapse">
+  <li><a href="#el-marco-legal-en-chile" id="toc-el-marco-legal-en-chile" class="nav-link" data-scroll-target="#el-marco-legal-en-chile">El marco legal en Chile</a></li>
+  <li><a href="#lo-que-nunca-debe-subirse-a-plataformas-de-ia-externas" id="toc-lo-que-nunca-debe-subirse-a-plataformas-de-ia-externas" class="nav-link" data-scroll-target="#lo-que-nunca-debe-subirse-a-plataformas-de-ia-externas">Lo que nunca debe subirse a plataformas de IA externas</a></li>
+  <li><a href="#cómo-anonimizar-correctamente-antes-de-usar-ia" id="toc-cómo-anonimizar-correctamente-antes-de-usar-ia" class="nav-link" data-scroll-target="#cómo-anonimizar-correctamente-antes-de-usar-ia">Cómo anonimizar correctamente antes de usar IA</a></li>
+  <li><a href="#retención-de-datos-en-plataformas-de-ia" id="toc-retención-de-datos-en-plataformas-de-ia" class="nav-link" data-scroll-target="#retención-de-datos-en-plataformas-de-ia">Retención de datos en plataformas de IA</a></li>
+  </ul></li>
+  <li><a href="#políticas-institucionales-lineamientos-utfsm-sobre-ia" id="toc-políticas-institucionales-lineamientos-utfsm-sobre-ia" class="nav-link" data-scroll-target="#políticas-institucionales-lineamientos-utfsm-sobre-ia">Políticas institucionales: lineamientos UTFSM sobre IA</a>
+  <ul class="collapse">
+  <li><a href="#el-estado-actual-2025" id="toc-el-estado-actual-2025" class="nav-link" data-scroll-target="#el-estado-actual-2025">El estado actual (2025)</a></li>
+  <li><a href="#principios-que-guían-las-políticas-institucionales-emergentes" id="toc-principios-que-guían-las-políticas-institucionales-emergentes" class="nav-link" data-scroll-target="#principios-que-guían-las-políticas-institucionales-emergentes">Principios que guían las políticas institucionales emergentes</a></li>
+  <li><a href="#qué-hacer-cuando-no-hay-política-institucional" id="toc-qué-hacer-cuando-no-hay-política-institucional" class="nav-link" data-scroll-target="#qué-hacer-cuando-no-hay-política-institucional">Qué hacer cuando no hay política institucional</a></li>
+  </ul></li>
+  <li><a href="#declaración-de-uso-de-ia-en-trabajos-académicos" id="toc-declaración-de-uso-de-ia-en-trabajos-académicos" class="nav-link" data-scroll-target="#declaración-de-uso-de-ia-en-trabajos-académicos">Declaración de uso de IA en trabajos académicos</a>
+  <ul class="collapse">
+  <li><a href="#por-qué-la-declaración-es-clave" id="toc-por-qué-la-declaración-es-clave" class="nav-link" data-scroll-target="#por-qué-la-declaración-es-clave">Por qué la declaración es clave</a></li>
+  <li><a href="#formatos-de-declaración" id="toc-formatos-de-declaración" class="nav-link" data-scroll-target="#formatos-de-declaración">Formatos de declaración</a></li>
+  <li><a href="#plantilla-de-declaración-para-el-curso" id="toc-plantilla-de-declaración-para-el-curso" class="nav-link" data-scroll-target="#plantilla-de-declaración-para-el-curso">Plantilla de declaración para el curso</a></li>
+  </ul></li>
+  <li><a href="#criterios-para-definir-la-política-de-ia-en-el-propio-curso" id="toc-criterios-para-definir-la-política-de-ia-en-el-propio-curso" class="nav-link" data-scroll-target="#criterios-para-definir-la-política-de-ia-en-el-propio-curso">Criterios para definir la política de IA en el propio curso</a>
+  <ul class="collapse">
+  <li><a href="#el-árbol-de-decisión-del-docente" id="toc-el-árbol-de-decisión-del-docente" class="nav-link" data-scroll-target="#el-árbol-de-decisión-del-docente">El árbol de decisión del docente</a></li>
+  <li><a href="#los-tres-modelos-de-política" id="toc-los-tres-modelos-de-política" class="nav-link" data-scroll-target="#los-tres-modelos-de-política">Los tres modelos de política</a></li>
+  <li><a href="#lista-de-verificación-para-la-política-de-ia-del-curso" id="toc-lista-de-verificación-para-la-política-de-ia-del-curso" class="nav-link" data-scroll-target="#lista-de-verificación-para-la-política-de-ia-del-curso">Lista de verificación para la política de IA del curso</a></li>
+  </ul></li>
+  <li><a href="#marco-de-evaluación-en-contextos-donde-los-estudiantes-usan-ia" id="toc-marco-de-evaluación-en-contextos-donde-los-estudiantes-usan-ia" class="nav-link" data-scroll-target="#marco-de-evaluación-en-contextos-donde-los-estudiantes-usan-ia">Marco de evaluación en contextos donde los estudiantes usan IA</a>
+  <ul class="collapse">
+  <li><a href="#el-problema-de-las-métricas-tradicionales" id="toc-el-problema-de-las-métricas-tradicionales" class="nav-link" data-scroll-target="#el-problema-de-las-métricas-tradicionales">El problema de las métricas tradicionales</a></li>
+  <li><a href="#tipos-de-evaluación-resistentes-al-uso-irresponsable-de-ia" id="toc-tipos-de-evaluación-resistentes-al-uso-irresponsable-de-ia" class="nav-link" data-scroll-target="#tipos-de-evaluación-resistentes-al-uso-irresponsable-de-ia">Tipos de evaluación resistentes al uso irresponsable de IA</a></li>
+  <li><a href="#detección-de-uso-no-declarado" id="toc-detección-de-uso-no-declarado" class="nav-link" data-scroll-target="#detección-de-uso-no-declarado">Detección de uso no declarado</a></li>
+  </ul></li>
+  <li><a href="#síntesis-el-docente-como-referente-ético" id="toc-síntesis-el-docente-como-referente-ético" class="nav-link" data-scroll-target="#síntesis-el-docente-como-referente-ético">Síntesis: el docente como referente ético</a></li>
+  <li><a href="#referencias" id="toc-referencias" class="nav-link" data-scroll-target="#referencias">Referencias</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content column-body" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../material/05_ia/index.html">Inteligencia Artificial para docencia</a></li><li class="breadcrumb-item"><a href="../../material/05_ia/ia_08_etica.html"><span class="chapter-title">Ética y uso responsable de IA en el aula</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-title">Ética y uso responsable de IA en el aula</span></h1>
+<p class="subtitle lead">Sesgos, propiedad intelectual, privacidad y políticas para la docencia universitaria</p>
+</div>
+
+
+
+<div class="quarto-title-meta column-body">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Este capítulo es el más incómodo del curso — y probablemente el más importante. No hay respuestas definitivas aquí. La ética del uso de IA en educación es un territorio en construcción, donde las decisiones que tomamos hoy como docentes están configurando normas que todavía no existen formalmente.</p>
+<p>Lo que sí hay son marcos para pensar, preguntas que hacerse antes de actuar, y algunas malas prácticas ya claramente identificadas. Este capítulo los organiza.</p>
+<hr>
+<section id="sesgos-en-modelos-de-lenguaje-y-sus-efectos-en-educación" class="level2">
+<h2 class="anchored" data-anchor-id="sesgos-en-modelos-de-lenguaje-y-sus-efectos-en-educación">Sesgos en modelos de lenguaje y sus efectos en educación</h2>
+<section id="qué-son-los-sesgos-en-llms" class="level3">
+<h3 class="anchored" data-anchor-id="qué-son-los-sesgos-en-llms">Qué son los sesgos en LLMs</h3>
+<p>Los modelos de lenguaje aprenden de texto humano. El texto humano refleja las estructuras de poder, las inequidades y los prejuicios de las sociedades que lo producen. Un modelo entrenado con texto de internet no es neutral — reproduce los sesgos presentes en ese corpus.</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">graph TD
+    C["📚 Corpus de entrenamiento\n(texto de internet, libros, código)"]
+    C --&gt; B1["🌐 Sesgo de idioma\n90%+ en inglés → perspectivas\nanglosajones sobrerrepresentadas"]
+    C --&gt; B2["👤 Sesgo de género\nRoles de autoridad asociados\nmayoritariamente con masculino"]
+    C --&gt; B3["🌍 Sesgo cultural\nContextos OCDE sobrerepresentados\nAmérica Latina, África: menor cobertura"]
+    C --&gt; B4["📅 Sesgo temporal\nInformación 2015-2022 más representada\nEventos recientes: menor cobertura"]
+    C --&gt; B5["💰 Sesgo socioeconómico\nPerspectivas de clase media-alta\ntecnológica sobrerrepresentadas"]
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+</section>
+<section id="manifestaciones-concretas-en-el-aula" class="level3">
+<h3 class="anchored" data-anchor-id="manifestaciones-concretas-en-el-aula">Manifestaciones concretas en el aula</h3>
+<p><strong>Sesgo de idioma y contexto cultural:</strong></p>
+<pre><code>Prompt: "Dame un ejemplo de un problema de estadística aplicada"
+
+Respuesta típica de GPT-4 sin contexto: escenario con datos de 
+salarios en USD, empresas tech de Silicon Valley, o datos de 
+béisbol americano — irrelevante para un estudiante de ingeniería 
+en Valparaíso.
+
+Cómo mitigarlo:
+"Dame un ejemplo de problema de estadística aplicada al contexto 
+chileno / latinoamericano. Usa datos realistas de la región."</code></pre>
+<p><strong>Sesgo de género en roles:</strong></p>
+<pre><code>Prompt: "Escribe un caso de estudio sobre un ingeniero que..."
+
+Respuesta sin instrucción: "El ingeniero Juan tomó la decisión..."
+— masculino por defecto.
+
+Cómo mitigarlo:
+"Usa lenguaje inclusivo en género. Alterna entre ejemplos con 
+nombres femeninos y masculinos."</code></pre>
+<p><strong>Sesgo en la representación de disciplinas:</strong></p>
+<p>Los modelos tienen mucho más entrenamiento en matemáticas y ciencias de la computación (en inglés) que en, por ejemplo, ingeniería civil latinoamericana, regulaciones de construcción chilenas, o normativa ambiental nacional. Cuando el modelo “sabe” sobre un tema con mucha representación en su corpus, puede ser muy preciso. Cuando el tema es poco representado, el riesgo de alucinación y sesgo es mayor.</p>
+</section>
+<section id="impacto-en-evaluaciones-asistidas-por-ia" class="level3">
+<h3 class="anchored" data-anchor-id="impacto-en-evaluaciones-asistidas-por-ia">Impacto en evaluaciones asistidas por IA</h3>
+<p>Este es el riesgo más operativo: si usas IA para generar preguntas de examen o retroalimentación, los sesgos del modelo pueden afectar qué se evalúa y cómo:</p>
+<pre><code>Riesgos específicos:
+
+1. Calibración de dificultad sesgada
+   Un modelo que sobrerepresenta estudiantes de universidades 
+   de élite angloparlantes puede generar preguntas demasiado 
+   difíciles para el nivel promedio de tus estudiantes.
+
+2. Contextos de ejemplo desconectados
+   Ejercicios sobre empresas, productos o fenómenos que los 
+   estudiantes no conocen — dificultad artificial por falta 
+   de contexto cultural.
+
+3. Retroalimentación que penaliza formas de razonamiento válidas
+   Si el modelo fue entrenado principalmente con respuestas 
+   "tipo A", puede evaluar como incorrectas respuestas 
+   igualmente válidas que siguen otro camino.
+
+4. Lenguaje que asume recursos no disponibles
+   "Descarga los datos desde esta URL premium" o "usa esta 
+   librería de pago" en un ejercicio.</code></pre>
+</section>
+<section id="estrategias-de-mitigación" class="level3">
+<h3 class="anchored" data-anchor-id="estrategias-de-mitigación">Estrategias de mitigación</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>**En la generación de material:**</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Especificar el contexto regional y cultural en el prompt</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Revisar que los ejemplos sean accesibles para tus estudiantes específicos</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Pedir explícitamente variedad de géneros, nombres y contextos</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Verificar que no asume recursos que los estudiantes no tienen</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>**En la evaluación asistida:**</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Nunca usar el output de IA como evaluación final sin revisión</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Verificar que la calibración de dificultad es coherente con el semestre</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Tener criterios de evaluación propios, no solo los generados por IA</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>**En el diseño de actividades:**</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Preguntar: ¿este ejercicio funciona igualmente para un estudiante</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  de primera generación universitaria que para uno de colegio particular?</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Usar datasets con contexto local cuando sea posible</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<hr>
+</section>
+</section>
+<section id="propiedad-intelectual-y-derechos-de-autor-del-contenido-generado" class="level2">
+<h2 class="anchored" data-anchor-id="propiedad-intelectual-y-derechos-de-autor-del-contenido-generado">Propiedad intelectual y derechos de autor del contenido generado</h2>
+<section id="el-panorama-legal-cambiante-y-no-definitivo" class="level3">
+<h3 class="anchored" data-anchor-id="el-panorama-legal-cambiante-y-no-definitivo">El panorama legal (cambiante y no definitivo)</h3>
+<p>La situación legal de la propiedad intelectual en contenido generado por IA es genuinamente incierta en 2025. Lo que está razonablemente claro:</p>
+<p><strong>En la mayoría de jurisdicciones (incluyendo Chile):</strong></p>
+<ul>
+<li>El contenido generado 100% por IA no tiene titular de derechos de autor reconocido — no hay “autor” en el sentido legal.</li>
+<li>El contenido donde hay una contribución humana significativa (diseño del prompt, edición, estructuración) puede tener derechos de autor del humano que contribuyó.</li>
+<li>“Significativa” no está definida legalmente — es terreno gris.</li>
+</ul>
+<p><strong>Lo que dice la Ley de Propiedad Intelectual chilena (Ley 17.336):</strong></p>
+<p>La ley protege “obras del ingenio” creadas por personas naturales. No hace referencia explícita a IA. La interpretación predominante en Chile (aún sin jurisprudencia consolidada) es que la IA por sí sola no puede ser titular de derechos.</p>
+</section>
+<section id="implicaciones-prácticas-para-docentes" class="level3">
+<h3 class="anchored" data-anchor-id="implicaciones-prácticas-para-docentes">Implicaciones prácticas para docentes</h3>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">graph TD
+    E["❓ ¿Puedo hacer esto\ncon contenido generado por IA?"]
+
+    E --&gt; P1["Publicar apuntes del curso\ngenerados con asistencia de IA"]
+    E --&gt; P2["Subir material al repositorio\npúblico del curso"]
+    E --&gt; P3["Presentar en conferencia\nmaterial asistido por IA"]
+    E --&gt; P4["Publicar en revista académica\npaper con secciones asistidas"]
+    E --&gt; P5["Solicitar que los estudiantes\nentreguen trabajo con IA declarada"]
+
+    P1 --&gt; R1["✅ Generalmente sí,\ncon declaración de uso"]
+    P2 --&gt; R2["✅ Sí, bajo licencia\nCC BY o MIT como siempre"]
+    P3 --&gt; R3["⚠️ Depende de las\npolíticas del evento"]
+    P4 --&gt; R4["⚠️ Depende de las\npolíticas del journal —\nverificar antes"]
+    P5 --&gt; R5["✅ Sí, con declaración\nde uso explícita"]
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+</section>
+<section id="el-problema-del-contenido-de-entrenamiento" class="level3">
+<h3 class="anchored" data-anchor-id="el-problema-del-contenido-de-entrenamiento">El problema del contenido de entrenamiento</h3>
+<p>Los modelos de lenguaje fueron entrenados con texto de internet, que incluye libros, papers, código y artículos con derechos de autor. Cuando el modelo reproduce fragmentos extensos de ese material, puede haber infracción.</p>
+<p>Para docentes, los riesgos más relevantes:</p>
+<pre><code>Riesgo 1: Fragmentos de libros de texto
+Si pides a la IA "resume el capítulo 5 del libro de Wickham sobre
+R for Data Science", puede reproducir fragmentos protegidos.
+→ Usar para inspiración y luego parafrasear en tus propias palabras.
+
+Riesgo 2: Código con licencias restrictivas
+El código generado por IA puede replicar código con licencias
+GPL, LGPL u otras que imponen restricciones sobre el uso derivado.
+→ Para código en el material del curso, usar licencia MIT y verificar.
+
+Riesgo 3: Imágenes generadas
+Las imágenes generadas por DALL-E, Midjourney o Firefly tienen
+distintas políticas de uso según la plataforma:
+- Adobe Firefly: garantiza uso comercial/educativo
+- Midjourney: política varía según el plan
+- DALL-E (ChatGPT Plus): OpenAI otorga derechos al usuario del output
+→ Revisar los términos de servicio de cada herramienta.</code></pre>
+</section>
+<section id="posición-práctica-recomendada" class="level3">
+<h3 class="anchored" data-anchor-id="posición-práctica-recomendada">Posición práctica recomendada</h3>
+<pre><code>Para material docente con asistencia de IA:
+
+1. Tratar el output de IA como un borrador tuyo
+   — revisarlo, editarlo, hacerlo tuyo antes de publicar
+
+2. Declarar el uso de IA en el material
+   — no por obligación legal (aún no clara), sino por transparencia
+   académica y modelo de comportamiento para los estudiantes
+
+3. No reproducir fragmentos extensos del output sin editar
+   — parafraseando reduces el riesgo de reproducir contenido protegido
+
+4. Para publicaciones formales (revistas, libros)
+   — verificar la política específica antes de enviar
+   — la mayoría de journals de alta calidad ya tienen políticas sobre IA</code></pre>
+<hr>
+</section>
+</section>
+<section id="privacidad-y-protección-de-datos-de-estudiantes" class="level2">
+<h2 class="anchored" data-anchor-id="privacidad-y-protección-de-datos-de-estudiantes">Privacidad y protección de datos de estudiantes</h2>
+<section id="el-marco-legal-en-chile" class="level3">
+<h3 class="anchored" data-anchor-id="el-marco-legal-en-chile">El marco legal en Chile</h3>
+<p><strong>Ley 19.628 (Protección de la Vida Privada):</strong> - Define datos personales como cualquier información sobre una persona natural identificada o identificable. - Require consentimiento para recopilar, tratar o transferir datos personales. - Las notas, registros académicos, datos de salud y situación socioeconómica de los estudiantes son datos personales protegidos.</p>
+<p><strong>GDPR (aplicable si la herramienta es europea o procesa datos de ciudadanos UE):</strong> - Estándar más estricto que la ley chilena en varios aspectos. - Relevante cuando usas herramientas de empresas europeas.</p>
+</section>
+<section id="lo-que-nunca-debe-subirse-a-plataformas-de-ia-externas" class="level3">
+<h3 class="anchored" data-anchor-id="lo-que-nunca-debe-subirse-a-plataformas-de-ia-externas">Lo que nunca debe subirse a plataformas de IA externas</h3>
+<pre><code>NUNCA subir a ChatGPT, Claude, Gemini u otras plataformas externas:
+
+❌ Listas de estudiantes con nombres y notas
+❌ Trabajos estudiantiles con nombres identificables
+❌ Correos de estudiantes (incluso si son consultas académicas)
+❌ Datos de asistencia con nombres
+❌ Información de situación socioeconómica de becados
+❌ Datos de salud o necesidades de apoyo académico especial
+❌ Fotografías de estudiantes
+❌ RUTs o números de identificación
+❌ Evaluaciones con nombres del estudiante escrito</code></pre>
+</section>
+<section id="cómo-anonimizar-correctamente-antes-de-usar-ia" class="level3">
+<h3 class="anchored" data-anchor-id="cómo-anonimizar-correctamente-antes-de-usar-ia">Cómo anonimizar correctamente antes de usar IA</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Antes de subir información a una plataforma de IA, anonimizar:</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> hashlib</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> anonimizar_dataset_notas(df: pd.DataFrame) <span class="op">-&gt;</span> pd.DataFrame:</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">    Anonimiza un dataset de notas para uso con IA.</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">    Reemplaza información identificable con hashes o etiquetas neutras.</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    df_anon <span class="op">=</span> df.copy()</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Reemplazar nombres con etiquetas</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="st">'nombre'</span> <span class="kw">in</span> df_anon.columns:</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>        df_anon[<span class="st">'estudiante'</span>] <span class="op">=</span> [<span class="ss">f"E</span><span class="sc">{</span>i<span class="sc">:03d}</span><span class="ss">"</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(df_anon))]</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>        df_anon <span class="op">=</span> df_anon.drop(columns<span class="op">=</span>[<span class="st">'nombre'</span>])</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Reemplazar RUTs con hashes</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="st">'rut'</span> <span class="kw">in</span> df_anon.columns:</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>        df_anon[<span class="st">'id_hash'</span>] <span class="op">=</span> df_anon[<span class="st">'rut'</span>].<span class="bu">apply</span>(</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>            <span class="kw">lambda</span> x: hashlib.sha256(<span class="bu">str</span>(x).encode()).hexdigest()[:<span class="dv">8</span>]</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>        df_anon <span class="op">=</span> df_anon.drop(columns<span class="op">=</span>[<span class="st">'rut'</span>])</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Reemplazar emails</span></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="st">'email'</span> <span class="kw">in</span> df_anon.columns:</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>        df_anon <span class="op">=</span> df_anon.drop(columns<span class="op">=</span>[<span class="st">'email'</span>])</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Generalizar carreras si hay pocas personas por grupo</span></span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="st">'carrera'</span> <span class="kw">in</span> df_anon.columns:</span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>        conteo <span class="op">=</span> df_anon[<span class="st">'carrera'</span>].value_counts()</span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>        carreras_chicas <span class="op">=</span> conteo[conteo <span class="op">&lt;</span> <span class="dv">5</span>].index</span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>        df_anon.loc[df_anon[<span class="st">'carrera'</span>].isin(carreras_chicas), <span class="st">'carrera'</span>] <span class="op">=</span> <span class="st">'Otra'</span></span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df_anon</span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a><span class="co"># Uso</span></span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>df_original <span class="op">=</span> pd.read_csv(<span class="st">'notas_con_datos_personales.csv'</span>)</span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>df_anonimizado <span class="op">=</span> anonimizar_dataset_notas(df_original)</span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a><span class="co"># Solo subir df_anonimizado a la IA</span></span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df_anonimizado.head())</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="retención-de-datos-en-plataformas-de-ia" class="level3">
+<h3 class="anchored" data-anchor-id="retención-de-datos-en-plataformas-de-ia">Retención de datos en plataformas de IA</h3>
+<p>Qué pasa con los datos que subes:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Plataforma</th>
+<th>Retención por defecto</th>
+<th>Cómo cambiar</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>ChatGPT (web)</strong></td>
+<td>Almacenado, puede usarse para entrenamiento</td>
+<td>Settings → Data Controls → desactivar “Improve the model”</td>
+</tr>
+<tr class="even">
+<td><strong>ChatGPT (API)</strong></td>
+<td>No retenido para entrenamiento</td>
+<td>Por defecto seguro</td>
+</tr>
+<tr class="odd">
+<td><strong>Claude (web)</strong></td>
+<td>Anthropic declara no entrenar con conversaciones</td>
+<td>No requiere acción</td>
+</tr>
+<tr class="even">
+<td><strong>Claude (API)</strong></td>
+<td>No retenido</td>
+<td>Por defecto seguro</td>
+</tr>
+<tr class="odd">
+<td><strong>Gemini (web)</strong></td>
+<td>Hasta 18 meses por defecto</td>
+<td>myactivity.google.com</td>
+</tr>
+<tr class="even">
+<td><strong>Gemini (Workspace)</strong></td>
+<td>Controlado por el admin institucional</td>
+<td>Configuración del admin</td>
+</tr>
+<tr class="odd">
+<td><strong>Copilot Studio (M365)</strong></td>
+<td>Dentro del tenant institucional</td>
+<td>Políticas del tenant</td>
+</tr>
+<tr class="even">
+<td><strong>NotebookLM</strong></td>
+<td>Datos en la cuenta Google del usuario</td>
+<td>No se usan para entrenamiento</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Importante</span>La regla más segura
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Cuando trabajes con material del curso (apuntes, rúbricas, material sin datos personales): cualquier plataforma funciona.</p>
+<p>Cuando trabajas con información que identifica a estudiantes: usa solo la API directa (donde la retención está documentada y controlada) o herramientas dentro del ecosistema institucional (Microsoft M365 con tenant propio).</p>
+<p>En caso de duda: anonimiza primero, siempre.</p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="políticas-institucionales-lineamientos-utfsm-sobre-ia" class="level2">
+<h2 class="anchored" data-anchor-id="políticas-institucionales-lineamientos-utfsm-sobre-ia">Políticas institucionales: lineamientos UTFSM sobre IA</h2>
+<section id="el-estado-actual-2025" class="level3">
+<h3 class="anchored" data-anchor-id="el-estado-actual-2025">El estado actual (2025)</h3>
+<p>Las instituciones de educación superior en Chile están en proceso de desarrollar políticas formales sobre uso de IA. La UTFSM, como la mayoría de las universidades chilenas, tiene en 2025 lineamientos en construcción más que políticas definitivas.</p>
+<p>Lo que suele estar disponible a nivel institucional:</p>
+<ul>
+<li><strong>Declaraciones de principios</strong> (honestidad académica, uso responsable de tecnología).</li>
+<li><strong>Guías no vinculantes</strong> para docentes sobre cómo abordar la IA en evaluaciones.</li>
+<li><strong>Procesos de revisión</strong> para casos de uso problemático.</li>
+</ul>
+<p><strong>Cómo mantenerte actualizado:</strong></p>
+<pre><code>Fuentes a revisar antes de cada semestre:
+
+1. Dirección de Docencia UTFSM
+   → Circulares sobre herramientas digitales en el aula
+
+2. Vicerrectoría Académica
+   → Actualizaciones al Reglamento Estudiantil
+
+3. Comité de Ética / Comisión de Integridad Académica
+   → Pronunciamientos sobre IA y plagio
+
+4. Departamento propio
+   → Acuerdos del consejo de carrera sobre evaluación
+
+5. DTD (Dirección de Transformación Digital)
+   → Guías institucionales de uso de IA (este curso)</code></pre>
+</section>
+<section id="principios-que-guían-las-políticas-institucionales-emergentes" class="level3">
+<h3 class="anchored" data-anchor-id="principios-que-guían-las-políticas-institucionales-emergentes">Principios que guían las políticas institucionales emergentes</h3>
+<p>Aunque no haya política definitiva, los principios que la mayoría de las instituciones están adoptando son:</p>
+<p><strong>1. Transparencia:</strong> el uso de IA en cualquier trabajo académico debe declararse explícitamente.</p>
+<p><strong>2. Responsabilidad:</strong> quien entrega un trabajo es responsable de su contenido, independientemente de qué herramientas usó para producirlo.</p>
+<p><strong>3. Aprendizaje primero:</strong> el objetivo de las evaluaciones es evidenciar el aprendizaje del estudiante — si la IA sustituye ese aprendizaje, la evaluación pierde su propósito.</p>
+<p><strong>4. Coherencia:</strong> la política de IA debe ser coherente con los objetivos del curso y comunicada claramente desde el primer día.</p>
+<p><strong>5. No discriminación:</strong> las políticas no pueden crear inequidades basadas en el acceso a herramientas de pago.</p>
+</section>
+<section id="qué-hacer-cuando-no-hay-política-institucional" class="level3">
+<h3 class="anchored" data-anchor-id="qué-hacer-cuando-no-hay-política-institucional">Qué hacer cuando no hay política institucional</h3>
+<p>En ausencia de política formal, el docente tiene autonomía para definir la política de su curso. Esta autonomía viene con responsabilidad:</p>
+<pre><code>Principios para definir tu política en ausencia de norma institucional:
+
+1. Coherencia con los objetivos de aprendizaje
+   La política debe servir al aprendizaje, no ser una reacción
+   de miedo a la tecnología.
+
+2. Claridad desde el primer día
+   Los estudiantes deben saber exactamente qué pueden y no pueden
+   hacer, con ejemplos concretos.
+
+3. Aplicabilidad
+   Solo prohíbes lo que puedes verificar razonablemente. Una
+   prohibición total no verificable es peor que una política
+   parcial honesta.
+
+4. Equidad
+   Si requieres uso de IA, garantiza acceso equitativo.
+   Si prohíbes ciertas herramientas, que no creen ventaja para
+   quienes tienen acceso premium.
+
+5. Revisabilidad
+   La política puede cambiar entre semestres. Documenta por qué
+   tomaste cada decisión.</code></pre>
+<hr>
+</section>
+</section>
+<section id="declaración-de-uso-de-ia-en-trabajos-académicos" class="level2">
+<h2 class="anchored" data-anchor-id="declaración-de-uso-de-ia-en-trabajos-académicos">Declaración de uso de IA en trabajos académicos</h2>
+<section id="por-qué-la-declaración-es-clave" class="level3">
+<h3 class="anchored" data-anchor-id="por-qué-la-declaración-es-clave">Por qué la declaración es clave</h3>
+<p>La declaración de uso de IA no es una sanción — es una práctica de integridad académica equivalente a citar fuentes. Cuando un estudiante usa una idea de un libro, la cita. Cuando usa IA para desarrollar una idea, lo declara.</p>
+<p>La declaración cumple tres funciones: 1. <strong>Trazabilidad:</strong> si hay preguntas sobre el origen del trabajo, hay un registro. 2. <strong>Formación en práctica profesional:</strong> el mundo laboral ya requiere declarar el uso de IA en entornos regulados. 3. <strong>Conversación pedagógica:</strong> un estudiante que declara cómo usó la IA abre la conversación sobre qué aprendió en el proceso.</p>
+</section>
+<section id="formatos-de-declaración" class="level3">
+<h3 class="anchored" data-anchor-id="formatos-de-declaración">Formatos de declaración</h3>
+<p><strong>Declaración mínima (para trabajos cortos):</strong></p>
+<pre><code>Nota al pie o al final del documento:
+
+"Este trabajo fue desarrollado con asistencia de [herramienta, ej: Claude 3.5].
+La IA se utilizó para [propósito específico: estructurar el argumento /
+revisar la gramática / explorar enfoques alternativos / generar el código base].
+El análisis, las conclusiones y la redacción final son propios."</code></pre>
+<p><strong>Declaración detallada (para trabajos de mayor peso):</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">## Declaración de uso de herramientas de IA</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>**Herramientas utilizadas:** Claude 3.5 Sonnet (Anthropic), GitHub Copilot</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>**Descripción del uso:**</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>*Claude:* Se utilizó para (1) generar una estructura inicial del análisis</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>exploratorio, que fue revisada y modificada sustancialmente; (2) revisar</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>la redacción de las conclusiones para mejorar la claridad; (3) sugerir</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>visualizaciones alternativas que fueron consideradas pero no todas implementadas.</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>*GitHub Copilot:* Asistió en el autocompletado de código Python para las</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>funciones de limpieza de datos. Todo el código fue revisado, probado y</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>adaptado al contexto específico del análisis.</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>**Lo que NO fue generado por IA:** el diseño del análisis, la selección</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>de variables, la interpretación de resultados, las conclusiones principales</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>y la revisión crítica de los outputs de la IA.</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>**Verificación:** todos los resultados numéricos y estadísticos fueron</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>verificados manualmente contra los datos originales.</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>Fecha: <span class="co">[</span><span class="ot">fecha de entrega</span><span class="co">]</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Declaración en código:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Declaración de uso de IA ──────────────────────────────────</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Este notebook fue desarrollado con asistencia de GitHub Copilot</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># para el autocompletado de código y Claude 3.5 para la estructuración</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co"># del análisis. Todo el código fue revisado y probado manualmente.</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co"># La interpretación de resultados es propia.</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co"># ─────────────────────────────────────────────────────────────</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="co"># ... resto del código</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="plantilla-de-declaración-para-el-curso" class="level3">
+<h3 class="anchored" data-anchor-id="plantilla-de-declaración-para-el-curso">Plantilla de declaración para el curso</h3>
+<p>Incluir en el syllabus y en cada enunciado de tarea una plantilla que los estudiantes completan:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co">**DECLARACIÓN DE USO DE IA** (completar antes de entregar)</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="an">Herramientas de IA utilizadas en este trabajo:</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co">☐ No usé herramientas de IA</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co">☐ Usé _____________ para: _________________________________</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co">☐ Usé _____________ para: _________________________________</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="an">Confirmo que:</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="co">☐ El trabajo refleja mi comprensión propia del contenido</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="co">☐ He verificado la exactitud de cualquier información generada por IA</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="co">☐ La declaración de uso es completa y honesta</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="an">Firma:</span><span class="co"> _______________ Fecha: _______________</span></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<hr>
+</section>
+</section>
+<section id="criterios-para-definir-la-política-de-ia-en-el-propio-curso" class="level2">
+<h2 class="anchored" data-anchor-id="criterios-para-definir-la-política-de-ia-en-el-propio-curso">Criterios para definir la política de IA en el propio curso</h2>
+<section id="el-árbol-de-decisión-del-docente" class="level3">
+<h3 class="anchored" data-anchor-id="el-árbol-de-decisión-del-docente">El árbol de decisión del docente</h3>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">graph TD
+    START["🎯 ¿Cómo defino la\npolítica de IA para mi curso?"]
+
+    START --&gt; Q1["¿El objetivo de aprendizaje\nrequiere que el estudiante\ndesarrolle la habilidad SIN asistencia?"]
+
+    Q1 --&gt;|"Sí (ej: escribir código\ndesde cero, demostración matemática,\nrazonamiento argumentativo propio)"| POL1["📋 Política restrictiva\nProhibir IA en esa evaluación específica\n(no en el curso entero)"]
+
+    Q1 --&gt;|"No (el objetivo es el resultado\no la habilidad de usar herramientas)"| Q2["¿La IA puede resolver completamente\nla evaluación sin que el estudiante\ndemostre comprensión?"]
+
+    Q2 --&gt;|"Sí"| POL2["🔄 Rediseñar la evaluación\nAgregar: defensa oral, proceso documentado,\ncontexto específico no accesible a la IA"]
+
+    Q2 --&gt;|"No (o parcialmente)"| Q3["¿Tienes forma de verificar\nque el estudiante contribuyó?"]
+
+    Q3 --&gt;|"Sí"| POL3["✅ Política permisiva con declaración\nUso permitido con declaración explícita\ny criterios de evaluación que incluyen\nla contribución propia"]
+
+    Q3 --&gt;|"No"| POL4["⚠️ Política con verificación\nUso permitido, pero con componente\npresencial para verificar comprensión\n(defensa, pregunta adicional en clase)"]
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+</section>
+<section id="los-tres-modelos-de-política" class="level3">
+<h3 class="anchored" data-anchor-id="los-tres-modelos-de-política">Los tres modelos de política</h3>
+<p><strong>Modelo 1: Prohibición fundamentada</strong></p>
+<pre><code>Cuándo usar: cuando la habilidad a desarrollar es específicamente la
+que la IA sustituye.
+
+Ejemplo válido:
+"En este curso de escritura argumentativa, el objetivo es desarrollar
+tu capacidad de construir argumentos propios. El uso de IA para
+redactar o estructurar los trabajos no está permitido porque elimina
+el proceso de aprendizaje que el curso busca."
+
+Ejemplo inválido:
+"No se permite IA porque podría hacer trampa." (prohibición reactiva
+sin fundamento pedagógico)
+
+Requisitos para que funcione:
+- Explicar la razón pedagógica a los estudiantes
+- Diseñar evaluaciones que hagan la prohibición verificable
+- Aceptar que algunos estudiantes la usarán de todas formas y diseñar
+  mecanismos de verificación (defensa oral, proceso documentado)</code></pre>
+<p><strong>Modelo 2: Uso permitido con declaración</strong></p>
+<pre><code>Cuándo usar: cursos técnicos donde la IA es una herramienta legítima
+del campo (ingeniería de software, ciencia de datos, diseño).
+
+Política:
+"Puedes usar IA como herramienta en este curso, con las siguientes
+condiciones:
+(1) Declara exactamente qué herramienta usaste y para qué
+(2) El trabajo final es tuyo: análisis, decisiones, conclusiones
+(3) Puedes ser preguntado en clase sobre tu trabajo
+
+La nota evalúa TU comprensión del problema, no la calidad del output
+de la IA."
+
+Requiere:
+- Rúbricas que evalúen la comprensión, no solo el producto
+- Componente de evaluación presencial o verbal periódica</code></pre>
+<p><strong>Modelo 3: IA como objeto de estudio</strong></p>
+<pre><code>Cuándo usar: cursos donde el uso crítico de IA es parte del contenido.
+
+Política:
+"En este curso vamos a usar IA deliberadamente y a evaluarla
+críticamente. Las actividades incluyen usar IA, evaluar sus
+outputs, y reflexionar sobre las implicaciones.
+
+No puedes 'no usar IA' en algunas actividades — es parte del
+aprendizaje. Lo que se evalúa es tu criterio sobre cómo y cuándo
+usarla."
+
+Ejemplo de actividad:
+"Usa ChatGPT para generar una explicación de regresión logística.
+Evalúa críticamente la explicación: ¿qué está correcto? ¿qué está
+incompleto o incorrecto? ¿qué agregarías o cambiarías? ¿A qué tipo
+de estudiante le sirve esta explicación y a cuál no?"</code></pre>
+</section>
+<section id="lista-de-verificación-para-la-política-de-ia-del-curso" class="level3">
+<h3 class="anchored" data-anchor-id="lista-de-verificación-para-la-política-de-ia-del-curso">Lista de verificación para la política de IA del curso</h3>
+<pre><code>Antes de comunicar la política a los estudiantes, verificar:
+
+☐ La política tiene fundamento pedagógico explícito (no solo miedo)
+☐ Es coherente en todos los instrumentos del curso
+   (no prohibida en tareas pero permitida en labs)
+☐ Los estudiantes tienen acceso equitativo a las herramientas
+   que se permiten o se requieren
+☐ Hay mecanismo de verificación para lo que se prohíbe
+☐ Los casos grises están anticipados con ejemplos concretos
+☐ El proceso de declaración es claro y simple
+☐ Las consecuencias de no declarar están definidas
+☐ La política es revisable semestre a semestre</code></pre>
+<hr>
+</section>
+</section>
+<section id="marco-de-evaluación-en-contextos-donde-los-estudiantes-usan-ia" class="level2">
+<h2 class="anchored" data-anchor-id="marco-de-evaluación-en-contextos-donde-los-estudiantes-usan-ia">Marco de evaluación en contextos donde los estudiantes usan IA</h2>
+<section id="el-problema-de-las-métricas-tradicionales" class="level3">
+<h3 class="anchored" data-anchor-id="el-problema-de-las-métricas-tradicionales">El problema de las métricas tradicionales</h3>
+<p>Las evaluaciones diseñadas para un mundo sin IA miden la capacidad de producir texto o código — exactamente lo que la IA hace bien. Cuando el estudiante usa IA para producir el output y el docente evalúa ese output, la evaluación mide la calidad de la IA, no el aprendizaje del estudiante.</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">graph LR
+    subgraph "Evaluación tradicional"
+        S1["👨‍🎓 Estudiante\nproduce output"]
+        D1["👨‍🏫 Docente\nevalúa output"]
+        S1 --&gt; D1
+        D1 --&gt; N1["Nota: refleja\nla calidad del output"]
+    end
+
+    subgraph "Con IA sin ajuste"
+        S2["👨‍🎓 Estudiante\n+IA produce output"]
+        D2["👨‍🏫 Docente\nevalúa output\n(no sabe qué es del estudiante)"]
+        S2 --&gt; D2
+        D2 --&gt; N2["Nota: refleja\nla calidad de la IA"]
+    end
+
+    subgraph "Evaluación adaptada"
+        S3["👨‍🎓 Estudiante\nusa IA como herramienta"]
+        D3["👨‍🏫 Docente evalúa\nel PROCESO y CRITERIO\ndel estudiante"]
+        S3 --&gt; D3
+        D3 --&gt; N3["Nota: refleja\nla comprensión real"]
+    end
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+</section>
+<section id="tipos-de-evaluación-resistentes-al-uso-irresponsable-de-ia" class="level3">
+<h3 class="anchored" data-anchor-id="tipos-de-evaluación-resistentes-al-uso-irresponsable-de-ia">Tipos de evaluación resistentes al uso irresponsable de IA</h3>
+<p><strong>1. Evaluaciones de proceso (no solo de producto):</strong></p>
+<pre><code>En lugar de: "Entrega el análisis de regresión"
+
+Con proceso:
+"Entrega el análisis de regresión INCLUYENDO:
+(1) Tu análisis exploratorio inicial antes de ajustar el modelo
+(2) El razonamiento por el que elegiste ese enfoque
+(3) Al menos una decisión que tomaste y una alternativa que consideraste
+(4) Qué te sorprendió o fue diferente a lo esperado
+(5) Qué usarías diferente la próxima vez"
+
+Las preguntas de proceso son difíciles de responder con IA porque
+requieren experiencia real en el análisis específico.</code></pre>
+<p><strong>2. Evaluaciones con datos propios del curso:</strong></p>
+<pre><code>Dataset institucional de la UTFSM con años de actividad real:
+- La IA no tiene esos datos
+- El estudiante debe trabajar con ese contexto específico
+- Las conclusiones tienen que interpretarse en ese contexto real
+
+Ejemplo: "Analiza los datos de deserción estudiantil de la UTFSM
+2018-2024 que están en el repositorio del curso. Identifica los
+factores más asociados con deserción en las carreras de ingeniería."
+
+La IA no puede hacer este análisis sin que el estudiante le proporcione
+los datos — y si el estudiante los proporciona, aún tiene que interpretar
+en el contexto específico de la UTFSM.</code></pre>
+<p><strong>3. Componente de defensa oral o verificación en clase:</strong></p>
+<pre><code>Evaluación en dos partes:
+- Parte escrita (asistida o no con IA, declarado): 70%
+- Verificación en clase (5 minutos): 30%
+
+En la verificación:
+- El docente hace 2-3 preguntas sobre el trabajo entregado
+- El estudiante debe poder explicar sus decisiones
+- Si no puede explicar el trabajo, la nota de verificación es 0
+- La nota final promedia ambas partes
+
+Este formato evalúa la comprensión real con mínimo tiempo adicional.</code></pre>
+<p><strong>4. Rúbricas que evalúan criterio, no solo output:</strong></p>
+<pre><code>Para un análisis de datos con IA permitida:
+
+Criterio: Justificación de decisiones (25%)
+  Destacado: El estudiante justifica cada decisión técnica (qué modelo,
+  qué hiperparámetros, qué métrica) con argumentos que demuestran
+  comprensión de las implicaciones
+  
+  Competente: Justifica las decisiones principales correctamente
+  
+  Básico: Describe las decisiones pero sin justificación clara
+  
+  Insuficiente: No hay justificación o las justificaciones son incorrectas
+
+[Este criterio no puede ser respondido correctamente por IA sin comprensión real]</code></pre>
+<p><strong>5. Reflexión metacognitiva:</strong></p>
+<pre><code>Pregunta de cierre en cualquier evaluación (sin importar si se usó IA):
+"¿Qué fue lo más difícil de este trabajo? ¿Cómo lo resolviste?
+¿Qué harías diferente?"
+
+Criterio de evaluación:
+- La respuesta debe ser específica al trabajo entregado
+- Debe reflejar experiencia real con el análisis
+- Una respuesta genérica o que no se relaciona con el trabajo específico
+  recibe puntaje mínimo en este criterio</code></pre>
+</section>
+<section id="detección-de-uso-no-declarado" class="level3">
+<h3 class="anchored" data-anchor-id="detección-de-uso-no-declarado">Detección de uso no declarado</h3>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Advertencia</span>Los detectores de IA no son confiables — y pueden ser dañinos
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>GPTZero, Turnitin IA, y herramientas similares tienen tasas de falso positivo del 10-20% en español. Esto significa que 1 de cada 5-10 textos marcados como “generado por IA” puede ser escritura humana genuina — especialmente de hablantes no nativos de inglés (prácticamente todos los estudiantes latinoamericanos) o de estudiantes con estilos de escritura formales.</p>
+<p>Acusar a un estudiante de trampa basándose solo en un detector de IA sin evidencia adicional es una práctica que puede ser discriminatoria y que daña gravemente la relación docente-estudiante.</p>
+<p><strong>Qué hacer en cambio:</strong> - Si sospechas de un trabajo, pide al estudiante que te lo explique en persona - La conversación directa es mucho más efectiva que cualquier detector - Si el estudiante puede explicar el trabajo, el proceso de aprendizaje ocurrió</p>
+</div>
+</div>
+<p>El enfoque más efectivo para “detectar” uso problemático de IA es indirecto: diseñar evaluaciones donde el uso irresponsable de IA produzca un output claramente inferior al de un estudiante que trabajó honestamente — porque el trabajo requiere contexto, proceso o razonamiento que la IA no puede proporcionar sin el estudiante.</p>
+<hr>
+</section>
+</section>
+<section id="síntesis-el-docente-como-referente-ético" class="level2">
+<h2 class="anchored" data-anchor-id="síntesis-el-docente-como-referente-ético">Síntesis: el docente como referente ético</h2>
+<p>El capítulo termina donde empezó: no hay respuestas definitivas. Hay un territorio en construcción donde las decisiones de los docentes de hoy están configurando las normas de mañana.</p>
+<p>Lo que sí es claro:</p>
+<pre><code>Lo que el docente puede controlar:
+✅ Su propia transparencia sobre cómo usa IA en su trabajo docente
+✅ El diseño de evaluaciones que miden comprensión real
+✅ La política de su curso, fundamentada pedagógicamente
+✅ Cómo modela el uso ético de IA frente a sus estudiantes
+✅ Su actitud ante los errores — propios y de los estudiantes
+
+Lo que el docente no puede controlar:
+→ Qué herramientas usarán los estudiantes fuera del aula
+→ La velocidad del avance tecnológico
+→ La ambigüedad legal actual sobre derechos de autor en IA
+→ Que la política institucional cambie entre semestres
+
+La postura más sostenible:
+Diseñar evaluaciones donde la comprensión real del estudiante importe,
+comunicar con transparencia, y tratar el uso de IA como lo que es —
+una herramienta con potencial y con riesgos — en lugar de como
+una amenaza que hay que erradicar o un atajo que hay que bloquear.</code></pre>
+<hr>
+</section>
+<section id="referencias" class="level2">
+<h2 class="anchored" data-anchor-id="referencias">Referencias</h2>
+<ul>
+<li>Bender, E. M. et al.&nbsp;(2021). <em>On the Dangers of Stochastic Parrots: Can Language Models Be Too Big?</em> FAccT 2021. <a href="https://doi.org/10.1145/3442188.3445922">doi.org/10.1145/3442188.3445922</a></li>
+<li>UNESCO. (2023). <em>Guidance for Generative AI in Education and Research</em>. UNESCO Publishing. <a href="https://unesdoc.unesco.org/ark:/48223/pf0000386693">unesdoc.unesco.org/ark:/48223/pf0000386693</a></li>
+<li>Mollick, E. &amp; Mollick, L. (2023). <em>Assigning AI: Seven Approaches for Students, with Prompts</em>. SSRN. <a href="https://ssrn.com/abstract=4475995">ssrn.com/abstract=4475995</a></li>
+<li>Ministerio de Ciencia, Tecnología, Conocimiento e Innovación de Chile. (2024). <em>Política Nacional de Inteligencia Artificial</em>. <a href="https://www.minciencia.gob.cl/areas-de-trabajo/transformacion-digital/politica-nacional-de-inteligencia-artificial/">minciencia.gob.cl</a></li>
+<li>Ley 19.628 (Chile). <em>Protección de la Vida Privada</em>. <a href="https://www.bcn.cl/leychile/navegar?idNorma=141599">bcn.cl/leychile/navegar?idNorma=141599</a></li>
+<li>Floridi, L. et al.&nbsp;(2018). <em>AI4People — An Ethical Framework for a Good AI Society</em>. Minds and Machines, 28(4), 689–707. <a href="https://doi.org/10.1007/s11023-018-9482-5">doi.org/10.1007/s11023-018-9482-5</a></li>
+<li>Zawacki-Richter, O. et al.&nbsp;(2019). <em>Systematic review of research on artificial intelligence applications in higher education</em>. International Journal of Educational Technology in Higher Education, 16(1). <a href="https://doi.org/10.1186/s41239-019-0171-0">doi.org/10.1186/s41239-019-0171-0</a></li>
+<li>Cotton, D.R.E. et al.&nbsp;(2024). <em>Chatting and Cheating: Ensuring Academic Integrity in the Era of ChatGPT</em>. Innovations in Education and Teaching International, 61(2). <a href="https://doi.org/10.1080/14703297.2023.2190148">doi.org/10.1080/14703297.2023.2190148</a></li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copiado");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copiado");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation column-body">
+  <div class="nav-page nav-page-previous">
+      <a href="../../material/05_ia/ia_07_copilot_studio.html" class="pagination-link" aria-label="Copilot Studio y plataformas institucionales">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">Copilot Studio y plataformas institucionales</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

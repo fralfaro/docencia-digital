@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="es"><head>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-a06763021a52c43c40a351ac8b799b8f.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.9.36">
+
+  <meta name="author" content="Francisco Alfaro">
+  <title>Presentaciones — Docencia Digital – Sitios web y blogs docentes</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #24292e;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #24292e; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #6a737d; } /* Annotation */
+    code span.at { color: #d73a49; } /* Attribute */
+    code span.bn { color: #005cc5; } /* BaseN */
+    code span.bu { color: #d73a49; } /* BuiltIn */
+    code span.cf { color: #d73a49; } /* ControlFlow */
+    code span.ch { color: #032f62; } /* Char */
+    code span.cn { color: #005cc5; } /* Constant */
+    code span.co { color: #6a737d; } /* Comment */
+    code span.cv { color: #6a737d; } /* CommentVar */
+    code span.do { color: #6a737d; } /* Documentation */
+    code span.dt { color: #d73a49; } /* DataType */
+    code span.dv { color: #005cc5; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #d73a49; font-weight: bold; } /* Extension */
+    code span.fl { color: #005cc5; } /* Float */
+    code span.fu { color: #6f42c1; } /* Function */
+    code span.im { color: #032f62; } /* Import */
+    code span.in { color: #6a737d; } /* Information */
+    code span.kw { color: #d73a49; } /* Keyword */
+    code span.op { color: #24292e; } /* Operator */
+    code span.ot { color: #6f42c1; } /* Other */
+    code span.pp { color: #d73a49; } /* Preprocessor */
+    code span.re { color: #6a737d; } /* RegionMarker */
+    code span.sc { color: #005cc5; } /* SpecialChar */
+    code span.ss { color: #032f62; } /* SpecialString */
+    code span.st { color: #032f62; } /* String */
+    code span.va { color: #e36209; } /* Variable */
+    code span.vs { color: #032f62; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-e892a8df7267c7fe476b0a79cf24fc03.css">
+  <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Sitios web y blogs docentes</h1>
+  <p class="subtitle">Publicar el curso completo como sitio web con Quarto</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Francisco Alfaro 
+</div>
+        <p class="quarto-title-affiliation">
+            Docencia Digital · UTFSM
+          </p>
+    </div>
+</div>
+
+  <p class="date">abril 2026</p>
+</section>
+<section id="section" class="slide level2 title-slide center" data-background-color="#0F2044">
+<h2></h2>
+<div class="title-block">
+<p><strong>Sitios web y blogs docentes</strong></p>
+<p>Publicar el curso completo como sitio web con Quarto</p>
+</div>
+<div class="subtitle-block">
+<p>Sesión 4 — Quarto para material académico</p>
+</div>
+<div class="author-block">
+<p>Francisco Alfaro<br>
+Docencia Digital · UTFSM · 2026</p>
+</div>
+</section>
+<section id="por-qué-un-sitio-web-del-curso-importa" class="slide level2">
+<h2>Por qué un sitio web del curso importa</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p>Un sitio web del curso no es un lujo — es una <strong>decisión de diseño pedagógico</strong>.</p>
+<p>Cuando los estudiantes pueden:</p>
+<ul>
+<li>Navegar el material en cualquier dispositivo</li>
+<li>Buscar un concepto dentro del apunte</li>
+<li>Ver el código y sus resultados en el mismo lugar</li>
+<li>Acceder a todo sin descargar nada</li>
+</ul>
+<p>… el acceso al conocimiento se <strong>democratiza de forma concreta</strong>.</p>
+<p>Quarto produce sitios web profesionales sin saber HTML, CSS ni JavaScript.</p>
+</div><div class="column" style="width:45%;">
+<div class="callout callout-note no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>El resultado</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li>Búsqueda integrada en todo el sitio</li>
+<li>Modo oscuro/claro automático</li>
+<li>Navegación con sidebar</li>
+<li>Responsive (funciona en móvil)</li>
+<li>Se despliega en GitHub Pages en minutos</li>
+</ul>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="crear-el-proyecto-website" class="slide level2">
+<h2>Crear el proyecto website</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a></a><span class="co"># Crear un proyecto website nuevo</span></span>
+<span id="cb1-2"><a></a><span class="ex">quarto</span> create project website mat281-sitio</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Estructura generada:</strong></p>
+<pre><code>mat281-sitio/
+├── _quarto.yml       # configuración central del sitio
+├── index.qmd         # página de inicio (home)
+├── about.qmd         # página "acerca de" (ejemplo)
+└── styles.css        # estilos adicionales</code></pre>
+<div class="callout callout-tip no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>El archivo <code>_quarto.yml</code> es el cerebro del sitio</strong></p>
+</div>
+<div class="callout-content">
+<p>Ahí defines la estructura de navegación, el tema visual, el footer, y las opciones de ejecución de código para todo el sitio. Los archivos <code>.qmd</code> individuales heredan esas opciones.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="quarto.yml-para-el-sitio-del-curso" class="slide level2">
+<h2><code>_quarto.yml</code> para el sitio del curso</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb3-1"><a></a><span class="fu">project</span><span class="kw">:</span></span>
+<span id="cb3-2"><a></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> website</span></span>
+<span id="cb3-3"><a></a></span>
+<span id="cb3-4"><a></a><span class="fu">website</span><span class="kw">:</span></span>
+<span id="cb3-5"><a></a><span class="at">  </span><span class="fu">title</span><span class="kw">:</span><span class="at"> </span><span class="st">"MAT281 — 2025-1"</span></span>
+<span id="cb3-6"><a></a><span class="at">  </span><span class="fu">description</span><span class="kw">:</span><span class="at"> </span><span class="st">"Aplicaciones de la Matemática en Ingeniería"</span></span>
+<span id="cb3-7"><a></a><span class="at">  </span><span class="fu">favicon</span><span class="kw">:</span><span class="at"> assets/img/brand/brand__usm.png</span></span>
+<span id="cb3-8"><a></a></span>
+<span id="cb3-9"><a></a><span class="at">  </span><span class="fu">navbar</span><span class="kw">:</span></span>
+<span id="cb3-10"><a></a><span class="at">    </span><span class="fu">logo</span><span class="kw">:</span><span class="at"> assets/img/brand/brand__usm.png</span></span>
+<span id="cb3-11"><a></a><span class="at">    </span><span class="fu">left</span><span class="kw">:</span></span>
+<span id="cb3-12"><a></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">text</span><span class="kw">:</span><span class="at"> </span><span class="st">"Inicio"</span></span>
+<span id="cb3-13"><a></a><span class="at">        </span><span class="fu">href</span><span class="kw">:</span><span class="at"> index.qmd</span></span>
+<span id="cb3-14"><a></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">text</span><span class="kw">:</span><span class="at"> </span><span class="st">"Clases"</span></span>
+<span id="cb3-15"><a></a><span class="at">        </span><span class="fu">href</span><span class="kw">:</span><span class="at"> lectures/index.qmd</span></span>
+<span id="cb3-16"><a></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">text</span><span class="kw">:</span><span class="at"> </span><span class="st">"Laboratorios"</span></span>
+<span id="cb3-17"><a></a><span class="at">        </span><span class="fu">href</span><span class="kw">:</span><span class="at"> labs/index.qmd</span></span>
+<span id="cb3-18"><a></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">text</span><span class="kw">:</span><span class="at"> </span><span class="st">"Tareas"</span></span>
+<span id="cb3-19"><a></a><span class="at">        </span><span class="fu">href</span><span class="kw">:</span><span class="at"> assignments/index.qmd</span></span>
+<span id="cb3-20"><a></a><span class="at">    </span><span class="fu">right</span><span class="kw">:</span></span>
+<span id="cb3-21"><a></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">icon</span><span class="kw">:</span><span class="at"> github</span></span>
+<span id="cb3-22"><a></a><span class="at">        </span><span class="fu">href</span><span class="kw">:</span><span class="at"> https://github.com/tu-username/mat281-2025-1</span></span>
+<span id="cb3-23"><a></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">icon</span><span class="kw">:</span><span class="at"> search</span></span>
+<span id="cb3-24"><a></a><span class="at">        </span><span class="fu">text</span><span class="kw">:</span><span class="at"> Buscar</span></span>
+<span id="cb3-25"><a></a></span>
+<span id="cb3-26"><a></a><span class="at">  </span><span class="fu">page-footer</span><span class="kw">:</span></span>
+<span id="cb3-27"><a></a><span class="fu">    center</span><span class="kw">: </span><span class="ch">|</span></span>
+<span id="cb3-28"><a></a>      © 2025 Juan Pérez · UTFSM ·</span>
+<span id="cb3-29"><a></a>      [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="navegación-con-sidebar" class="slide level2">
+<h2>Navegación con sidebar</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p><strong>Sidebar automático por sección:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb4-1"><a></a><span class="fu">website</span><span class="kw">:</span></span>
+<span id="cb4-2"><a></a><span class="at">  </span><span class="fu">sidebar</span><span class="kw">:</span></span>
+<span id="cb4-3"><a></a><span class="at">    </span><span class="fu">style</span><span class="kw">:</span><span class="at"> floating</span></span>
+<span id="cb4-4"><a></a><span class="at">    </span><span class="fu">search</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb4-5"><a></a><span class="at">    </span><span class="fu">contents</span><span class="kw">:</span></span>
+<span id="cb4-6"><a></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">section</span><span class="kw">:</span><span class="at"> </span><span class="st">"Semana 1 — Introducción"</span></span>
+<span id="cb4-7"><a></a><span class="at">        </span><span class="fu">contents</span><span class="kw">:</span></span>
+<span id="cb4-8"><a></a><span class="at">          </span><span class="kw">-</span><span class="at"> lectures/semana01/intro.qmd</span></span>
+<span id="cb4-9"><a></a><span class="at">          </span><span class="kw">-</span><span class="at"> lectures/semana01/notebook.qmd</span></span>
+<span id="cb4-10"><a></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">section</span><span class="kw">:</span><span class="at"> </span><span class="st">"Semana 2 — Estadística"</span></span>
+<span id="cb4-11"><a></a><span class="at">        </span><span class="fu">contents</span><span class="kw">:</span></span>
+<span id="cb4-12"><a></a><span class="at">          </span><span class="kw">-</span><span class="at"> lectures/semana02/teoria.qmd</span></span>
+<span id="cb4-13"><a></a><span class="at">          </span><span class="kw">-</span><span class="at"> lectures/semana02/notebook.qmd</span></span>
+<span id="cb4-14"><a></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">section</span><span class="kw">:</span><span class="at"> </span><span class="st">"Laboratorios"</span></span>
+<span id="cb4-15"><a></a><span class="at">        </span><span class="fu">contents</span><span class="kw">:</span></span>
+<span id="cb4-16"><a></a><span class="at">          </span><span class="kw">-</span><span class="at"> labs/lab01.qmd</span></span>
+<span id="cb4-17"><a></a><span class="at">          </span><span class="kw">-</span><span class="at"> labs/lab02.qmd</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:45%;">
+<p><strong>Listado automático (listing):</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb5-1"><a></a><span class="co"># En lectures/index.qmd</span></span>
+<span id="cb5-2"><a></a><span class="pp">---</span></span>
+<span id="cb5-3"><a></a><span class="fu">title</span><span class="kw">:</span><span class="at"> </span><span class="st">"Clases"</span></span>
+<span id="cb5-4"><a></a><span class="fu">listing</span><span class="kw">:</span></span>
+<span id="cb5-5"><a></a><span class="at">  </span><span class="fu">contents</span><span class="kw">:</span><span class="at"> </span><span class="st">"semana*"</span></span>
+<span id="cb5-6"><a></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> grid</span></span>
+<span id="cb5-7"><a></a><span class="at">  </span><span class="fu">sort</span><span class="kw">:</span><span class="at"> </span><span class="st">"date"</span></span>
+<span id="cb5-8"><a></a><span class="at">  </span><span class="fu">fields</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">date</span><span class="kw">,</span><span class="at"> title</span><span class="kw">,</span><span class="at"> description</span><span class="kw">]</span></span>
+<span id="cb5-9"><a></a><span class="pp">---</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Genera automáticamente una cuadrícula o tabla con todos los archivos que coincidan con el patrón. Se actualiza solo cuando agregas nuevos archivos.</p>
+<div class="callout callout-tip no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Para el blog del curso</strong></p>
+</div>
+<div class="callout-content">
+<p>El listing tipo <code>default</code> o <code>grid</code> con <code>sort: "date desc"</code> crea automáticamente un blog de actualizaciones del curso.</p>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="temas-visuales-y-personalización" class="slide level2">
+<h2>Temas visuales y personalización</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p><strong>Temas incluidos (Bootswatch):</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb6-1"><a></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb6-2"><a></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span></span>
+<span id="cb6-3"><a></a><span class="at">    </span><span class="fu">theme</span><span class="kw">:</span><span class="at"> cosmo</span><span class="co">      # limpio, moderno</span></span>
+<span id="cb6-4"><a></a><span class="co">    # otras opciones: flatly, litera, lumen,</span></span>
+<span id="cb6-5"><a></a><span class="co">    # minty, pulse, sandstone, simplex,</span></span>
+<span id="cb6-6"><a></a><span class="co">    # sketchy, spacelab, united, yeti</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Modo oscuro/claro automático:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb7-1"><a></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb7-2"><a></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span></span>
+<span id="cb7-3"><a></a><span class="at">    </span><span class="fu">theme</span><span class="kw">:</span></span>
+<span id="cb7-4"><a></a><span class="at">      </span><span class="fu">light</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">flatly</span><span class="kw">,</span><span class="at"> light.scss</span><span class="kw">]</span></span>
+<span id="cb7-5"><a></a><span class="at">      </span><span class="fu">dark</span><span class="kw">:</span><span class="at">  </span><span class="kw">[</span><span class="at">darkly</span><span class="kw">,</span><span class="at"> dark.scss</span><span class="kw">]</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<p>El visitante puede alternar entre modos. La preferencia del sistema operativo se detecta automáticamente.</p>
+</div><div class="column" style="width:45%;">
+<p><strong>Opciones de formato HTML:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb8-1"><a></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb8-2"><a></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span></span>
+<span id="cb8-3"><a></a><span class="at">    </span><span class="fu">toc</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span><span class="co">              # tabla de contenidos</span></span>
+<span id="cb8-4"><a></a><span class="at">    </span><span class="fu">toc-depth</span><span class="kw">:</span><span class="at"> </span><span class="dv">3</span></span>
+<span id="cb8-5"><a></a><span class="at">    </span><span class="fu">toc-location</span><span class="kw">:</span><span class="at"> right</span><span class="co">    # left, right, body</span></span>
+<span id="cb8-6"><a></a><span class="at">    </span><span class="fu">number-sections</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb8-7"><a></a><span class="at">    </span><span class="fu">code-fold</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span><span class="co">        # código colapsable</span></span>
+<span id="cb8-8"><a></a><span class="at">    </span><span class="fu">code-tools</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span><span class="co">       # botón copiar, ver código</span></span>
+<span id="cb8-9"><a></a><span class="at">    </span><span class="fu">code-copy</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb8-10"><a></a><span class="at">    </span><span class="fu">link-external-icon</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb8-11"><a></a><span class="at">    </span><span class="fu">link-external-newwindow</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb8-12"><a></a><span class="at">    </span><span class="fu">fig-align</span><span class="kw">:</span><span class="at"> center</span></span>
+<span id="cb8-13"><a></a><span class="at">    </span><span class="fu">highlight-style</span><span class="kw">:</span><span class="at"> github</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-note no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong><code>code-fold: true</code> en docencia</strong></p>
+</div>
+<div class="callout-content">
+<p>Permite mostrar el output (figura, tabla) y esconder el código por defecto. Los estudiantes que quieren ver el código hacen clic para expandir.</p>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="estructura-de-carpetas-para-el-sitio-del-curso" class="slide level2">
+<h2>Estructura de carpetas para el sitio del curso</h2>
+<pre><code>mat281-2025-1/
+├── _quarto.yml            # configuración central
+├── index.qmd              # página de inicio
+├── assets/
+│   ├── img/
+│   │   └── brand__usm.png
+│   └── scss/
+│       ├── light.scss
+│       └── dark.scss
+├── lectures/
+│   ├── index.qmd          # listing de clases
+│   ├── semana01/
+│   │   ├── intro.qmd
+│   │   └── notebook.qmd
+│   └── semana02/
+│       └── notebook.qmd
+├── labs/
+│   ├── index.qmd
+│   └── lab01.qmd
+├── assignments/
+│   ├── index.qmd
+│   └── tarea01.qmd
+└── _freeze/               # resultados cacheados (commitear)</code></pre>
+</section>
+<section id="renderizar-y-previsualizar-el-sitio" class="slide level2">
+<h2>Renderizar y previsualizar el sitio</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p><strong>Preview en tiempo real:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a></a><span class="ex">quarto</span> preview</span>
+<span id="cb10-2"><a></a><span class="co"># → abre el navegador en localhost:PORT</span></span>
+<span id="cb10-3"><a></a><span class="co"># → se actualiza al guardar cualquier .qmd</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Render completo:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a></a><span class="ex">quarto</span> render</span>
+<span id="cb11-2"><a></a><span class="co"># → genera _site/ con todos los HTML</span></span>
+<span id="cb11-3"><a></a></span>
+<span id="cb11-4"><a></a><span class="co"># Render solo un archivo</span></span>
+<span id="cb11-5"><a></a><span class="ex">quarto</span> render lectures/semana03/notebook.qmd</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Inspeccionar el sitio generado:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a></a><span class="fu">ls</span> _site/</span>
+<span id="cb12-2"><a></a><span class="co"># index.html</span></span>
+<span id="cb12-3"><a></a><span class="co"># lectures/</span></span>
+<span id="cb12-4"><a></a><span class="co"># labs/</span></span>
+<span id="cb12-5"><a></a><span class="co"># ...</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:45%;">
+<p><strong>Opciones de <code>_quarto.yml</code> para eficiencia:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb13-1"><a></a><span class="fu">execute</span><span class="kw">:</span></span>
+<span id="cb13-2"><a></a><span class="at">  </span><span class="fu">freeze</span><span class="kw">:</span><span class="at"> auto</span><span class="co">      # no re-ejecutar si no cambió</span></span>
+<span id="cb13-3"><a></a><span class="at">  </span><span class="fu">echo</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb13-4"><a></a><span class="at">  </span><span class="fu">warning</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span></span>
+<span id="cb13-5"><a></a><span class="at">  </span><span class="fu">message</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span></span>
+<span id="cb13-6"><a></a></span>
+<span id="cb13-7"><a></a><span class="co"># Excluir archivos del render</span></span>
+<span id="cb13-8"><a></a><span class="fu">project</span><span class="kw">:</span></span>
+<span id="cb13-9"><a></a><span class="at">  </span><span class="fu">render</span><span class="kw">:</span></span>
+<span id="cb13-10"><a></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="st">"*.qmd"</span></span>
+<span id="cb13-11"><a></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="st">"!drafts/*"</span><span class="co">  # excluir carpeta drafts</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-tip no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>En equipos con ayudantes</strong></p>
+</div>
+<div class="callout-content">
+<p>Cada ayudante trabaja en su rama, hace PR. GitHub Actions renderiza y verifica automáticamente antes del merge.</p>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="open-graph-y-metadatos-para-compartir" class="slide level2">
+<h2>Open Graph y metadatos para compartir</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p><strong>Cuando compartes el link del curso en redes sociales o WhatsApp, Quarto puede mostrar una vista previa enriquecida.</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb14-1"><a></a><span class="fu">website</span><span class="kw">:</span></span>
+<span id="cb14-2"><a></a><span class="at">  </span><span class="fu">open-graph</span><span class="kw">:</span></span>
+<span id="cb14-3"><a></a><span class="at">    </span><span class="fu">title</span><span class="kw">:</span><span class="at"> </span><span class="st">"MAT281 — 2025-1"</span></span>
+<span id="cb14-4"><a></a><span class="at">    </span><span class="fu">description</span><span class="kw">:</span><span class="at"> </span><span class="st">"Material completo del curso de Aplicaciones de la Matemática en Ingeniería"</span></span>
+<span id="cb14-5"><a></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> assets/img/og-preview.png</span></span>
+<span id="cb14-6"><a></a></span>
+<span id="cb14-7"><a></a><span class="at">  </span><span class="fu">twitter-card</span><span class="kw">:</span></span>
+<span id="cb14-8"><a></a><span class="at">    </span><span class="fu">title</span><span class="kw">:</span><span class="at"> </span><span class="st">"MAT281 — 2025-1"</span></span>
+<span id="cb14-9"><a></a><span class="at">    </span><span class="fu">description</span><span class="kw">:</span><span class="at"> </span><span class="st">"Material abierto bajo CC BY 4.0"</span></span>
+<span id="cb14-10"><a></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> assets/img/og-preview.png</span></span>
+<span id="cb14-11"><a></a><span class="at">    </span><span class="fu">card-style</span><span class="kw">:</span><span class="at"> summary_large_image</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:45%;">
+<p><strong>Metadatos por página:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb15-1"><a></a><span class="co"># Al inicio de cualquier .qmd</span></span>
+<span id="cb15-2"><a></a><span class="pp">---</span></span>
+<span id="cb15-3"><a></a><span class="fu">title</span><span class="kw">:</span><span class="at"> </span><span class="st">"Semana 3: Regresión Lineal"</span></span>
+<span id="cb15-4"><a></a><span class="fu">description</span><span class="kw">:</span><span class="at"> </span><span class="st">"Teoría, implementación en Python y aplicación a datos reales"</span></span>
+<span id="cb15-5"><a></a><span class="fu">image</span><span class="kw">:</span><span class="at"> figures/scatter.png</span></span>
+<span id="cb15-6"><a></a><span class="pp">---</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-note no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Para difusión institucional</strong></p>
+</div>
+<div class="callout-content">
+<p>Un sitio con metadatos Open Graph correctos se ve profesional cuando se comparte en Twitter, LinkedIn o en el portal de la universidad.</p>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="section-1" class="slide level2 final-slide" data-background-color="#0F2044">
+<h2></h2>
+<div class="center-content">
+<p><strong>¿Preguntas?</strong></p>
+<hr>
+<p>Francisco Alfaro<br>
+<code>fralfaro@usm.cl</code><br>
+Docencia Digital · UTFSM</p>
+<p><em>2026</em></p>
+</div>
+
+
+</section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="../../assets/img/brand/brand__usm.png" class="slide-logo"></p>
+<div class="footer footer-default">
+<p>Docencia Digital · UTFSM · 2026</p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: false,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'fade',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'fast',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1280,
+
+        height: 720,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 8.0e-2,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copiado");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copiado");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

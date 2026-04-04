@@ -1,0 +1,1998 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Colab esencial – Docencia Digital</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../material/02_colab/colab_02_pandas.html" rel="next">
+<link href="../../material/02_colab/index.html" rel="prev">
+<link href="../../assets/img/brand/brand__usm.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-f418161beb48e0141c760e455f12af2c.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-054bc2b8cb1b6ec370a8688fa6c00d10.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-8fd4b497b002349af961823af7d1d6ac.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-054bc2b8cb1b6ec370a8688fa6c00d10.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No se han encontrado resultados",
+    "search-matching-documents-text": "documentos encontrados",
+    "search-copy-link-title": "Copiar el enlace en la búsqueda",
+    "search-hide-matches-text": "Ocultar resultados adicionales",
+    "search-more-match-text": "resultado adicional en este documento",
+    "search-more-matches-text": "resultados adicionales en este documento",
+    "search-clear-button-title": "Borrar",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Buscar"
+  }
+}</script>
+<script src="../../site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="../../site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="../../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../material/02_colab/index.html">Google Colab para docencia</a></li><li class="breadcrumb-item"><a href="../../material/02_colab/colab_01_esencial.html"><span class="chapter-title">Colab esencial</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="../../index.html" class="sidebar-logo-link">
+      <img src="../../assets/img/brand/brand__usm.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none">
+      <img src="../../assets/img/brand/brand__usm.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">Docencia Digital</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/fralfaro/docencia-digital" title="Ejecutar el código" class="quarto-navigation-tool px-1" aria-label="Ejecutar el código"><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo oscuro"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Buscar"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🏠 Home</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">🟪 Introducción</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../material/00_intro/intro.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Bienvenida al Curso</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../material/01_github/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">GitHub para docencia</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../material/01_github/01_esencial.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Git y GitHub esencial</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../material/01_github/02_colaborativo.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Flujo colaborativo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../material/01_github/03_automatizacion.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Automatización y Pages</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../material/02_colab/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Google Colab para docencia</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../material/02_colab/colab_01_esencial.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">Colab esencial</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../material/02_colab/colab_02_pandas.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Manipulación de datos con pandas</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../material/02_colab/colab_03_visualizacion.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Visualización de datos</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../material/03_latex/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">LaTeX y Overleaf para docencia</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../material/03_latex/overleaf_01_esencial.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">LaTeX esencial</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../material/03_latex/overleaf_02_matematica.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Matemática y escritura científica</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../material/03_latex/overleaf_03_plantillas.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Plantillas y producción de documentos</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../material/04_quarto/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quarto para material académico</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../material/04_quarto/quarto_01_intro.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Qué es Quarto y por qué usarlo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../material/04_quarto/quarto_02_documentos.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Documentos reproducibles</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../material/04_quarto/quarto_03_revealjs.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Presentaciones con RevealJS</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../material/04_quarto/quarto_04_sitios.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Sitios web y blogs docentes</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../material/04_quarto/quarto_05_pages.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Publicación con GitHub Pages</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../material/04_quarto/quarto_06_flujo.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Flujo docente completo con Quarto</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../material/05_ia/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Inteligencia Artificial para docencia</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../material/05_ia/ia_01_panorama.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Panorama de herramientas IA</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../material/05_ia/ia_02_prompting.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Prompting efectivo para docentes</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../material/05_ia/ia_03_notebooklm.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">NotebookLM en profundidad</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../material/05_ia/ia_04_pedagogico.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Diseño pedagógico con IA</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../material/05_ia/ia_05_rag.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Chatbots y RAG</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../material/05_ia/ia_06_agentes.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Agentes IA</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../material/05_ia/ia_07_copilot_studio.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Copilot Studio y plataformas institucionales</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../material/05_ia/ia_08_etica.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Ética y uso responsable de IA en el aula</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Tabla de contenidos</h2>
+   
+  <ul>
+  <li><a href="#qué-es-un-notebook-y-la-lógica-de-celdas" id="toc-qué-es-un-notebook-y-la-lógica-de-celdas" class="nav-link active" data-scroll-target="#qué-es-un-notebook-y-la-lógica-de-celdas">Qué es un notebook y la lógica de celdas</a>
+  <ul class="collapse">
+  <li><a href="#el-modelo-mental-del-notebook" id="toc-el-modelo-mental-del-notebook" class="nav-link" data-scroll-target="#el-modelo-mental-del-notebook">El modelo mental del notebook</a></li>
+  <li><a href="#la-lógica-de-ejecución-el-kernel" id="toc-la-lógica-de-ejecución-el-kernel" class="nav-link" data-scroll-target="#la-lógica-de-ejecución-el-kernel">La lógica de ejecución: el kernel</a></li>
+  <li><a href="#google-colab-como-entorno-de-notebooks" id="toc-google-colab-como-entorno-de-notebooks" class="nav-link" data-scroll-target="#google-colab-como-entorno-de-notebooks">Google Colab como entorno de notebooks</a></li>
+  </ul></li>
+  <li><a href="#celdas-de-código-vs-celdas-de-texto-markdown" id="toc-celdas-de-código-vs-celdas-de-texto-markdown" class="nav-link" data-scroll-target="#celdas-de-código-vs-celdas-de-texto-markdown">Celdas de código vs celdas de texto (Markdown)</a>
+  <ul class="collapse">
+  <li><a href="#celdas-de-código" id="toc-celdas-de-código" class="nav-link" data-scroll-target="#celdas-de-código">Celdas de código</a></li>
+  <li><a href="#celdas-de-texto-markdown" id="toc-celdas-de-texto-markdown" class="nav-link" data-scroll-target="#celdas-de-texto-markdown">Celdas de texto (Markdown)</a></li>
+  <li><a href="#estructura-recomendada-de-un-notebook-docente" id="toc-estructura-recomendada-de-un-notebook-docente" class="nav-link" data-scroll-target="#estructura-recomendada-de-un-notebook-docente">Estructura recomendada de un notebook docente</a></li>
+  </ul></li>
+  <li><a href="#runtime-tipos-de-hardware-y-gpu-gratuita" id="toc-runtime-tipos-de-hardware-y-gpu-gratuita" class="nav-link" data-scroll-target="#runtime-tipos-de-hardware-y-gpu-gratuita">Runtime, tipos de hardware y GPU gratuita</a>
+  <ul class="collapse">
+  <li><a href="#qué-es-el-runtime" id="toc-qué-es-el-runtime" class="nav-link" data-scroll-target="#qué-es-el-runtime">Qué es el runtime</a></li>
+  <li><a href="#tipos-de-hardware-disponibles" id="toc-tipos-de-hardware-disponibles" class="nav-link" data-scroll-target="#tipos-de-hardware-disponibles">Tipos de hardware disponibles</a></li>
+  <li><a href="#verificar-el-hardware-asignado" id="toc-verificar-el-hardware-asignado" class="nav-link" data-scroll-target="#verificar-el-hardware-asignado">Verificar el hardware asignado</a></li>
+  <li><a href="#reconectar-al-runtime" id="toc-reconectar-al-runtime" class="nav-link" data-scroll-target="#reconectar-al-runtime">Reconectar al runtime</a></li>
+  </ul></li>
+  <li><a href="#montar-google-drive-para-acceder-a-archivos" id="toc-montar-google-drive-para-acceder-a-archivos" class="nav-link" data-scroll-target="#montar-google-drive-para-acceder-a-archivos">Montar Google Drive para acceder a archivos</a>
+  <ul class="collapse">
+  <li><a href="#por-qué-montar-drive" id="toc-por-qué-montar-drive" class="nav-link" data-scroll-target="#por-qué-montar-drive">Por qué montar Drive</a></li>
+  <li><a href="#montar-drive-con-código" id="toc-montar-drive-con-código" class="nav-link" data-scroll-target="#montar-drive-con-código">Montar Drive con código</a></li>
+  <li><a href="#leer-archivos-desde-drive" id="toc-leer-archivos-desde-drive" class="nav-link" data-scroll-target="#leer-archivos-desde-drive">Leer archivos desde Drive</a></li>
+  <li><a href="#guardar-archivos-en-drive" id="toc-guardar-archivos-en-drive" class="nav-link" data-scroll-target="#guardar-archivos-en-drive">Guardar archivos en Drive</a></li>
+  <li><a href="#estructura-de-carpetas-recomendada-en-drive-para-un-curso" id="toc-estructura-de-carpetas-recomendada-en-drive-para-un-curso" class="nav-link" data-scroll-target="#estructura-de-carpetas-recomendada-en-drive-para-un-curso">Estructura de carpetas recomendada en Drive para un curso</a></li>
+  <li><a href="#alternativa-subir-archivos-directamente-al-runtime" id="toc-alternativa-subir-archivos-directamente-al-runtime" class="nav-link" data-scroll-target="#alternativa-subir-archivos-directamente-al-runtime">Alternativa: subir archivos directamente al runtime</a></li>
+  </ul></li>
+  <li><a href="#instalar-librerías-con-pip" id="toc-instalar-librerías-con-pip" class="nav-link" data-scroll-target="#instalar-librerías-con-pip">Instalar librerías con pip</a>
+  <ul class="collapse">
+  <li><a href="#las-librerías-preinstaladas-en-colab" id="toc-las-librerías-preinstaladas-en-colab" class="nav-link" data-scroll-target="#las-librerías-preinstaladas-en-colab">Las librerías preinstaladas en Colab</a></li>
+  <li><a href="#instalar-librerías-adicionales" id="toc-instalar-librerías-adicionales" class="nav-link" data-scroll-target="#instalar-librerías-adicionales">Instalar librerías adicionales</a></li>
+  <li><a href="#ejemplo-de-celda-de-configuración-completa-para-un-laboratorio" id="toc-ejemplo-de-celda-de-configuración-completa-para-un-laboratorio" class="nav-link" data-scroll-target="#ejemplo-de-celda-de-configuración-completa-para-un-laboratorio">Ejemplo de celda de configuración completa para un laboratorio</a></li>
+  <li><a href="#verificar-si-una-librería-está-instalada-antes-de-instalar" id="toc-verificar-si-una-librería-está-instalada-antes-de-instalar" class="nav-link" data-scroll-target="#verificar-si-una-librería-está-instalada-antes-de-instalar">Verificar si una librería está instalada antes de instalar</a></li>
+  </ul></li>
+  <li><a href="#compartir-notebooks-y-gestionar-permisos" id="toc-compartir-notebooks-y-gestionar-permisos" class="nav-link" data-scroll-target="#compartir-notebooks-y-gestionar-permisos">Compartir notebooks y gestionar permisos</a>
+  <ul class="collapse">
+  <li><a href="#opciones-de-compartición" id="toc-opciones-de-compartición" class="nav-link" data-scroll-target="#opciones-de-compartición">Opciones de compartición</a></li>
+  <li><a href="#colaboración-en-tiempo-real" id="toc-colaboración-en-tiempo-real" class="nav-link" data-scroll-target="#colaboración-en-tiempo-real">Colaboración en tiempo real</a></li>
+  <li><a href="#abrir-notebooks-desde-urls-externas" id="toc-abrir-notebooks-desde-urls-externas" class="nav-link" data-scroll-target="#abrir-notebooks-desde-urls-externas">Abrir notebooks desde URLs externas</a></li>
+  <li><a href="#configurar-permisos-desde-python" id="toc-configurar-permisos-desde-python" class="nav-link" data-scroll-target="#configurar-permisos-desde-python">Configurar permisos desde Python</a></li>
+  </ul></li>
+  <li><a href="#conectar-colab-con-un-repositorio-de-github" id="toc-conectar-colab-con-un-repositorio-de-github" class="nav-link" data-scroll-target="#conectar-colab-con-un-repositorio-de-github">Conectar Colab con un repositorio de GitHub</a>
+  <ul class="collapse">
+  <li><a href="#por-qué-conectar-colab-con-github" id="toc-por-qué-conectar-colab-con-github" class="nav-link" data-scroll-target="#por-qué-conectar-colab-con-github">Por qué conectar Colab con GitHub</a></li>
+  <li><a href="#opción-a-clonar-el-repositorio-en-el-runtime" id="toc-opción-a-clonar-el-repositorio-en-el-runtime" class="nav-link" data-scroll-target="#opción-a-clonar-el-repositorio-en-el-runtime">Opción A: Clonar el repositorio en el runtime</a></li>
+  <li><a href="#hacer-commits-y-push-desde-colab" id="toc-hacer-commits-y-push-desde-colab" class="nav-link" data-scroll-target="#hacer-commits-y-push-desde-colab">Hacer commits y push desde Colab</a></li>
+  <li><a href="#opción-b-integración-nativa-github-colab" id="toc-opción-b-integración-nativa-github-colab" class="nav-link" data-scroll-target="#opción-b-integración-nativa-github-colab">Opción B: Integración nativa GitHub ↔︎ Colab</a></li>
+  <li><a href="#opción-c-abrir-notebooks-de-github-con-un-clic" id="toc-opción-c-abrir-notebooks-de-github-con-un-clic" class="nav-link" data-scroll-target="#opción-c-abrir-notebooks-de-github-con-un-clic">Opción C: Abrir notebooks de GitHub con un clic</a></li>
+  </ul></li>
+  <li><a href="#resumen-el-flujo-docente-con-colab" id="toc-resumen-el-flujo-docente-con-colab" class="nav-link" data-scroll-target="#resumen-el-flujo-docente-con-colab">Resumen: el flujo docente con Colab</a>
+  <ul class="collapse">
+  <li><a href="#checklist-para-un-notebook-de-clase-listo-para-distribuir" id="toc-checklist-para-un-notebook-de-clase-listo-para-distribuir" class="nav-link" data-scroll-target="#checklist-para-un-notebook-de-clase-listo-para-distribuir">Checklist para un notebook de clase listo para distribuir</a></li>
+  </ul></li>
+  <li><a href="#referencias" id="toc-referencias" class="nav-link" data-scroll-target="#referencias">Referencias</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content column-body" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../material/02_colab/index.html">Google Colab para docencia</a></li><li class="breadcrumb-item"><a href="../../material/02_colab/colab_01_esencial.html"><span class="chapter-title">Colab esencial</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-title">Colab esencial</span></h1>
+<p class="subtitle lead">Notebooks en la nube para docencia práctica</p>
+</div>
+
+
+
+<div class="quarto-title-meta column-body">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Google Colab resuelve uno de los problemas más frustrantes de enseñar programación: la heterogeneidad de entornos. Un estudiante tiene Mac, otro Windows, otro Linux. Uno tiene Python 3.10, otro 3.12. Uno tiene instalado pandas, otro no. Las primeras dos horas de una clase práctica se van en “a mí no me funciona”.</p>
+<p>Google Colab elimina ese problema: todos ejecutan el mismo código en el mismo entorno, desde el navegador, sin instalar nada. El docente sube un notebook, los estudiantes abren el link y trabajan. Así de simple.</p>
+<p>Este capítulo cubre Colab desde la lógica fundamental — qué es un notebook, cómo funciona — hasta los aspectos que importan en docencia: acceso a datos, colaboración y conexión con GitHub.</p>
+<hr>
+<section id="qué-es-un-notebook-y-la-lógica-de-celdas" class="level2">
+<h2 class="anchored" data-anchor-id="qué-es-un-notebook-y-la-lógica-de-celdas">Qué es un notebook y la lógica de celdas</h2>
+<section id="el-modelo-mental-del-notebook" class="level3">
+<h3 class="anchored" data-anchor-id="el-modelo-mental-del-notebook">El modelo mental del notebook</h3>
+<p>Un notebook es un documento que mezcla <strong>código ejecutable</strong> y <strong>texto formateado</strong> en una secuencia de bloques llamados celdas. A diferencia de un script Python (que es solo código) o un documento Word (que es solo texto), un notebook permite intercalar explicación y ejecución: una celda explica el concepto, la siguiente lo demuestra con código, la siguiente muestra el resultado.</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">graph TD
+    N["📓 Notebook"]
+    N --&gt; C1["📝 Celda Markdown\n## Regresión lineal\nLa regresión lineal modela..."]
+    N --&gt; C2["💻 Celda de código\nfrom sklearn.linear_model import...\nmodelo = LinearRegression()"]
+    N --&gt; C3["📊 Output\nCoeficiente: 2.34\n[gráfico]"]
+    N --&gt; C4["📝 Celda Markdown\n### Interpretación\nEl coeficiente de 2.34..."]
+    N --&gt; C5["💻 Celda de código\nprint(modelo.score(X_test, y_test))"]
+    N --&gt; C6["📊 Output\n0.847"]
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<p>Esta estructura es ideal para docencia porque el material es a la vez la explicación y el código ejecutable. No hay separación entre “el apunte” y “el código de la clase”.</p>
+</section>
+<section id="la-lógica-de-ejecución-el-kernel" class="level3">
+<h3 class="anchored" data-anchor-id="la-lógica-de-ejecución-el-kernel">La lógica de ejecución: el kernel</h3>
+<p>El código en un notebook no corre de forma aislada celda por celda — comparte un <strong>kernel</strong>: un proceso Python que mantiene el estado entre ejecuciones.</p>
+<p>Esto significa que si en la celda 3 defines <code>x = 10</code>, en la celda 7 puedes usar <code>x</code> y su valor será <code>10</code>. El orden de ejecución importa, no la posición en el notebook.</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">graph LR
+    K["🧠 Kernel Python\n(estado compartido)"]
+    C1["Celda 1\nx = 10"] --&gt; K
+    C2["Celda 2\ny = x * 2"] --&gt; K
+    C3["Celda 5\nprint(x + y)"] --&gt; K
+    K --&gt; O["Output: 30"]
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Advertencia</span>El error más común en notebooks para docentes
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Ejecutar celdas fuera de orden en clase. Si defines una variable en la celda 8 y la usas en la celda 3, funciona si ejecutas 8 antes de 3. Pero cuando un estudiante corre el notebook desde el principio (<code>Entorno de ejecución → Reiniciar y ejecutar todo</code>), falla.</p>
+<p><strong>Regla de oro:</strong> antes de publicar un notebook, siempre haz <code>Reiniciar sesión de ejecución → Ejecutar todo</code> y verifica que corre de arriba a abajo sin errores.</p>
+</div>
+</div>
+</section>
+<section id="google-colab-como-entorno-de-notebooks" class="level3">
+<h3 class="anchored" data-anchor-id="google-colab-como-entorno-de-notebooks">Google Colab como entorno de notebooks</h3>
+<p>Google Colab es un servicio de notebooks hospedado por Google. Lo que obtienes:</p>
+<ul>
+<li><strong>Entorno Python preconfigurado:</strong> pandas, numpy, matplotlib, scikit-learn y decenas de librerías ya instaladas.</li>
+<li><strong>Almacenamiento en Google Drive:</strong> los notebooks se guardan automáticamente en tu Drive.</li>
+<li><strong>Acceso desde cualquier dispositivo:</strong> solo necesitas un navegador y una cuenta Google.</li>
+<li><strong>Recursos de cómputo gratuitos:</strong> CPU, RAM y opcionalmente GPU/TPU en la nube.</li>
+<li><strong>Colaboración en tiempo real:</strong> funciona como Google Docs para notebooks.</li>
+</ul>
+<blockquote class="blockquote">
+<p>🖼️ <strong>Asset:</strong> <code>assets/img/tool/tool__google-colab.png</code> — logo de Google Colab para encabezar la sección.</p>
+</blockquote>
+<p>Para abrir Colab: <a href="https://colab.research.google.com">colab.research.google.com</a></p>
+<hr>
+</section>
+</section>
+<section id="celdas-de-código-vs-celdas-de-texto-markdown" class="level2">
+<h2 class="anchored" data-anchor-id="celdas-de-código-vs-celdas-de-texto-markdown">Celdas de código vs celdas de texto (Markdown)</h2>
+<section id="celdas-de-código" class="level3">
+<h3 class="anchored" data-anchor-id="celdas-de-código">Celdas de código</h3>
+<p>Las celdas de código contienen Python (o R con extensiones). Para ejecutarlas:</p>
+<ul>
+<li><strong>Shift+Enter</strong> — ejecuta la celda y mueve el cursor a la siguiente</li>
+<li><strong>Ctrl+Enter</strong> (Cmd+Enter en Mac) — ejecuta la celda y permanece en ella</li>
+<li><strong>Alt+Enter</strong> — ejecuta la celda y crea una nueva debajo</li>
+<li>Clic en el botón ▶ a la izquierda de la celda</li>
+</ul>
+<p>El output de la celda (lo que imprime, los gráficos que genera, los DataFrames que muestra) aparece inmediatamente debajo.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Celda de código: cálculo simple</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>datos <span class="op">=</span> [<span class="dv">23</span>, <span class="dv">45</span>, <span class="dv">12</span>, <span class="dv">67</span>, <span class="dv">34</span>, <span class="dv">89</span>, <span class="dv">21</span>]</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>media <span class="op">=</span> np.mean(datos)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>desv <span class="op">=</span> np.std(datos)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Media: </span><span class="sc">{</span>media<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Desviación estándar: </span><span class="sc">{</span>desv<span class="sc">:.2f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<pre><code>Media: 41.57
+Desviación estándar: 25.27</code></pre>
+<p><strong>Mostrar el valor de la última expresión:</strong> si la última línea de una celda es una expresión (no un <code>print</code>), Colab la muestra automáticamente. Muy útil para DataFrames:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"datos.csv"</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>df.head()        <span class="co"># no necesita print() — se muestra como tabla formateada</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Número de ejecución:</strong> cada celda muestra <code>[n]</code> a su izquierda, donde <code>n</code> es el orden en que fue ejecutada. <code>[1]</code> fue la primera en correr, <code>[7]</code> la séptima. Esto te permite saber si una celda fue ejecutada y en qué orden.</p>
+</section>
+<section id="celdas-de-texto-markdown" class="level3">
+<h3 class="anchored" data-anchor-id="celdas-de-texto-markdown">Celdas de texto (Markdown)</h3>
+<p>Las celdas de texto usan <strong>Markdown</strong> — un lenguaje de marcado simple que se renderiza como HTML formateado. Son el corazón de la parte explicativa del notebook.</p>
+<p>Para agregar una celda de texto: <code>+ Texto</code> en la barra superior, o presiona <code>Esc</code> y luego <code>M</code> sobre una celda seleccionada.</p>
+<p>Para editar: doble clic en la celda. Para renderizar: Shift+Enter o clic fuera.</p>
+<p><strong>Sintaxis Markdown esencial:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># Título principal (H1)</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">## Sección (H2)</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">### Subsección (H3)</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>Párrafo normal. **Negrita**, *cursiva*, <span class="in">`código inline`</span>.</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>Lista no ordenada:</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Elemento 1</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Elemento 2</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Subelemento</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>Lista numerada:</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Primero</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Segundo</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; Cita o nota importante</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>---   (línea horizontal)</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Texto del link</span><span class="co">](https://url.com)</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="al">![Descripción imagen](url_imagen.png)</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Matemáticas con LaTeX en celdas Markdown:</strong></p>
+<p>Colab renderiza LaTeX directamente en celdas de texto. Esto es especialmente valioso para cursos de matemáticas, estadística e ingeniería:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="an">La ecuación de la recta de regresión es:</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>$$\hat{y} = \beta_0 + \beta_1 x$$</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>donde $\beta_0$ es la ordenada al origen y $\beta_1$ es la pendiente.</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>Los coeficientes se estiman minimizando la suma de cuadrados residuales:</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>$$\text{SCR} = \sum_{i=1}^{n} (y_i - \hat{y}_i)^2$$</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Se renderiza como:</p>
+<blockquote class="blockquote">
+<p>La ecuación de la recta de regresión es: <span class="math inline">\(\hat{y} = \beta_0 + \beta_1 x\)</span></p>
+<p>Los coeficientes se estiman minimizando: <span class="math inline">\(\text{SCR} = \sum_{i=1}^{n} (y_i - \hat{y}_i)^2\)</span></p>
+</blockquote>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Atajos de teclado esenciales en Colab
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Atajo</th>
+<th>Acción</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>Shift+Enter</code></td>
+<td>Ejecutar celda y pasar a la siguiente</td>
+</tr>
+<tr class="even">
+<td><code>Ctrl+Enter</code></td>
+<td>Ejecutar celda sin moverse</td>
+</tr>
+<tr class="odd">
+<td><code>Ctrl+M B</code></td>
+<td>Insertar celda de código debajo</td>
+</tr>
+<tr class="even">
+<td><code>Ctrl+M A</code></td>
+<td>Insertar celda de código arriba</td>
+</tr>
+<tr class="odd">
+<td><code>Ctrl+M M</code></td>
+<td>Convertir celda a Markdown</td>
+</tr>
+<tr class="even">
+<td><code>Ctrl+M Y</code></td>
+<td>Convertir celda a código</td>
+</tr>
+<tr class="odd">
+<td><code>Ctrl+M D</code></td>
+<td>Eliminar celda</td>
+</tr>
+<tr class="even">
+<td><code>Ctrl+M Z</code></td>
+<td>Deshacer</td>
+</tr>
+<tr class="odd">
+<td><code>Ctrl+/</code></td>
+<td>Comentar/descomentar código seleccionado</td>
+</tr>
+<tr class="even">
+<td><code>Ctrl+Shift+P</code></td>
+<td>Paleta de comandos (busca cualquier acción)</td>
+</tr>
+</tbody>
+</table>
+<p>En Mac, reemplaza <code>Ctrl</code> por <code>Cmd</code>.</p>
+</div>
+</div>
+</section>
+<section id="estructura-recomendada-de-un-notebook-docente" class="level3">
+<h3 class="anchored" data-anchor-id="estructura-recomendada-de-un-notebook-docente">Estructura recomendada de un notebook docente</h3>
+<p>Un notebook bien estructurado para una clase sigue este patrón:</p>
+<pre><code>📓 semana03_regresion_lineal.ipynb
+
+├── 📝 [Markdown] Encabezado
+│     Título, curso, semana, objetivos de la sesión
+│
+├── 📝 [Markdown] 0. Configuración
+│     Qué librerías se usan y por qué
+├── 💻 [Código] Imports y configuración global
+│
+├── 📝 [Markdown] 1. Contexto y motivación
+│     El problema que vamos a resolver, datos de ejemplo
+├── 💻 [Código] Cargar y explorar datos
+│
+├── 📝 [Markdown] 2. Concepto central
+│     Explicación con LaTeX si aplica
+├── 💻 [Código] Implementación paso a paso
+├── 📊 [Output] Resultados y gráficos
+│
+├── 📝 [Markdown] 3. Interpretación
+│     Qué significan los resultados
+├── 💻 [Código] Variaciones y casos borde
+│
+├── 📝 [Markdown] 4. Ejercicios
+│     Instrucciones claras, espacio para respuestas
+├── 💻 [Código] # Tu solución aquí
+│
+└── 📝 [Markdown] 5. Resumen
+      Puntos clave, links a material adicional</code></pre>
+<hr>
+</section>
+</section>
+<section id="runtime-tipos-de-hardware-y-gpu-gratuita" class="level2">
+<h2 class="anchored" data-anchor-id="runtime-tipos-de-hardware-y-gpu-gratuita">Runtime, tipos de hardware y GPU gratuita</h2>
+<section id="qué-es-el-runtime" class="level3">
+<h3 class="anchored" data-anchor-id="qué-es-el-runtime">Qué es el runtime</h3>
+<p>El <strong>runtime</strong> (o sesión de ejecución) es la instancia de computación que corre tu notebook. Cuando abres Colab y ejecutas una celda, se inicia un runtime: una máquina virtual en los servidores de Google con Python instalado, memoria RAM y acceso a disco.</p>
+<p>El runtime tiene un tiempo de vida limitado:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Condición</th>
+<th>Tiempo hasta desconexión</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Notebook inactivo (sin ejecutar celdas)</td>
+<td>~90 minutos</td>
+</tr>
+<tr class="even">
+<td>Sesión activa continua</td>
+<td>~12 horas (plan gratuito)</td>
+</tr>
+<tr class="odd">
+<td>Navegador cerrado</td>
+<td>~90 minutos</td>
+</tr>
+</tbody>
+</table>
+<p>Cuando el runtime se desconecta, <strong>se pierde todo lo que estaba en memoria</strong>: variables, resultados, archivos descargados. Los notebooks guardados en Drive no se pierden, pero hay que volver a ejecutar el código.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Advertencia</span>Guarda los resultados en Drive, no en el runtime
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Si tu notebook genera un archivo de resultados (modelo entrenado, dataset procesado, gráfico), guárdalo explícitamente en Google Drive dentro del notebook. No confíes en que el archivo estará en el sistema de archivos del runtime la próxima vez que abras el notebook.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Guardar en Drive (después de montarlo)</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>df_resultados.to_csv(<span class="st">'/content/drive/MyDrive/mat281/resultados.csv'</span>, index<span class="op">=</span><span class="va">False</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</section>
+<section id="tipos-de-hardware-disponibles" class="level3">
+<h3 class="anchored" data-anchor-id="tipos-de-hardware-disponibles">Tipos de hardware disponibles</h3>
+<p>Colab ofrece tres tipos de acelerador de hardware para el runtime:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Acelerador</th>
+<th>Para qué sirve</th>
+<th>Disponibilidad</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>CPU</strong></td>
+<td>Código Python general, pandas, sklearn, análisis de datos</td>
+<td>Siempre disponible, gratuito</td>
+</tr>
+<tr class="even">
+<td><strong>GPU (T4)</strong></td>
+<td>Redes neuronales, deep learning, procesamiento de matrices grandes</td>
+<td>Gratuito (con límites de uso)</td>
+</tr>
+<tr class="odd">
+<td><strong>TPU</strong></td>
+<td>Entrenamiento de modelos grandes con TensorFlow/JAX</td>
+<td>Gratuito (más restrictivo)</td>
+</tr>
+</tbody>
+</table>
+<p>Para cursos de ciencia de datos y análisis estadístico, <strong>CPU es suficiente</strong>. Solo necesitas GPU si tu curso incluye deep learning o procesas imágenes/texto a escala.</p>
+<p><strong>Cambiar el tipo de hardware:</strong></p>
+<p><code>Entorno de ejecución → Cambiar tipo de entorno de ejecución → Acelerador de hardware</code></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Nota</span>GPU gratuita: cómo usarla responsablemente en clase
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>La GPU gratuita de Colab tiene límites de uso que Google ajusta según la demanda. Si 40 estudiantes de tu curso intentan usar GPU al mismo tiempo en una clase práctica, algunos pueden no obtenerla. Para clases de deep learning, considera:</p>
+<ul>
+<li>Asignar la tarea con GPU para trabajo individual fuera del horario de clase.</li>
+<li>Usar datasets pequeños que corran razonablemente en CPU.</li>
+<li>Evaluar Colab Pro+ o Google Cloud para clases con uso intensivo de GPU.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="verificar-el-hardware-asignado" class="level3">
+<h3 class="anchored" data-anchor-id="verificar-el-hardware-asignado">Verificar el hardware asignado</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Verificar GPU disponible</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> subprocess</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> subprocess.run([<span class="st">'nvidia-smi'</span>], capture_output<span class="op">=</span><span class="va">True</span>, text<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> result.returncode <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(result.stdout)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"No hay GPU disponible en este runtime"</span>)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Alternativa con torch</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"CUDA disponible: </span><span class="sc">{</span>torch<span class="sc">.</span>cuda<span class="sc">.</span>is_available()<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> torch.cuda.is_available():</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"GPU: </span><span class="sc">{</span>torch<span class="sc">.</span>cuda<span class="sc">.</span>get_device_name(<span class="dv">0</span>)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Memoria GPU: </span><span class="sc">{</span>torch<span class="sc">.</span>cuda<span class="sc">.</span>get_device_properties(<span class="dv">0</span>)<span class="sc">.</span>total_memory <span class="op">/</span> <span class="fl">1e9</span><span class="sc">:.1f}</span><span class="ss"> GB"</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="reconectar-al-runtime" class="level3">
+<h3 class="anchored" data-anchor-id="reconectar-al-runtime">Reconectar al runtime</h3>
+<p>Cuando el runtime se desconecta (o decides reiniciarlo), tienes estas opciones:</p>
+<ul>
+<li><strong>Entorno de ejecución → Reiniciar sesión:</strong> mantiene los archivos del runtime, pero limpia la memoria (variables y módulos importados).</li>
+<li><strong>Entorno de ejecución → Reiniciar sesión y ejecutar todo:</strong> reinicia y corre todas las celdas de arriba a abajo. El estado del notebook ideal.</li>
+<li><strong>Entorno de ejecución → Desconectar y eliminar el entorno de ejecución:</strong> libera la máquina virtual completamente.</li>
+</ul>
+<p>Para reconectar automáticamente cuando el navegador está inactivo, algunos usuarios usan este snippet (aunque Google lo desaconseja para no desperdiciar recursos):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode javascript code-with-copy"><code class="sourceCode javascript"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Ejecutar en la consola del navegador (F12 → Console)</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co">// Solo para sesiones propias, no para clases con estudiantes</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">KeepAlive</span>() {</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="bu">document</span><span class="op">.</span><span class="fu">querySelector</span>(<span class="st">"#top-toolbar &gt; colab-connect-button"</span>)<span class="op">.</span><span class="at">shadowRoot</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">querySelector</span>(<span class="st">"#connect"</span>)<span class="op">.</span><span class="fu">click</span>()<span class="op">;</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="pp">setInterval</span>(KeepAlive<span class="op">,</span> <span class="dv">60000</span>)<span class="op">;</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<hr>
+</section>
+</section>
+<section id="montar-google-drive-para-acceder-a-archivos" class="level2">
+<h2 class="anchored" data-anchor-id="montar-google-drive-para-acceder-a-archivos">Montar Google Drive para acceder a archivos</h2>
+<section id="por-qué-montar-drive" class="level3">
+<h3 class="anchored" data-anchor-id="por-qué-montar-drive">Por qué montar Drive</h3>
+<p>El runtime de Colab tiene su propio sistema de archivos (<code>/content/</code>), pero es temporal — desaparece cuando el runtime se desconecta. Google Drive es el almacenamiento persistente: los archivos que guardas ahí permanecen entre sesiones.</p>
+<p>Montar Drive conecta <code>/content/drive/</code> en el runtime con tu Google Drive real. A partir de ese momento, leer y escribir archivos en esa ruta es exactamente lo mismo que leer y escribir en tu Drive.</p>
+</section>
+<section id="montar-drive-con-código" class="level3">
+<h3 class="anchored" data-anchor-id="montar-drive-con-código">Montar Drive con código</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> google.colab <span class="im">import</span> drive</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>drive.mount(<span class="st">'/content/drive'</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Al ejecutar esta celda, Colab muestra un link de autorización. Haz clic, selecciona tu cuenta Google, copia el código de autorización y pégalo en el campo que aparece en el notebook.</p>
+<p>Después del montaje:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Verificar que Drive está montado</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(os.listdir(<span class="st">'/content/drive/MyDrive'</span>))</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Navegar a una carpeta del curso</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>ruta_curso <span class="op">=</span> <span class="st">'/content/drive/MyDrive/mat281-2025-1'</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>os.makedirs(ruta_curso, exist_ok<span class="op">=</span><span class="va">True</span>)  <span class="co"># crea la carpeta si no existe</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(os.listdir(ruta_curso))</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="leer-archivos-desde-drive" class="level3">
+<h3 class="anchored" data-anchor-id="leer-archivos-desde-drive">Leer archivos desde Drive</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Leer un CSV desde una carpeta del curso en Drive</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">'/content/drive/MyDrive/mat281-2025-1/datasets/datos.csv'</span>)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>df.head()</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Leer un Excel</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_excel(<span class="st">'/content/drive/MyDrive/mat281-2025-1/datasets/datos.xlsx'</span>,</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>                   sheet_name<span class="op">=</span><span class="st">'Hoja1'</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Leer múltiples archivos CSV desde una carpeta</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pathlib</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>carpeta <span class="op">=</span> pathlib.Path(<span class="st">'/content/drive/MyDrive/mat281-2025-1/datasets/raw'</span>)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>dataframes <span class="op">=</span> []</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> archivo <span class="kw">in</span> carpeta.glob(<span class="st">'*.csv'</span>):</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    df_temp <span class="op">=</span> pd.read_csv(archivo)</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    df_temp[<span class="st">'archivo_origen'</span>] <span class="op">=</span> archivo.name</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    dataframes.append(df_temp)</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>df_combinado <span class="op">=</span> pd.concat(dataframes, ignore_index<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Total de filas: </span><span class="sc">{</span><span class="bu">len</span>(df_combinado)<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="guardar-archivos-en-drive" class="level3">
+<h3 class="anchored" data-anchor-id="guardar-archivos-en-drive">Guardar archivos en Drive</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Guardar DataFrame como CSV</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>df_resultados.to_csv(</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'/content/drive/MyDrive/mat281-2025-1/resultados/semana03_resultados.csv'</span>,</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    encoding<span class="op">=</span><span class="st">'utf-8-sig'</span>    <span class="co"># encoding correcto para caracteres en español</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Guardar un modelo de scikit-learn</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> joblib</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>joblib.dump(modelo, <span class="st">'/content/drive/MyDrive/mat281-2025-1/modelos/modelo_reg.pkl'</span>)</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Guardar un gráfico</span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>ax.scatter(X, y, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'Variable predictora'</span>)</span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'Variable respuesta'</span>)</span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>fig.savefig(</span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">'/content/drive/MyDrive/mat281-2025-1/graficos/dispersion_semana03.png'</span>,</span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>    dpi<span class="op">=</span><span class="dv">150</span>,</span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>    bbox_inches<span class="op">=</span><span class="st">'tight'</span></span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="estructura-de-carpetas-recomendada-en-drive-para-un-curso" class="level3">
+<h3 class="anchored" data-anchor-id="estructura-de-carpetas-recomendada-en-drive-para-un-curso">Estructura de carpetas recomendada en Drive para un curso</h3>
+<pre><code>Google Drive/
+└── mat281-2025-1/
+    ├── notebooks/           # notebooks del curso (o enlazados desde GitHub)
+    ├── datasets/
+    │   ├── raw/             # datos originales sin modificar
+    │   └── processed/       # datos procesados
+    ├── resultados/          # outputs de análisis
+    ├── modelos/             # modelos entrenados
+    ├── graficos/            # visualizaciones guardadas
+    └── entregas/            # trabajos de estudiantes (si usas Drive para esto)</code></pre>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Función de configuración inicial para notebooks del curso
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Crea una celda de configuración estándar que todos los notebooks del curso usen al inicio. Esto garantiza que todos los estudiantes montan Drive y configuran las rutas de la misma manera:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Configuración inicial del curso ─────────────────────────</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> google.colab <span class="im">import</span> drive</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os, pathlib</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>drive.mount(<span class="st">'/content/drive'</span>)</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Rutas base del curso</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>DRIVE_ROOT <span class="op">=</span> pathlib.Path(<span class="st">'/content/drive/MyDrive/mat281-2025-1'</span>)</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>DIR_DATOS  <span class="op">=</span> DRIVE_ROOT <span class="op">/</span> <span class="st">'datasets'</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>DIR_GRAFICOS <span class="op">=</span> DRIVE_ROOT <span class="op">/</span> <span class="st">'graficos'</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear carpetas si no existen</span></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> d <span class="kw">in</span> [DIR_DATOS, DIR_GRAFICOS]:</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>    d.mkdir(parents<span class="op">=</span><span class="va">True</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"✅ Drive montado. Curso en: </span><span class="sc">{</span>DRIVE_ROOT<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a><span class="co"># ─────────────────────────────────────────────────────────────</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</section>
+<section id="alternativa-subir-archivos-directamente-al-runtime" class="level3">
+<h3 class="anchored" data-anchor-id="alternativa-subir-archivos-directamente-al-runtime">Alternativa: subir archivos directamente al runtime</h3>
+<p>Para archivos pequeños y de uso temporal (no necesitas persistencia):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> google.colab <span class="im">import</span> files</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Subir archivo desde tu computador</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>subido <span class="op">=</span> files.upload()</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="co"># → abre un diálogo de selección de archivos</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="co"># El archivo queda en /content/</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> io</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(io.BytesIO(subido[<span class="st">'datos.csv'</span>]))</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Descargar un archivo desde el runtime a tu computador</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>files.download(<span class="st">'/content/resultados.csv'</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<hr>
+</section>
+</section>
+<section id="instalar-librerías-con-pip" class="level2">
+<h2 class="anchored" data-anchor-id="instalar-librerías-con-pip">Instalar librerías con pip</h2>
+<section id="las-librerías-preinstaladas-en-colab" class="level3">
+<h3 class="anchored" data-anchor-id="las-librerías-preinstaladas-en-colab">Las librerías preinstaladas en Colab</h3>
+<p>Colab incluye de fábrica la mayoría de las librerías que necesitas para ciencia de datos e ingeniería:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Verificar versiones de las librerías principales preinstaladas</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas, numpy, matplotlib, seaborn, sklearn, scipy</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> lib <span class="kw">in</span> [pandas, numpy, matplotlib, seaborn, sklearn, scipy]:</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>lib<span class="sc">.</span><span class="va">__name__</span><span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>lib<span class="sc">.</span>__version__<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Librerías notables que vienen preinstaladas: <code>pandas</code>, <code>numpy</code>, <code>matplotlib</code>, <code>seaborn</code>, <code>scikit-learn</code>, <code>scipy</code>, <code>tensorflow</code>, <code>torch</code>, <code>transformers</code>, <code>statsmodels</code>, <code>plotly</code>, <code>opencv</code>.</p>
+</section>
+<section id="instalar-librerías-adicionales" class="level3">
+<h3 class="anchored" data-anchor-id="instalar-librerías-adicionales">Instalar librerías adicionales</h3>
+<p>Para librerías que no están preinstaladas, usa <code>pip</code> directamente en una celda de código con el prefijo <code>!</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Instalación básica</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install nombre<span class="op">-</span>libreria</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Instalar versión específica (importante para reproducibilidad)</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install pandas<span class="op">==</span><span class="fl">2.1.0</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Instalar múltiples librerías</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install missingno ydata<span class="op">-</span>profiling sweetviz</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Instalar desde GitHub (versión de desarrollo)</span></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install git<span class="op">+</span>https:<span class="op">//</span>github.com<span class="op">/</span>autor<span class="op">/</span>libreria.git</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Instalar en modo silencioso (sin mostrar todo el output)</span></span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install <span class="op">-</span>q libreria<span class="op">-</span>grande</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Advertencia</span>Las instalaciones no persisten entre sesiones
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Cuando el runtime se desconecta y reconectas, las librerías instaladas con <code>pip</code> desaparecen. Debes instalarlas de nuevo al comenzar cada sesión.</p>
+<p>La solución práctica: pon todas las instalaciones de librerías no-estándar en la primera celda del notebook, claramente marcada:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Instalación de librerías no preinstaladas ────────────────</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install <span class="op">-</span>q missingno ydata<span class="op">-</span>profiling</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ─────────────────────────────────────────────────────────────</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Los estudiantes saben que deben ejecutar esa celda antes de continuar.</p>
+</div>
+</div>
+</section>
+<section id="ejemplo-de-celda-de-configuración-completa-para-un-laboratorio" class="level3">
+<h3 class="anchored" data-anchor-id="ejemplo-de-celda-de-configuración-completa-para-un-laboratorio">Ejemplo de celda de configuración completa para un laboratorio</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ══════════════════════════════════════════════════════════════</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="co"># LAB 3 — Regresión Lineal</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="co"># MAT281 — 2025-1</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Ejecuta esta celda primero (puede tardar 1-2 minutos)</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="co"># ══════════════════════════════════════════════════════════════</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Librerías adicionales</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install <span class="op">-</span>q missingno pingouin</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Importaciones estándar</span></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LinearRegression</span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> mean_squared_error, r2_score</span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Configuración de visualización</span></span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">'figure.figsize'</span>] <span class="op">=</span> (<span class="dv">10</span>, <span class="dv">6</span>)</span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">'axes.grid'</span>] <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">'grid.alpha'</span>] <span class="op">=</span> <span class="fl">0.3</span></span>
+<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a>sns.set_theme(style<span class="op">=</span><span class="st">'whitegrid'</span>, palette<span class="op">=</span><span class="st">'husl'</span>)</span>
+<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Google Drive</span></span>
+<span id="cb23-26"><a href="#cb23-26" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> google.colab <span class="im">import</span> drive</span>
+<span id="cb23-27"><a href="#cb23-27" aria-hidden="true" tabindex="-1"></a>drive.mount(<span class="st">'/content/drive'</span>)</span>
+<span id="cb23-28"><a href="#cb23-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-29"><a href="#cb23-29" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pathlib</span>
+<span id="cb23-30"><a href="#cb23-30" aria-hidden="true" tabindex="-1"></a>CURSO <span class="op">=</span> pathlib.Path(<span class="st">'/content/drive/MyDrive/mat281-2025-1'</span>)</span>
+<span id="cb23-31"><a href="#cb23-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-32"><a href="#cb23-32" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"✅ Entorno configurado correctamente"</span>)</span>
+<span id="cb23-33"><a href="#cb23-33" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"   NumPy:      </span><span class="sc">{</span>np<span class="sc">.</span>__version__<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb23-34"><a href="#cb23-34" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"   Pandas:     </span><span class="sc">{</span>pd<span class="sc">.</span>__version__<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb23-35"><a href="#cb23-35" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"   Matplotlib: </span><span class="sc">{</span>plt<span class="sc">.</span>matplotlib<span class="sc">.</span>__version__<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb23-36"><a href="#cb23-36" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"   Sklearn:    </span><span class="sc">{</span>sklearn<span class="sc">.</span>__version__<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="verificar-si-una-librería-está-instalada-antes-de-instalar" class="level3">
+<h3 class="anchored" data-anchor-id="verificar-si-una-librería-está-instalada-antes-de-instalar">Verificar si una librería está instalada antes de instalar</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> importlib.util</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> verificar_o_instalar(nombre_paquete, nombre_import<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Instala el paquete solo si no está disponible."""</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> nombre_import <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>        nombre_import <span class="op">=</span> nombre_paquete</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> importlib.util.find_spec(nombre_import) <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Instalando </span><span class="sc">{</span>nombre_paquete<span class="sc">}</span><span class="ss">..."</span>)</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>        <span class="im">import</span> subprocess</span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>        subprocess.run([<span class="st">'pip'</span>, <span class="st">'install'</span>, <span class="st">'-q'</span>, nombre_paquete], check<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"✅ </span><span class="sc">{</span>nombre_paquete<span class="sc">}</span><span class="ss"> instalado"</span>)</span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"✅ </span><span class="sc">{</span>nombre_paquete<span class="sc">}</span><span class="ss"> ya disponible"</span>)</span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>verificar_o_instalar(<span class="st">'missingno'</span>)</span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>verificar_o_instalar(<span class="st">'ydata-profiling'</span>, <span class="st">'ydata_profiling'</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<hr>
+</section>
+</section>
+<section id="compartir-notebooks-y-gestionar-permisos" class="level2">
+<h2 class="anchored" data-anchor-id="compartir-notebooks-y-gestionar-permisos">Compartir notebooks y gestionar permisos</h2>
+<section id="opciones-de-compartición" class="level3">
+<h3 class="anchored" data-anchor-id="opciones-de-compartición">Opciones de compartición</h3>
+<p>Un notebook de Colab es un archivo <code>.ipynb</code> guardado en Google Drive. Se comparte exactamente igual que cualquier archivo de Drive, con las mismas opciones de permisos.</p>
+<p><strong>Opciones de acceso:</strong></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Tipo de acceso</th>
+<th>Cuándo usarlo en docencia</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Restringido</strong> (solo personas específicas)</td>
+<td>Soluciones, material privado, notebooks con datos sensibles</td>
+</tr>
+<tr class="even">
+<td><strong>Cualquier persona con el link — Solo lectura</strong></td>
+<td>Material de clase para que los estudiantes vean y copien</td>
+</tr>
+<tr class="odd">
+<td><strong>Cualquier persona con el link — Comentarista</strong></td>
+<td>Para que los estudiantes puedan anotar sin modificar el original</td>
+</tr>
+<tr class="even">
+<td><strong>Cualquier persona con el link — Editor</strong></td>
+<td>Colaboración activa (peligroso: cualquiera puede modificar)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Para compartir el material de una clase:</strong> usa <strong>Solo lectura</strong>. Los estudiantes pueden abrir el notebook, hacer una copia en su propio Drive (<code>Archivo → Guardar una copia en Drive</code>) y trabajar en su copia sin afectar el original.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>El flujo ideal para distribuir notebooks en clase
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li>El docente crea el notebook en su Drive y lo comparte con “Cualquier persona con el link — Solo lectura”.</li>
+<li>Publica el link en el LMS del curso o en el README del repositorio de GitHub.</li>
+<li>El estudiante abre el link, ve el notebook.</li>
+<li>El estudiante hace <code>Archivo → Guardar una copia en Drive</code> — crea su propia copia editable.</li>
+<li>El estudiante trabaja en su copia. El original del docente no se ve afectado.</li>
+</ol>
+<p>Este flujo evita el problema de que un estudiante modifique accidentalmente (o intencionalmente) el notebook original del docente.</p>
+</div>
+</div>
+</section>
+<section id="colaboración-en-tiempo-real" class="level3">
+<h3 class="anchored" data-anchor-id="colaboración-en-tiempo-real">Colaboración en tiempo real</h3>
+<p>Si compartes con permisos de <strong>Editor</strong>, múltiples personas pueden editar el notebook simultáneamente — como Google Docs. Colab muestra los cursores de los colaboradores en tiempo real.</p>
+<p>Esto es útil para: - <strong>Sesiones de pair programming</strong> entre estudiantes. - <strong>Revisión conjunta</strong> de código en clase (docente proyecta, estudiante edita desde su computador). - <strong>Ayudantías remotas</strong> donde el ayudante puede ver y modificar el código del estudiante.</p>
+<p>Para colaboración docente-ayudante en el material del curso, es mejor trabajar en repositorios de GitHub y abrir desde ahí, en lugar de colaborar directamente en el archivo de Drive.</p>
+</section>
+<section id="abrir-notebooks-desde-urls-externas" class="level3">
+<h3 class="anchored" data-anchor-id="abrir-notebooks-desde-urls-externas">Abrir notebooks desde URLs externas</h3>
+<p>Colab puede abrir notebooks directamente desde varias fuentes:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Estructura de URL para abrir desde GitHub:</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="co"># https://colab.research.google.com/github/usuario/repo/blob/main/ruta/al/notebook.ipynb</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Ejemplo:</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="co"># https://colab.research.google.com/github/fralfaro/mat281/blob/main/lectures/semana03/notebook.ipynb</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Esto significa que puedes publicar el link a “Abrir en Colab” directamente en tu README de GitHub:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="al">![Abrir en Colab](https://colab.research.google.com/assets/colab-badge.svg)</span><span class="co">]</span>(</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>https://colab.research.google.com/github/tu-username/mat281/blob/main/lectures/semana03/notebook.ipynb)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<blockquote class="blockquote">
+<p>🖼️ <strong>Asset sugerido (no en assets):</strong> badge azul “Open in Colab” que aparece en los READMEs de GitHub — es el ícono estándar reconocido por cualquier usuario de Colab.</p>
+</blockquote>
+</section>
+<section id="configurar-permisos-desde-python" class="level3">
+<h3 class="anchored" data-anchor-id="configurar-permisos-desde-python">Configurar permisos desde Python</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> google.colab <span class="im">import</span> drive</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="co"># No es posible configurar permisos de Drive desde código en Colab.</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Los permisos se gestionan desde la interfaz de Drive o desde la API de Google Drive</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="co"># (requiere autenticación OAuth, más avanzado).</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Para gestión masiva de permisos (por ejemplo, dar acceso a todos los estudiantes del curso a una carpeta), usa la interfaz web de Google Drive o Google Workspace Admin si tu institución lo tiene.</p>
+<hr>
+</section>
+</section>
+<section id="conectar-colab-con-un-repositorio-de-github" class="level2">
+<h2 class="anchored" data-anchor-id="conectar-colab-con-un-repositorio-de-github">Conectar Colab con un repositorio de GitHub</h2>
+<section id="por-qué-conectar-colab-con-github" class="level3">
+<h3 class="anchored" data-anchor-id="por-qué-conectar-colab-con-github">Por qué conectar Colab con GitHub</h3>
+<p>La conexión Colab-GitHub cierra el ciclo de trabajo profesional:</p>
+<ul>
+<li>El código fuente vive en GitHub (versionado, colaborativo, publicado en Pages).</li>
+<li>La ejecución ocurre en Colab (sin instalación, con GPU si es necesario).</li>
+<li>Los cambios se persisten de vuelta en GitHub (no en Drive).</li>
+</ul>
+<p>Para un curso, esto significa que el flujo de trabajo es: editas el notebook en Colab, guardas de vuelta en GitHub, y el sitio del curso en GitHub Pages se actualiza automáticamente.</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">graph LR
+    GH["🐙 GitHub\nRepositorio del curso"]
+    CO["💻 Google Colab\nEjecución"]
+    GD["💾 Google Drive\n(opcional, para datos)"]
+
+    GH -- "Abrir desde GitHub\ncolab.research.google.com/github/..." --&gt; CO
+    CO -- "git push (guardar cambios)" --&gt; GH
+    GD -- "mount Drive (datos grandes)" --&gt; CO
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+</section>
+<section id="opción-a-clonar-el-repositorio-en-el-runtime" class="level3">
+<h3 class="anchored" data-anchor-id="opción-a-clonar-el-repositorio-en-el-runtime">Opción A: Clonar el repositorio en el runtime</h3>
+<p>El método más robusto para trabajar con el repositorio completo:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Clonar el repositorio en el runtime</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>git clone https:<span class="op">//</span>github.com<span class="op">/</span>tu<span class="op">-</span>username<span class="op">/</span>mat281<span class="op">-</span><span class="dv">2025</span><span class="op">-</span><span class="fl">1.</span><span class="er">git</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Cambiar al directorio del repositorio</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>os.chdir(<span class="st">'/content/mat281-2025-1'</span>)</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Verificar</span></span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>ls <span class="op">-</span>la</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>git log <span class="op">--</span>oneline <span class="op">-</span><span class="dv">5</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Para clonar un repositorio privado, necesitas autenticación:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Con token personal (lo guardas en un Secret de Colab)</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> google.colab <span class="im">import</span> userdata</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>token <span class="op">=</span> userdata.get(<span class="st">'GITHUB_TOKEN'</span>)   <span class="co"># se configura en Colab → Secrets (🔑)</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>git clone https:<span class="op">//</span>{token}<span class="op">@</span>github.com<span class="op">/</span>tu<span class="op">-</span>username<span class="op">/</span>mat281<span class="op">-</span>privado.git</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Para configurar el Secret en Colab: menú izquierdo → ícono 🔑 (Secrets) → <strong>Agregar nuevo secret</strong> → <code>GITHUB_TOKEN</code>.</p>
+</section>
+<section id="hacer-commits-y-push-desde-colab" class="level3">
+<h3 class="anchored" data-anchor-id="hacer-commits-y-push-desde-colab">Hacer commits y push desde Colab</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Configurar identidad para los commits</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>git config user.email <span class="st">"juan.perez@usm.cl"</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>git config user.name <span class="st">"Juan Pérez"</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Ver qué cambió</span></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>git status</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Agregar cambios</span></span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>git add lectures<span class="op">/</span>semana03<span class="op">/</span>notebook.ipynb</span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Commit</span></span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>git commit <span class="op">-</span>m <span class="st">"feat: completo ejercicios semana 3 en Colab"</span></span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Push al repositorio remoto</span></span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Requiere autenticación configurada (token o SSH)</span></span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> google.colab <span class="im">import</span> userdata</span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a>token <span class="op">=</span> userdata.get(<span class="st">'GITHUB_TOKEN'</span>)</span>
+<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>git remote <span class="bu">set</span><span class="op">-</span>url origin https:<span class="op">//</span>{token}<span class="op">@</span>github.com<span class="op">/</span>tu<span class="op">-</span>username<span class="op">/</span>mat281<span class="op">-</span><span class="dv">2025</span><span class="op">-</span><span class="fl">1.</span><span class="er">git</span></span>
+<span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>git push origin main</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Función auxiliar para push desde Colab
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Para no repetir el código de autenticación en cada notebook, crea una función de utilidad:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> git_push(mensaje_commit, branch<span class="op">=</span><span class="st">'main'</span>):</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Hace commit y push al repositorio con autenticación via token."""</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>    <span class="im">from</span> google.colab <span class="im">import</span> userdata</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> subprocess</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>    token <span class="op">=</span> userdata.get(<span class="st">'GITHUB_TOKEN'</span>)</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>    commands <span class="op">=</span> [</span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">'git add -A'</span>,</span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f'git commit -m "</span><span class="sc">{</span>mensaje_commit<span class="sc">}</span><span class="ss">"'</span>,</span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f'git remote set-url origin https://</span><span class="sc">{</span>token<span class="sc">}</span><span class="ss">@github.com/tu-username/mat281-2025-1.git'</span>,</span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f'git push origin </span><span class="sc">{</span>branch<span class="sc">}</span><span class="ss">'</span></span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> cmd <span class="kw">in</span> commands:</span>
+<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>        result <span class="op">=</span> subprocess.run(cmd, shell<span class="op">=</span><span class="va">True</span>, capture_output<span class="op">=</span><span class="va">True</span>, text<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> result.returncode <span class="op">!=</span> <span class="dv">0</span>:</span>
+<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"❌ Error en: </span><span class="sc">{</span>cmd<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(result.stderr)</span>
+<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="va">False</span></span>
+<span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-22"><a href="#cb31-22" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"✅ Push exitoso: </span><span class="sc">{</span>mensaje_commit<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb31-23"><a href="#cb31-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">True</span></span>
+<span id="cb31-24"><a href="#cb31-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-25"><a href="#cb31-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Uso:</span></span>
+<span id="cb31-26"><a href="#cb31-26" aria-hidden="true" tabindex="-1"></a>git_push(<span class="st">"feat: agrego solución ejercicio 3"</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</section>
+<section id="opción-b-integración-nativa-github-colab" class="level3">
+<h3 class="anchored" data-anchor-id="opción-b-integración-nativa-github-colab">Opción B: Integración nativa GitHub ↔︎ Colab</h3>
+<p>Colab tiene integración nativa con GitHub desde la interfaz:</p>
+<p><strong>Abrir desde GitHub:</strong> 1. <code>Archivo → Abrir notebook → GitHub</code> 2. Busca el repositorio o pega la URL 3. Selecciona el notebook</p>
+<p><strong>Guardar en GitHub:</strong> 1. <code>Archivo → Guardar una copia en GitHub</code> 2. Selecciona repositorio y branch 3. Escribe el mensaje de commit 4. Colab hace el commit directamente</p>
+<p>Esta opción es más amigable para usuarios no técnicos, pero tiene menos control que el método de clonar y usar git desde terminal.</p>
+</section>
+<section id="opción-c-abrir-notebooks-de-github-con-un-clic" class="level3">
+<h3 class="anchored" data-anchor-id="opción-c-abrir-notebooks-de-github-con-un-clic">Opción C: Abrir notebooks de GitHub con un clic</h3>
+<p>Para los estudiantes, la forma más sencilla de acceder a los notebooks del curso es con el badge de Colab en el README:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># README.md del curso</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="fu">## Material de clases</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Semana <span class="pp">|</span> Tema <span class="pp">|</span> Colab <span class="pp">|</span> GitHub <span class="pp">|</span></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a><span class="pp">|--------|------|-------|--------|</span></span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 1 <span class="pp">|</span> Estadística descriptiva <span class="pp">|</span> <span class="co">[</span><span class="al">![Colab](https://colab.research.google.com/assets/colab-badge.svg)</span><span class="co">](https://colab.research.google.com/github/tu-username/mat281/blob/main/lectures/semana01/notebook.ipynb)</span> <span class="pp">|</span> <span class="co">[</span><span class="ot">Ver</span><span class="co">](lectures/semana01/)</span> <span class="pp">|</span></span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 2 <span class="pp">|</span> Visualización <span class="pp">|</span> <span class="co">[</span><span class="al">![Colab](https://colab.research.google.com/assets/colab-badge.svg)</span><span class="co">](https://colab.research.google.com/github/tu-username/mat281/blob/main/lectures/semana02/notebook.ipynb)</span> <span class="pp">|</span> <span class="co">[</span><span class="ot">Ver</span><span class="co">](lectures/semana02/)</span> <span class="pp">|</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<p>El estudiante hace clic en el badge, se abre el notebook en Colab directamente desde GitHub, hace una copia en su Drive y trabaja. Sin clonar, sin instalar, sin configurar.</p>
+<hr>
+</section>
+</section>
+<section id="resumen-el-flujo-docente-con-colab" class="level2">
+<h2 class="anchored" data-anchor-id="resumen-el-flujo-docente-con-colab">Resumen: el flujo docente con Colab</h2>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">sequenceDiagram
+    participant D as 💻 Docente
+    participant C as ☁️ Google Colab
+    participant GD as 💾 Google Drive
+    participant GH as 🐙 GitHub
+
+    D-&gt;&gt;GH: push notebook semana 4
+    D-&gt;&gt;D: comparte link "Abrir en Colab" con estudiantes
+
+    Note over D,C: Preparación de clase
+
+    D-&gt;&gt;C: abre notebook desde GitHub
+    C-&gt;&gt;GD: mount Drive (datos del curso)
+    D-&gt;&gt;C: ejecuta y ajusta el notebook
+    D-&gt;&gt;GH: Archivo → Guardar copia en GitHub
+
+    Note over C,GH: Clase práctica
+
+    participant E as 👨‍🎓 Estudiante
+    E-&gt;&gt;C: clic en badge "Abrir en Colab"
+    C-&gt;&gt;GD: mount Drive propio
+    E-&gt;&gt;C: ejecuta celdas, completa ejercicios
+    E-&gt;&gt;GD: guarda resultados en su Drive
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<section id="checklist-para-un-notebook-de-clase-listo-para-distribuir" class="level3">
+<h3 class="anchored" data-anchor-id="checklist-para-un-notebook-de-clase-listo-para-distribuir">Checklist para un notebook de clase listo para distribuir</h3>
+<pre><code>Estructura:
+☐ Celda de título con: nombre del notebook, curso, semana, fecha
+☐ Celda de objetivos: qué aprenderá el estudiante
+☐ Celda de configuración: instalaciones pip + imports + mount Drive
+☐ Secciones numeradas con celdas Markdown explicativas
+☐ Celdas de ejercicios con instrucciones claras ("# Tu código aquí")
+☐ Celda de resumen final con puntos clave
+
+Calidad:
+☐ Ejecutado de arriba a abajo sin errores (Reiniciar → Ejecutar todo)
+☐ Outputs visibles en las celdas (no ejecutar sin guardar outputs)
+☐ LaTeX renderizado correctamente en celdas de texto
+☐ Gráficos con títulos, etiquetas de ejes y leyendas
+
+Distribución:
+☐ Notebook en GitHub con badge "Abrir en Colab" en el README
+☐ Permisos de Drive: Solo lectura para el original
+☐ Link publicado en el LMS del curso antes de la clase
+☐ Probado desde una cuenta distinta a la del docente</code></pre>
+<hr>
+</section>
+</section>
+<section id="referencias" class="level2">
+<h2 class="anchored" data-anchor-id="referencias">Referencias</h2>
+<ul>
+<li>Google. <em>Bienvenido a Colaboratory</em>. <a href="https://colab.research.google.com/notebooks/intro.ipynb">colab.research.google.com</a></li>
+<li>Google. <em>Colab FAQ</em>. <a href="https://research.google.com/colaboratory/faq.html">research.google.com/colaboratory/faq.html</a></li>
+<li>Géron, A. (2022). <em>Hands-On Machine Learning</em> (3ª ed.). O’Reilly. Todos los notebooks disponibles en Colab.</li>
+<li>Vanderplas, J. (2023). <em>Python Data Science Handbook</em>. O’Reilly. <a href="https://jakevdp.github.io/PythonDataScienceHandbook/">jakevdp.github.io/PythonDataScienceHandbook</a></li>
+<li>Google Colab Tips. <em>Advanced features</em>. <a href="https://colab.research.google.com/notebooks/basic_features_overview.ipynb">colab.research.google.com/notebooks/basic_features_overview.ipynb</a></li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copiado");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copiado");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation column-body">
+  <div class="nav-page nav-page-previous">
+      <a href="../../material/02_colab/index.html" class="pagination-link" aria-label="Google Colab para docencia">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Google Colab para docencia</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../material/02_colab/colab_02_pandas.html" class="pagination-link" aria-label="Manipulación de datos con pandas">
+        <span class="nav-page-text"><span class="chapter-title">Manipulación de datos con pandas</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

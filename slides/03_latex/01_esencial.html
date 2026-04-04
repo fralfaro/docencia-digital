@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="es"><head>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-a06763021a52c43c40a351ac8b799b8f.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.9.36">
+
+  <meta name="author" content="Francisco Alfaro">
+  <title>Presentaciones — Docencia Digital – LaTeX esencial</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #24292e;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #24292e; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #6a737d; } /* Annotation */
+    code span.at { color: #d73a49; } /* Attribute */
+    code span.bn { color: #005cc5; } /* BaseN */
+    code span.bu { color: #d73a49; } /* BuiltIn */
+    code span.cf { color: #d73a49; } /* ControlFlow */
+    code span.ch { color: #032f62; } /* Char */
+    code span.cn { color: #005cc5; } /* Constant */
+    code span.co { color: #6a737d; } /* Comment */
+    code span.cv { color: #6a737d; } /* CommentVar */
+    code span.do { color: #6a737d; } /* Documentation */
+    code span.dt { color: #d73a49; } /* DataType */
+    code span.dv { color: #005cc5; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #d73a49; font-weight: bold; } /* Extension */
+    code span.fl { color: #005cc5; } /* Float */
+    code span.fu { color: #6f42c1; } /* Function */
+    code span.im { color: #032f62; } /* Import */
+    code span.in { color: #6a737d; } /* Information */
+    code span.kw { color: #d73a49; } /* Keyword */
+    code span.op { color: #24292e; } /* Operator */
+    code span.ot { color: #6f42c1; } /* Other */
+    code span.pp { color: #d73a49; } /* Preprocessor */
+    code span.re { color: #6a737d; } /* RegionMarker */
+    code span.sc { color: #005cc5; } /* SpecialChar */
+    code span.ss { color: #032f62; } /* SpecialString */
+    code span.st { color: #032f62; } /* String */
+    code span.va { color: #e36209; } /* Variable */
+    code span.vs { color: #032f62; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-e892a8df7267c7fe476b0a79cf24fc03.css">
+  <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+  <script src="../site_libs/quarto-diagram/mermaid.min.js"></script>
+  <script src="../site_libs/quarto-diagram/mermaid-init.js"></script>
+  <link href="../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">LaTeX esencial</h1>
+  <p class="subtitle">El estándar de publicación académica desde cero</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Francisco Alfaro 
+</div>
+        <p class="quarto-title-affiliation">
+            Docencia Digital · UTFSM
+          </p>
+    </div>
+</div>
+
+  <p class="date">abril 2026</p>
+</section>
+<section id="section" class="slide level2 title-slide center" data-background-color="#0F2044">
+<h2></h2>
+<div class="title-block">
+<p><strong>LaTeX esencial</strong></p>
+<p>El estándar de publicación académica desde cero</p>
+</div>
+<div class="subtitle-block">
+<p>Sesión 3 — Overleaf y LaTeX para docencia</p>
+</div>
+<div class="author-block">
+<p>Francisco Alfaro<br>
+Docencia Digital · UTFSM · 2026</p>
+</div>
+</section>
+<section id="por-qué-latex-el-problema-que-resuelve" class="slide level2">
+<h2>¿Por qué LaTeX? El problema que resuelve</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p><strong>Escenarios que todos reconocen:</strong></p>
+<ul>
+<li>Diez minutos ajustando una ecuación en Word para que no se vea horrible</li>
+<li>Una revista científica pide reformatear todo el documento en su plantilla</li>
+<li>Las referencias cruzadas se rompen al mover secciones</li>
+<li>La numeración de ecuaciones es manual y se desordena</li>
+</ul>
+<p><strong>LaTeX no es un procesador de texto — es un sistema de composición tipográfica.</strong></p>
+<p>Tú describes la <em>estructura</em>. LaTeX decide cómo se ve.</p>
+</div><div class="column" style="width:45%;">
+<div class="cell" data-reveal="true" data-layout-align="center">
+<div class="cell-output-display">
+<div>
+<p></p><figure class=""><p></p>
+<div>
+<pre class="mermaid mermaid-js">graph TD
+    W["📝 Word / Google Docs\nWYSIWYG"] --&gt; O1["❌ Ecuaciones limitadas\n❌ Numeración manual\n✅ Curva de entrada baja"]
+    L["⚙️ LaTeX\nMarkup"] --&gt; O2["✅ Ecuaciones perfectas\n✅ Numeración automática\n✅ Referencias robustas\n❌ Curva de entrada alta"]
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="latex-en-la-academia-los-números" class="slide level2">
+<h2>LaTeX en la academia: los números</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p><strong>Más del 90%</strong> de las revistas de matemáticas, física, ingeniería y computación aceptan o <strong>requieren</strong> LaTeX.</p>
+<p><strong>La razón:</strong> ningún otro sistema produce ecuaciones matemáticas con esa calidad tipográfica.</p>
+<p><strong>Overleaf:</strong> el entorno LaTeX en la nube</p>
+<ul>
+<li>Sin instalar nada (como Colab para Python)</li>
+<li>Colaboración en tiempo real</li>
+<li>Plantillas de revistas y conferencias</li>
+<li>Compilación automática al guardar</li>
+</ul>
+<p>→ <a href="https://www.overleaf.com">overleaf.com</a></p>
+</div><div class="column" style="width:45%;">
+<div class="callout callout-note no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Para docentes de ingeniería y matemáticas</strong></p>
+</div>
+<div class="callout-content">
+<p>Dominar LaTeX no es una curiosidad técnica — es la diferencia entre material que se ve amateur y material que se ve como un libro de texto publicado.</p>
+</div>
+</div>
+</div>
+<p><strong>Plan gratuito de Overleaf:</strong></p>
+<ul>
+<li>Proyectos ilimitados</li>
+<li>Colaboración con hasta 1 persona</li>
+<li>Compilaciones sin límite</li>
+<li>Acceso a todas las plantillas</li>
+</ul>
+</div></div>
+</section>
+<section id="estructura-básica-de-un-documento-latex" class="slide level2">
+<h2>Estructura básica de un documento LaTeX</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource latex number-lines code-with-copy"><code class="sourceCode latex"><span id="cb1-1"><a></a><span class="bu">\documentclass</span>[12pt, letterpaper]{<span class="ex">article</span>}</span>
+<span id="cb1-2"><a></a></span>
+<span id="cb1-3"><a></a><span class="co">% Paquetes</span></span>
+<span id="cb1-4"><a></a><span class="bu">\usepackage</span>[utf8]{<span class="ex">inputenc</span>}   <span class="co">% caracteres especiales (tildes, ñ)</span></span>
+<span id="cb1-5"><a></a><span class="bu">\usepackage</span>[spanish]{<span class="ex">babel</span>}   <span class="co">% idioma</span></span>
+<span id="cb1-6"><a></a><span class="bu">\usepackage</span>{<span class="ex">amsmath</span>}          <span class="co">% matemáticas</span></span>
+<span id="cb1-7"><a></a><span class="bu">\usepackage</span>{<span class="ex">graphicx</span>}         <span class="co">% imágenes</span></span>
+<span id="cb1-8"><a></a><span class="bu">\usepackage</span>{<span class="ex">hyperref</span>}         <span class="co">% links clicables</span></span>
+<span id="cb1-9"><a></a></span>
+<span id="cb1-10"><a></a><span class="co">% Metadatos</span></span>
+<span id="cb1-11"><a></a><span class="fu">\title</span>{Guía de Laboratorio 3}</span>
+<span id="cb1-12"><a></a><span class="fu">\author</span>{Juan Pérez}</span>
+<span id="cb1-13"><a></a><span class="fu">\date</span>{Semestre 2025-1}</span>
+<span id="cb1-14"><a></a></span>
+<span id="cb1-15"><a></a><span class="kw">\begin</span>{<span class="ex">document</span>}</span>
+<span id="cb1-16"><a></a></span>
+<span id="cb1-17"><a></a><span class="fu">\maketitle</span>          <span class="co">% genera la portada automáticamente</span></span>
+<span id="cb1-18"><a></a><span class="fu">\tableofcontents</span>    <span class="co">% tabla de contenidos automática</span></span>
+<span id="cb1-19"><a></a></span>
+<span id="cb1-20"><a></a><span class="kw">\section</span>{Introducción}</span>
+<span id="cb1-21"><a></a>Texto de la sección...</span>
+<span id="cb1-22"><a></a></span>
+<span id="cb1-23"><a></a><span class="kw">\subsection</span>{Objetivos}</span>
+<span id="cb1-24"><a></a>Los objetivos son...</span>
+<span id="cb1-25"><a></a></span>
+<span id="cb1-26"><a></a><span class="kw">\end</span>{<span class="ex">document</span>}</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="texto-y-formato-básico" class="slide level2">
+<h2>Texto y formato básico</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p><strong>Énfasis y formato:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource latex number-lines code-with-copy"><code class="sourceCode latex"><span id="cb2-1"><a></a>Texto <span class="fu">\textbf</span>{negrita} y <span class="fu">\textit</span>{cursiva}.</span>
+<span id="cb2-2"><a></a><span class="fu">\texttt</span>{código monoespaciado}</span>
+<span id="cb2-3"><a></a><span class="fu">\underline</span>{subrayado}</span>
+<span id="cb2-4"><a></a></span>
+<span id="cb2-5"><a></a><span class="co">% Alineación</span></span>
+<span id="cb2-6"><a></a><span class="kw">\begin</span>{<span class="ex">center</span>}</span>
+<span id="cb2-7"><a></a>  Texto centrado</span>
+<span id="cb2-8"><a></a><span class="kw">\end</span>{<span class="ex">center</span>}</span>
+<span id="cb2-9"><a></a></span>
+<span id="cb2-10"><a></a><span class="kw">\begin</span>{<span class="ex">flushright</span>}</span>
+<span id="cb2-11"><a></a>  Texto a la derecha</span>
+<span id="cb2-12"><a></a><span class="kw">\end</span>{<span class="ex">flushright</span>}</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Listas:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource latex number-lines code-with-copy"><code class="sourceCode latex"><span id="cb3-1"><a></a><span class="kw">\begin</span>{<span class="ex">itemize</span>}          <span class="co">% viñetas</span></span>
+<span id="cb3-2"><a></a>  <span class="fu">\item</span> Primer ítem</span>
+<span id="cb3-3"><a></a>  <span class="fu">\item</span> Segundo ítem</span>
+<span id="cb3-4"><a></a><span class="kw">\end</span>{<span class="ex">itemize</span>}</span>
+<span id="cb3-5"><a></a></span>
+<span id="cb3-6"><a></a><span class="kw">\begin</span>{<span class="ex">enumerate</span>}        <span class="co">% numerada</span></span>
+<span id="cb3-7"><a></a>  <span class="fu">\item</span> Paso uno</span>
+<span id="cb3-8"><a></a>  <span class="fu">\item</span> Paso dos</span>
+<span id="cb3-9"><a></a><span class="kw">\end</span>{<span class="ex">enumerate</span>}</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:45%;">
+<p><strong>Secciones y jerarquía:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource latex number-lines code-with-copy"><code class="sourceCode latex"><span id="cb4-1"><a></a><span class="kw">\part</span>{Parte I}</span>
+<span id="cb4-2"><a></a>  <span class="kw">\chapter</span>{Capítulo}       <span class="co">% solo en book</span></span>
+<span id="cb4-3"><a></a>    <span class="kw">\section</span>{Sección}</span>
+<span id="cb4-4"><a></a>      <span class="kw">\subsection</span>{Sub}</span>
+<span id="cb4-5"><a></a>        <span class="kw">\subsubsection</span>{Subsub}</span>
+<span id="cb4-6"><a></a>          <span class="kw">\paragraph</span>{Párrafo}</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Comentarios (no aparecen en el PDF):</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource latex number-lines code-with-copy"><code class="sourceCode latex"><span id="cb5-1"><a></a><span class="co">% Esto es un comentario</span></span>
+<span id="cb5-2"><a></a><span class="co">% El compilador lo ignora completamente</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-tip no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong><code>\maketitle</code> y <code>\tableofcontents</code></strong></p>
+</div>
+<div class="callout-content">
+<p>Dos comandos que hacen todo solos. La tabla de contenidos se genera automáticamente con todos los números de página correctos.</p>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="ecuaciones-el-poder-de-latex" class="slide level2">
+<h2>Ecuaciones: el poder de LaTeX</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p><strong>Modo inline</strong> (dentro del texto):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource latex number-lines code-with-copy"><code class="sourceCode latex"><span id="cb6-1"><a></a>Sea <span class="ss">$f(x) = x^2 + 3x - 2$</span> una función cuadrática.</span>
+<span id="cb6-2"><a></a>Su derivada es <span class="ss">$f'(x) = 2x + 3$</span>.</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Modo display</strong> (línea propia, centrada):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource latex number-lines code-with-copy"><code class="sourceCode latex"><span id="cb7-1"><a></a><span class="kw">\begin</span>{<span class="ex">equation</span>}</span>
+<span id="cb7-2"><a></a><span class="ss">  </span><span class="sc">\int</span><span class="ss">_0^{</span><span class="sc">\infty</span><span class="ss">} e^{-x^2} </span><span class="sc">\,</span><span class="ss"> dx = </span><span class="sc">\frac</span><span class="ss">{</span><span class="sc">\sqrt</span><span class="ss">{</span><span class="sc">\pi</span><span class="ss">}}{2}</span></span>
+<span id="cb7-3"><a></a><span class="kw">\end</span>{<span class="ex">equation</span>}</span>
+<span id="cb7-4"><a></a></span>
+<span id="cb7-5"><a></a><span class="co">% Sin número de ecuación</span></span>
+<span id="cb7-6"><a></a><span class="ss">\[</span></span>
+<span id="cb7-7"><a></a><span class="ss">  </span><span class="sc">\nabla</span><span class="ss"> J(</span><span class="sc">\theta</span><span class="ss">) </span><span class="sc">\propto</span><span class="ss"> </span><span class="sc">\sum</span><span class="ss">_s </span><span class="sc">\mu</span><span class="ss">(s) </span><span class="sc">\sum</span><span class="ss">_a q_</span><span class="sc">\pi</span><span class="ss">(s,a)</span></span>
+<span id="cb7-8"><a></a><span class="ss">\]</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:45%;">
+<p><strong>Símbolos más usados:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource latex number-lines code-with-copy"><code class="sourceCode latex"><span id="cb8-1"><a></a><span class="co">% Fracciones</span></span>
+<span id="cb8-2"><a></a><span class="fu">\frac</span>{numerador}{denominador}</span>
+<span id="cb8-3"><a></a></span>
+<span id="cb8-4"><a></a><span class="co">% Subíndices y superíndices</span></span>
+<span id="cb8-5"><a></a>x_{i}    x^{2}    x_{ij}^{2}</span>
+<span id="cb8-6"><a></a></span>
+<span id="cb8-7"><a></a><span class="co">% Raíces</span></span>
+<span id="cb8-8"><a></a><span class="fu">\sqrt</span>{x}    <span class="fu">\sqrt</span>[3]{x}</span>
+<span id="cb8-9"><a></a></span>
+<span id="cb8-10"><a></a><span class="co">% Sumas e integrales</span></span>
+<span id="cb8-11"><a></a><span class="fu">\sum</span>_{i=1}^{n}    <span class="fu">\int</span>_a^b</span>
+<span id="cb8-12"><a></a></span>
+<span id="cb8-13"><a></a><span class="co">% Letras griegas</span></span>
+<span id="cb8-14"><a></a><span class="fu">\alpha</span> <span class="fu">\beta</span> <span class="fu">\gamma</span> <span class="fu">\theta</span> <span class="fu">\mu</span> <span class="fu">\sigma</span></span>
+<span id="cb8-15"><a></a></span>
+<span id="cb8-16"><a></a><span class="co">% Operadores</span></span>
+<span id="cb8-17"><a></a><span class="fu">\lim</span>_{x <span class="fu">\to</span> 0}    <span class="fu">\max</span>_{x}    <span class="fu">\min</span>_x</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-important no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>La ventaja clave sobre Word</strong></p>
+</div>
+<div class="callout-content">
+<p>Las ecuaciones en LaTeX son <strong>texto estructurado</strong>, no imágenes. Se escalan, se pueden referenciar y se actualizan automáticamente.</p>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="tablas-y-figuras" class="slide level2">
+<h2>Tablas y figuras</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p><strong>Tabla básica:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource latex number-lines code-with-copy"><code class="sourceCode latex"><span id="cb9-1"><a></a><span class="kw">\begin</span>{<span class="ex">table</span>}[h]</span>
+<span id="cb9-2"><a></a>  <span class="fu">\centering</span></span>
+<span id="cb9-3"><a></a>  <span class="fu">\caption</span>{Resultados del experimento}</span>
+<span id="cb9-4"><a></a>  <span class="kw">\label</span>{<span class="ex">tab:resultados</span>}</span>
+<span id="cb9-5"><a></a>  <span class="kw">\begin</span>{<span class="ex">tabular</span>}{|l|c|r|}</span>
+<span id="cb9-6"><a></a>    <span class="fu">\hline</span></span>
+<span id="cb9-7"><a></a>    Método <span class="op">&amp;</span> Precisión <span class="op">&amp;</span> Tiempo <span class="fu">\\</span></span>
+<span id="cb9-8"><a></a>    <span class="fu">\hline</span></span>
+<span id="cb9-9"><a></a>    Lineal <span class="op">&amp;</span> 0.82 <span class="op">&amp;</span> 1.2s <span class="fu">\\</span></span>
+<span id="cb9-10"><a></a>    Árbol  <span class="op">&amp;</span> 0.91 <span class="op">&amp;</span> 3.7s <span class="fu">\\</span></span>
+<span id="cb9-11"><a></a>    Red    <span class="op">&amp;</span> 0.95 <span class="op">&amp;</span> 45.2s <span class="fu">\\</span></span>
+<span id="cb9-12"><a></a>    <span class="fu">\hline</span></span>
+<span id="cb9-13"><a></a>  <span class="kw">\end</span>{<span class="ex">tabular</span>}</span>
+<span id="cb9-14"><a></a><span class="kw">\end</span>{<span class="ex">table</span>}</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<p>→ Ver Tabla <span class="math inline">\(\ref{tab:resultados}\)</span> (referencia automática)</p>
+</div><div class="column" style="width:45%;">
+<p><strong>Figura:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource latex number-lines code-with-copy"><code class="sourceCode latex"><span id="cb10-1"><a></a><span class="bu">\usepackage</span>{<span class="ex">graphicx</span>}   <span class="co">% en el preámbulo</span></span>
+<span id="cb10-2"><a></a></span>
+<span id="cb10-3"><a></a><span class="kw">\begin</span>{<span class="ex">figure</span>}[h]</span>
+<span id="cb10-4"><a></a>  <span class="fu">\centering</span></span>
+<span id="cb10-5"><a></a>  <span class="bu">\includegraphics</span>[width=0.8<span class="fu">\linewidth</span>]{<span class="ex">grafico.png</span>}</span>
+<span id="cb10-6"><a></a>  <span class="fu">\caption</span>{Distribución de notas}</span>
+<span id="cb10-7"><a></a>  <span class="kw">\label</span>{<span class="ex">fig:notas</span>}</span>
+<span id="cb10-8"><a></a><span class="kw">\end</span>{<span class="ex">figure</span>}</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-tip no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Generador de tablas LaTeX</strong></p>
+</div>
+<div class="callout-content">
+<p><a href="https://www.tablesgenerator.com/">tables-generator.com</a> → diseña la tabla visualmente → copia el LaTeX.</p>
+<p>Mucho más rápido que escribir la tabla a mano.</p>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="referencias-bibliográficas-con-bibtex" class="slide level2">
+<h2>Referencias bibliográficas con BibTeX</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p><strong>Archivo <code>referencias.bib</code>:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource bibtex number-lines code-with-copy"><code class="sourceCode bibtex"><span id="cb11-1"><a></a><span class="va">@book</span>{<span class="ot">sutton2018</span>,</span>
+<span id="cb11-2"><a></a>  <span class="dt">author</span>    = {Sutton, Richard S. and Barto, Andrew G.},</span>
+<span id="cb11-3"><a></a>  <span class="dt">title</span>     = {Reinforcement Learning: An Introduction},</span>
+<span id="cb11-4"><a></a>  <span class="dt">publisher</span> = {MIT Press},</span>
+<span id="cb11-5"><a></a>  <span class="dt">year</span>      = {2018},</span>
+<span id="cb11-6"><a></a>  <span class="dt">edition</span>   = {2nd}</span>
+<span id="cb11-7"><a></a>}</span>
+<span id="cb11-8"><a></a></span>
+<span id="cb11-9"><a></a><span class="va">@article</span>{<span class="ot">lecun1989</span>,</span>
+<span id="cb11-10"><a></a>  <span class="dt">author</span>  = {LeCun, Yann and others},</span>
+<span id="cb11-11"><a></a>  <span class="dt">title</span>   = {Backpropagation Applied to Handwritten Zip Code Recognition},</span>
+<span id="cb11-12"><a></a>  <span class="dt">journal</span> = {Neural Computation},</span>
+<span id="cb11-13"><a></a>  <span class="dt">year</span>    = {1989},</span>
+<span id="cb11-14"><a></a>  <span class="dt">volume</span>  = {1}</span>
+<span id="cb11-15"><a></a>}</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:45%;">
+<p><strong>En el documento <code>.tex</code>:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource latex number-lines code-with-copy"><code class="sourceCode latex"><span id="cb12-1"><a></a><span class="co">% En el preámbulo</span></span>
+<span id="cb12-2"><a></a><span class="bu">\usepackage</span>[style=apa]{<span class="ex">biblatex</span>}</span>
+<span id="cb12-3"><a></a><span class="fu">\addbibresource</span>{referencias.bib}</span>
+<span id="cb12-4"><a></a></span>
+<span id="cb12-5"><a></a><span class="co">% En el texto</span></span>
+<span id="cb12-6"><a></a>Según <span class="kw">\cite</span>{<span class="ex">sutton2018</span>}, el aprendizaje...</span>
+<span id="cb12-7"><a></a></span>
+<span id="cb12-8"><a></a>Los experimentos de <span class="kw">\cite</span>{<span class="ex">lecun1989</span>} muestran...</span>
+<span id="cb12-9"><a></a></span>
+<span id="cb12-10"><a></a><span class="co">% Al final del documento</span></span>
+<span id="cb12-11"><a></a><span class="fu">\printbibliography</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-note no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Exportar desde Zotero o Mendeley</strong></p>
+</div>
+<div class="callout-content">
+<p>Zotero → seleccionar referencias → Exportar → Better BibTeX → <code>referencias.bib</code>. La bibliografía completa se genera automáticamente.</p>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="flujo-de-trabajo-con-overleaf" class="slide level2">
+<h2>Flujo de trabajo con Overleaf</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p><strong>Crear un proyecto:</strong></p>
+<ol type="1">
+<li>overleaf.com → New Project → Blank Project</li>
+<li>Escribe el <code>.tex</code> en el editor</li>
+<li>Clic en <strong>Compile</strong> (o Ctrl+Enter)</li>
+<li>El PDF aparece a la derecha en segundos</li>
+</ol>
+<p><strong>Colaborar:</strong></p>
+<ol type="1">
+<li>Share → Invite a collaborator (email)</li>
+<li>Ambos editan en tiempo real</li>
+<li>Track Changes para ver qué cambió quién</li>
+</ol>
+</div><div class="column" style="width:45%;">
+<p><strong>Conectar con GitHub:</strong></p>
+<p>Overleaf Pro → Git Integration → clonar o pushear a GitHub.</p>
+<p>Con cuenta gratuita, descargar el ZIP y subirlo manualmente al repositorio del curso.</p>
+<div class="callout callout-tip no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Overleaf como entorno de clase</strong></p>
+</div>
+<div class="callout-content">
+<p>El docente comparte el proyecto con acceso de lectura. Los estudiantes ven el LaTeX y el PDF en tiempo real. Ideal para mostrar cómo se construye un documento.</p>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="errores-comunes-de-latex-y-cómo-resolverlos" class="slide level2">
+<h2>Errores comunes de LaTeX y cómo resolverlos</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Error</th>
+<th>Causa probable</th>
+<th>Solución</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>Undefined control sequence</code></td>
+<td>Comando mal escrito o paquete faltante</td>
+<td>Verificar ortografía y agregar <code>\usepackage{}</code></td>
+</tr>
+<tr class="even">
+<td><code>Missing $ inserted</code></td>
+<td>Símbolo matemático fuera de modo math</td>
+<td>Poner el símbolo dentro de <code>$...$</code></td>
+</tr>
+<tr class="odd">
+<td><code>Overfull \hbox</code></td>
+<td>Línea de texto demasiado larga</td>
+<td>Agregar <code>\allowbreak</code> o reformular</td>
+</tr>
+<tr class="even">
+<td><code>File not found</code></td>
+<td>Imagen o <code>.bib</code> no encontrado</td>
+<td>Verificar nombre y ruta del archivo</td>
+</tr>
+<tr class="odd">
+<td><code>Too many }'s</code></td>
+<td>Llaves sin cerrar</td>
+<td>Revisar que cada <code>{</code> tiene su <code>}</code></td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-tip no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Estrategia ante un error</strong></p>
+</div>
+<div class="callout-content">
+<p>Ir al log de compilación → buscar la línea donde aparece <code>ERROR:</code> → leer el mensaje → buscar en Google “latex [mensaje del error]”. La comunidad LaTeX es enorme y casi todo error tiene solución documentada.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="section-1" class="slide level2 final-slide" data-background-color="#0F2044">
+<h2></h2>
+<div class="center-content">
+<p><strong>¿Preguntas?</strong></p>
+<hr>
+<p>Francisco Alfaro<br>
+<code>fralfaro@usm.cl</code><br>
+Docencia Digital · UTFSM</p>
+<p><em>2026</em></p>
+</div>
+
+
+</section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="../../assets/img/brand/brand__usm.png" class="slide-logo"></p>
+<div class="footer footer-default">
+<p>Docencia Digital · UTFSM · 2026</p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: false,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'fade',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'fast',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1280,
+
+        height: 720,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 8.0e-2,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copiado");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copiado");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>
