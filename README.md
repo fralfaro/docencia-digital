@@ -36,14 +36,14 @@ Al finalizar la capacitacion, el o la participante sera capaz de:
 
 ## Estructura de sesiones
 
-| Sesion | Tema | Contenidos clave | Material |
-| --- | --- | --- | --- |
-| 0 | Introduccion | Presentacion general del curso y metodologia. | [Slides](00_intro/presentacion.qmd) |
-| 1 | GitHub para docencia | Que es GitHub, historia, creacion de cuenta, repositorios y flujo base para proyectos academicos. | [Slides](github/presentacion.qmd) |
-| 2 | Google Colab | Notebooks en la nube, ejecucion de codigo, colaboracion, uso de Drive, exportacion y buenas practicas. | [Slides](colab/presentacion.qmd) |
-| 3 | Overleaf y LaTeX | Documentos academicos con formato profesional, plantillas, estructura y recursos de apoyo. | [Slides](overleaf/presentacion.qmd) |
-| 4 | Quarto para material academico | Creacion de sitios, informes y presentaciones reproducibles, e integracion con GitHub Pages. | [Slides](quarto/presentacion.qmd) |
-| 5 | Inteligencia Artificial para docencia | Vision general de IA, herramientas docentes, uso de NotebookLM/ChatGPT/Gemini/Claude, prompting, riesgos y uso responsable. | [Slides](ia/presentacion.qmd) |
+| Sesión | Tema | Contenidos clave |
+|--------|------|------------------|
+| 0 | Introducción | Presentación general del curso y metodología. |
+| 1 | GitHub para docencia | Qué es GitHub, historia, creación de cuenta, repositorios y flujo base para proyectos académicos. |
+| 2 | Google Colab | Notebooks en la nube, ejecución de código, colaboración, uso de Drive, exportación y buenas prácticas. |
+| 3 | Overleaf y LaTeX | Documentos académicos con formato profesional, plantillas, estructura y recursos de apoyo. |
+| 4 | Quarto para material académico | Creación de sitios, informes y presentaciones reproducibles, e integración con GitHub Pages. |
+| 5 | Inteligencia Artificial para docencia | Visión general de IA, herramientas docentes, uso de NotebookLM/ChatGPT/Gemini/Claude, prompting, riesgos y uso responsable. |
 
 ## Metodologia de ensenanza y aprendizaje
 

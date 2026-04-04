@@ -4,7 +4,7 @@ subtitle: "¿Por qué docencia digital hoy?"
 ---
 
 ::: {.callout-note appearance="minimal"}
-**Presentación del módulo:** [slides](../talks/00_intro/bienvenida.html)
+**Presentación del módulo:** [slides](../../slides/00_intro/bienvenida.html)
 :::
 
 

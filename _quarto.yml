@@ -18,11 +18,11 @@ book:
   favicon: "assets/img/brand/brand__usm.png"
   repo-url: "https://github.com/fralfaro/docencia-digital"
   sidebar:
-    logo: "assets/img/brand/brand__usm.png"
+    logo: "assets/img/icon/icon__notebook-hat.png"
 
   chapters:
     - index.qmd
-    - part: "🟪 Introducción"
+    - part: "Introducción"
       chapters:
         - material/00_intro/intro.qmd
     - part: material/01_github/index.qmd  # <-- archivo, no texto

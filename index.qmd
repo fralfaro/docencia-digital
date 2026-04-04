@@ -1,66 +1,192 @@
-# 🏠 Home
+# Bienvenidos al Curso!
 
-## Descripción de la Capacitación
+## Descripción
 
 Esta capacitación entrega herramientas prácticas para modernizar la docencia universitaria mediante un flujo digital integrado. El foco está en diseñar, producir y publicar materiales académicos de forma clara, reproducible y colaborativa.
 
 Durante las sesiones se trabaja con herramientas que hoy son clave en docencia: **Quarto**, **GitHub**, **Google Colab**, **Overleaf** e **Inteligencia Artificial** aplicada a procesos de enseñanza y aprendizaje.
 
 
+```{=html}
+<div class="ai-tools-grid">
 
-## Contribución al Perfil Docente
+  <div class="notebooklm-card">
+    <div class="card-content">
+      <div class="notebooklm-header">
+        <svg width="28" height="28" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M24 4C13 4 4 13 4 24s9 20 20 20 20-9 20-20S35 4 24 4z" fill="#1a73e8" opacity="0.15"/>
+          <path d="M8 24c0-8.8 7.2-16 16-16" stroke="#1a73e8" stroke-width="3.5" stroke-linecap="round"/>
+          <path d="M13 24c0-6.1 4.9-11 11-11" stroke="#1a73e8" stroke-width="3.5" stroke-linecap="round"/>
+          <path d="M18 24c0-3.3 2.7-6 6-6" stroke="#1a73e8" stroke-width="3.5" stroke-linecap="round"/>
+        </svg>
+        <div>
+          <span class="label-text">Recursos disponibles en</span>
+          <strong class="brand-notebook">NotebookLM</strong>
+        </div>
+      </div>
+      <p class="card-desc">
+              Accede a los notebooks del curso para explorar el material con inteligencia artificial. Puedes hacer preguntas, obtener resúmenes, generar explicaciones alternativas y profundizar los contenidos del curso a tu propio ritmo.
 
-Esta capacitación contribuye al desarrollo de las siguientes capacidades:
+      </p>
+    </div>
+    <div class="card-footer">
+      <div class="notebooklm-links">
+        <a href="https://notebooklm.google.com/notebook/b9be6c21-4d89-4841-8f0e-51639531cac2" target="_blank" class="notebooklm-btn">
+          🔨 Herramientas
+        </a>
+        <a href="https://notebooklm.google.com/notebook/7bc9cfdf-6518-4f73-b085-a12c3f79843a" target="_blank" class="notebooklm-btn">
+          🤖 A.I.
+        </a>
+      </div>
+    </div>
+  </div>
 
-- **CD1:** Diseñar experiencias de aprendizaje apoyadas en herramientas digitales y buenas prácticas de colaboración.
-- **CD2:** Integrar IA de forma responsable para planificación, producción de materiales y retroalimentación.
-- **CD3:** Publicar recursos académicos reproducibles y sostenibles en el tiempo.
+  <div class="github-card">
+    <div class="card-content">
+      <div class="github-header">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
+        </svg>
+        <div>
+          <span class="label-text">Entregables del curso en</span>
+          <strong class="brand-github">GitHub</strong>
+        </div>
+      </div>
+      <p class="card-desc">
+        Gestiona tus entregables clonando el repositorio del curso mediante el botón <strong>Use this template</strong>.
+      </p>
+      <div class="github-repo">
+        <code>fralfaro/ics194-entregables</code>
+      </div>
+    </div>
+    <div class="card-footer">
+      <div class="github-links">
+        <a href="https://github.com/signup" target="_blank" class="github-btn github-btn-outline">Crear cuenta</a>
+        <a href="https://github.com/fralfaro/docencia-digital-entregables" target="_blank" class="github-btn github-btn-green">Use template →</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<style>
+/* --- Layout General --- */
+.ai-tools-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin: 1.5rem 0;
+}
+
+@media (max-width: 768px) {
+  .ai-tools-grid { grid-template-columns: 1fr; }
+}
+
+/* --- Estructura de Tarjetas (Alineación) --- */
+.notebooklm-card, .github-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1.5rem;
+  border-radius: 12px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  height: 100%; /* Asegura que ambas tengan el mismo alto */
+}
+
+.card-content { flex-grow: 1; }
+.card-footer { margin-top: 1.25rem; }
+
+/* --- NotebookLM Style --- */
+.notebooklm-card {
+  background: linear-gradient(135deg, #f0f7ff 0%, #e8f0fe 100%);
+  border: 1px solid #c5d8f7;
+  border-left: 5px solid #1a73e8;
+}
+.brand-notebook { color: #1a73e8; font-size: 1.1rem; display: block; }
+
+/* --- GitHub Style --- */
+.github-card {
+  background: #f6f8fa;
+  border: 1px solid #d0d7de;
+  border-left: 5px solid #24292f;
+}
+.brand-github { color: #24292f; font-size: 1.1rem; display: block; }
+
+/* --- Elementos Comunes --- */
+.notebooklm-header, .github-header {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 1rem;
+}
+.label-text {
+  display: block;
+  font-size: 0.75rem;
+  color: #5f6368;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.card-desc {
+  font-size: 0.92rem;
+  color: #3c4043;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* --- Repositorio Box --- */
+.github-repo {
+  background: white;
+  border: 1px solid #d0d7de;
+  border-radius: 6px;
+  padding: 6px 10px;
+  margin-top: 10px;
+  display: inline-block;
+}
+.github-repo code { font-size: 0.85rem; color: #24292f; }
+
+/* --- Botones --- */
+.notebooklm-links, .github-links { display: flex; gap: 8px; flex-wrap: wrap; }
+
+.notebooklm-btn {
+  background: #1a73e8;
+  color: white !important;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  text-decoration: none !important;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: 0.2s;
+}
+.notebooklm-btn:hover { background: #1558b0; }
+
+.github-btn {
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-decoration: none !important;
+  transition: 0.2s;
+}
+.github-btn-outline { background: white; color: #24292f !important; border: 1px solid #d0d7de; }
+.github-btn-green { background: #2da44e; color: white !important; }
+.github-btn:hover { opacity: 0.85; }
+</style>
+```
 
 
 
-## Resultados de Aprendizaje
 
-Al finalizar la capacitación, el o la participante será capaz de:
+## Sesiones
 
-- **RA1:** Crear y publicar materiales académicos con Quarto y GitHub.
-- **RA2:** Utilizar Google Colab para actividades prácticas con notebooks en la nube.
-- **RA3:** Elaborar documentos académicos en Overleaf/LaTeX.
-- **RA4:** Aplicar herramientas de IA (ChatGPT, Gemini, Claude, NotebookLM) en tareas docentes.
-- **RA5:** Definir criterios de uso responsable de IA en el aula.
+| Sesión | Tema | Contenidos clave |
+|--------|------|------------------|
+| 0 | Introducción | Presentación general del curso y metodología. |
+| 1 | GitHub para docencia | Qué es GitHub, historia, creación de cuenta, repositorios y flujo base para proyectos académicos. |
+| 2 | Google Colab | Notebooks en la nube, ejecución de código, colaboración, uso de Drive, exportación y buenas prácticas. |
+| 3 | Overleaf y LaTeX | Documentos académicos con formato profesional, plantillas, estructura y recursos de apoyo. |
+| 4 | Quarto para material académico | Creación de sitios, informes y presentaciones reproducibles, e integración con GitHub Pages. |
+| 5 | Inteligencia Artificial para docencia | Visión general de IA, herramientas docentes, uso de NotebookLM/ChatGPT/Gemini/Claude, prompting, riesgos y uso responsable. |
 
-
-
-## Planificación de Sesiones
-
-| Sesión | Tema | Contenidos clave | Material |
-|--------|------|-----------------|----------|
-| 📘 0 | Introducción | Presentación del curso y metodología. | [Slides](talks/00_intro/presentacion.qmd) |
-| 📗 1 | GitHub para docencia | Repositorios, flujo de trabajo y gestión de proyectos académicos. | [Slides](talks/github/presentacion.qmd) |
-| 📙 2 | Google Colab | Notebooks en la nube, ejecución de código y colaboración. | [Slides](talks/colab/presentacion.qmd) |
-| 📒 3 | Overleaf y LaTeX | Documentos con formato profesional y plantillas académicas. | [Slides](talks/overleaf/presentacion.qmd) |
-| 📕 4 | Quarto para docencia | Sitios, informes y presentaciones reproducibles con GitHub Pages. | [Slides](talks/quarto/presentacion.qmd) |
-| 📓 5 | IA para docencia | Herramientas de IA, prompting y uso responsable en el aula. | [Slides](talks/ia/presentacion.qmd) |
-
-
-## Metodología de Enseñanza y Aprendizaje
-
-La capacitación combina exposición breve, demostraciones en vivo y actividades aplicadas. Cada sesión cierra con productos concretos (repositorio, notebook, documento o recurso pedagógico) para asegurar transferencia inmediata al trabajo docente.
-
-
-
-## Evaluación
-
-| Estrategia | Resultado | Descripción | Ponderación |
-|------------|-----------|-------------|-------------|
-| Producto digital aplicado | RA1 – RA3 | Desarrollo y publicación de un recurso docente digitales. | 60% |
-| Diseño de uso de IA en aula | RA4 – RA5 | Propuesta de integración de IA con criterios pedagógicos y éticos. | 40% |
-
-
-## Requisitos de Aprobación
-
-- Asistencia mínima definida por la unidad académica.
-- Entrega de los productos solicitados en cada módulo.
-- Calificación mínima de aprobación según normativa institucional.
 
 
 
@@ -71,7 +197,7 @@ La capacitación combina exposición breve, demostraciones en vivo y actividades
 - Cuenta en [Overleaf](https://www.overleaf.com)
 - Navegador actualizado
 
-## Referencias Sugeridas
+## Referencias 
 
 **GitHub**
 

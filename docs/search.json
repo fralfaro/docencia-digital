@@ -4,9 +4,9 @@
     "href": "index.html",
     "title": "Docencia Digital",
     "section": "",
-    "text": "🏠 Home",
+    "text": "Bienvenidos al Curso!",
     "crumbs": [
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>🏠 Home</span>"
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Bienvenidos al Curso!</span>"
     ]
   },
   {
@@ -46,7 +46,7 @@
     "section": "Planificación de Sesiones",
     "text": "Planificación de Sesiones\n\n\n\nSesión\nTema\nContenidos clave\nMaterial\n\n\n\n\n📘 0\nIntroducción\nPresentación del curso y metodología.\nSlides\n\n\n📗 1\nGitHub para docencia\nRepositorios, flujo de trabajo y gestión de proyectos académicos.\nSlides\n\n\n📙 2\nGoogle Colab\nNotebooks en la nube, ejecución de código y colaboración.\nSlides\n\n\n📒 3\nOverleaf y LaTeX\nDocumentos con formato profesional y plantillas académicas.\nSlides\n\n\n📕 4\nQuarto para docencia\nSitios, informes y presentaciones reproducibles con GitHub Pages.\nSlides\n\n\n📓 5\nIA para docencia\nHerramientas de IA, prompting y uso responsable en el aula.\nSlides",
     "crumbs": [
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>🏠 Home</span>"
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Bienvenidos al Curso!</span>"
     ]
   },
   {
@@ -86,7 +86,7 @@
     "section": "Requisitos Técnicos",
     "text": "Requisitos Técnicos\n\nCuenta en GitHub\nCuenta Google (Drive y Colab)\nCuenta en Overleaf\nNavegador actualizado",
     "crumbs": [
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>🏠 Home</span>"
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Bienvenidos al Curso!</span>"
     ]
   },
   {
@@ -106,7 +106,7 @@
     "section": "",
     "text": "El mundo cambió. La universidad, más lento.\nEn los últimos diez años, la forma en que se produce, organiza y comparte el conocimiento cambió radicalmente. Hoy cualquier persona con conexión a internet puede:\nSin embargo, en muchas aulas universitarias el flujo de trabajo sigue siendo el mismo de hace quince años: diapositivas en PowerPoint, documentos Word enviados por correo, evaluaciones en papel o formularios básicos.\nNo es un juicio. Es una brecha real — y tiene explicación.",
     "crumbs": [
-      "🟪 Introducción",
+      "Introducción",
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>Bienvenida al Curso</span>"
     ]
   },
@@ -117,7 +117,7 @@
     "section": "",
     "text": "Ejecutar código en la nube sin instalar nada.\nPublicar un sitio web completo de forma gratuita en minutos.\nGenerar un documento académico con formato profesional desde el navegador.\nColaborar en tiempo real con personas en el otro lado del mundo.\nConsultar a un modelo de inteligencia artificial sobre casi cualquier tema.",
     "crumbs": [
-      "🟪 Introducción",
+      "Introducción",
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>Bienvenida al Curso</span>"
     ]
   },
@@ -128,7 +128,7 @@
     "section": "¿Por qué cuesta tanto sumar a los docentes universitarios?",
     "text": "¿Por qué cuesta tanto sumar a los docentes universitarios?\n\nLa adopción tecnológica en educación superior enfrenta obstáculos específicos que no siempre se discuten abiertamente:\nTiempo escaso. Un académico universitario equilibra docencia, investigación, gestión y extensión. Aprender una herramienta nueva tiene un costo real — y nadie quiere invertir horas en algo que no sabe si va a funcionar.\nCurva de entrada alta. Herramientas como LaTeX, Git o Quarto son poderosas, pero intimidantes al principio. Sin acompañamiento, la mayoría abandona en las primeras horas.\nFalta de referentes cercanos. Es difícil adoptar algo que nadie en tu departamento usa. La innovación docente rara vez se contagia de un paper — se contagia viendo a un colega usarlo.\nIncentivos desalineados. En la academia, publicar importa más que enseñar bien. Mejorar los materiales docentes raramente aparece en los criterios de evaluación académica.\nMiedo a quedar en evidencia. Nadie quiere verse torpe frente a sus estudiantes. Probar algo nuevo en clase implica un riesgo de imagen que muchos prefieren evitar.\nEsta capacitación nace reconociendo esas barreras — y apuntando directamente a bajarlas.",
     "crumbs": [
-      "🟪 Introducción",
+      "Introducción",
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>Bienvenida al Curso</span>"
     ]
   },
@@ -139,7 +139,7 @@
     "section": "El momento de la IA",
     "text": "El momento de la IA\n\nA todo lo anterior se suma un fenómeno que en los últimos dos años cambió las reglas del juego de manera irreversible: la inteligencia artificial generativa.\nHerramientas como ChatGPT, Gemini, Claude y NotebookLM pasaron de ser curiosidades tecnológicas a ser parte del flujo de trabajo cotidiano de millones de personas — incluyendo estudiantes universitarios.\nEsto genera tensiones reales en el aula:\n\nEstudiantes que entregan trabajos asistidos por IA sin declararlo.\nDocentes que prohíben la IA sin tener una política clara.\nEvaluaciones diseñadas para un mundo donde estas herramientas no existían.\nDesconcierto generalizado sobre qué significa “aprender” cuando la IA puede resolver la tarea.\n\nIgnorar este escenario no es una opción. Entenderlo — y saber cómo posicionarse frente a él — es parte de lo que propone este curso.",
     "crumbs": [
-      "🟪 Introducción",
+      "Introducción",
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>Bienvenida al Curso</span>"
     ]
   },
@@ -150,7 +150,7 @@
     "section": "¿Qué ofrece este curso?",
     "text": "¿Qué ofrece este curso?\nEsta capacitación no promete convertirte en desarrollador ni en experto en inteligencia artificial. Propone algo más concreto y más útil: un flujo de trabajo digital integrado para producir y publicar materiales académicos de calidad.\nLas herramientas que trabajaremos son:\n\n\n\n\n\n\n\nHerramienta\n¿Para qué sirve en docencia?\n\n\n\n\n GitHub\nOrganizar y compartir materiales de manera colaborativa y versionada.\n\n\n Google Colab\nEjecutar código en la nube, crear notebooks interactivos para clases prácticas.\n\n\n Overleaf / LaTeX\nRedactar documentos académicos con formato profesional: guías, apuntes, artículos.\n\n\n Quarto\nCrear sitios web, reportes, presentaciones y libros digitales reproducibles.\n\n\n IA\nApoyar la planificación, generación de materiales y retroalimentación.\n\n\n\nNo son las únicas herramientas que existen. Son las que mejor se integran entre sí, tienen comunidades activas, son gratuitas o freemium, y tienen curva de aprendizaje razonable para alguien que parte desde cero.",
     "crumbs": [
-      "🟪 Introducción",
+      "Introducción",
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>Bienvenida al Curso</span>"
     ]
   },
@@ -161,7 +161,7 @@
     "section": "¿A quién está dirigido?",
     "text": "¿A quién está dirigido?\nEste curso está pensado principalmente para docentes universitarios — pero su contenido es útil para cualquier persona que necesite comunicar conocimiento de forma clara, reproducible y profesional:\n\nAcadémicos que quieren modernizar sus materiales sin invertir meses de aprendizaje.\nAyudantes y estudiantes de posgrado que producen material docente.\nProfesionales que enseñan fuera de la academia y quieren herramientas de nivel universitario.\nCualquier persona curiosa sobre cómo funciona el ecosistema digital de la educación hoy.\n\nNo se requieren conocimientos previos de programación. Se requiere disposición a probar cosas nuevas y tolerancia a los errores del camino.",
     "crumbs": [
-      "🟪 Introducción",
+      "Introducción",
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>Bienvenida al Curso</span>"
     ]
   },
@@ -172,7 +172,7 @@
     "section": "¿Cómo está organizado el curso?",
     "text": "¿Cómo está organizado el curso?\nEl curso se estructura en seis sesiones, cada una centrada en una herramienta del ecosistema:\n\n\n\nSesión\nTema\n\n\n\n\n📘 0\nIntroducción (este capítulo)\n\n\n📗 1\nGitHub para docencia\n\n\n📙 2\nGoogle Colab\n\n\n📒 3\nOverleaf y LaTeX\n\n\n📕 4\nQuarto para material académico\n\n\n📓 5\nInteligencia Artificial para docencia\n\n\n\nCada sesión combina explicación conceptual, demostración en vivo y una actividad aplicada. Al final de cada sesión tendrás un producto concreto: un repositorio, un notebook, un documento o un recurso pedagógico listo para usar.",
     "crumbs": [
-      "🟪 Introducción",
+      "Introducción",
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>Bienvenida al Curso</span>"
     ]
   },
@@ -183,7 +183,7 @@
     "section": "Una nota final antes de comenzar",
     "text": "Una nota final antes de comenzar\nLa tecnología no mejora la docencia por sí sola. Una clase mal diseñada sigue siendo una clase mal diseñada aunque use las herramientas más modernas del mercado.\nLo que sí puede hacer la tecnología — bien usada — es reducir la fricción: entre la idea y el material terminado, entre el docente y el estudiante, entre el conocimiento y quien lo necesita.\nEse es el espíritu de este curso. No se trata de adoptar tecnología por moda. Se trata de recuperar tiempo, mejorar la calidad de lo que producimos y llegar mejor a quienes enseñamos.\nEmpecemos.",
     "crumbs": [
-      "🟪 Introducción",
+      "Introducción",
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>Bienvenida al Curso</span>"
     ]
   },
@@ -2782,6 +2782,36 @@
     "crumbs": [
       "Inteligencia Artificial para docencia",
       "<span class='chapter-number'>25</span>  <span class='chapter-title'>Ética y uso responsable de IA en el aula</span>"
+    ]
+  },
+  {
+    "objectID": "index.html#descripción",
+    "href": "index.html#descripción",
+    "title": "Docencia Digital",
+    "section": "Descripción",
+    "text": "Descripción\nEsta capacitación entrega herramientas prácticas para modernizar la docencia universitaria mediante un flujo digital integrado. El foco está en diseñar, producir y publicar materiales académicos de forma clara, reproducible y colaborativa.\nDurante las sesiones se trabaja con herramientas que hoy son clave en docencia: Quarto, GitHub, Google Colab, Overleaf e Inteligencia Artificial aplicada a procesos de enseñanza y aprendizaje.\n\n\n  \n    \n      \n        \n          \n          \n          \n          \n        \n        \n          Recursos disponibles en\n          NotebookLM\n        \n      \n      \n              Accede a los notebooks del curso para explorar el material con inteligencia artificial. Puedes hacer preguntas, obtener resúmenes, generar explicaciones alternativas y profundizar los contenidos del curso a tu propio ritmo.\n\n      \n    \n    \n      \n        \n          🔨 Herramientas\n        \n        \n          🤖 A.I.\n        \n      \n    \n  \n\n  \n    \n      \n        \n          \n        \n        \n          Entregables del curso en\n          GitHub\n        \n      \n      \n        Gestiona tus entregables clonando el repositorio del curso mediante el botón Use this template.\n      \n      \n        fralfaro/ics194-entregables\n      \n    \n    \n      \n        Crear cuenta\n        Use template →",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Bienvenidos al Curso!</span>"
+    ]
+  },
+  {
+    "objectID": "index.html#referencias",
+    "href": "index.html#referencias",
+    "title": "Docencia Digital",
+    "section": "Referencias",
+    "text": "Referencias\nGitHub\n\nGitHub Docs. GitHub para principiantes. https://docs.github.com\nThe Turing Way Community. (2022). The Turing Way: A Handbook for Reproducible Data Science. https://the-turing-way.netlify.app\n\nGoogle Colab\n\nGoogle. Google Colaboratory: Welcome to Colab. https://colab.research.google.com\nGéron, A. (2022). Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow. O’Reilly.\n\nOverleaf y LaTeX\n\nOverleaf. Learn LaTeX in 30 minutes. https://www.overleaf.com/learn\nLamport, L. (1994). LaTeX: A Document Preparation System. Addison-Wesley.\n\nQuarto\n\nAllaire, J.J. et al. (2022). Quarto. https://quarto.org\nWickham, H., & Grolemund, G. (2023). R for Data Science (2nd ed.). O’Reilly. https://r4ds.hadley.nz\n\nInteligencia Artificial para docencia\n\nOpenAI. ChatGPT para educación. https://openai.com/chatgpt/education\nGoogle. NotebookLM. https://notebooklm.google.com\nAnthropic. Claude. https://www.anthropic.com\nMollick, E. (2024). Co-Intelligence: Living and Working with AI. Portfolio/Penguin.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Bienvenidos al Curso!</span>"
+    ]
+  },
+  {
+    "objectID": "index.html#sesiones",
+    "href": "index.html#sesiones",
+    "title": "Docencia Digital",
+    "section": "Sesiones",
+    "text": "Sesiones\n\n\n\n\n\n\n\n\nSesión\nTema\nContenidos clave\n\n\n\n\n0\nIntroducción\nPresentación general del curso y metodología.\n\n\n1\nGitHub para docencia\nQué es GitHub, historia, creación de cuenta, repositorios y flujo base para proyectos académicos.\n\n\n2\nGoogle Colab\nNotebooks en la nube, ejecución de código, colaboración, uso de Drive, exportación y buenas prácticas.\n\n\n3\nOverleaf y LaTeX\nDocumentos académicos con formato profesional, plantillas, estructura y recursos de apoyo.\n\n\n4\nQuarto para material académico\nCreación de sitios, informes y presentaciones reproducibles, e integración con GitHub Pages.\n\n\n5\nInteligencia Artificial para docencia\nVisión general de IA, herramientas docentes, uso de NotebookLM/ChatGPT/Gemini/Claude, prompting, riesgos y uso responsable.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Bienvenidos al Curso!</span>"
     ]
   }
 ]
